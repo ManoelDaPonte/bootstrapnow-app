@@ -1,12 +1,59 @@
 "use client";
 
 import { useEffect } from "react";
-import { AlertTriangle } from "lucide-react";
 import PricingSection from "@/components/abonnement/pricing";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useUserMetadata } from "@/context/userMetadataProvider";
 import Cancellation from "@/components/abonnement/cancellation";
 import AbonnementSkeleton from "@/components/abonnement/AbonnementSkeleton";
+import NoticeBox from "@/components/abonnement/NoticeBox";
+
+function getPlanLabel(plan: string) {
+	switch (plan) {
+		case "innovateur_monthly":
+			return "Innovateur (Mensuel)";
+		case "innovateur_yearly":
+			return "Innovateur (Annuel)";
+		case "visionnaire_monthly":
+			return "Visionnaire (Mensuel)";
+		case "visionnaire_yearly":
+			return "Visionnaire (Annuel)";
+		default:
+			// plan = "free" ou tout autre
+			return "Initiateur (Gratuit)";
+	}
+}
+
+function CurrentPlanBox({ plan, status }: { plan: string; status: string }) {
+	// Cas #1 : plan free -> box "Offre gratuite"
+	if (plan === "free") {
+		return (
+			<div className="border border-border bg-card p-4 rounded-md">
+				<h2 className="font-semibold text-lg">
+					État actuel : Offre gratuite
+				</h2>
+				<p className="text-sm text-muted-foreground mt-1">
+					Vous profitez actuellement de notre offre gratuite
+					(Initiateur). Améliorez votre expérience en souscrivant à
+					une de nos formules payantes ci-dessous.
+				</p>
+			</div>
+		);
+	}
+
+	// Cas #3 : plan payant et status = "actif"
+	return (
+		<div className="border border-border bg-card p-4 rounded-md">
+			<h2 className="font-semibold text-lg">
+				État actuel : {getPlanLabel(plan)}
+			</h2>
+			<p className="text-sm text-muted-foreground mt-1">
+				Merci de votre soutien ! Vous bénéficiez d’une offre payante.
+				Consultez ou modifiez votre abonnement ci-dessous.
+			</p>
+		</div>
+	);
+}
 
 export default function AbonnementPage() {
 	const { user } = useUser();
@@ -21,6 +68,7 @@ export default function AbonnementPage() {
 	if (loading || !user) {
 		return <AbonnementSkeleton />;
 	}
+
 	if (error) {
 		return (
 			<div className="min-h-screen bg-background flex items-center justify-center">
@@ -31,13 +79,17 @@ export default function AbonnementPage() {
 		);
 	}
 
-	// On récupère le tier dans les metadata
-	const tier = (metadata && metadata.tier) || "free";
-	const isFreeTier = tier === "free";
+	// Lecture du plan & status
+	const plan = metadata?.plan || "free";
+	const status = metadata?.status || "actif";
+
+	const isFreeOrCanceled = plan === "free";
+	const hasPaidSubscription = plan !== "free";
 
 	return (
 		<div className="min-h-screen bg-background">
 			<div className="max-w-6xl mx-auto py-10 px-6 space-y-10">
+				{/* Titre */}
 				<div className="text-center space-y-3">
 					<h1 className="text-3xl font-bold">Mon abonnement</h1>
 					<p className="text-muted-foreground text-sm">
@@ -45,50 +97,21 @@ export default function AbonnementPage() {
 					</p>
 				</div>
 
-				{isFreeTier ? (
-					<div className="border border-border bg-card p-4 rounded-md">
-						<h2 className="font-semibold text-lg">
-							État actuel : Offre gratuite
-						</h2>
-						<p className="text-sm text-muted-foreground mt-1">
-							Vous profitez actuellement de notre offre gratuite.
-							Améliorez votre expérience en souscrivant à une de
-							nos formules payantes ci-dessous.
-						</p>
-					</div>
-				) : (
-					<div className="border border-border bg-card p-4 rounded-md">
-						<h2 className="font-semibold text-lg">
-							État actuel : Offre {tier}
-						</h2>
-						<p className="text-sm text-muted-foreground mt-1">
-							Merci de votre soutien ! Vous bénéficiez d’une offre
-							payante. Consultez ou modifiez votre abonnement
-							ci-dessous.
-						</p>
-					</div>
-				)}
+				{/* Box État actuel */}
+				<CurrentPlanBox plan={plan} status={status} />
 
-				<div className="border border-border bg-card p-4 rounded-md flex items-start space-x-4">
-					<AlertTriangle className="text-orange-500 h-6 w-6 mt-1" />
-					<div>
-						<h2 className="font-semibold text-lg">Attention</h2>
-						<p className="text-sm text-muted-foreground">
-							Les produits Search-Hunter et Market-Tester ne sont
-							pas encore finalisés. Veuillez en tenir compte avant
-							de passer au paiement.
-						</p>
-					</div>
-				</div>
+				{/* Avertissement Produits non finalisés */}
+				<NoticeBox />
 
-				{isFreeTier ? (
+				{/* Choix d'affichage */}
+				{isFreeOrCanceled ? (
 					<PricingSection />
-				) : (
+				) : hasPaidSubscription ? (
 					<Cancellation
-						subscriptionId={metadata?.subscription_id} // Assurez-vous que cela provient de vos métadonnées Auth0
-						userId={user.sub!} // L'ID utilisateur actuel
+						subscriptionId={metadata?.subscription_id}
+						userId={user.sub!}
 					/>
-				)}
+				) : null}
 			</div>
 		</div>
 	);

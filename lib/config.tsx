@@ -120,12 +120,11 @@ export const siteConfig = {
 	],
 	pricing: [
 		{
-			name: "GRATUIT",
+			name: "INITIATEUR",
 			href: "#",
 			price: "0 €",
 			period: "à vie",
 			yearlyPrice: "0 €",
-
 			features: [
 				"Accès à la communauté",
 				"Newsletter hebdomadaire",
@@ -136,11 +135,11 @@ export const siteConfig = {
 			isPopular: false,
 		},
 		{
-			name: "STANDARD",
+			name: "INNOVATEUR",
 			href: "#",
-			price: "12 €",
+			price: "12 €", // Mensuel
 			period: "mois",
-			yearlyPrice: "10 €",
+			yearlyPrice: "10 €", // Annuel (prix au mois)
 			features: [
 				"Outil de génération d'idées SaaS",
 				"Outil pour tester un marché",
@@ -152,19 +151,19 @@ export const siteConfig = {
 			isPopular: true,
 		},
 		{
-			name: "ACCÈS À VIE",
+			name: "VISIONNAIRE",
 			href: "#",
-			price: "200 €",
-			period: "achat unique",
-			yearlyPrice: "200 €",
+			price: "50 €", // Mensuel
+			period: "mois",
+			yearlyPrice: "40 €", // Annuel (prix au mois)
 			features: [
 				"Accès illimité à tous les outils",
-				"Accès à vie à la communauté",
-				"Communication privilégiée",
+				"Accès à la communauté",
+				"Communication privilégiée avec l’équipe",
 			],
 			description:
-				"Soutenez notre projet tout en profitant d'un accès illimité et privilégié.",
-			buttonText: "Acheter maintenant",
+				"Allez plus loin encore, avec plus de ressources et un accompagnement dédié.",
+			buttonText: "S'abonner",
 			isPopular: false,
 		},
 	],

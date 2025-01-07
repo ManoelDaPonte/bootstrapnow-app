@@ -1,7 +1,12 @@
+// api/stripe/webhook/route.tsx
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import getManagementToken from "@/lib/auth0/getManagementToken";
-import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
+
+// Import de nos handlers
+import { handleCheckoutSessionCompleted } from "@/lib/stripe/webhooks/handleCheckoutSessionCompleted";
+import { handleCustomerSubscriptionCreated } from "@/lib/stripe/webhooks/handleCustomerSubscriptionCreated";
+import { handleCustomerSubscriptionUpdated } from "@/lib/stripe/webhooks/handleCustomerSubscriptionUpdated";
+import { handleCustomerSubscriptionDeleted } from "@/lib/stripe/webhooks/handleCustomerSubscriptionDeleted";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 	apiVersion: "2024-11-20.acacia",
@@ -17,7 +22,6 @@ export async function POST(request: NextRequest) {
 	}
 
 	let event: Stripe.Event;
-
 	try {
 		event = stripe.webhooks.constructEvent(
 			payload,
@@ -35,54 +39,37 @@ export async function POST(request: NextRequest) {
 	console.log(`Webhook received: ${event.type}`);
 
 	try {
-		if (event.type === "checkout.session.completed") {
-			const session = event.data.object as Stripe.Checkout.Session;
-
-			// Vérifiez que les métadonnées contiennent userId
-			if (session.customer && session.metadata?.userId) {
-				const customerId = session.customer.toString();
-				const userId = session.metadata.userId;
-
-				console.log(`Updating Auth0 metadata for user ${userId}`);
-
-				// Mettre à jour les métadonnées Auth0
-				const accessToken = await getManagementToken();
-				await updateUserMetadata(accessToken, userId, {
-					tier: "paid",
-					customer_id: customerId,
-				});
-			} else {
-				console.warn(
-					"checkout.session.completed event received without metadata.userId"
+		switch (event.type) {
+			case "checkout.session.completed":
+				// On récupère l'object (Checkout.Session)
+				await handleCheckoutSessionCompleted(
+					event.data.object as Stripe.Checkout.Session
 				);
-			}
-		}
+				break;
 
-		if (event.type === "customer.subscription.created") {
-			const subscription = event.data.object as Stripe.Subscription;
-
-			// Récupérer le customerId
-			const customerId = subscription.customer.toString();
-
-			// Trouver l'utilisateur associé dans Auth0 via customerId
-			const userId = await findUserByCustomerId(customerId);
-			if (!userId) {
-				console.warn(
-					`Aucun utilisateur trouvé pour le customerId: ${customerId}`
+			case "customer.subscription.created":
+				await handleCustomerSubscriptionCreated(
+					event.data.object as Stripe.Subscription
 				);
-				return NextResponse.json({ received: true });
-			}
+				break;
 
-			// Mettre à jour les métadonnées Auth0 avec le subscription_id
-			const accessToken = await getManagementToken();
-			await updateUserMetadata(accessToken, userId, {
-				subscription_id: subscription.id, // Ajouter le subscription_id
-			});
+			case "customer.subscription.updated":
+				await handleCustomerSubscriptionUpdated(
+					event.data.object as Stripe.Subscription
+				);
+				break;
 
-			console.log(`Subscription ID ajouté pour user ${userId}`);
+			case "customer.subscription.deleted":
+				await handleCustomerSubscriptionDeleted(
+					event.data.object as Stripe.Subscription
+				);
+				break;
+
+			default:
+				// Event non géré, mais on renvoie OK pour éviter de spammer Stripe d'erreurs
+				console.log(`Unhandled event type: ${event.type}`);
+				break;
 		}
-
-		// Ajoutez d'autres événements si nécessaire
 	} catch (err: any) {
 		console.error("Error processing webhook event:", err.message);
 		return NextResponse.json({ error: err.message }, { status: 500 });

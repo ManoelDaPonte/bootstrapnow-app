@@ -36,7 +36,7 @@ export default function Cancellation({
 			const { message } = await res.json();
 			setMessage(message);
 
-			// Rafraîchir la page ou notifier que l'annulation a été réussie
+			// Recharger complètement la page pour récupérer les nouvelles métadonnées
 			window.location.reload();
 		} catch (error) {
 			setMessage("Une erreur est survenue lors de l'annulation.");

@@ -1,4 +1,4 @@
-// lib/stripe.ts
+// lib/stripe/helpers.tsx
 import Stripe from "stripe";
 import getManagementToken from "@/lib/auth0/getManagementToken";
 import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
@@ -20,7 +20,8 @@ export async function createCustomer(user: any): Promise<string> {
 export async function createCheckoutSession(
 	priceId: string,
 	customerId: string,
-	userId: string // Ajout du userId pour lier la session à l'utilisateur
+	userId: string, // Ajout du userId pour lier la session à l'utilisateur
+	plan: string
 ): Promise<string> {
 	const session = await stripe.checkout.sessions.create({
 		payment_method_types: ["card"],
@@ -31,6 +32,7 @@ export async function createCheckoutSession(
 		cancel_url: `${process.env.NEXT_PUBLIC_APP_HOST}/abonnement/canceled`,
 		metadata: {
 			userId, // Ajout de l'ID utilisateur pour qu'il soit récupéré dans le webhook
+			plan,
 		},
 	});
 

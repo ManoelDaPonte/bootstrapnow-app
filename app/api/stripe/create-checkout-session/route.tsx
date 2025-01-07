@@ -1,13 +1,23 @@
+// api/stripe/create-checkout-session/route.tsx
 import { NextRequest, NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import getUserMetadata from "@/lib/auth0/getUserMetadata";
+import getManagementToken from "@/lib/auth0/getManagementToken";
+
 import {
 	ensureCustomerExists,
 	createCheckoutSession,
 } from "@/lib/stripe/helpers";
-import getManagementToken from "@/lib/auth0/getManagementToken";
+
+const priceMap: Record<string, string | undefined> = {
+	innovateur_monthly: process.env.STRIPE_PRICE_ID_INNOVATEUR_MONTHLY,
+	innovateur_yearly: process.env.STRIPE_PRICE_ID_INNOVATEUR_YEARLY,
+	visionnaire_monthly: process.env.STRIPE_PRICE_ID_VISIONNAIRE_MONTHLY,
+	visionnaire_yearly: process.env.STRIPE_PRICE_ID_VISIONNAIRE_YEARLY,
+};
 
 export async function POST(request: NextRequest) {
+	// Vérifier si l'utilisateur est connecté
 	const user = await getUserFromSession();
 	if (!user) {
 		return NextResponse.json(
@@ -16,15 +26,28 @@ export async function POST(request: NextRequest) {
 		);
 	}
 
-	const { priceId } = await request.json();
-	if (!priceId) {
-		return NextResponse.json(
-			{ error: "priceId is required" },
-			{ status: 400 }
-		);
-	}
-
 	try {
+		// Récupérer le body (JSON)
+		const body = await request.json();
+		const { plan } = body;
+
+		// Vérifier qu'on a un plan
+		if (!plan) {
+			return NextResponse.json(
+				{ error: "Missing plan" },
+				{ status: 400 }
+			);
+		}
+
+		// Vérifier qu'on a un priceId
+		const priceId = priceMap[plan];
+		if (!priceId) {
+			return NextResponse.json(
+				{ error: "Invalid plan" },
+				{ status: 400 }
+			);
+		}
+
 		// Récupérer les métadonnées de l'utilisateur
 		const accessToken = await getManagementToken();
 		const metadata = await getUserMetadata(accessToken, user.sub);
@@ -44,7 +67,8 @@ export async function POST(request: NextRequest) {
 		const sessionUrl = await createCheckoutSession(
 			priceId,
 			customerId,
-			user.sub
+			user.sub,
+			plan
 		);
 
 		return NextResponse.json({ url: sessionUrl });

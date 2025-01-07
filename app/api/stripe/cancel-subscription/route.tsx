@@ -1,3 +1,5 @@
+//api/stripe/cancel-subscription/route.tsx
+
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import getManagementToken from "@/lib/auth0/getManagementToken";
@@ -22,12 +24,6 @@ export async function POST(request: NextRequest) {
 		const canceledSubscription = await stripe.subscriptions.cancel(
 			subscriptionId
 		);
-
-		// Mettre à jour les métadonnées Auth0 pour refléter l'annulation
-		const accessToken = await getManagementToken();
-		await updateUserMetadata(accessToken, userId, {
-			tier: "free",
-		});
 
 		return NextResponse.json({
 			message: "Subscription canceled successfully",
