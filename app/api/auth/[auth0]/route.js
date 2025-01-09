@@ -5,7 +5,8 @@ export async function GET(request, { params }) {
   const resolvedParams = await params;
   return handleAuth({
     logout: handleLogout({
-      auth0Logout: true
+      auth0Logout: true,
+      returnTo: process.env.NEXT_PUBLIC_LANDING_PAGE_HOST,
     }),
   })(request, { params: resolvedParams });
 }
