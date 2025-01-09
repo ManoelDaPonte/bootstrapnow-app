@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useUserMetadata } from "@/context/userMetadataProvider";
 import { ActionCard } from "@/components/ActionCard";
-import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DashboardPageSkeleton from "@/components/dashboard/DashboardPageSkeleton";
 
@@ -14,7 +13,7 @@ export default function DashboardPage() {
 	const { metadata, loading, error, fetchUserMetadata } = useUserMetadata();
 	const [profileDone, setProfileDone] = useState(false);
 	const [joinedDiscord, setJoinedDiscord] = useState(false);
-	const [paidTier, setPaidTier] = useState(false);
+	const [paidPlan, setPaidPlan] = useState(false);
 
 	useEffect(() => {
 		if (user && !metadata && !loading) {
@@ -25,12 +24,13 @@ export default function DashboardPage() {
 	useEffect(() => {
 		if (metadata) {
 			const role = metadata.role || "inconnu";
-			const tier = metadata.tier || "free";
+			const plan = metadata.plan || "free";
+			console.log(metadata);
 			const joined = metadata.joined_discord || false;
 
 			setProfileDone(role !== "inconnu");
 			setJoinedDiscord(joined);
-			setPaidTier(tier !== "free");
+			setPaidPlan(plan !== "free");
 		}
 	}, [metadata]);
 
@@ -113,9 +113,9 @@ export default function DashboardPage() {
 						stepNumber={3}
 						title="Améliorez votre abonnement"
 						description="Optez pour un plan payant et accédez à des fonctionnalités avancées."
-						done={paidTier}
+						done={paidPlan}
 						buttonLabel={
-							paidTier
+							paidPlan
 								? "Gérer mon abonnement"
 								: "Choisir un abonnement"
 						}

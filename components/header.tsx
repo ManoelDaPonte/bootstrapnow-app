@@ -3,14 +3,13 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 import Image from "next/image";
-import { ThemeToggle } from "@/components/theme-toggle";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, SunMoon } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 
 export default function SaasHeader() {
 	const { user } = useUser();

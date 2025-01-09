@@ -38,8 +38,8 @@ export default function Cancellation({
 
 			// Recharger complètement la page pour récupérer les nouvelles métadonnées
 			window.location.reload();
-		} catch (error) {
-			setMessage("Une erreur est survenue lors de l'annulation.");
+		} catch (error: any) {
+			setMessage(`Erreur : ${error.message}`);
 		} finally {
 			setIsCanceling(false);
 		}

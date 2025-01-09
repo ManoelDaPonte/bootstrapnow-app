@@ -24,7 +24,7 @@ function getPlanLabel(plan: string) {
 	}
 }
 
-function CurrentPlanBox({ plan, status }: { plan: string; status: string }) {
+function CurrentPlanBox({ plan }: { plan: string; status: string }) {
 	// Cas #1 : plan free -> box "Offre gratuite"
 	if (plan === "free") {
 		return (

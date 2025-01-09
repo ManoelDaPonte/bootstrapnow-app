@@ -1,13 +1,8 @@
 "use client";
-
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 
 export default function SuccessPage() {
-	const searchParams = useSearchParams();
-	const sessionId = searchParams.get("session_id");
-
 	return (
 		<div className="max-w-md mx-auto mt-16 p-4">
 			<div className="border border-border bg-white p-6 rounded-md shadow-lg text-center">
