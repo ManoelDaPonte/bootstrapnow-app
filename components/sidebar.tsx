@@ -31,7 +31,7 @@ export default function Sidebar() {
 		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background p-4 sticky top-0 h-screen overflow-y-auto">
 			<div className="flex items-center space-x-2 px-2 pb-4 border-b border-border">
 				<Image
-					src="/logo_bootstrapnow.svg"
+					src="/logo_bootstrapnow.png"
 					alt="logo"
 					width={35}
 					height={35}
