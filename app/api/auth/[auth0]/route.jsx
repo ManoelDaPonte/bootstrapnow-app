@@ -20,7 +20,7 @@ export async function GET(request, { params }) {
 				},
 			}),
 			logout: handleLogout({
-				returnTo: process.env.AUTH0_BASE_URL,
+				returnTo: process.env.NEXT_PUBLIC_LANDING_PAGE_HOST,
 			}),
 			cookies: {
 				session: {
