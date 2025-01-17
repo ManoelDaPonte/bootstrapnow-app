@@ -19,7 +19,7 @@ export const siteConfig = {
 		"Marché",
 	],
 	links: {
-		email: "support@example.com",
+		email: "contact@bootstrap-now.com",
 		discord: process.env.NEXT_PUBLIC_DISCORD_LINK || "#",
 	},
 	faqs: [

@@ -16,7 +16,7 @@ export default function SaasHeader() {
 
 	return (
 		<header className="sticky top-0 z-50 bg-transparent">
-			<div className="container mx-auto flex h-16 items-center justify-end px-4">
+			<div className="mx-auto flex h-16 items-center justify-end px-4">
 				{/* Si l'utilisateur est chargé et connecté, on affiche l'avatar */}
 				{user && (
 					<DropdownMenu>
