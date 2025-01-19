@@ -10,8 +10,6 @@ import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
 export async function handleCheckoutSessionCompleted(
 	session: Stripe.Checkout.Session
 ): Promise<void> {
-	console.log("checkout.session.completed event received");
-
 	if (session.customer && session.metadata?.userId) {
 		const customerId = session.customer.toString();
 		const accessToken = await getManagementToken();

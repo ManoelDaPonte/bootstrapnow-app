@@ -25,7 +25,6 @@ export default function DashboardPage() {
 		if (metadata) {
 			const role = metadata.role || "inconnu";
 			const plan = metadata.plan || "free";
-			console.log(metadata);
 			const joined = metadata.joined_discord || false;
 
 			setProfileDone(role !== "inconnu");

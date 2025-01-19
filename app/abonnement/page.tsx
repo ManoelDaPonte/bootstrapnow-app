@@ -28,7 +28,7 @@ function CurrentPlanBox({ plan }: { plan: string; status: string }) {
 	// Cas #1 : plan free -> box "Offre gratuite"
 	if (plan === "free") {
 		return (
-			<div className="border border-border bg-card p-4 rounded-md">
+			<div className="border border-border bg-card p-4 rounded-md shadow">
 				<h2 className="font-semibold text-lg">
 					État actuel : Offre gratuite
 				</h2>
@@ -43,7 +43,7 @@ function CurrentPlanBox({ plan }: { plan: string; status: string }) {
 
 	// Cas #3 : plan payant et status = "actif"
 	return (
-		<div className="border border-border bg-card p-4 rounded-md">
+		<div className="border border-border bg-card p-4 rounded-md shadow">
 			<h2 className="font-semibold text-lg">
 				État actuel : {getPlanLabel(plan)}
 			</h2>
@@ -71,7 +71,7 @@ export default function AbonnementPage() {
 
 	if (error) {
 		return (
-			<div className="min-h-screen bg-background flex items-center justify-center">
+			<div className="min-h-screen bg-background flex items-center justify-center shadow">
 				<p className="text-muted-foreground">
 					Erreur lors de la récupération de vos données : {error}
 				</p>

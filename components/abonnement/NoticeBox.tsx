@@ -2,7 +2,7 @@ import { AlertTriangle } from "lucide-react";
 
 export default function NoticeBox() {
 	return (
-		<div className="border border-border bg-card p-4 rounded-md flex items-start space-x-4">
+		<div className="border border-border bg-card p-4 rounded-md flex items-start space-x-4 shadow">
 			<AlertTriangle className="text-orange-500 h-6 w-6 mt-1" />
 			<div>
 				<h2 className="font-semibold text-lg">Attention</h2>

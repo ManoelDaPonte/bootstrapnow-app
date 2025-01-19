@@ -30,10 +30,10 @@ export default function JoinDiscordBanner({
 						Rejoindre
 					</Link>
 				</div>
-				<div className="absolute right-0 top-0 bottom-0 w-2/5 z-0">
+				<div className="absolute right-0 top-0 bottom-0 w-2/5 z-0 ">
 					{/* Vous pouvez mettre une image plus large/largeur complète, ajuster le positionnement */}
 					<Image
-						src="/placeholder.webp" // Remplacez par votre image
+						src="/discord_presentation.jpg" // Remplacez par votre image
 						alt="Discord Banner"
 						fill
 						className="object-cover"

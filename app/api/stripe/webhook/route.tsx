@@ -36,8 +36,6 @@ export async function POST(request: NextRequest) {
 		);
 	}
 
-	console.log(`Webhook received: ${event.type}`);
-
 	try {
 		switch (event.type) {
 			case "checkout.session.completed":
@@ -67,7 +65,6 @@ export async function POST(request: NextRequest) {
 
 			default:
 				// Event non géré, mais on renvoie OK pour éviter de spammer Stripe d'erreurs
-				console.log(`Unhandled event type: ${event.type}`);
 				break;
 		}
 	} catch (err: any) {

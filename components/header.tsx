@@ -15,55 +15,56 @@ export default function SaasHeader() {
 	const { user } = useUser();
 
 	return (
-		<header className="sticky top-0 z-50 bg-transparent">
-			<div className="mx-auto flex h-16 items-center justify-end px-4">
-				{/* Si l'utilisateur est chargé et connecté, on affiche l'avatar */}
-				{user && (
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<button className="flex items-center focus:outline-none">
-								<Image
-									src={user.picture ?? "/default-avatar.png"}
-									alt={user.name ?? "Utilisateur"}
-									width={36}
-									height={36}
-									className="rounded-full"
-								/>
-							</button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent className="w-48 mr-2 mt-2">
-							<DropdownMenuItem asChild>
-								<Link
-									href="/profile"
-									className="flex items-center gap-2"
-								>
-									<Settings className="h-4 w-4" />
-									<span>Paramètres</span>
-								</Link>
-							</DropdownMenuItem>
-							<DropdownMenuItem asChild>
-								<Link
-									href="/api/auth/logout"
-									className="flex items-center gap-2 text-red-500"
-								>
-									<LogOut className="h-4 w-4" />
-									<span>Se déconnecter</span>
-								</Link>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				)}
+		// Positionnement fixe, en haut à droite, superposé au reste (z-50)
+		<header className="fixed top-4 right-4 z-50">
+			{user && (
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<button className="flex items-center focus:outline-none">
+							<Image
+								src={user.picture ?? "/default-avatar.png"}
+								alt={user.name ?? "Utilisateur"}
+								width={36}
+								height={36}
+								className="rounded-full"
+							/>
+						</button>
+					</DropdownMenuTrigger>
+					{/**
+					 *  Le DropdownMenuContent se place correctement grâce à Portals
+					 *  ou un positionnement en absolute, selon votre implémentation.
+					 */}
+					<DropdownMenuContent className="w-48">
+						<DropdownMenuItem asChild>
+							<Link
+								href="/profile"
+								className="flex items-center gap-2"
+							>
+								<Settings className="h-4 w-4" />
+								<span>Paramètres</span>
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								href="/api/auth/logout"
+								className="flex items-center gap-2 text-red-500"
+							>
+								<LogOut className="h-4 w-4" />
+								<span>Se déconnecter</span>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			)}
 
-				{/* Si l'utilisateur n'est pas connecté, on peut afficher un bouton de connexion */}
-				{!user && (
-					<Link
-						href="/api/auth/login"
-						className="text-sm font-medium underline"
-					>
-						Se connecter
-					</Link>
-				)}
-			</div>
+			{!user && (
+				<Link
+					href="/api/auth/login"
+					className="text-sm font-medium underline"
+				>
+					Se connecter
+				</Link>
+			)}
 		</header>
 	);
 }
