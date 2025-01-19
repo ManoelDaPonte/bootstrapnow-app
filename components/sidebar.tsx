@@ -38,7 +38,7 @@ const navItems = [
 
 export default function Sidebar() {
 	const pathname = usePathname();
-	const { metadata, loading } = useUserMetadata();
+	const { metadata } = useUserMetadata();
 
 	// Vérifiez si l'utilisateur a un plan payant
 	const isPaidUser = metadata?.plan && metadata.plan !== "free";
