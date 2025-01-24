@@ -1,8 +1,6 @@
 // app/business-plan/funnel-chart/page.tsx
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { ChevronLeft } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
 import { FunnelChartModal } from "@/components/business-plan/funnel-chart/FunnelChartModal";
 import { FunnelCard, EditingCard } from "@/types/funnel-chart";
@@ -10,9 +8,14 @@ import { useFunnelChartData } from "@/lib/hooks/business-plan/funnel-chart/useFu
 import { calculateProgress } from "@/lib/business-plan/funnel-chart/storage-funnel-chart";
 import FunnelChart from "@/components/business-plan/funnel-chart/FunnelChart";
 import { Header } from "@/components/business-plan/shared/Header";
+import { FunnelSection } from "@/types/funnel-chart";
+
+const createDebouncedUpdate = (updateFn: (sections: FunnelSection[]) => void) =>
+	_.debounce((newSections: FunnelSection[]) => {
+		updateFn(newSections);
+	}, 500);
 
 export default function FunnelChartPage() {
-	const { user } = useUser();
 	const { sections, handleUpdateSections } = useFunnelChartData();
 
 	const [editingCard, setEditingCard] = useState<EditingCard>(null);
@@ -96,11 +99,9 @@ export default function FunnelChartPage() {
 		setLocalSections(sections);
 	}, [sections]);
 
-	const debouncedUpdateSections = useCallback(
-		_.debounce((newSections) => {
-			handleUpdateSections(newSections);
-		}, 500),
-		[]
+	const debouncedUpdateSections = useMemo(
+		() => createDebouncedUpdate(handleUpdateSections),
+		[handleUpdateSections]
 	);
 
 	const handleSizeChange = (sectionId: number, newSize: number) => {

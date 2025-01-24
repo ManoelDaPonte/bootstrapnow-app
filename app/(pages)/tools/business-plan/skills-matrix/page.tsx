@@ -1,10 +1,8 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { useSkillMatrix } from "@/lib/hooks/business-plan/skills-matrix/useSkillMatrix";
 import {
-	ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
@@ -12,7 +10,7 @@ import {
 	getSortedRowModel,
 	getFilteredRowModel,
 } from "@tanstack/react-table";
-import { ChevronLeft, Trash2, MoreHorizontal } from "lucide-react";
+import { Trash2, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -51,8 +49,8 @@ export default function SkillMatrixPage() {
 		removeDomain,
 	} = useSkillMatrix();
 
-	const createColumns = (): ColumnDef<Person>[] => {
-		return [
+	const columns = React.useMemo(
+		() => [
 			{
 				accessorKey: "name",
 				header: "Nom",
@@ -157,12 +155,8 @@ export default function SkillMatrixPage() {
 					</DropdownMenu>
 				),
 			},
-		];
-	};
-
-	const columns = React.useMemo(
-		() => createColumns(),
-		[domains, removeDomain]
+		],
+		[domains, removeDomain, updateSkill, removePerson]
 	);
 
 	const table = useReactTable({

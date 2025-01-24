@@ -1,9 +1,6 @@
 // app/business-plan/swot/page.tsx
 "use client";
 import React, { useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 import SwotSection from "@/components/business-plan/swot/SwotSection";
 import SwotModal from "@/components/business-plan/swot/SwotModal";
 import { SwotCard, ModalState, SwotData } from "@/types/swot";
@@ -22,7 +19,7 @@ const SWOT_DESCRIPTIONS = {
 		"Facteurs externes qui pourraient poser des défis ou des risques pour l'organisation.",
 } as const;
 
-export const SWOT_HEADERS = {
+const SWOT_HEADERS = {
 	strengths: { title: "Forces", color: "text-emerald-700" },
 	weaknesses: { title: "Faiblesses", color: "text-red-700" },
 	opportunities: { title: "Opportunités", color: "text-blue-700" },
@@ -39,7 +36,6 @@ const sectionOrder: SwotCategory[] = [
 ];
 
 export default function SwotMatrix() {
-	const { user } = useUser();
 	const { cards, handleSaveCard, handleDeleteCard } = useSwotData();
 
 	const [modalState, setModalState] = useState<ModalState>({

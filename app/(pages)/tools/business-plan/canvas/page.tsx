@@ -1,9 +1,6 @@
 // app/business-plan/canvas/page.tsx
 "use client";
 import React, { useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 import CanvasSection from "@/components/business-plan/canvas/CanvasSection";
 import CanvasModal from "@/components/business-plan/canvas/CanvasModal";
 import { useCanvasData } from "@/lib/hooks/business-plan/canvas/useCanvasData";
@@ -32,7 +29,7 @@ const CANVAS_DESCRIPTIONS = {
 		"L'argent qu'une entreprise génère auprès de chaque segment de clientèle.",
 } as const;
 
-export const CANVAS_HEADERS = {
+const CANVAS_HEADERS = {
 	keyPartners: { title: "Partenaires clés", color: "text-purple-700" },
 	keyActivities: { title: "Activités clés", color: "text-blue-700" },
 	keyResources: { title: "Ressources clés", color: "text-green-700" },
@@ -50,7 +47,6 @@ export const CANVAS_HEADERS = {
 type CanvasCategory = keyof typeof CANVAS_HEADERS;
 
 export default function BusinessModelCanvas() {
-	const { user } = useUser();
 	const { cards, handleSaveCard, handleDeleteCard } = useCanvasData();
 
 	const [modalState, setModalState] = useState({

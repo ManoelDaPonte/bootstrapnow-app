@@ -2,9 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import { Plus, ChevronLeft, Trash2, HelpCircle } from "lucide-react";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { Plus, Trash2, HelpCircle } from "lucide-react";
 import { useValuePropositionData } from "@/lib/hooks/business-plan/proposition-value/useValuePropositionData";
 import type {
 	ValuePropositionCategory,
@@ -13,7 +11,6 @@ import type {
 } from "@/types/value-proposition";
 import { calculateProgress } from "@/lib/business-plan/value-proposition/storage-value-proposition";
 import { Header } from "@/components/business-plan/shared/Header";
-import { Item } from "@radix-ui/react-dropdown-menu";
 
 const tooltips: TooltipMessages = {
 	customerJobs:
@@ -131,7 +128,6 @@ const Section: React.FC<SectionProps> = ({
 );
 
 const ValuePropositionCanvas: React.FC = () => {
-	const { user } = useUser();
 	const {
 		data,
 		isLoading,

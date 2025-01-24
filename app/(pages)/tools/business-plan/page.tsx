@@ -87,6 +87,31 @@ const templates = [
 			},
 		],
 	},
+	{
+		id: "financial",
+		title: "Plan Financier",
+		color: "bg-[hsl(var(--chart-5)_/_0.1)]",
+		borderColor: "border-[hsl(var(--chart-5)_/_0.2)]",
+		hoverColor: "hover:bg-[hsl(var(--chart-5)_/_0.15)]",
+		icon: "💵",
+		templates: [
+			{
+				name: "Projection sur 3 ans",
+				route: "/tools/business-plan/3-years-projection",
+				description: "Planifiez vos projections financières sur 3 ans",
+			},
+			{
+				name: "Projection sur 12 mois",
+				route: "/tools/business-plan/12-months-projection",
+				description: "Détaillez votre première année d'activité",
+			},
+			{
+				name: "Dépenses de démarrage",
+				route: "/tools/business-plan/startup-expenses",
+				description: "Estimez vos besoins en financement initial",
+			},
+		],
+	},
 ];
 
 export default function BusinessPlanPage() {
@@ -106,20 +131,21 @@ export default function BusinessPlanPage() {
 	const totalProgress = Math.round(
 		Object.entries(progress).reduce((acc, [sectionId, section]) => {
 			if (sectionId === "execution") {
-				// Exclure Skills Matrix
 				return acc + (section["Value Proposition"] || 0);
+			}
+			if (sectionId === "financial") {
+				return acc; // Exclure la section financière
 			}
 			return (
 				acc +
 				Object.values(section).reduce((sum, value) => sum + value, 0)
 			);
 		}, 0) /
-			// Ajuster le diviseur pour exclure Skills Matrix
 			(Object.values(progress).reduce(
 				(acc, section) => acc + Object.keys(section).length,
 				0
 			) -
-				1)
+				4) // Ajuster pour exclure Skills Matrix et les 3 pages financières
 	);
 
 	return (

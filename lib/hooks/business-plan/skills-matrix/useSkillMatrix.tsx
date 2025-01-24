@@ -130,7 +130,7 @@ export const useSkillMatrix = () => {
 	const removeDomain = async (domainId: string) => {
 		const newDomains = domains.filter((domain) => domain.id !== domainId);
 		const newPeople = people.map((person) => {
-			const { [domainId]: _, ...remainingSkills } = person.skills;
+			const { [domainId]: ignore, ...remainingSkills } = person.skills; // eslint-disable-line @typescript-eslint/no-unused-vars
 			return { ...person, skills: remainingSkills };
 		});
 

@@ -8,7 +8,7 @@ import { usePestelData } from "@/lib/hooks/business-plan/pestel/usePestelData";
 import { calculateProgress } from "@/lib/business-plan/pestel/storage-pestel";
 import { Header } from "@/components/business-plan/shared/Header";
 
-export const PESTEL_DESCRIPTIONS = {
+const PESTEL_DESCRIPTIONS = {
 	political:
 		"Facteurs liés aux politiques gouvernementales et à la réglementation.",
 	economic: "Variables économiques qui peuvent influencer votre marché.",
@@ -19,7 +19,7 @@ export const PESTEL_DESCRIPTIONS = {
 	legal: "Cadre juridique et conformité réglementaire.",
 } as const;
 
-export const PESTEL_HEADERS = {
+const PESTEL_HEADERS = {
 	political: { title: "Politique", color: "text-purple-700" },
 	economic: { title: "Économique", color: "text-emerald-700" },
 	social: { title: "Social", color: "text-blue-700" },

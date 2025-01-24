@@ -1,6 +1,5 @@
 // components/business-plan/pestel/PestelSection.tsx
 import React from "react";
-import { PestelCard } from "@/types/pestel";
 
 const PESTEL_COLORS = {
 	political: "bg-purple-50 border-purple-200 hover:bg-purple-100",

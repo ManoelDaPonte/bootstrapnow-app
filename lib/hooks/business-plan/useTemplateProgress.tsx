@@ -41,5 +41,10 @@ export const useTemplateProgress = () => {
 			"Value Proposition":
 				calculateValuePropositionProgress(valuePropositionData),
 		},
+		financial: {
+			"Projection sur 3 ans": 100,
+			"Projection sur 12 mois": 100,
+			"Dépenses de démarrage": 100,
+		},
 	};
 };
