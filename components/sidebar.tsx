@@ -44,42 +44,47 @@ export default function Sidebar() {
 	const isPaidUser = metadata?.plan && metadata.plan !== "free";
 
 	return (
-		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background p-4 sticky top-0 h-screen overflow-y-auto">
-			<div className="flex items-center space-x-2 px-2 pb-4 border-b border-border">
-				<Image
-					src="/logo_bootstrapnow.png"
-					alt="logo"
-					width={35}
-					height={35}
-				/>
-				<span className="font-bold text-xl">BootstrapNow</span>
-			</div>
-			<nav className="mt-4 flex-1 space-y-1">
-				{navItems.map((item) => {
-					const Icon = item.icon;
-					const isActive = pathname.startsWith(item.href);
-					const showLock = item.requiresSubscription && !isPaidUser;
+		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background fixed left-0 top-0 h-screen">
+			<div className="flex flex-col h-full overflow-y-auto p-4">
+				<div className="flex items-center space-x-2 px-2 pb-4 border-b border-border">
+					<Image
+						src="/logo/logo_bootstrapnow.png"
+						alt="logo"
+						width={35}
+						height={35}
+					/>
+					<span className="font-bold text-xl">BootstrapNow</span>
+				</div>
+				<nav className="mt-4 flex-1 space-y-1">
+					{navItems.map((item) => {
+						const Icon = item.icon;
+						const isActive = pathname.startsWith(item.href);
+						const showLock =
+							item.requiresSubscription && !isPaidUser;
 
-					return (
-						<Link
-							key={item.href}
-							href={item.href}
-							className={cn(
-								"flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-								isActive
-									? "bg-accent text-accent-foreground"
-									: "text-foreground"
-							)}
-						>
-							<div className="flex items-center space-x-2">
-								<Icon className="h-4 w-4" />
-								<span>{item.label}</span>
-							</div>
-							{showLock && <LockKeyhole className="h-4 w-4" />}
-						</Link>
-					);
-				})}
-			</nav>
+						return (
+							<Link
+								key={item.href}
+								href={item.href}
+								className={cn(
+									"flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+									isActive
+										? "bg-accent text-accent-foreground"
+										: "text-foreground"
+								)}
+							>
+								<div className="flex items-center space-x-2">
+									<Icon className="h-4 w-4" />
+									<span>{item.label}</span>
+								</div>
+								{showLock && (
+									<LockKeyhole className="h-4 w-4" />
+								)}
+							</Link>
+						);
+					})}
+				</nav>
+			</div>
 		</aside>
 	);
 }

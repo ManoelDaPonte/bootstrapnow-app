@@ -28,9 +28,9 @@ export default function DashboardLayout({
 							enableSystem={false}
 						>
 							<Sidebar />
-							<div className="flex-1 flex flex-col">
+							<div className="flex-1 md:ml-64 flex flex-col min-h-screen">
 								<Header />
-								<main className="">{children}</main>
+								<main className="flex-1">{children}</main>
 								<ThemeToggle />
 								<TailwindIndicator />
 							</div>
