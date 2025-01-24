@@ -66,13 +66,19 @@ const templates: Template[] = [
 		image: "ValueProposition-canvas.png",
 		progress: 85,
 	},
+	{
+		title: "Value Proposition",
+		route: "/tools/business-plan/startup-expenses",
+		image: "ValueProposition-canvas.png",
+		progress: 85,
+	},
 ];
 
 const steps: Step[] = [
 	{ title: "Étape 1 : Étude de marché", range: [0, 2] },
 	{ title: "Étape 2 : Stratégie", range: [2, 4] },
 	{ title: "Étape 3 : Modèle économique", range: [4, 6] },
-	{ title: "Étape 4 : Éxecution", range: [6, 8] },
+	{ title: "Étape 4 : Éxecution", range: [6, 9] },
 ];
 
 export default function BusinessPlanPage() {
