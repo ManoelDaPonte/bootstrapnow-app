@@ -5,7 +5,7 @@ import _ from "lodash";
 import { FunnelChartModal } from "@/components/business-plan/funnel-chart/FunnelChartModal";
 import { FunnelCard, EditingCard } from "@/types/funnel-chart";
 import { useFunnelChartData } from "@/lib/hooks/business-plan/funnel-chart/useFunnelChartData";
-import { calculateProgress } from "@/lib/business-plan/funnel-chart/storage-funnel-chart";
+import { calculateProgress } from "@/lib/hooks/business-plan/funnel-chart/storage-funnel-chart";
 import FunnelChart from "@/components/business-plan/funnel-chart/FunnelChart";
 import { Header } from "@/components/business-plan/shared/Header";
 import { FunnelSection } from "@/types/funnel-chart";

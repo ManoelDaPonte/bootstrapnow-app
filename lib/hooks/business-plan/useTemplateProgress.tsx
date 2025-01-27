@@ -6,13 +6,13 @@ import { useValuePropositionData } from "@/lib/hooks/business-plan/proposition-v
 import { useMarketingMixData } from "@/lib/hooks/business-plan/marketing-mix/useMarketingMixData";
 import { useAnsoffData } from "@/lib/hooks/business-plan/ansoff/useAnsoffData";
 import { useFunnelChartData } from "@/lib/hooks/business-plan/funnel-chart/useFunnelChartData";
-import { calculateProgress as calculatePestelProgress } from "@/lib/business-plan/pestel/storage-pestel";
-import { calculateProgress as calculateSwotProgress } from "@/lib/business-plan/swot/storage-swot";
-import { calculateProgress as calculateCanvasProgress } from "@/lib/business-plan/canvas/storage-canvas";
-import { calculateProgress as calculateValuePropositionProgress } from "@/lib/business-plan/value-proposition/storage-value-proposition";
-import { calculateProgress as calculateMarketingMixProgress } from "@/lib/business-plan/marketing-mix/storage-marketing-mix";
-import { calculateProgress as calculateAnsoffProgress } from "@/lib/business-plan/ansoff/storage-ansoff";
-import { calculateProgress as calculateFunnelChartProgress } from "@/lib/business-plan/funnel-chart/storage-funnel-chart";
+import { calculateProgress as calculatePestelProgress } from "@/lib/hooks/business-plan/pestel/storage-pestel";
+import { calculateProgress as calculateSwotProgress } from "@/lib/hooks/business-plan/swot/storage-swot";
+import { calculateProgress as calculateCanvasProgress } from "@/lib/hooks/business-plan/canvas/storage-canvas";
+import { calculateProgress as calculateValuePropositionProgress } from "@/lib/hooks/business-plan/proposition-value/storage-value-proposition";
+import { calculateProgress as calculateMarketingMixProgress } from "@/lib/hooks/business-plan/marketing-mix/storage-marketing-mix";
+import { calculateProgress as calculateAnsoffProgress } from "@/lib/hooks/business-plan/ansoff/storage-ansoff";
+import { calculateProgress as calculateFunnelChartProgress } from "@/lib/hooks/business-plan/funnel-chart/storage-funnel-chart";
 
 export const useTemplateProgress = () => {
 	const { cards: swotData } = useSwotData();

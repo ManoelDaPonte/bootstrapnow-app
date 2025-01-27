@@ -1,7 +1,7 @@
 // app/api/business-plan/pestel/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updatePestelData } from "@/lib/business-plan/pestel/storage-pestel";
+import { updatePestelData } from "@/lib/hooks/business-plan/pestel/storage-pestel";
 import { PestelData } from "@/types/pestel";
 
 export async function POST(request: Request) {

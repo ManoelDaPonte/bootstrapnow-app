@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateValuePropositionData } from "@/lib/business-plan/value-proposition/storage-value-proposition";
+import { updateValuePropositionData } from "@/lib/hooks/business-plan/proposition-value/storage-value-proposition";
 import { ValuePropositionData } from "@/types/value-proposition";
 
 export async function POST(request: Request) {

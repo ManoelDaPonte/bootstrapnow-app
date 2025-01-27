@@ -6,7 +6,7 @@ import {
 	loadCanvasData,
 	saveCanvasData,
 	saveToDatabase,
-} from "@/lib/business-plan/canvas/storage-canvas";
+} from "@/lib/hooks/business-plan/canvas/storage-canvas";
 
 type CanvasCategory = keyof Omit<CanvasData, "lastAnalysis" | "lastUpdated">;
 

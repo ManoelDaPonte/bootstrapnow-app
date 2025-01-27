@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import CanvasSection from "@/components/business-plan/canvas/CanvasSection";
 import CanvasModal from "@/components/business-plan/canvas/CanvasModal";
 import { useCanvasData } from "@/lib/hooks/business-plan/canvas/useCanvasData";
-import { calculateProgress } from "@/lib/business-plan/canvas/storage-canvas";
+import { calculateProgress } from "@/lib/hooks/business-plan/canvas/storage-canvas";
 import { CanvasCard } from "@/types/canvas";
 import { Header } from "@/components/business-plan/shared/Header";
 

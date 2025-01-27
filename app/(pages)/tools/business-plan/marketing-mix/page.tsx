@@ -5,7 +5,7 @@ import MarketingMixSection from "@/components/business-plan/marketing-mix/Market
 import MarketingMixModal from "@/components/business-plan/marketing-mix/MarketingMixModal";
 import { MarketingMixCard, ModalState } from "@/types/marketing-mix";
 import { useMarketingMixData } from "@/lib/hooks/business-plan/marketing-mix/useMarketingMixData";
-import { calculateProgress } from "@/lib/business-plan/marketing-mix/storage-marketing-mix";
+import { calculateProgress } from "@/lib/hooks/business-plan/marketing-mix/storage-marketing-mix";
 import { Header } from "@/components/business-plan/shared/Header";
 
 const MARKETING_MIX_DESCRIPTIONS = {
