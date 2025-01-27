@@ -1,7 +1,7 @@
 // app/api/business-plan/ansoff/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateAnsoffData } from "@/lib/business-plan/ansoff/storage-ansoff";
+import { updateAnsoffData } from "@/lib/hooks/business-plan/ansoff/storage-ansoff";
 import { AnsoffData } from "@/types/ansoff";
 
 export async function POST(request: Request) {

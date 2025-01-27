@@ -1,7 +1,7 @@
 // app/api/business-plan/swot/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateSwotData } from "@/lib/business-plan/swot/storage-swot";
+import { updateSwotData } from "@/lib/hooks/business-plan/swot/storage-swot";
 import { SwotData } from "@/types/swot";
 
 export async function POST(request: Request) {

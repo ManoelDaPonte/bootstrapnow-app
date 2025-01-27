@@ -9,7 +9,7 @@ import type {
 	ValuePropositionCard,
 	TooltipMessages,
 } from "@/types/value-proposition";
-import { calculateProgress } from "@/lib/business-plan/value-proposition/storage-value-proposition";
+import { calculateProgress } from "@/lib/hooks/business-plan/proposition-value/storage-value-proposition";
 import { Header } from "@/components/business-plan/shared/Header";
 
 const tooltips: TooltipMessages = {
