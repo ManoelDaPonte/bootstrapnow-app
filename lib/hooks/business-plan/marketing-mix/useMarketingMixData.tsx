@@ -6,7 +6,7 @@ import {
 	loadMarketingMixData,
 	saveMarketingMixData,
 	saveToDatabase,
-} from "@/lib/business-plan/marketing-mix/storage-marketing-mix";
+} from "@/lib/hooks/business-plan/marketing-mix/storage-marketing-mix";
 
 // Type utilitaire pour les catégories du Marketing Mix
 type MarketingMixCategory = keyof Omit<MarketingMixData, "lastUpdated">;

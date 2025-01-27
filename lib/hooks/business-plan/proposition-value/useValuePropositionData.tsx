@@ -10,7 +10,7 @@ import {
 	loadValuePropositionData,
 	saveValuePropositionData,
 	saveToDatabase,
-} from "@/lib/business-plan/value-proposition/storage-value-proposition";
+} from "@/lib/hooks/business-plan/proposition-value/storage-value-proposition";
 
 export const useValuePropositionData = () => {
 	const { user, isLoading } = useUser();

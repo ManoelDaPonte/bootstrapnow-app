@@ -6,7 +6,7 @@ import {
 	loadPestelData,
 	savePestelData,
 	saveToDatabase,
-} from "@/lib/business-plan/pestel/storage-pestel";
+} from "@/lib/hooks/business-plan/pestel/storage-pestel";
 
 // Type utilitaire pour s'assurer que la catégorie est une clé valide de PestelData
 type PestelCategory = keyof Omit<PestelData, "lastAnalysis" | "lastUpdated">;

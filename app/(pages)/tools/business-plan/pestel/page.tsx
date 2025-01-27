@@ -5,7 +5,7 @@ import PestelSection from "@/components/business-plan/pestel/PestelSection";
 import PestelModal from "@/components/business-plan/pestel/PestelModal";
 import { PestelCard, ModalState } from "@/types/pestel";
 import { usePestelData } from "@/lib/hooks/business-plan/pestel/usePestelData";
-import { calculateProgress } from "@/lib/business-plan/pestel/storage-pestel";
+import { calculateProgress } from "@/lib/hooks/business-plan/pestel/storage-pestel";
 import { Header } from "@/components/business-plan/shared/Header";
 
 const PESTEL_DESCRIPTIONS = {

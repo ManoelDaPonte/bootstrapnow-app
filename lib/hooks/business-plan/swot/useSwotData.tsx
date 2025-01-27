@@ -6,7 +6,7 @@ import {
 	loadSwotData,
 	saveSwotData,
 	saveToDatabase,
-} from "@/lib/business-plan/swot/storage-swot";
+} from "@/lib/hooks/business-plan/swot/storage-swot";
 
 // Type utilitaire pour s'assurer que la catégorie est une clé valide de SwotData
 type SwotCategory = keyof Omit<SwotData, "lastAnalysis" | "lastUpdated">;

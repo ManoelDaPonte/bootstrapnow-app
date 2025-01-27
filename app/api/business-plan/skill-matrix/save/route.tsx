@@ -1,7 +1,7 @@
 // app/api/business-plan/skill-matrix/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateSkillMatrixData } from "@/lib/business-plan/skills-matrix/storage-skills-matrix";
+import { updateSkillMatrixData } from "@/lib/hooks/business-plan/skills-matrix/storage-skills-matrix";
 import { Person, Domain } from "@/types/skill-matrix";
 
 interface SkillMatrixData {

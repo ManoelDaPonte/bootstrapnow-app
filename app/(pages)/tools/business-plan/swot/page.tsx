@@ -5,7 +5,7 @@ import SwotSection from "@/components/business-plan/swot/SwotSection";
 import SwotModal from "@/components/business-plan/swot/SwotModal";
 import { SwotCard, ModalState, SwotData } from "@/types/swot";
 import { useSwotData } from "@/lib/hooks/business-plan/swot/useSwotData";
-import { calculateProgress } from "@/lib/business-plan/swot/storage-swot";
+import { calculateProgress } from "@/lib/hooks/business-plan/swot/storage-swot";
 import { Header } from "@/components/business-plan/shared/Header";
 
 const SWOT_DESCRIPTIONS = {

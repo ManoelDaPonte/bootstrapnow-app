@@ -132,7 +132,7 @@ Proposition de valeur (BMC - Value Proposition)
 Mode de production ou fourniture (BMC - Key Activities & Key Resources)
 Relations avec les fournisseurs et partenaires (BMC - Key Partnerships)
 Chaîne d'approvisionnement et logistique (PESTEL - Economic & Technological Trends)
-Quels sont les éléments clés de la production et de la distribution de tes produits/services ?"
+Expliques quels sont les éléments clés de la production et de la distribution des produits/services"
 
 2. "Explique en quoi le produit/service répond à un problème du marché en t’appuyant sur :
 
@@ -624,31 +624,29 @@ Licences et/ou permis nécessaires :{{PESTEL_Legal Factors}}, {{SWOT_Faiblesses}
 Détaille les licences et permis requis pour le secteur d'activité 
 QUESTIONS: et précise si on a déjà obtenu ces documents ou si des démarches sont en cours.
 Marques déposées, droits d'auteur ou brevets :
-
 Avez-vous des marques déposées, des droits d'auteur ou des brevets, ou êtes-vous en train de les demander ?
 {{SWOT_Opportunités}}, {{BMC_Key Resources}}
-Expliquez les protections légales en place pour vos produits, services, logo ou technologie, et les démarches effectuées ou à effectuer pour protéger ces actifs.
+Explique les protections légales en place pour nos produits, services, logo ou technologie, et les démarches effectuées ou à effectuer pour protéger ces actifs.
 Assurance requise et coût :
-
 Quelle couverture d'assurance votre entreprise nécessite-t-elle et quel en est le coût ?
 {{PESTEL_Economic Factors}}, {{BMC_Cost Structure}}
-Listez les types d'assurance dont vous avez besoin (assurance responsabilité civile, assurance des biens, assurance des employés, etc.) et précisez le coût estimé pour ces couvertures.
+Liste les types d'assurance dont nous avons besoin (assurance responsabilité civile, assurance des biens, assurance des employés, etc.) et précise le coût estimé pour ces couvertures.
 Réglementations environnementales, sanitaires ou relatives aux conditions de travail :
-
 Quelles régulations environnementales, sanitaires ou relatives aux conditions de travail affectent votre entreprise ?
 {{PESTEL_Environmental Factors}}, {{SWOT_Opportunités}}
-Décrivez les lois et régulations qui concernent votre entreprise en matière d'environnement, de sécurité au travail, de santé des employés ou de conformité aux normes écologiques.
-Régulations spécifiques à votre secteur d'activité :
 
-Quelles sont les régulations particulières affectant votre secteur ?
+Décris les lois et régulations qui concernent votre entreprise en matière d'environnement, de sécurité au travail, de santé des employés ou de conformité aux normes écologiques.
+Régulations spécifiques au secteur d'activité :
+
+Quelles sont les régulations particulières affectant le secteur d'activité?
 {{PESTEL_Legal Factors}}, {{BMC_Key Activities}}
-Précisez les régulations spécifiques qui gouvernent votre industrie, comme les restrictions légales, les normes de qualité, les obligations fiscales, ou toute législation propre à votre domaine.
+Précise les régulations spécifiques qui gouvernent notre industrie, comme les restrictions légales, les normes de qualité, les obligations fiscales, ou toute législation propre à notre domaine.
 Exigences de cautionnement (si applicable) :
 
-Votre entreprise doit-elle remplir des exigences de cautionnement ? Si oui, expliquez-les.
+L'entreprise doit-elle remplir des exigences de cautionnement ? Si oui, explique-les.
 {{PESTEL_Legal Factors}}
-Si des exigences de cautionnement s'appliquent à votre entreprise (par exemple pour les contrats gouvernementaux, les projets de construction, ou autres), précisez ces exigences et comment vous prévoyez de vous y conformer.
-Ce prompt t'aidera à structurer les informations concernant l'aspect juridique de l'entreprise, en tenant compte des exigences légales, des protections intellectuelles, des assurances nécessaires, et des régulations sectorielles."
+Si des exigences de cautionnement s'appliquent à l'entreprise (par exemple pour les contrats gouvernementaux, les projets de construction, ou autres), précise ces exigences et comment on prévoit de s'y conformer.
+
 
 PERSONNES:
 "Décrivez les besoins en personnel pour votre entreprise en tenant compte des éléments suivants et en utilisant les sections pertinentes des templates pour structurer les informations :
@@ -663,62 +661,43 @@ Freelances ou entrepreneurs indépendants :
 
 QUESTION: Engagerez-vous des freelances ou des entrepreneurs indépendants ?
 {{BMC_Key Partnerships}}, {{7P_People}}
-Précisez si vous prévoyez d’externaliser certaines fonctions via des freelances ou des entrepreneurs indépendants (par exemple, consultants, développeurs externes, ou experts spécifiques à certains domaines).
-Descriptions de postes :
+Précise si on prévoit d’externaliser certaines fonctions via des freelances ou des entrepreneurs indépendants (par exemple, consultants, développeurs externes, ou experts spécifiques à certains domaines).
 
-Inclure des descriptions de postes pour les rôles clés.
-{{BMC_Key Resources}}, {{7P_People}}
-Pour chaque poste, donnez une description détaillée des responsabilités, des qualifications requises, des tâches quotidiennes et des objectifs à atteindre pour chaque rôle (par exemple, responsable des ventes, responsable des opérations, etc.).
+Descriptions de postes :{{BMC_Key Resources}}, {{7P_People}}
 
-Structure de rémunération :
+Inclure des descriptions de postes pour les rôles clés. Pour chaque poste, donne une description détaillée des responsabilités, des qualifications requises, des tâches quotidiennes et des objectifs à atteindre pour chaque rôle (par exemple, responsable des ventes, responsable des opérations, etc.).
 
-Quelle est la structure de la rémunération pour chaque poste (horaire, salariat, base plus commission, etc.) ?
-{{BMC_Cost Structure}}, {{SWOT_Opportunités}}, {{7P_People}}
-Décrivez le type de rémunération pour chaque poste (par exemple, salaire fixe, rémunération à la commission, ou un modèle hybride avec salaire de base plus commissions ou primes).
-Recrutement et qualification des employés :
+Structure de rémunération :{{BMC_Cost Structure}}, {{SWOT_Opportunités}}, {{7P_People}}
+Explique quelle est la structure de la rémunération pour chaque poste (horaire, salariat, base plus commission, etc.). Décris le type de rémunération pour chaque poste (par exemple, salaire fixe, rémunération à la commission, ou un modèle hybride avec salaire de base plus commissions ou primes).
 
-Comment prévoyez-vous de trouver des employés qualifiés ?
-{{BMC_Channels}}, {{SWOT_Opportunités}}
-Expliquez les stratégies de recrutement que vous allez utiliser pour attirer des candidats qualifiés (par exemple, recrutement via des agences, publicité en ligne, partenariats avec des écoles, ou par le biais de réseaux professionnels).
-Formation des employés :
+Recrutement et qualification des employés :{{BMC_Channels}}, {{SWOT_Opportunités}}
+Expliques comment prévoyez-vous de trouver des employés qualifiés. Explique les stratégies de recrutement que vous allez utiliser pour attirer des candidats qualifiés (par exemple, recrutement via des agences, publicité en ligne, partenariats avec des écoles, ou par le biais de réseaux professionnels).
 
-Quel type de formation est nécessaire pour vos employés et comment allez-vous les former ?
-{{BMC_Key Activities}}, {{7P_Process}}
-Détaillez les programmes de formation nécessaires pour chaque rôle, comment la formation sera dispensée (en interne, via des experts externes, formation en ligne), et la manière dont vous vous assurerez que les employés acquièrent les compétences nécessaires.
+Formation des employés :{{BMC_Key Activities}}, {{7P_Process}}
+Explique quel type de formation est nécessaire pour vos employés et comment allez-vous les former. Détaille les programmes de formation nécessaires pour chaque rôle, comment la formation sera dispensée (en interne, via des experts externes, formation en ligne), et la manière dont vous vous assurerez que les employés acquièrent les compétences nécessaires.
 
 INVENTAIRE:
 "Décrivez la gestion de l'inventaire pour votre entreprise en tenant compte des éléments suivants, en utilisant les sections pertinentes des templates pour structurer les informations :
 
-Type de stock à conserver :
+Type de stock à conserver :{{BMC_Key Resources}}, {{BMC_Channels}}, {{SWOT_Faiblesses}}
 
-Quel type de stock conserverez-vous ? (matières premières, fournitures, produits finis, etc.)
-{{BMC_Key Resources}}, {{BMC_Channels}}, {{SWOT_Faiblesses}}
-Décrivez les types de stocks que vous allez maintenir, qu'il s'agisse de matières premières, de fournitures nécessaires à la production, de produits finis ou d'autres types de stocks. Par exemple, pour une entreprise de fabrication, les matières premières seront essentielles, tandis que pour une entreprise de commerce électronique, les produits finis ou en cours de production seront plus importants.
-Valeur moyenne des stocks :
+Explique quel type de stock nous conserverons (matières premières, fournitures, produits finis, etc.). Décris les types de stocks que vous allez maintenir, qu'il s'agisse de matières premières, de fournitures nécessaires à la production, de produits finis ou d'autres types de stocks. Par exemple, pour une entreprise de fabrication, les matières premières seront essentielles, tandis que pour une entreprise de commerce électronique, les produits finis ou en cours de production seront plus importants.
 
-Quelle sera la valeur moyenne des stocks (combien investissez-vous dans les stocks) ?
-{{BMC_Cost Structure}}, {{PlanFinancier_Budget}}
-Estimez la valeur totale de vos stocks à tout moment et comment vous prévoyez de gérer cette valeur par rapport à votre trésorerie disponible et à vos besoins opérationnels.
-Taux de rotation des stocks :
+Valeur moyenne des stocks :{{BMC_Cost Structure}}, {{PlanFinancier_Budget}}
+Spécifie quelle sera la valeur moyenne des stocks (combien nous investissons dans les stocks). Estime la valeur totale de nos stocks à tout moment et comment nous prévoyons de gérer cette valeur par rapport à la trésorerie disponible et aux besoins opérationnels.
 
-Quel taux de rotation des stocks prévoyez-vous ? Comment se situe-t-il par rapport aux moyennes du secteur ?
-{{PESTEL_Économie}}, {{SWOT_Opportunités}}, {{BMC_Cost Structure}}
-Expliquez comment vous suivrez la fréquence à laquelle vous renouvelez vos stocks, et comment ce taux de rotation se compare à la norme de l'industrie. Par exemple, dans les secteurs où la demande est élevée, les stocks peuvent se tourner plus rapidement que dans ceux où la demande est plus stable.
-Variations saisonnières des stocks :
+Taux de rotation des stocks :{{PESTEL_Économie}}, {{SWOT_Opportunités}}, {{BMC_Cost Structure}}
+Spécifies le taux de rotation des stocks, et comment se situe-t-il par rapport aux moyennes du secteur. Explique comment on suivra la fréquence à laquelle on renouvelera les stocks, et comment ce taux de rotation se compare à la norme de l'industrie. Par exemple, dans les secteurs où la demande est élevée, les stocks peuvent se tourner plus rapidement que dans ceux où la demande est plus stable.
 
-Aurez-vous besoin de plus de stocks que d'habitude pendant certaines saisons ? (Par exemple, un détaillant peut avoir besoin de stocks supplémentaires pour la période des fêtes de fin d'année).
-{{BMC_Channels}}, {{MarketingFunnel}}
-Décrivez si votre entreprise prévoit des variations saisonnières dans ses besoins en stocks. Par exemple, un détaillant pourrait augmenter ses stocks pour la période des fêtes, ou une entreprise agroalimentaire pourrait avoir des pics de demande à certaines périodes de l'année.
-Délai de commande des stocks :
+Variations saisonnières des stocks :{{BMC_Channels}}, {{MarketingFunnel}}
+Décris si l'entreprise prévoit des variations saisonnières dans ses besoins en stocks. Par exemple, un détaillant pourrait augmenter ses stocks pour la période des fêtes, ou une entreprise agroalimentaire pourrait avoir des pics de demande à certaines périodes de l'année.
 
-Quel est votre délai de commande des stocks ?
-{{BMC_Key Resources}}, {{SWOT_Faiblesses}}, {{BMC_Cost Structure}}
-Détaillez le temps nécessaire pour commander de nouveaux stocks, ainsi que le processus d'approvisionnement. Incluez des informations sur les relations avec les fournisseurs et la manière dont vous gérez le réapprovisionnement de vos stocks (par exemple, délais de livraison, fréquence des commandes, gestion des stocks excédentaires, etc.).
-Ce prompt vous aidera à structurer la gestion de l'inventaire de votre entreprise, en prenant en compte la valeur, la rotation, et les variations saisonnières, tout en utilisant les sections pertinentes des templates (BMC, SWOT, PESTEL, etc.) pour formuler une analyse complète"
+Délai de commande des stocks :{{BMC_Key Resources}}, {{SWOT_Faiblesses}}, {{BMC_Cost Structure}}
+Détaille le temps nécessaire pour commander de nouveaux stocks, ainsi que le processus d'approvisionnement. Inclure des informations sur les relations avec les fournisseurs et la manière dont on gére le réapprovisionnement des stocks (par exemple, délais de livraison, fréquence des commandes, gestion des stocks excédentaires, etc.).
 
 FOURNISSEURS:
 "Décrivez vos principaux fournisseurs en utilisant les informations suivantes, en vous aidant des sections pertinentes des templates pour formuler une analyse complète :
-
+CRÉER UN TABLEAU
 Noms, adresses et sites web des fournisseurs :
 
 Qui sont vos principaux fournisseurs ?
@@ -765,25 +744,25 @@ Ce prompt vous aidera à dresser un tableau clair et détaillé de vos relations
 CRÉDIT:
 "Si vous envisagez de vendre à des clients à crédit, décrivez les éléments suivants en vous appuyant sur les sections pertinentes de vos templates pour structurer votre réponse :
 
-Pratique courante dans votre secteur d'activité :
-
+Pratique courante dans votre secteur d'activité :{{PESTEL_Social}}, {{BMC_Relations avec les clients}}
+QUESTIONS: 
 La vente à crédit est-elle courante dans votre secteur ?
 Les clients s'y attendent-ils ?
-{{PESTEL_Social}}, {{BMC_Relations avec les clients}}
+
 Indiquez si la pratique du crédit est fréquente dans votre industrie. Les clients s'attendent-ils à ce que les entreprises offrent des conditions de crédit, ou est-ce une option supplémentaire ? Utilisez les tendances sociales ou comportementales pour justifier cette analyse.
 Politique en matière de crédit :
 
-Quelle sera votre politique en matière de crédit ? Quel montant de crédit accorderez-vous ? Quels sont les critères d'octroi du crédit ?
+QUESTIONS: Quelle sera votre politique en matière de crédit ? Quel montant de crédit accorderez-vous ? Quels sont les critères d'octroi du crédit ?
 {{BMC_Cost Structure}}, {{BMC_Relations avec les clients}}
 Décrivez les règles de votre entreprise pour accorder du crédit. Par exemple, vous pouvez préciser le montant maximal accordé en crédit à chaque client et les critères nécessaires pour être éligible (antécédents de paiement, solvabilité, etc.).
 Vérification de la solvabilité des nouveaux clients :
 
-Comment allez-vous vérifier la solvabilité des nouveaux clients ?
+QUESTIONS: Comment allez-vous vérifier la solvabilité des nouveaux clients ?
 {{SWOT_Faiblesses}}, {{BMC_Relations avec les clients}}
 Précisez les méthodes que vous utiliserez pour évaluer la solvabilité des clients (par exemple, utilisation de rapports de crédit, consultation d'agences de notation, etc.).
 Conditions de crédit proposées :
 
-Quelles conditions de crédit proposerez-vous à vos clients ?
+QUESTIONS: Quelles conditions de crédit proposerez-vous à vos clients ?
 {{BMC_Cost Structure}}, {{7P_Price}}
 Décrivez les conditions de crédit (taux d'intérêt, durée de paiement, escomptes pour paiement rapide, etc.) que vous offrirez à vos clients.
 Coût de l'offre de crédit et impact sur votre structure de prix :
@@ -793,7 +772,8 @@ Détaillez ce que vous coûtera l'offre de crédit et comment ces coûts sont in
 Indiquez le coût d'offrir du crédit (par exemple, frais d'intérêts, coûts administratifs pour gérer les paiements, risques de créances irrécouvrables) et montrez comment vous avez pris en compte ces coûts dans la fixation des prix de vos produits ou services.
 Gestion des paiements en retard :
 
-Comment traiterez-vous les clients qui paient lentement ? Quelle est votre politique en matière de paiements en retard et quand ferez-vous appel à un avocat ou une agence de recouvrement ?
+QUESTIONS: Comment traiterez-vous les clients qui paient lentement ? 
+QUESTIONS: Quelle est votre politique en matière de paiements en retard et quand ferez-vous appel à un avocat ou une agence de recouvrement ?
 {{BMC_Relations avec les clients}}, {{SWOT_Faiblesses}}, {{PlanFinancier}}
 Décrivez votre politique concernant les paiements en retard (pénalités, relances, délais avant de prendre des mesures légales) et précisez à quel moment vous ferez appel à un avocat ou à une agence de recouvrement si nécessaire.
 Ce prompt vous permettra de définir une politique de crédit détaillée et réaliste tout en intégrant les aspects financiers et opérationnels du processus."
@@ -803,13 +783,11 @@ VI. Management
 BIOGRAPHIES:
 "Pour cette section, incluez des biographies détaillées du/des propriétaire(s) et des employés clés de votre entreprise, en vous appuyant sur les informations suivantes extraites des templates :
 
-Propriétaire(s) et employés clés :
-
+Propriétaire(s) et employés clés :{{SkillMatrix}}, {{BMC_Ressources clés}}, {{BMC_Capacités clés}}
 Brève biographie de chaque personne clé (propriétaire et collaborateurs principaux)
-{{SkillMatrix}}, {{BMC_Ressources clés}}, {{BMC_Capacités clés}}
-Décrivez l'expérience professionnelle, les compétences, les qualifications et les réalisations des personnes principales de votre équipe. Concentrez-vous sur les expériences qui sont directement liées à la réussite de votre entreprise (par exemple, gestion, expertise dans le secteur, etc.). Utilisez les informations provenant de la Skill Matrix pour compléter les compétences clés de chaque membre de l’équipe.
-Propriétaire(s) et expérience en entrepreneuriat :
+Décris l'expérience professionnelle, les compétences, les qualifications et les réalisations des personnes principales de l'équipe. Concentre-toi sur les expériences qui sont directement liées à la réussite de l'entreprise (par exemple, gestion, expertise dans le secteur, etc.). Utilise les informations provenant de la Skill Matrix pour compléter les compétences clés de chaque membre de l’équipe.
 
+Propriétaire(s) et expérience en entrepreneuriat :
 Expérience antérieure dans la création et la gestion d'entreprises :
 {{SkillMatrix_Compétences entrepreneuriales}}, {{SWOT_Forces}}, {{BMC_Capacités clés}}
 Si l'un des membres de l'équipe a de l'expérience dans la création ou la gestion d'une entreprise, incluez des détails sur ces expériences antérieures, notamment les réussites et les défis rencontrés. Décrivez également les compétences en gestion et leadership acquises au fil du temps.
@@ -828,7 +806,6 @@ LACUNES:
 "Dans cette section, expliquez comment vous comptez combler les lacunes en matière de gestion et/ou d'expérience au sein de votre entreprise. Utilisez les informations issues des templates suivants pour structurer votre réponse.
 
 Identifications des lacunes :
-
 Quelles sont les lacunes spécifiques en matière de gestion ou d’expérience ?
 {{SWOT_Faiblesses}}, {{SkillMatrix_Gaps}}
 Identifiez les domaines dans lesquels vous manquez de compétences, comme la gestion financière, les ventes, le marketing, la production, ou toute autre fonction clé. Utilisez les informations de la SWOT et de la Skill Matrix pour mettre en évidence les lacunes.

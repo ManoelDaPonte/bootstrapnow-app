@@ -6,7 +6,7 @@ import {
 	loadAnsoffData,
 	saveAnsoffData,
 	saveToDatabase,
-} from "@/lib/business-plan/ansoff/storage-ansoff";
+} from "@/lib/hooks/business-plan/ansoff/storage-ansoff";
 
 // Type utilitaire pour s'assurer que la catégorie est une clé valide de AnsoffData
 type AnsoffCategory = keyof Omit<AnsoffData, "lastAnalysis" | "lastUpdated">;

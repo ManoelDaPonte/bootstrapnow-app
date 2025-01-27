@@ -4,7 +4,7 @@ import { AnsoffCard, ModalState, AnsoffData } from "@/types/ansoff";
 import { useAnsoffData } from "@/lib/hooks/business-plan/ansoff/useAnsoffData";
 import { AnsoffSection } from "@/components/business-plan/ansoff/AnsoffSection";
 import { AnsoffModal } from "@/components/business-plan/ansoff/AnsoffModal";
-import { calculateProgress } from "@/lib/business-plan/ansoff/storage-ansoff";
+import { calculateProgress } from "@/lib/hooks/business-plan/ansoff/storage-ansoff";
 import { Header } from "@/components/business-plan/shared/Header";
 
 // Définition du type AnsoffCategory

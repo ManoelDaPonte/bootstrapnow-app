@@ -6,7 +6,7 @@ import {
 	saveFunnelChartData,
 	saveToDatabase,
 	INITIAL_SECTIONS,
-} from "@/lib/business-plan/funnel-chart/storage-funnel-chart";
+} from "@/lib/hooks/business-plan/funnel-chart/storage-funnel-chart";
 
 export const useFunnelChartData = () => {
 	const { user, isLoading } = useUser();
