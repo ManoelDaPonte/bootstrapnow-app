@@ -2,6 +2,7 @@
 import { CanvasData } from "@/types/canvas";
 import { prisma } from "@/lib/prisma";
 import { CanvasCard } from "@/types/canvas";
+import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 
 export const STORAGE_KEY = "canvas-data";
 
@@ -26,6 +27,22 @@ export const saveCanvasData = (data: CanvasData) => {
 export async function updateCanvasData(auth0Id: string, data: CanvasData) {
 	try {
 		console.log("Début de la sauvegarde pour user:", auth0Id);
+
+		// Récupérer les informations de session pour avoir l'email
+		const session = await getUserFromSession();
+		if (!session) {
+			throw new Error("Session utilisateur non trouvée");
+		}
+
+		// Vérifier et créer/mettre à jour l'utilisateur directement avec upsert
+		const user = await prisma.user.upsert({
+			where: { auth0Id },
+			update: {}, // Pas besoin de mettre à jour quoi que ce soit
+			create: {
+				auth0Id,
+				email: session.email || `${auth0Id}@temporary.com`, // Utiliser l'email de la session
+			},
+		});
 
 		// S'assurer que les données sont bien structurées
 		const sanitizedData: CanvasData = {
@@ -74,20 +91,11 @@ export async function updateCanvasData(auth0Id: string, data: CanvasData) {
 			}
 		});
 
-		const user = await prisma.user.upsert({
-			where: { auth0Id },
-			update: {},
-			create: {
-				auth0Id,
-				email: "", // À gérer selon votre logique d'authentification
-			},
-		});
-
 		// Utiliser le type Json de Prisma explicitement
 		const canvasAnalysis = await prisma.canvasAnalysis.upsert({
 			where: { userId: user.id },
 			update: {
-				data: sanitizedData as any, // Le type Json de Prisma acceptera ceci
+				data: sanitizedData as any,
 				updatedAt: new Date(),
 			},
 			create: {

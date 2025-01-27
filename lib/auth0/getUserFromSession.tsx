@@ -1,21 +1,33 @@
-// lib/auth0/getUserFromSession.ts
-import { cookies } from "next/headers";
+//lib/auth0/getUserFromSession.tsx
 import { getSession } from "@auth0/nextjs-auth0";
 
 export async function getUserFromSession() {
-	const cookieStore = await cookies();
-	const allCookies = cookieStore.getAll();
-	const cookieHeader = allCookies
-		.map((c) => `${c.name}=${c.value}`)
-		.join("; ");
+	try {
+		const session = await getSession();
+		console.log("Session complète:", session);
 
-	const req: any = { headers: { cookie: cookieHeader } };
-	const res: any = {
-		getHeader: () => undefined,
-		setHeader: () => {},
-		end: () => {},
-	};
+		if (!session?.user) {
+			console.log("Pas de session utilisateur");
+			return null;
+		}
 
-	const session = await getSession(req, res);
-	return session?.user || null;
+		// Adaptation pour gérer le cas où l'email est dans le champ 'name'
+		const user = {
+			...session.user,
+			email: session.user.email || session.user.name, // Utiliser name comme fallback pour l'email
+			sub: session.user.sub, // Ensure sub is included
+		};
+
+		// Vérifier uniquement le sub car nous avons maintenant un fallback pour l'email
+		if (!user.sub) {
+			console.log("ID utilisateur manquant", user);
+			return null;
+		}
+
+		console.log("Informations utilisateur traitées:", user);
+		return user;
+	} catch (error) {
+		console.error("Erreur dans getUserFromSession:", error);
+		return null;
+	}
 }

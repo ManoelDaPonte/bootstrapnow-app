@@ -7,9 +7,10 @@ import { CanvasData } from "@/types/canvas";
 export async function POST(request: Request) {
 	try {
 		const user = await getUserFromSession();
-		console.log("User auth info:", { sub: user?.sub });
+		console.log("Session user:", user); // Debug
 
 		if (!user?.sub) {
+			console.log("Pas d'ID utilisateur dans la session");
 			return NextResponse.json(
 				{ error: "Non autorisé" },
 				{ status: 401 }
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
 		const result = await updateCanvasData(user.sub, data);
 		return NextResponse.json({ success: true, data: result });
 	} catch (error) {
-		console.error("Erreur complète:", error);
+		console.error("Erreur complète API:", error);
 		return NextResponse.json(
 			{
 				error: "Erreur serveur",
