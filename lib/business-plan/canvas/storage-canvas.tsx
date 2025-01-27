@@ -1,6 +1,7 @@
 // lib/business-plan/canvas/storage-canvas.ts
 import { CanvasData } from "@/types/canvas";
 import { prisma } from "@/lib/prisma";
+import { CanvasCard } from "@/types/canvas";
 
 export const STORAGE_KEY = "canvas-data";
 
@@ -26,30 +27,74 @@ export async function updateCanvasData(auth0Id: string, data: CanvasData) {
 	try {
 		console.log("Début de la sauvegarde pour user:", auth0Id);
 
-		// Trouver ou créer l'utilisateur
+		// S'assurer que les données sont bien structurées
+		const sanitizedData: CanvasData = {
+			keyPartners: Array.isArray(data.keyPartners)
+				? data.keyPartners
+				: [],
+			keyActivities: Array.isArray(data.keyActivities)
+				? data.keyActivities
+				: [],
+			keyResources: Array.isArray(data.keyResources)
+				? data.keyResources
+				: [],
+			valueProposition: Array.isArray(data.valueProposition)
+				? data.valueProposition
+				: [],
+			customerRelationships: Array.isArray(data.customerRelationships)
+				? data.customerRelationships
+				: [],
+			channels: Array.isArray(data.channels) ? data.channels : [],
+			customerSegments: Array.isArray(data.customerSegments)
+				? data.customerSegments
+				: [],
+			costStructure: Array.isArray(data.costStructure)
+				? data.costStructure
+				: [],
+			revenueStreams: Array.isArray(data.revenueStreams)
+				? data.revenueStreams
+				: [],
+		};
+
+		// Vérifier que chaque carte a la bonne structure
+		const validateCard = (card: any): card is CanvasCard => {
+			return (
+				typeof card === "object" &&
+				card !== null &&
+				typeof card.id === "number" &&
+				typeof card.title === "string" &&
+				typeof card.description === "string"
+			);
+		};
+
+		// S'assurer que toutes les cartes sont valides
+		Object.values(sanitizedData).forEach((cards) => {
+			if (!Array.isArray(cards) || !cards.every(validateCard)) {
+				throw new Error("Structure de carte invalide");
+			}
+		});
+
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
 			update: {},
 			create: {
 				auth0Id,
-				email: "", // À remplir avec l'email de Auth0
+				email: "", // À gérer selon votre logique d'authentification
 			},
 		});
-		console.log("Utilisateur trouvé/créé:", user.id);
 
-		// Mettre à jour ou créer le Business Model Canvas
+		// Utiliser le type Json de Prisma explicitement
 		const canvasAnalysis = await prisma.canvasAnalysis.upsert({
 			where: { userId: user.id },
 			update: {
-				data: JSON.parse(JSON.stringify(data)),
+				data: sanitizedData as any, // Le type Json de Prisma acceptera ceci
 				updatedAt: new Date(),
 			},
 			create: {
 				userId: user.id,
-				data: JSON.parse(JSON.stringify(data)),
+				data: sanitizedData as any,
 			},
 		});
-		console.log("Business Model Canvas sauvegardé:", canvasAnalysis.id);
 
 		return canvasAnalysis;
 	} catch (error) {
@@ -117,7 +162,7 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: CanvasData) => {
 	try {
-		console.log("Tentative de sauvegarde dans la base de données");
+		console.log("Données à envoyer:", JSON.stringify(data, null, 2));
 		const response = await fetch("/api/business-plan/canvas/save", {
 			method: "POST",
 			headers: {
@@ -126,13 +171,16 @@ export const saveToDatabase = async (data: CanvasData) => {
 			body: JSON.stringify(data),
 		});
 
+		const responseData = await response.json();
+		console.log("Réponse du serveur:", responseData);
+
 		if (!response.ok) {
 			throw new Error(
-				"Erreur lors de la sauvegarde dans la base de données"
+				`Erreur ${response.status}: ${JSON.stringify(responseData)}`
 			);
 		}
-		console.log("Sauvegarde dans la base de données réussie");
 	} catch (error) {
-		console.error("Erreur lors de la sauvegarde dans la BD:", error);
+		console.error("Erreur détaillée:", error);
+		throw error;
 	}
 };

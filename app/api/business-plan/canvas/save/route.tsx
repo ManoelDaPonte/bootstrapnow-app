@@ -7,6 +7,8 @@ import { CanvasData } from "@/types/canvas";
 export async function POST(request: Request) {
 	try {
 		const user = await getUserFromSession();
+		console.log("User auth info:", { sub: user?.sub });
+
 		if (!user?.sub) {
 			return NextResponse.json(
 				{ error: "Non autorisé" },
@@ -14,14 +16,53 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const data = (await request.json()) as CanvasData;
-		const result = await updateCanvasData(user.sub, data);
+		const rawData = await request.text();
+		console.log("Raw request data:", rawData);
 
+		let data: CanvasData;
+		try {
+			data = JSON.parse(rawData);
+
+			// Validation stricte de la structure CanvasData
+			const requiredKeys = [
+				"keyPartners",
+				"keyActivities",
+				"keyResources",
+				"valueProposition",
+				"customerRelationships",
+				"channels",
+				"customerSegments",
+				"costStructure",
+				"revenueStreams",
+			];
+
+			const isValidData = requiredKeys.every((key) =>
+				Array.isArray(data[key as keyof CanvasData])
+			);
+
+			if (!isValidData) {
+				return NextResponse.json(
+					{ error: "Structure de données invalide" },
+					{ status: 400 }
+				);
+			}
+		} catch (parseError) {
+			console.error("Erreur de parsing:", parseError);
+			return NextResponse.json(
+				{ error: "Données invalides", details: parseError },
+				{ status: 400 }
+			);
+		}
+
+		const result = await updateCanvasData(user.sub, data);
 		return NextResponse.json({ success: true, data: result });
 	} catch (error) {
-		console.error("Erreur lors de la sauvegarde:", error);
+		console.error("Erreur complète:", error);
 		return NextResponse.json(
-			{ error: "Erreur lors de la sauvegarde" },
+			{
+				error: "Erreur serveur",
+				details: error instanceof Error ? error.message : String(error),
+			},
 			{ status: 500 }
 		);
 	}
