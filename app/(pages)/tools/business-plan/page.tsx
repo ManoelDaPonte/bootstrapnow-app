@@ -174,7 +174,7 @@ export default function BusinessPlanPage() {
 									className="bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary)_/_0.9)]"
 									disabled={totalProgress < 70}
 								>
-									Générer le Business Plan
+									Générer le Business Plan !
 								</Button>
 							</div>
 						</div>
