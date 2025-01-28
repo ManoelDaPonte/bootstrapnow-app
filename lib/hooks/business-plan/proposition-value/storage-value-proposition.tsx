@@ -7,7 +7,6 @@ export const STORAGE_KEY = "value-proposition-data";
 // Sauvegarder les données (localStorage uniquement)
 export const saveValuePropositionData = (data: ValuePropositionData) => {
 	if (typeof window === "undefined") return;
-	console.log("Sauvegarde des données Value Proposition:", data);
 
 	// Sauvegarder dans localStorage
 	localStorage.setItem(
@@ -27,8 +26,6 @@ export async function updateValuePropositionData(
 	data: ValuePropositionData
 ) {
 	try {
-		console.log("Début de la sauvegarde pour user:", auth0Id);
-
 		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
@@ -38,7 +35,6 @@ export async function updateValuePropositionData(
 				email: "", // À remplir avec l'email de Auth0
 			},
 		});
-		console.log("Utilisateur trouvé/créé:", user.id);
 
 		// Mettre à jour ou créer l'analyse Value Proposition
 		const valuePropositionAnalysis =
@@ -53,10 +49,6 @@ export async function updateValuePropositionData(
 					data: JSON.parse(JSON.stringify(data)),
 				},
 			});
-		console.log(
-			"Analyse Value Proposition sauvegardée:",
-			valuePropositionAnalysis.id
-		);
 
 		return valuePropositionAnalysis;
 	} catch (error) {
@@ -117,7 +109,6 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: ValuePropositionData) => {
 	try {
-		console.log("Tentative de sauvegarde dans la base de données");
 		const response = await fetch(
 			"/api/business-plan/value-proposition/save",
 			{
@@ -134,7 +125,6 @@ export const saveToDatabase = async (data: ValuePropositionData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
-		console.log("Sauvegarde dans la base de données réussie");
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 	}

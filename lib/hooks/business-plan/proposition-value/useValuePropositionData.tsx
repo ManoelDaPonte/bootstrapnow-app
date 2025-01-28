@@ -64,7 +64,6 @@ export const useValuePropositionData = () => {
 		saveValuePropositionData(newData);
 
 		if (user) {
-			console.log("Utilisateur connecté, sauvegarde en BD");
 			await saveToDatabase(newData);
 		}
 	};

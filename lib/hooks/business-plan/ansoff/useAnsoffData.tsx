@@ -51,7 +51,6 @@ export const useAnsoffData = () => {
 
 			// Sauvegarde en base de données si l'utilisateur est connecté
 			if (user) {
-				console.log("Sauvegarde en base de données...");
 				await saveToDatabase(newCards);
 			}
 		} catch (error) {

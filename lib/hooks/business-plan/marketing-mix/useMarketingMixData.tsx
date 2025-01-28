@@ -64,7 +64,6 @@ export const useMarketingMixData = () => {
 		saveMarketingMixData(newCards);
 
 		if (user) {
-			console.log("Utilisateur connecté, sauvegarde en BD");
 			await saveToDatabase(newCards);
 		}
 	};

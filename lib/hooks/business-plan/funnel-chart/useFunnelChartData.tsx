@@ -50,7 +50,6 @@ export const useFunnelChartData = () => {
 		saveFunnelChartData(newSections);
 
 		if (user) {
-			console.log("Utilisateur connecté, sauvegarde en BD");
 			await saveToDatabase(newSections);
 		}
 	};
