@@ -1,4 +1,4 @@
-// app/api/business-plan/generate-prompt/route.ts
+// app/api/business-plan/data/generate-prompt/route.ts
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";

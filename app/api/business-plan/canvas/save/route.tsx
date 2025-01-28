@@ -7,10 +7,8 @@ import { CanvasData } from "@/types/canvas";
 export async function POST(request: Request) {
 	try {
 		const user = await getUserFromSession();
-		console.log("Session user:", user); // Debug
 
 		if (!user?.sub) {
-			console.log("Pas d'ID utilisateur dans la session");
 			return NextResponse.json(
 				{ error: "Non autorisé" },
 				{ status: 401 }
@@ -18,7 +16,6 @@ export async function POST(request: Request) {
 		}
 
 		const rawData = await request.text();
-		console.log("Raw request data:", rawData);
 
 		let data: CanvasData;
 		try {

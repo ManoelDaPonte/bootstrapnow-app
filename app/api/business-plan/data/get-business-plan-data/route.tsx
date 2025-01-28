@@ -1,4 +1,4 @@
-// app/api/business-plan/get-business-plan-analysis-data/route.ts
+// app/api/business-plan/data/get-business-plan-data/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";

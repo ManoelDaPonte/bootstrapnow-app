@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTemplateProgress } from "@/lib/hooks/business-plan/useTemplateProgress";
+import { useState } from "react";
+import { Download } from "lucide-react";
 
 const templates = [
 	{
@@ -115,6 +117,9 @@ const templates = [
 ];
 
 export default function BusinessPlanPage() {
+	const [isLoading, setIsLoading] = useState(false);
+	const [generatedText, setGeneratedText] = useState<string | null>(null);
+
 	const router = useRouter();
 	type ProgressType = {
 		[key: string]: {
@@ -148,6 +153,74 @@ export default function BusinessPlanPage() {
 				4) // Ajuster pour exclure Skills Matrix et les 3 pages financières
 	);
 
+	const handleGenerateBusinessPlan = async () => {
+		setIsLoading(true);
+		try {
+			// 1. Récupérer les données
+			const dataResponse = await fetch(
+				"/api/business-plan/data/get-business-plan-data"
+			);
+			if (!dataResponse.ok)
+				throw new Error("Erreur lors de la récupération des données");
+			const businessPlanData = await dataResponse.json();
+			console.log("Données récupérées:", businessPlanData);
+
+			// 2. Générer le prompt
+			const promptResponse = await fetch(
+				"/api/business-plan/data/generate-prompt"
+			);
+			if (!promptResponse.ok)
+				throw new Error("Erreur lors de la génération du prompt");
+			const { prompt } = await promptResponse.json();
+			console.log("Prompt généré:", prompt);
+
+			// 3. Générer le texte avec OpenAI
+			const generateTextResponse = await fetch(
+				"/api/business-plan/data/generate-text",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ prompt }),
+				}
+			);
+
+			if (!generateTextResponse.ok) {
+				const errorData = await generateTextResponse.json();
+				throw new Error(
+					errorData.error || "Erreur lors de la génération du texte"
+				);
+			}
+
+			const { text, planId } = await generateTextResponse.json();
+			setGeneratedText(text);
+		} catch (error) {
+			console.error("Erreur:", error);
+			if (error instanceof Error) {
+				alert("Une erreur est survenue: " + error.message);
+			} else {
+				alert("Une erreur inconnue est survenue");
+			}
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	// Fonction pour exporter en fichier texte
+	const handleExport = () => {
+		if (!generatedText) return;
+		const blob = new Blob([generatedText], { type: "text/plain" });
+		const url = window.URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = "business-plan.txt";
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		window.URL.revokeObjectURL(url);
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			<div className="bg-white">
@@ -169,13 +242,38 @@ export default function BusinessPlanPage() {
 										{totalProgress}%
 									</span>
 								</div>
-								<Button
-									onClick={() => alert("Génération...")}
-									className="bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary)_/_0.9)]"
-									disabled={totalProgress < 70}
-								>
-									Générer le Business Plan !
-								</Button>
+
+								{isLoading ? (
+									<div className="flex items-center gap-2">
+										<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+										<span className="text-sm">
+											Génération en cours...
+										</span>
+									</div>
+								) : (
+									<div className="flex items-center gap-3">
+										<Button
+											onClick={handleGenerateBusinessPlan}
+											className="bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary)_/_0.9)]"
+											disabled={
+												totalProgress < 10 || isLoading
+											}
+										>
+											Générer le Business Plan
+										</Button>
+
+										{generatedText && (
+											<Button
+												onClick={handleExport}
+												variant="outline"
+												className="flex items-center gap-2"
+											>
+												<Download size={16} />
+												Télécharger le Business Plan
+											</Button>
+										)}
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

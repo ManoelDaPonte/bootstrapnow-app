@@ -1,10 +1,11 @@
 // app/api/auth/[auth0]/route.js
 import { handleAuth, handleLogin, handleLogout } from "@auth0/nextjs-auth0";
 
-export async function GET(request, { params }) {
-	const resolvedParams = await params;
+export async function GET(request, props) {
+    const params = await props.params;
+    const resolvedParams = await params;
 
-	try {
+    try {
 		return handleAuth({
 			login: handleLogin({
 				returnTo: "/",
