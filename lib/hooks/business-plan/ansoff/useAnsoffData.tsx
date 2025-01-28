@@ -1,4 +1,3 @@
-// hooks/useAnsoffData.ts
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { AnsoffData, AnsoffCard } from "@/types/ansoff";
@@ -12,8 +11,9 @@ import {
 type AnsoffCategory = keyof Omit<AnsoffData, "lastAnalysis" | "lastUpdated">;
 
 export const useAnsoffData = () => {
-	const { user, isLoading } = useUser();
+	const { user, isLoading: authLoading } = useUser();
 	const [cards, setCards] = useState<AnsoffData>(loadAnsoffData());
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadInitialData = async () => {
@@ -26,10 +26,7 @@ export const useAnsoffData = () => {
 						const serverData = await response.json();
 						if (serverData) {
 							setCards(serverData);
-							localStorage.setItem(
-								"ansoff-data",
-								JSON.stringify(serverData)
-							);
+							saveAnsoffData(serverData);
 						}
 					}
 				} catch (error) {
@@ -39,12 +36,29 @@ export const useAnsoffData = () => {
 					);
 				}
 			}
+			setIsLoading(false);
 		};
 
-		if (!isLoading) {
+		if (!authLoading) {
 			loadInitialData();
 		}
-	}, [user, isLoading]);
+	}, [user, authLoading]);
+
+	const saveData = async (newCards: AnsoffData) => {
+		try {
+			// Sauvegarde locale
+			saveAnsoffData(newCards);
+
+			// Sauvegarde en base de données si l'utilisateur est connecté
+			if (user) {
+				console.log("Sauvegarde en base de données...");
+				await saveToDatabase(newCards);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la sauvegarde:", error);
+			// Vous pourriez ajouter ici une notification d'erreur pour l'utilisateur
+		}
+	};
 
 	const handleSaveCard = async (
 		category: AnsoffCategory,
@@ -58,12 +72,7 @@ export const useAnsoffData = () => {
 		};
 
 		setCards(newCards);
-		saveAnsoffData(newCards);
-
-		if (user) {
-			console.log("Utilisateur connecté, sauvegarde en BD");
-			await saveToDatabase(newCards);
-		}
+		await saveData(newCards);
 	};
 
 	const handleDeleteCard = async (
@@ -76,12 +85,12 @@ export const useAnsoffData = () => {
 		};
 
 		setCards(newCards);
-		saveAnsoffData(newCards);
+		await saveData(newCards);
 	};
 
 	return {
 		cards,
-		isLoading,
+		isLoading: isLoading || authLoading,
 		user,
 		handleSaveCard,
 		handleDeleteCard,

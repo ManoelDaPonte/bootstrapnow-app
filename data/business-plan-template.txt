@@ -1,0 +1,3 @@
+Business Model Canvas (BMC) : {{BMC_Key Activities}}, {{BMC_Value Proposition}}, {{BMC_Customer Segments}}
+SWOT : {{SWOT_Strengths}}, {{SWOT_Opportunities}}, {{SWOT_Weakness}}, {{SWOT_Threats}}
+Ansoff : {{Ansoff_Growth Strategy}}
