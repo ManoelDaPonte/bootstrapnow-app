@@ -154,10 +154,10 @@ const TwelveMonthsProjection: React.FC = () => {
 			<Tabs defaultValue="overview">
 				<TabsList className="grid w-full grid-cols-2">
 					<TabsTrigger value="overview">
-						Profit & Loss Overview
+						Bénéfices et pertes 
 					</TabsTrigger>
 					<TabsTrigger value="details">
-						Detailed Breakdown
+						Prévisions détaillées
 					</TabsTrigger>
 				</TabsList>
 
@@ -165,7 +165,7 @@ const TwelveMonthsProjection: React.FC = () => {
 				<TabsContent value="overview">
 					<Card>
 						<CardHeader>
-							<CardTitle>Monthly Financial Projection</CardTitle>
+							<CardTitle>Prévisionnel des Finances mensuelles</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<ResponsiveContainer width="100%" height={300}>
@@ -179,13 +179,13 @@ const TwelveMonthsProjection: React.FC = () => {
 													value
 												).toLocaleString(); // Met l'abs de la valeur
 											return value < 0
-												? `-$${formattedValue}`
-												: `$${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
+												? `-€${formattedValue}`
+												: `€${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
 										}}
 									/>
 									<Tooltip
 										formatter={(value, name) => {
-											const formattedValue = `$${Math.abs(
+											const formattedValue = `€${Math.abs(
 												Number(value)
 											).toLocaleString()}`;
 											return name === "Profit"
@@ -223,7 +223,7 @@ const TwelveMonthsProjection: React.FC = () => {
 					<Card>
 						<CardHeader>
 							<CardTitle className="flex justify-between items-center">
-								Profit and Loss Details
+								Bénéfices et pertes détaillés
 								<div className="flex space-x-2">
 									{(["revenue", "expenses"] as const).map(
 										(section) => (
@@ -267,19 +267,19 @@ const TwelveMonthsProjection: React.FC = () => {
 															rowSpan={2}
 															className="align-middle"
 														>
-															Category
+															Categorie
 														</TableHead>
 														<TableHead
 															colSpan={6}
 															className="text-center border-b"
 														>
-															First Half
+															Premier semestre
 														</TableHead>
 														<TableHead
 															colSpan={6}
 															className="text-center border-b"
 														>
-															Second Half
+															Deuxième semestre
 														</TableHead>
 														<TableHead
 															rowSpan={2}

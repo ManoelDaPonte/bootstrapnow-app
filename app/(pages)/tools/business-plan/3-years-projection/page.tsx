@@ -197,14 +197,14 @@ const ProfitLossDashboard: React.FC = () => {
 													value
 												).toLocaleString(); // Met l'abs de la valeur
 											return value < 0
-												? `-$${formattedValue}`
-												: `$${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
+												? `-€${formattedValue}`
+												: `€${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
 										}}
 									/>
 
 									<Tooltip
 										formatter={(value, name) => {
-											const formattedValue = `$${Math.abs(
+											const formattedValue = `€${Math.abs(
 												Number(value)
 											).toLocaleString()}`;
 											return name === "Profit"
@@ -282,16 +282,16 @@ const ProfitLossDashboard: React.FC = () => {
 											<TableHeader>
 												<TableRow>
 													<TableHead>
-														Category
+														Categorie
 													</TableHead>
 													<TableHead>
-														Year 1 ($)
+														Année 1 (€)
 													</TableHead>
 													<TableHead>
-														Year 2 ($)
+														Année 2 (€)
 													</TableHead>
 													<TableHead>
-														Year 3 ($)
+														Année 3 (€)
 													</TableHead>
 													<TableHead>
 														Actions
@@ -384,7 +384,7 @@ const ProfitLossDashboard: React.FC = () => {
 
 							<Card className="mt-4">
 								<CardHeader>
-									<CardTitle>Financial Summary</CardTitle>
+									<CardTitle>Bilan financier</CardTitle>
 								</CardHeader>
 								<CardContent>
 									<div className="grid md:grid-cols-3 gap-4">
@@ -394,13 +394,13 @@ const ProfitLossDashboard: React.FC = () => {
 												className="border p-4 rounded-lg"
 											>
 												<h4 className="font-semibold mb-2">
-													Year {year} Summary
+												Bilan de l'année {year}
 												</h4>
 												<p>
 													<strong>
-														Total Revenue:
+														Revenus:
 													</strong>{" "}
-													$
+													€
 													{totalRevenue[
 														index
 													].toLocaleString()}
@@ -409,14 +409,14 @@ const ProfitLossDashboard: React.FC = () => {
 													<strong>
 														Total Expenses:
 													</strong>{" "}
-													$
+													€
 													{totalExpenses[
 														index
 													].toLocaleString()}
 												</p>
 												<p>
 													<strong>Net Profit:</strong>{" "}
-													$
+													€
 													{(
 														totalRevenue[index] -
 														totalExpenses[index]

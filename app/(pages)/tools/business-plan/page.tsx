@@ -18,12 +18,32 @@ const templates = [
 		icon: "📊",
 		templates: [
 			{
+				name: "Tendances du marché",
+				route: "/tools/business-plan/market-trends",
+				description: "Différenciez vous",
+			},
+			{
+				name: "Competiteurs",
+				route: "/tools/business-plan/competitors",
+				description: "Différenciez vous",
+			}
+		],
+	},
+	{
+		id: "model",
+		title: "Modèle et acquisition",
+		color: "bg-[hsl(var(--chart-2)_/_0.1)]",
+		borderColor: "border-[hsl(var(--chart-2)_/_0.2)]",
+		hoverColor: "hover:bg-[hsl(var(--chart-2)_/_0.15)]",
+		icon: "📊",
+		templates: [
+			{
 				name: "Business Model Canvas",
 				route: "/tools/business-plan/canvas",
 				description: "Définissez votre modèle d'affaires",
 			},
 			{
-				name: "Funnel Chart",
+				name: "Funnel d'acquisition",
 				route: "/tools/business-plan/funnel-chart",
 				description: "Analysez votre entonnoir de conversion",
 			},
@@ -31,10 +51,10 @@ const templates = [
 	},
 	{
 		id: "strategy",
-		title: "Stratégie",
-		color: "bg-[hsl(var(--chart-2)_/_0.1)]",
-		borderColor: "border-[hsl(var(--chart-2)_/_0.2)]",
-		hoverColor: "hover:bg-[hsl(var(--chart-2)_/_0.15)]",
+		title: "Votre Stratégie",
+		color: "bg-[hsl(var(--chart-3)_/_0.1)]",
+		borderColor: "border-[hsl(var(--chart-3)_/_0.2)]",
+		hoverColor: "hover:bg-[hsl(var(--chart-3)_/_0.15)]",
 		icon: "🎯",
 		templates: [
 			{
@@ -51,14 +71,14 @@ const templates = [
 	},
 	{
 		id: "economic",
-		title: "Modèle économique",
-		color: "bg-[hsl(var(--chart-3)_/_0.1)]",
-		borderColor: "border-[hsl(var(--chart-3)_/_0.2)]",
-		hoverColor: "hover:bg-[hsl(var(--chart-3)_/_0.15)]",
+		title: "Croissance contrôlée",
+		color: "bg-[hsl(var(--chart-4)_/_0.1)]",
+		borderColor: "border-[hsl(var(--chart-4)_/_0.2)]",
+		hoverColor: "hover:bg-[hsl(var(--chart-4)_/_0.15)]",
 		icon: "💰",
 		templates: [
 			{
-				name: "Matrice Ansoff",
+				name: "Matrice d'Ansoff",
 				route: "/tools/business-plan/ansoff",
 				description: "Planifiez votre croissance",
 			},
@@ -71,19 +91,19 @@ const templates = [
 	},
 	{
 		id: "execution",
-		title: "Éxecution",
-		color: "bg-[hsl(var(--chart-4)_/_0.1)]",
-		borderColor: "border-[hsl(var(--chart-4)_/_0.2)]",
-		hoverColor: "hover:bg-[hsl(var(--chart-4)_/_0.15)]",
+		title: "Valeur ajoutée",
+		color: "bg-[hsl(var(--chart-5)_/_0.1)]",
+		borderColor: "border-[hsl(var(--chart-5)_/_0.2)]",
+		hoverColor: "hover:bg-[hsl(var(--chart-5)_/_0.15)]",
 		icon: "🚀",
 		templates: [
 			{
-				name: "Skills Matrix",
+				name: "Matrice de compétences",
 				route: "/tools/business-plan/skills-matrix",
 				description: "Cartographiez vos compétences",
 			},
 			{
-				name: "Value Proposition",
+				name: "Proposition de valeur",
 				route: "/tools/business-plan/value-proposition",
 				description: "Définissez votre proposition de valeur",
 			},
@@ -92,9 +112,9 @@ const templates = [
 	{
 		id: "financial",
 		title: "Plan Financier",
-		color: "bg-[hsl(var(--chart-5)_/_0.1)]",
-		borderColor: "border-[hsl(var(--chart-5)_/_0.2)]",
-		hoverColor: "hover:bg-[hsl(var(--chart-5)_/_0.15)]",
+		color: "bg-[hsl(var(--chart-6)_/_0.1)]",
+		borderColor: "border-[hsl(var(--chart-6)_/_0.2)]",
+		hoverColor: "hover:bg-[hsl(var(--chart-6)_/_0.15)]",
 		icon: "💵",
 		templates: [
 			{
