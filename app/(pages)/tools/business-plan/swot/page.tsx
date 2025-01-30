@@ -62,7 +62,6 @@ export default function SwotMatrix() {
 
 	const handleModalSave = () => {
 		const { category, card } = modalState;
-		console.log("Save click on", category, card);
 		if (!card.title || !card.description) {
 			setError(true);
 			return;

@@ -9,7 +9,6 @@ export const STORAGE_KEY = "canvas-data";
 // Sauvegarder les données (localStorage uniquement)
 export const saveCanvasData = (data: CanvasData) => {
 	if (typeof window === "undefined") return;
-	console.log("Sauvegarde des données Canvas:", data);
 
 	// Sauvegarder dans localStorage
 	localStorage.setItem(
@@ -26,8 +25,6 @@ export const saveCanvasData = (data: CanvasData) => {
 
 export async function updateCanvasData(auth0Id: string, data: CanvasData) {
 	try {
-		console.log("Début de la sauvegarde pour user:", auth0Id);
-
 		// Récupérer les informations de session pour avoir l'email
 		const session = await getUserFromSession();
 		if (!session) {
@@ -170,7 +167,6 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: CanvasData) => {
 	try {
-		console.log("Données à envoyer:", JSON.stringify(data, null, 2));
 		const response = await fetch("/api/business-plan/canvas/save", {
 			method: "POST",
 			headers: {
@@ -180,7 +176,6 @@ export const saveToDatabase = async (data: CanvasData) => {
 		});
 
 		const responseData = await response.json();
-		console.log("Réponse du serveur:", responseData);
 
 		if (!response.ok) {
 			throw new Error(

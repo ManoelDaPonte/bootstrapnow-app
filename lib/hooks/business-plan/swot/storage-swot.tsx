@@ -7,7 +7,6 @@ export const STORAGE_KEY = "swot-data";
 // Sauvegarder les données (localStorage uniquement)
 export const saveSwotData = (data: SwotData) => {
 	if (typeof window === "undefined") return;
-	console.log("Sauvegarde des données SWOT:", data);
 
 	// Sauvegarder dans localStorage
 	localStorage.setItem(
@@ -24,8 +23,6 @@ export const saveSwotData = (data: SwotData) => {
 
 export async function updateSwotData(auth0Id: string, data: SwotData) {
 	try {
-		console.log("Début de la sauvegarde pour user:", auth0Id);
-
 		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
@@ -35,7 +32,6 @@ export async function updateSwotData(auth0Id: string, data: SwotData) {
 				email: "", // À remplir avec l'email de Auth0
 			},
 		});
-		console.log("Utilisateur trouvé/créé:", user.id);
 
 		// Mettre à jour ou créer l'analyse SWOT
 		const swotAnalysis = await prisma.swotAnalysis.upsert({
@@ -49,7 +45,6 @@ export async function updateSwotData(auth0Id: string, data: SwotData) {
 				data: JSON.parse(JSON.stringify(data)),
 			},
 		});
-		console.log("Analyse SWOT sauvegardée:", swotAnalysis.id);
 
 		return swotAnalysis;
 	} catch (error) {
@@ -101,7 +96,6 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: SwotData) => {
 	try {
-		console.log("Tentative de sauvegarde dans la base de données");
 		const response = await fetch("/api/business-plan/swot/save", {
 			// Nouvelle route
 			method: "POST",
@@ -116,7 +110,6 @@ export const saveToDatabase = async (data: SwotData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
-		console.log("Sauvegarde dans la base de données réussie");
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 	}

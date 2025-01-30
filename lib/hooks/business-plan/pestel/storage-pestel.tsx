@@ -7,7 +7,6 @@ export const STORAGE_KEY = "pestel-data";
 // Sauvegarder les données (localStorage uniquement)
 export const savePestelData = (data: PestelData) => {
 	if (typeof window === "undefined") return;
-	console.log("Sauvegarde des données PESTEL:", data);
 
 	// Sauvegarder dans localStorage
 	localStorage.setItem(
@@ -24,8 +23,6 @@ export const savePestelData = (data: PestelData) => {
 
 export async function updatePestelData(auth0Id: string, data: PestelData) {
 	try {
-		console.log("Début de la sauvegarde pour user:", auth0Id);
-
 		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
@@ -35,7 +32,6 @@ export async function updatePestelData(auth0Id: string, data: PestelData) {
 				email: "", // À remplir avec l'email de Auth0
 			},
 		});
-		console.log("Utilisateur trouvé/créé:", user.id);
 
 		// Mettre à jour ou créer l'analyse PESTEL
 		const pestelAnalysis = await prisma.pestelAnalysis.upsert({
@@ -49,7 +45,6 @@ export async function updatePestelData(auth0Id: string, data: PestelData) {
 				data: JSON.parse(JSON.stringify(data)),
 			},
 		});
-		console.log("Analyse PESTEL sauvegardée:", pestelAnalysis.id);
 
 		return pestelAnalysis;
 	} catch (error) {
@@ -110,7 +105,6 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: PestelData) => {
 	try {
-		console.log("Tentative de sauvegarde dans la base de données");
 		const response = await fetch("/api/business-plan/pestel/save", {
 			method: "POST",
 			headers: {
@@ -124,7 +118,6 @@ export const saveToDatabase = async (data: PestelData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
-		console.log("Sauvegarde dans la base de données réussie");
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 	}

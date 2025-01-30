@@ -7,7 +7,6 @@ export const STORAGE_KEY = "ansoff-data";
 // Sauvegarder les données (localStorage uniquement)
 export const saveAnsoffData = (data: AnsoffData) => {
 	if (typeof window === "undefined") return;
-	console.log("Sauvegarde des données Ansoff:", data);
 
 	// Sauvegarder dans localStorage
 	localStorage.setItem(
@@ -24,8 +23,6 @@ export const saveAnsoffData = (data: AnsoffData) => {
 
 export async function updateAnsoffData(auth0Id: string, data: AnsoffData) {
 	try {
-		console.log("Début de la sauvegarde pour user:", auth0Id);
-
 		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
@@ -35,7 +32,6 @@ export async function updateAnsoffData(auth0Id: string, data: AnsoffData) {
 				email: "", // À remplir avec l'email de Auth0
 			},
 		});
-		console.log("Utilisateur trouvé/créé:", user.id);
 
 		// Mettre à jour ou créer l'analyse Ansoff
 		const ansoffAnalysis = await prisma.ansoffAnalysis.upsert({
@@ -49,7 +45,6 @@ export async function updateAnsoffData(auth0Id: string, data: AnsoffData) {
 				data: JSON.parse(JSON.stringify(data)),
 			},
 		});
-		console.log("Analyse Ansoff sauvegardée:", ansoffAnalysis.id);
 
 		return ansoffAnalysis;
 	} catch (error) {
@@ -106,7 +101,6 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: AnsoffData) => {
 	try {
-		console.log("Tentative de sauvegarde dans la base de données");
 		const response = await fetch("/api/business-plan/ansoff/save", {
 			method: "POST",
 			headers: {
@@ -120,7 +114,6 @@ export const saveToDatabase = async (data: AnsoffData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
-		console.log("Sauvegarde dans la base de données réussie");
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 	}

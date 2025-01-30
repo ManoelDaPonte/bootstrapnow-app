@@ -213,7 +213,7 @@ export default function BusinessPlanPage() {
 				);
 			}
 
-			const { text, planId } = await generateTextResponse.json();
+			const { text } = await generateTextResponse.json();
 			setGeneratedText(text);
 		} catch (error) {
 			console.error("Erreur:", error);

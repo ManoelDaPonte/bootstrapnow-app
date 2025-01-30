@@ -62,7 +62,6 @@ export const usePestelData = () => {
 		savePestelData(newCards);
 
 		if (user) {
-			console.log("Utilisateur connecté, sauvegarde en BD");
 			await saveToDatabase(newCards);
 		}
 	};

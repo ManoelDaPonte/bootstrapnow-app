@@ -7,7 +7,6 @@ export const STORAGE_KEY = "marketing-mix-data";
 // Sauvegarder les données (localStorage uniquement)
 export const saveMarketingMixData = (data: MarketingMixData) => {
 	if (typeof window === "undefined") return;
-	console.log("Sauvegarde des données Marketing Mix:", data);
 
 	// Sauvegarder dans localStorage
 	localStorage.setItem(
@@ -27,8 +26,6 @@ export async function updateMarketingMixData(
 	data: MarketingMixData
 ) {
 	try {
-		console.log("Début de la sauvegarde pour user:", auth0Id);
-
 		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
@@ -38,7 +35,6 @@ export async function updateMarketingMixData(
 				email: "", // À remplir avec l'email de Auth0
 			},
 		});
-		console.log("Utilisateur trouvé/créé:", user.id);
 
 		// Mettre à jour ou créer l'analyse Marketing Mix
 		const marketingMixAnalysis = await prisma.marketingMixAnalysis.upsert({
@@ -52,10 +48,6 @@ export async function updateMarketingMixData(
 				data: JSON.parse(JSON.stringify(data)),
 			},
 		});
-		console.log(
-			"Analyse Marketing Mix sauvegardée:",
-			marketingMixAnalysis.id
-		);
 
 		return marketingMixAnalysis;
 	} catch (error) {
@@ -119,7 +111,6 @@ const updateParentProgress = (progress: number) => {
 // Sauvegarder dans la base de données via l'API
 export const saveToDatabase = async (data: MarketingMixData) => {
 	try {
-		console.log("Tentative de sauvegarde dans la base de données");
 		const response = await fetch("/api/business-plan/marketing-mix/save", {
 			method: "POST",
 			headers: {
@@ -133,7 +124,6 @@ export const saveToDatabase = async (data: MarketingMixData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
-		console.log("Sauvegarde dans la base de données réussie");
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 	}

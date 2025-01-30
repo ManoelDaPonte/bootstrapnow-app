@@ -60,7 +60,6 @@ export const useCanvasData = () => {
 		saveCanvasData(newCards);
 
 		if (user) {
-			console.log("Utilisateur connecté, sauvegarde en BD");
 			await saveToDatabase(newCards);
 		}
 	};
