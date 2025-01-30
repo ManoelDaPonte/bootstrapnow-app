@@ -19,3 +19,23 @@ export interface ModalState {
 	category: string;
 	card: AnsoffCard;
 }
+
+export interface AnsoffHeaders {
+	[key: string]: {
+		title: string;
+		color: string;
+	};
+}
+
+export interface AnsoffDescriptions {
+	[key: string]: string;
+}
+
+export interface AnsoffColors {
+	[key: string]: string;
+}
+
+export type AnsoffCategory = keyof Omit<
+	AnsoffData,
+	"lastAnalysis" | "lastUpdated"
+>;

@@ -1,7 +1,7 @@
 // app/api/business-plan/marketing-mix/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateMarketingMixData } from "@/lib/hooks/business-plan/marketing-mix/storage-marketing-mix";
+import { updateMarketingMixData } from "@/lib/business-plan/hooks/marketing-mix/storage-marketing-mix";
 import { MarketingMixData } from "@/types/marketing-mix";
 
 export async function POST(request: Request) {

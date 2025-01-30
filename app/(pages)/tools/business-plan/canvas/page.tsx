@@ -1,60 +1,39 @@
-// app/business-plan/canvas/page.tsx
 "use client";
 import React, { useState } from "react";
-import CanvasSection from "@/components/business-plan/canvas/CanvasSection";
-import CanvasModal from "@/components/business-plan/canvas/CanvasModal";
-import { useCanvasData } from "@/lib/hooks/business-plan/canvas/useCanvasData";
-import { calculateProgress } from "@/lib/hooks/business-plan/canvas/storage-canvas";
-import { CanvasCard } from "@/types/canvas";
+import { CanvasCard, ModalState } from "@/types/canvas";
+import { useCanvasData } from "@/lib/business-plan/hooks/canvas/useCanvasData";
+import { calculateProgress } from "@/lib/business-plan/hooks/canvas/storage-canvas";
 import { Header } from "@/components/business-plan/shared/Header";
-
-const CANVAS_DESCRIPTIONS = {
-	keyPartners:
-		"Les partenaires et fournisseurs clés sans lesquels le modèle d'affaires ne peut pas fonctionner.",
-	keyActivities:
-		"Les activités les plus importantes qu'une entreprise doit réaliser pour que son modèle d'affaires fonctionne.",
-	keyResources:
-		"Les actifs les plus importants requis pour que le modèle d'affaires fonctionne.",
-	valueProposition:
-		"L'ensemble des produits et services qui créent de la valeur pour un segment de clientèle spécifique.",
-	customerRelationships:
-		"Les types de relations qu'une entreprise établit avec ses segments de clientèle spécifiques.",
-	channels:
-		"Comment une entreprise communique avec ses segments de clientèle et les atteint pour leur apporter une proposition de valeur.",
-	customerSegments:
-		"Les différents groupes de personnes ou d'organisations qu'une entreprise vise à atteindre et à servir.",
-	costStructure:
-		"Tous les coûts encourus pour mettre en œuvre le modèle d'affaires.",
-	revenueStreams:
-		"L'argent qu'une entreprise génère auprès de chaque segment de clientèle.",
-} as const;
-
-const CANVAS_HEADERS = {
-	keyPartners: { title: "Partenaires clés", color: "text-purple-700" },
-	keyActivities: { title: "Activités clés", color: "text-blue-700" },
-	keyResources: { title: "Ressources clés", color: "text-green-700" },
-	valueProposition: { title: "Proposition de valeur", color: "text-red-700" },
-	customerRelationships: {
-		title: "Relations clients",
-		color: "text-orange-700",
-	},
-	channels: { title: "Canaux", color: "text-yellow-700" },
-	customerSegments: { title: "Segments clients", color: "text-pink-700" },
-	costStructure: { title: "Structure de coûts", color: "text-gray-700" },
-	revenueStreams: { title: "Flux de revenus", color: "text-emerald-700" },
-} as const;
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import { CanvasSection } from "@/components/business-plan/CanvasSection";
+import QASection from "@/components/business-plan/shared/QASection";
+import { QAResponses } from "@/types/shared/qa-section";
+import { ModalProps } from "@/types/shared/card-modal";
+import {
+	CANVAS_DESCRIPTIONS,
+	CANVAS_HEADERS,
+	CANVAS_QA_DATA,
+	CANVAS_MODAL_DETAILED_DESCRIPTIONS,
+} from "@/lib/business-plan/config/canvas";
 
 type CanvasCategory = keyof typeof CANVAS_HEADERS;
 
 export default function BusinessModelCanvas() {
 	const { cards, handleSaveCard, handleDeleteCard } = useCanvasData();
-
-	const [modalState, setModalState] = useState({
+	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
 	const [error, setError] = useState(false);
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
 
 	const handleAddCard = (category: CanvasCategory) => {
 		setModalState({
@@ -95,6 +74,36 @@ export default function BusinessModelCanvas() {
 		});
 	};
 
+	const modalProps: ModalProps<CanvasCard> = {
+		isOpen: modalState.open,
+		card: modalState.card,
+		onClose: () =>
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "" },
+			}),
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error,
+		isNew: !modalState.card.id,
+		onChange: (e) =>
+			setModalState((prev) => ({
+				...prev,
+				card: { ...prev.card, [e.target.name]: e.target.value },
+			})),
+		modalTitle: modalState.card.id
+			? "Modifier l'élément"
+			: "Nouvel élément",
+		titlePlaceholder: "Entrez le titre...",
+		descriptionPlaceholder: "Entrez la description...",
+		categoryDescription: modalState.category
+			? CANVAS_MODAL_DETAILED_DESCRIPTIONS[
+					modalState.category as CanvasCategory
+			  ]
+			: undefined,
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			<Header
@@ -105,7 +114,6 @@ export default function BusinessModelCanvas() {
 			{/* Main Content */}
 			<div className="flex-1 max-w-8xl mx-auto w-full p-6 overflow-auto">
 				<div className="grid grid-cols-12 gap-4 h-full min-h-[600px]">
-					{/* Première rangée */}
 					<div className="col-span-3">
 						<CanvasSection
 							category="keyPartners"
@@ -203,30 +211,15 @@ export default function BusinessModelCanvas() {
 						/>
 					</div>
 				</div>
+
+				<QASection
+					data={CANVAS_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+				/>
 			</div>
 
-			{/* Modal */}
-			<CanvasModal
-				isOpen={modalState.open}
-				card={modalState.card}
-				onClose={() =>
-					setModalState({
-						open: false,
-						category: "",
-						card: { id: 0, title: "", description: "" },
-					})
-				}
-				onSave={handleModalSave}
-				onDelete={handleModalDelete}
-				error={error}
-				isNew={!modalState.card.id}
-				onChange={(e) =>
-					setModalState((prev) => ({
-						...prev,
-						card: { ...prev.card, [e.target.name]: e.target.value },
-					}))
-				}
-			/>
+			<CardModal<CanvasCard> {...modalProps} />
 		</div>
 	);
 }

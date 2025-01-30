@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useSkillMatrix } from "@/lib/hooks/business-plan/skills-matrix/useSkillMatrix";
+import { useSkillMatrix } from "@/lib/business-plan/hooks/skills-matrix/useSkillMatrix";
 import {
 	flexRender,
 	getCoreRowModel,
@@ -28,8 +28,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AddPersonDialog from "@/components/business-plan/skills-matrix/AddPersonDialog";
 import AddDomainDialog from "@/components/business-plan/skills-matrix/AddDomainDialog";
-import { Person, Domain } from "@/types/skill-matrix"; // Ajout de l'import des types
+import QASection from "@/components/business-plan/shared/QASection";
+import { Person, Domain } from "@/types/skill-matrix";
 import { Header } from "@/components/business-plan/shared/Header";
+import { QAResponses } from "@/types/shared/qa-section";
+import {
+	SKILL_LEVELS,
+	SKILLS_MATRIX_QA_DATA,
+} from "@/lib/business-plan/config/skills-matrix";
 
 interface TableRow {
 	original: Person;
@@ -48,6 +54,15 @@ export default function SkillMatrixPage() {
 		removePerson,
 		removeDomain,
 	} = useSkillMatrix();
+
+	const [qaResponses, setQAResponses] = React.useState<QAResponses>({});
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
 
 	const columns = React.useMemo(
 		() => [
@@ -71,46 +86,13 @@ export default function SkillMatrixPage() {
 				),
 				cell: ({ row }: { row: TableRow }) => {
 					const level = row.original.skills[domain.id] || 0;
-					const getColorClass = (level: number) => {
-						switch (level) {
-							case 0:
-								return "bg-gray-50";
-							case 1:
-								return "bg-red-50";
-							case 2:
-								return "bg-orange-50";
-							case 3:
-								return "bg-yellow-50";
-							case 4:
-								return "bg-green-50";
-							case 5:
-								return "bg-emerald-100";
-							default:
-								return "bg-gray-50";
-						}
-					};
-
-					const getLevelLabel = (level: number) => {
-						switch (level) {
-							case 0:
-								return "Non évalué";
-							case 1:
-								return "Débutant";
-							case 2:
-								return "Intermédiaire";
-							case 3:
-								return "Avancé";
-							case 4:
-								return "Expert";
-							case 5:
-								return "Maître";
-							default:
-								return "Non évalué";
-						}
-					};
-
 					return (
-						<div className={`rounded-lg ${getColorClass(level)}`}>
+						<div
+							className={`rounded-lg ${
+								SKILL_LEVELS[level as keyof typeof SKILL_LEVELS]
+									.color
+							}`}
+						>
 							<select
 								value={level}
 								onChange={(e) =>
@@ -121,13 +103,19 @@ export default function SkillMatrixPage() {
 									)
 								}
 								className="w-full p-2 bg-transparent border-0 rounded-lg focus:ring-2 focus:ring-blue-500"
-								title={getLevelLabel(level)}
+								title={
+									SKILL_LEVELS[
+										level as keyof typeof SKILL_LEVELS
+									].label
+								}
 							>
-								{[0, 1, 2, 3, 4, 5].map((level) => (
-									<option key={level} value={level}>
-										{`${level} - ${getLevelLabel(level)}`}
-									</option>
-								))}
+								{Object.entries(SKILL_LEVELS).map(
+									([value, { label }]) => (
+										<option key={value} value={value}>
+											{`${value} - ${label}`}
+										</option>
+									)
+								)}
 							</select>
 						</div>
 					);
@@ -176,57 +164,65 @@ export default function SkillMatrixPage() {
 		<div className="flex flex-col h-screen">
 			<Header title="Skills Matrix" progress={100} />
 
-			<div className="flex gap-4 mb-6">
-				<AddPersonDialog onAdd={addPerson} />
-				<AddDomainDialog onAdd={addDomain} />
-			</div>
+			<div className="p-6 space-y-6">
+				<div className="flex gap-4 mb-6">
+					<AddPersonDialog onAdd={addPerson} />
+					<AddDomainDialog onAdd={addDomain} />
+				</div>
 
-			<div className="rounded-md border">
-				<Table>
-					<TableHeader>
-						{table.getHeaderGroups().map((headerGroup) => (
-							<TableRow key={headerGroup.id}>
-								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
-										{header.isPlaceholder
-											? null
-											: flexRender(
-													header.column.columnDef
-														.header,
-													header.getContext()
-											  )}
-									</TableHead>
-								))}
-							</TableRow>
-						))}
-					</TableHeader>
-					<TableBody>
-						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => (
-								<TableRow key={row.id}>
-									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext()
-											)}
-										</TableCell>
+				<div className="rounded-md border bg-white">
+					<Table>
+						<TableHeader>
+							{table.getHeaderGroups().map((headerGroup) => (
+								<TableRow key={headerGroup.id}>
+									{headerGroup.headers.map((header) => (
+										<TableHead key={header.id}>
+											{header.isPlaceholder
+												? null
+												: flexRender(
+														header.column.columnDef
+															.header,
+														header.getContext()
+												  )}
+										</TableHead>
 									))}
 								</TableRow>
-							))
-						) : (
-							<TableRow>
-								<TableCell
-									colSpan={columns.length}
-									className="h-24 text-center text-gray-500"
-								>
-									Aucune donnée dans la matrice des
-									compétences
-								</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
+							))}
+						</TableHeader>
+						<TableBody>
+							{table.getRowModel().rows?.length ? (
+								table.getRowModel().rows.map((row) => (
+									<TableRow key={row.id}>
+										{row.getVisibleCells().map((cell) => (
+											<TableCell key={cell.id}>
+												{flexRender(
+													cell.column.columnDef.cell,
+													cell.getContext()
+												)}
+											</TableCell>
+										))}
+									</TableRow>
+								))
+							) : (
+								<TableRow>
+									<TableCell
+										colSpan={columns.length}
+										className="h-24 text-center text-gray-500"
+									>
+										Aucune donnée dans la matrice des
+										compétences
+									</TableCell>
+								</TableRow>
+							)}
+						</TableBody>
+					</Table>
+				</div>
+
+				<QASection
+					data={SKILLS_MATRIX_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+				/>
 			</div>
 		</div>
 	);
