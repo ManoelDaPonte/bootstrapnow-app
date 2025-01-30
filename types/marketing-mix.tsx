@@ -1,6 +1,6 @@
-// types/marketing-mix.ts
+import { BaseCard } from "@/types/shared/card-modal";
 
-export interface MarketingMixCard {
+export interface MarketingMixCard extends BaseCard {
 	id: number;
 	title: string;
 	description: string;
@@ -14,6 +14,7 @@ export interface MarketingMixData {
 	people: MarketingMixCard[];
 	process: MarketingMixCard[];
 	physical_evidence: MarketingMixCard[];
+	lastAnalysis?: string;
 	lastUpdated?: string;
 }
 
@@ -21,6 +22,26 @@ export interface ModalState {
 	open: boolean;
 	category: string;
 	card: MarketingMixCard;
+}
+
+export type MarketingMixCategory = keyof Omit<
+	MarketingMixData,
+	"lastAnalysis" | "lastUpdated"
+>;
+
+export interface MarketingMixHeaders {
+	[key: string]: {
+		title: string;
+		color: string;
+	};
+}
+
+export interface MarketingMixDescriptions {
+	[key: string]: string;
+}
+
+export interface MarketingMixColors {
+	[key: string]: string;
 }
 
 // Structure par défaut pour initialiser les données
@@ -32,6 +53,7 @@ export const DEFAULT_MARKETING_MIX_DATA: MarketingMixData = {
 	people: [],
 	process: [],
 	physical_evidence: [],
+	lastAnalysis: new Date().toISOString(),
 	lastUpdated: new Date().toISOString(),
 };
 
@@ -87,12 +109,11 @@ export const EXAMPLE_MARKETING_MIX_DATA: MarketingMixData = {
 			description: "Aspects tangibles du service et expérience client",
 		},
 	],
+	lastAnalysis: new Date().toISOString(),
 	lastUpdated: new Date().toISOString(),
 };
 
 // Types pour les fonctions de gestion des données
-export type MarketingMixCategory = keyof Omit<MarketingMixData, "lastUpdated">;
-
 export interface StorageOperations {
 	saveMarketingMix: (data: MarketingMixData) => Promise<void>;
 	loadMarketingMix: () => Promise<MarketingMixData>;

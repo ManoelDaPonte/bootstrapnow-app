@@ -75,7 +75,7 @@ export default function ProfilePage() {
 
 		try {
 			const res = await axios.post(
-				"/api/user/update-metadata",
+				"/api/auth/user/update-metadata",
 				updatedMetadata
 			);
 			if (res.status === 200) {

@@ -1,8 +1,8 @@
 // lib/stripe/webhooks/handleCustomerSubscriptionCreated.ts
 import Stripe from "stripe";
-import { findUserByCustomerId } from "@/lib/auth0/findUserByCustomerId";
-import getManagementToken from "@/lib/auth0/getManagementToken";
 import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
+import getManagementToken from "@/lib/auth0/getManagementToken";
+import { findUserByCustomerId } from "@/lib/auth0/findUserByCustomerId";
 
 export async function handleCustomerSubscriptionCreated(
 	subscription: Stripe.Subscription

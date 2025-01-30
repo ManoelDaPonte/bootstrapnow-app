@@ -1,7 +1,7 @@
 // app/api/business-plan/funnel-chart/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateFunnelChartData } from "@/lib/hooks/business-plan/funnel-chart/storage-funnel-chart";
+import { updateFunnelChartData } from "@/lib/business-plan/hooks/funnel-chart/storage-funnel-chart";
 import { FunnelSection } from "@/types/funnel-chart";
 
 export async function POST(request: Request) {

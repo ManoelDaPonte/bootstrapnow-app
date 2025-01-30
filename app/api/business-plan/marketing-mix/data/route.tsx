@@ -1,7 +1,7 @@
 // app/api/business-plan/marketing-mix/data/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db/prisma";
 
 export async function GET() {
 	try {

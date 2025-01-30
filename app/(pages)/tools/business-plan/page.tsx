@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { useTemplateProgress } from "@/lib/hooks/business-plan/useTemplateProgress";
+import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgress";
 import { useState } from "react";
 import { Download } from "lucide-react";
 

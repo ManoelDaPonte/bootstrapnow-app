@@ -1,7 +1,7 @@
 // app/api/business-plan/canvas/save/route.ts
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
-import { updateCanvasData } from "@/lib/hooks/business-plan/canvas/storage-canvas";
+import { updateCanvasData } from "@/lib/business-plan/hooks/canvas/storage-canvas";
 import { CanvasData } from "@/types/canvas";
 
 export async function POST(request: Request) {

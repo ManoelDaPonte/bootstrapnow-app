@@ -1,14 +1,24 @@
-// app/business-plan/funnel-chart/page.tsx
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
-import { FunnelChartModal } from "@/components/business-plan/funnel-chart/FunnelChartModal";
-import { FunnelCard, EditingCard } from "@/types/funnel-chart";
-import { useFunnelChartData } from "@/lib/hooks/business-plan/funnel-chart/useFunnelChartData";
-import { calculateProgress } from "@/lib/hooks/business-plan/funnel-chart/storage-funnel-chart";
-import FunnelChart from "@/components/business-plan/funnel-chart/FunnelChart";
+import {
+	FunnelSection,
+	FunnelCard,
+	EditingCard,
+	FunnelSectionId,
+} from "@/types/funnel-chart";
+import { useFunnelChartData } from "@/lib/business-plan/hooks/funnel-chart/useFunnelChartData";
+import { calculateProgress } from "@/lib/business-plan/hooks/funnel-chart/storage-funnel-chart";
 import { Header } from "@/components/business-plan/shared/Header";
-import { FunnelSection } from "@/types/funnel-chart";
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import FunnelChart from "@/components/business-plan/FunnelChartSection";
+import QASection from "@/components/business-plan/shared/QASection";
+import { QAResponses } from "@/types/shared/qa-section";
+import { ModalProps } from "@/types/shared/card-modal";
+import {
+	FUNNEL_MODAL_DETAILED_DESCRIPTIONS,
+	FUNNEL_QA_DATA,
+} from "@/lib/business-plan/config/funnel-chart";
 
 const createDebouncedUpdate = (updateFn: (sections: FunnelSection[]) => void) =>
 	_.debounce((newSections: FunnelSection[]) => {
@@ -17,35 +27,47 @@ const createDebouncedUpdate = (updateFn: (sections: FunnelSection[]) => void) =>
 
 export default function FunnelChartPage() {
 	const { sections, handleUpdateSections } = useFunnelChartData();
-
+	const [qaResponses, setQAResponses] = useState<QAResponses>({});
 	const [editingCard, setEditingCard] = useState<EditingCard>(null);
 	const [error, setError] = useState(false);
+	const [localSections, setLocalSections] = useState(sections);
 
-	const handleAddCard = (sectionId: number) => {
+	// Update local sections when DB sections change
+	useEffect(() => {
+		setLocalSections(sections);
+	}, [sections]);
+
+	const debouncedUpdateSections = useMemo(
+		() => createDebouncedUpdate(handleUpdateSections),
+		[handleUpdateSections]
+	);
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
+
+	const handleAddCard = (sectionId: FunnelSectionId) => {
 		const newCard: FunnelCard = {
-			id: crypto.randomUUID(),
+			id: Date.now(), // ou bien Math.random(), comme dans les autres pages
 			title: "",
 			description: "",
 		};
 		setEditingCard({ sectionId, card: newCard });
+		setError(false);
 	};
 
-	const handleEditCard = (sectionId: number, card: FunnelCard) => {
+	const handleEditCard = (sectionId: FunnelSectionId, card: FunnelCard) => {
 		setEditingCard({ sectionId, card: { ...card } });
-	};
-
-	const handleModalClose = () => {
-		setEditingCard(null);
 		setError(false);
 	};
 
 	const handleModalSave = () => {
 		if (!editingCard) return;
 
-		if (
-			!editingCard.card.title.trim() ||
-			!editingCard.card.description.trim()
-		) {
+		if (!editingCard.card.title || !editingCard.card.description) {
 			setError(true);
 			return;
 		}
@@ -70,7 +92,8 @@ export default function FunnelChartPage() {
 		});
 
 		handleUpdateSections(newSections);
-		handleModalClose();
+		setEditingCard(null);
+		setError(false);
 	};
 
 	const handleModalDelete = () => {
@@ -89,20 +112,9 @@ export default function FunnelChartPage() {
 		});
 
 		handleUpdateSections(newSections);
-		handleModalClose();
+		setEditingCard(null);
+		setError(false);
 	};
-
-	const [localSections, setLocalSections] = useState(sections);
-
-	// Update local sections when DB sections change
-	useEffect(() => {
-		setLocalSections(sections);
-	}, [sections]);
-
-	const debouncedUpdateSections = useMemo(
-		() => createDebouncedUpdate(handleUpdateSections),
-		[handleUpdateSections]
-	);
 
 	const handleSizeChange = (sectionId: number, newSize: number) => {
 		const newSections = [...localSections];
@@ -119,10 +131,40 @@ export default function FunnelChartPage() {
 			newSections[i].size = Math.min(newSections[i].size, newSize);
 		}
 
-		// Update local state immediately
 		setLocalSections(newSections);
-		// Debounce the update to database
 		debouncedUpdateSections(newSections);
+	};
+
+	const modalProps: ModalProps<FunnelCard> = {
+		isOpen: !!editingCard,
+		card: editingCard?.card || { id: 0, title: "", description: "" },
+		onClose: () => {
+			setEditingCard(null);
+			setError(false);
+		},
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error,
+		isNew: editingCard ? !editingCard.card.id : true,
+		onChange: (e) => {
+			if (editingCard) {
+				setEditingCard({
+					...editingCard,
+					card: {
+						...editingCard.card,
+						[e.target.name]: e.target.value,
+					},
+				});
+			}
+		},
+		modalTitle: editingCard?.card.id
+			? "Modifier l'élément"
+			: "Nouvel élément",
+		titlePlaceholder: "Entrez le titre...",
+		descriptionPlaceholder: "Entrez la description...",
+		categoryDescription: editingCard
+			? FUNNEL_MODAL_DETAILED_DESCRIPTIONS[editingCard.sectionId]
+			: undefined,
 	};
 
 	return (
@@ -139,26 +181,13 @@ export default function FunnelChartPage() {
 				onEditCard={handleEditCard}
 			/>
 
-			{editingCard && (
-				<FunnelChartModal
-					isOpen={!!editingCard}
-					onClose={handleModalClose}
-					card={editingCard.card}
-					onSave={handleModalSave}
-					onDelete={handleModalDelete}
-					error={error}
-					isNew={!editingCard.card.id}
-					onChange={(e) => {
-						setEditingCard({
-							...editingCard,
-							card: {
-								...editingCard.card,
-								[e.target.name]: e.target.value,
-							},
-						});
-					}}
-				/>
-			)}
+			<QASection
+				data={FUNNEL_QA_DATA}
+				responses={qaResponses}
+				onResponseChange={handleQAResponseChange}
+			/>
+
+			<CardModal<FunnelCard> {...modalProps} />
 		</div>
 	);
 }

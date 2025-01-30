@@ -1,50 +1,39 @@
 // app/business-plan/swot/page.tsx
 "use client";
 import React, { useState } from "react";
-import SwotSection from "@/components/business-plan/swot/SwotSection";
-import SwotModal from "@/components/business-plan/swot/SwotModal";
-import { SwotCard, ModalState, SwotData } from "@/types/swot";
-import { useSwotData } from "@/lib/hooks/business-plan/swot/useSwotData";
-import { calculateProgress } from "@/lib/hooks/business-plan/swot/storage-swot";
+import SwotSection from "@/components/business-plan/SwotSection";
+import { SwotCard, ModalState, SwotCategory } from "@/types/swot";
+import { useSwotData } from "@/lib/business-plan/hooks/swot/useSwotData";
+import { calculateProgress } from "@/lib/business-plan/hooks/swot/storage-swot";
 import { Header } from "@/components/business-plan/shared/Header";
-
-const SWOT_DESCRIPTIONS = {
-	strengths:
-		"Attributs et ressources internes qui soutiennent la réussite d'une stratégie.",
-	weaknesses:
-		"Facteurs internes qui pourraient entraver la réussite d'une stratégie.",
-	opportunities:
-		"Facteurs externes que l'organisation peut exploiter à son avantage.",
-	threats:
-		"Facteurs externes qui pourraient poser des défis ou des risques pour l'organisation.",
-} as const;
-
-const SWOT_HEADERS = {
-	strengths: { title: "Forces", color: "text-emerald-700" },
-	weaknesses: { title: "Faiblesses", color: "text-red-700" },
-	opportunities: { title: "Opportunités", color: "text-blue-700" },
-	threats: { title: "Menaces", color: "text-orange-700" },
-} as const;
-
-type SwotCategory = keyof SwotData;
-
-const sectionOrder: SwotCategory[] = [
-	"strengths",
-	"weaknesses",
-	"threats",
-	"opportunities",
-];
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import {
+	SWOT_QA_DATA,
+	SWOT_DESCRIPTIONS,
+	SWOT_HEADERS,
+	SWOT_SECTION_ORDER,
+	SWOT_MODAL_DETAILED_DESCRIPTIONS,
+} from "@/lib/business-plan/config/swot";
+import QASection from "@/components/business-plan/shared/QASection";
+import { QAResponses } from "@/types/shared/qa-section";
+import { ModalProps } from "@/types/shared/card-modal";
 
 export default function SwotMatrix() {
 	const { cards, handleSaveCard, handleDeleteCard } = useSwotData();
-
+	const [qaResponses, setQAResponses] = useState<QAResponses>({});
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
 	const [error, setError] = useState(false);
-	type SwotCategory = keyof SwotData;
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
 
 	const handleAddCard = (category: SwotCategory) => {
 		setModalState({
@@ -103,55 +92,61 @@ export default function SwotMatrix() {
 		});
 	};
 
+	const modalProps: ModalProps<SwotCard> = {
+		isOpen: modalState.open,
+		card: modalState.card,
+		onClose: () =>
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "" },
+			}),
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error,
+		isNew: !modalState.card.id,
+		onChange: (e) =>
+			setModalState((prev) => ({
+				...prev,
+				card: { ...prev.card, [e.target.name]: e.target.value },
+			})),
+		modalTitle: modalState.card.id ? "Modifier la carte" : "Nouvelle carte",
+		titlePlaceholder: "Entrez le titre de votre élément SWOT...",
+		descriptionPlaceholder: "Décrivez cet élément SWOT...",
+		categoryDescription: modalState.category
+			? SWOT_MODAL_DETAILED_DESCRIPTIONS[
+					modalState.category as SwotCategory
+			  ]
+			: undefined,
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			<Header title="Matrice SWOT" progress={calculateProgress(cards)} />
 
 			<div className="flex-1 max-w-7xl mx-auto w-full p-6">
 				<div className="grid grid-cols-2 gap-6 h-[calc(100vh-8rem)]">
-					{sectionOrder.map((category) => {
-						if (
-							category === "lastAnalysis" ||
-							category === "lastUpdated"
-						)
-							return null;
-						const cardList = cards[category];
-						return (
-							<SwotSection
-								key={category}
-								category={category}
-								title={SWOT_HEADERS[category].title}
-								description={SWOT_DESCRIPTIONS[category]}
-								cards={cardList}
-								onAddCard={handleAddCard}
-								onEditCard={handleEditCard}
-							/>
-						);
-					})}
+					{SWOT_SECTION_ORDER.map((category) => (
+						<SwotSection
+							key={category}
+							category={category}
+							title={SWOT_HEADERS[category].title}
+							description={SWOT_DESCRIPTIONS[category]}
+							cards={cards[category]}
+							onAddCard={handleAddCard}
+							onEditCard={handleEditCard}
+						/>
+					))}
 				</div>
+
+				<QASection
+					data={SWOT_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+				/>
 			</div>
 
-			<SwotModal
-				isOpen={modalState.open}
-				card={modalState.card}
-				onClose={() =>
-					setModalState({
-						open: false,
-						category: "",
-						card: { id: 0, title: "", description: "" },
-					})
-				}
-				onSave={handleModalSave}
-				onDelete={handleModalDelete}
-				error={error}
-				isNew={!modalState.card.id}
-				onChange={(e) =>
-					setModalState((prev) => ({
-						...prev,
-						card: { ...prev.card, [e.target.name]: e.target.value },
-					}))
-				}
-			/>
+			<CardModal<SwotCard> {...modalProps} />
 		</div>
 	);
 }

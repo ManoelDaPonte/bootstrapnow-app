@@ -49,7 +49,7 @@ export default function DashboardPage() {
 		if (!user || !user.sub) return;
 
 		// Mettre à jour les metadata
-		const res = await fetch("/api/user/update-metadata", {
+		const res = await fetch("/api/auth/user/update-metadata", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({

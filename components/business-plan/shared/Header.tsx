@@ -2,11 +2,7 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-
-interface HeaderProps {
-	title: string;
-	progress: number;
-}
+import { HeaderProps } from "@/types/shared/header";
 
 export const Header = ({ title, progress }: HeaderProps) => {
 	const { user } = useUser();

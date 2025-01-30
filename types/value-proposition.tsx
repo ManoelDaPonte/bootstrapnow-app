@@ -1,5 +1,9 @@
-export interface ValuePropositionCard {
+import { BaseCard } from "@/types/shared/card-modal";
+
+export interface ValuePropositionCard extends BaseCard {
 	id: number;
+	title: string;
+	description: string;
 	content: string;
 }
 
@@ -18,10 +22,23 @@ export interface ValuePropositionData {
 	products: ValuePropositionCard[];
 	painRelievers: ValuePropositionCard[];
 	gainCreators: ValuePropositionCard[];
+	lastAnalysis?: string;
 	lastUpdated?: string;
 }
 
-// Pour les tooltips
+export interface ModalState {
+	open: boolean;
+	category: string;
+	card: ValuePropositionCard;
+}
+
+export interface ValuePropositionSections {
+	[key: string]: {
+		title: string;
+		color: string;
+	};
+}
+
 export type TooltipMessages = {
 	[key in ValuePropositionCategory]: string;
 };
