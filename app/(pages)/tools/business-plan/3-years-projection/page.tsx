@@ -5,6 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Trash2 } from "lucide-react";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import {
 	ComposedChart,
 	Bar,
@@ -16,65 +25,34 @@ import {
 	Legend,
 	ResponsiveContainer,
 } from "recharts";
-import { Plus, Trash2 } from "lucide-react";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-
-// Interfaces
-interface ProfitLossEntry {
-	id: string;
-	category: string;
-	"Year 1": number;
-	"Year 2": number;
-	"Year 3": number;
-}
-
-interface ProfitLossData {
-	revenue: ProfitLossEntry[];
-	expenses: ProfitLossEntry[];
-}
+import { Header } from "@/components/business-plan/shared/Header";
+import { ProfitLossData, ProfitLossEntry } from "@/types/profit-loss";
+import { INITIAL_PROFIT_LOSS_DATA } from "@/lib/business-plan/config/profit-loss";
 
 const ProfitLossDashboard: React.FC = () => {
-	const [profitLossData, setProfitLossData] = useState<ProfitLossData>({
-		revenue: [
-			{
-				id: "rev1",
-				category: "Product Sales",
-				"Year 1": 100000,
-				"Year 2": 150000,
-				"Year 3": 200000,
-			},
-			{
-				id: "rev2",
-				category: "Service Revenue",
-				"Year 1": 50000,
-				"Year 2": 75000,
-				"Year 3": 100000,
-			},
-		],
-		expenses: [
-			{
-				id: "exp1",
-				category: "Operating Expenses",
-				"Year 1": 80000,
-				"Year 2": 100000,
-				"Year 3": 120000,
-			},
-			{
-				id: "exp2",
-				category: "Marketing",
-				"Year 1": 20000,
-				"Year 2": 30000,
-				"Year 3": 40000,
-			},
-		],
-	});
+	const [profitLossData, setProfitLossData] = useState<ProfitLossData>(
+		INITIAL_PROFIT_LOSS_DATA
+	);
+
+	// Calcul du progrès pour le Header
+	const calculateProgress = useCallback(() => {
+		const totalFields =
+			(profitLossData.revenue.length + profitLossData.expenses.length) *
+			4; // 4 champs par entrée
+		const filledFields = [
+			...profitLossData.revenue,
+			...profitLossData.expenses,
+		].reduce((acc, entry) => {
+			return (
+				acc +
+				((entry.category ? 1 : 0) +
+					(entry["Year 1"] ? 1 : 0) +
+					(entry["Year 2"] ? 1 : 0) +
+					(entry["Year 3"] ? 1 : 0))
+			);
+		}, 0);
+		return Math.round((filledFields / totalFields) * 100);
+	}, [profitLossData]);
 
 	// Add new row to a section
 	const addRow = useCallback((section: keyof ProfitLossData) => {
@@ -167,140 +145,152 @@ const ProfitLossDashboard: React.FC = () => {
 	);
 
 	return (
-		<div className="container mx-auto p-4 space-y-6">
-			<Tabs defaultValue="overview">
-				<TabsList className="grid w-full grid-cols-2">
-					<TabsTrigger value="overview">
-						Profit & Loss Overview
-					</TabsTrigger>
-					<TabsTrigger value="details">
-						Detailed Breakdown
-					</TabsTrigger>
-				</TabsList>
+		<div className="flex flex-col h-screen">
+			<Header
+				title="Prévisionnel Financier"
+				progress={calculateProgress()}
+			/>
 
-				<TabsContent value="overview">
-					<Card>
-						<CardHeader>
-							<CardTitle>
-								Financial Performance Projection
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<ResponsiveContainer width="100%" height={300}>
-								<ComposedChart data={netProfitData}>
-									<CartesianGrid strokeDasharray="3 3" />
-									<XAxis dataKey="name" />
-									<YAxis
-										tickFormatter={(value) => {
-											const formattedValue =
-												Math.abs(
-													value
-												).toLocaleString(); // Met l'abs de la valeur
-											return value < 0
-												? `-€${formattedValue}`
-												: `€${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
-										}}
-									/>
+			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">
+				<Tabs defaultValue="overview" className="space-y-6">
+					<TabsList className="grid w-full grid-cols-2">
+						<TabsTrigger value="overview">
+							Profit & Loss Overview
+						</TabsTrigger>
+						<TabsTrigger value="details">
+							Detailed Breakdown
+						</TabsTrigger>
+					</TabsList>
 
-									<Tooltip
-										formatter={(value, name) => {
-											const formattedValue = `€${Math.abs(
-												Number(value)
-											).toLocaleString()}`;
-											return name === "Profit"
-												? [formattedValue, "Net Profit"]
-												: [formattedValue, name];
-										}}
-									/>
-									<Legend />
+					<TabsContent value="overview">
+						<Card>
+							<CardHeader>
+								<CardTitle>
+									Financial Performance Projection
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<ResponsiveContainer width="100%" height={300}>
+									<ComposedChart data={netProfitData}>
+										<CartesianGrid strokeDasharray="3 3" />
+										<XAxis dataKey="name" />
+										<YAxis
+											tickFormatter={(value) => {
+												const formattedValue =
+													Math.abs(
+														value
+													).toLocaleString(); // Met l'abs de la valeur
+												return value < 0
+													? `-€${formattedValue}`
+													: `€${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
+											}}
+										/>
 
-									<Bar
-										dataKey="Revenue"
-										fill="#3498db"
-										stackId="a"
-									/>
+										<Tooltip
+											formatter={(value, name) => {
+												const formattedValue = `€${Math.abs(
+													Number(value)
+												).toLocaleString()}`;
+												return name === "Profit"
+													? [
+															formattedValue,
+															"Net Profit",
+													  ]
+													: [formattedValue, name];
+											}}
+										/>
+										<Legend />
 
-									<Bar
-										dataKey="Expenses"
-										fill="#e74c3c"
-										stackId="b"
-										fillOpacity={0.7}
-									/>
+										<Bar
+											dataKey="Revenue"
+											fill="#3498db"
+											stackId="a"
+										/>
 
-									<Line
-										type="monotone"
-										dataKey="Profit"
-										stroke="#2ecc71"
-										strokeWidth={3}
-										dot={{
-											stroke: "#2ecc71",
-											fill: "white",
-											strokeWidth: 2,
-											r: 8,
-										}}
-									/>
-								</ComposedChart>
-							</ResponsiveContainer>
-						</CardContent>
-					</Card>
-				</TabsContent>
+										<Bar
+											dataKey="Expenses"
+											fill="#e74c3c"
+											stackId="b"
+											fillOpacity={0.7}
+										/>
 
-				<TabsContent value="details">
-					<Card>
-						<CardHeader>
-							<CardTitle className="flex justify-between items-center">
-								Profit and Loss Details
-								<div className="flex space-x-2">
-									{(["revenue", "expenses"] as const).map(
-										(section) => (
-											<Button
-												key={section}
-												variant="outline"
-												size="sm"
-												onClick={() => addRow(section)}
-											>
-												<Plus className="mr-2 h-4 w-4" />
-												Add{" "}
-												{section === "revenue"
-													? "Revenue"
-													: "Expense"}{" "}
-												Row
-											</Button>
-										)
-									)}
-								</div>
-							</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-6">
-							{(["revenue", "expenses"] as const).map(
-								(section) => (
-									<div key={section}>
-										<h3 className="text-lg font-semibold mb-2 capitalize">
-											{section}
-										</h3>
-										<Table>
-											<TableHeader>
-												<TableRow>
-													<TableHead>
-														Categorie
-													</TableHead>
-													<TableHead>
-														Année 1 (€)
-													</TableHead>
-													<TableHead>
-														Année 2 (€)
-													</TableHead>
-													<TableHead>
-														Année 3 (€)
-													</TableHead>
-													<TableHead>
-														Actions
-													</TableHead>
-												</TableRow>
-											</TableHeader>
-											<TableBody>
-												{profitLossData[section].map(
-													(entry) => (
+										<Line
+											type="monotone"
+											dataKey="Profit"
+											stroke="#2ecc71"
+											strokeWidth={3}
+											dot={{
+												stroke: "#2ecc71",
+												fill: "white",
+												strokeWidth: 2,
+												r: 8,
+											}}
+										/>
+									</ComposedChart>
+								</ResponsiveContainer>
+							</CardContent>
+						</Card>
+					</TabsContent>
+
+					<TabsContent value="details">
+						<Card>
+							<CardHeader>
+								<CardTitle className="flex justify-between items-center">
+									Profit and Loss Details
+									<div className="flex space-x-2">
+										{(["revenue", "expenses"] as const).map(
+											(section) => (
+												<Button
+													key={section}
+													variant="outline"
+													size="sm"
+													onClick={() =>
+														addRow(section)
+													}
+												>
+													<Plus className="mr-2 h-4 w-4" />
+													Add{" "}
+													{section === "revenue"
+														? "Revenue"
+														: "Expense"}{" "}
+													Row
+												</Button>
+											)
+										)}
+									</div>
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="space-y-6">
+								{(["revenue", "expenses"] as const).map(
+									(section) => (
+										<div key={section}>
+											<h3 className="text-lg font-semibold mb-2 capitalize">
+												{section}
+											</h3>
+											<Table>
+												<TableHeader>
+													<TableRow>
+														<TableHead>
+															Categorie
+														</TableHead>
+														<TableHead>
+															Année 1 (€)
+														</TableHead>
+														<TableHead>
+															Année 2 (€)
+														</TableHead>
+														<TableHead>
+															Année 3 (€)
+														</TableHead>
+														<TableHead>
+															Actions
+														</TableHead>
+													</TableRow>
+												</TableHeader>
+												<TableBody>
+													{profitLossData[
+														section
+													].map((entry) => (
 														<TableRow
 															key={entry.id}
 														>
@@ -360,77 +350,80 @@ const ProfitLossDashboard: React.FC = () => {
 																</TableCell>
 															))}
 															<TableCell>
-																<Button
-																	variant="destructive"
-																	size="icon"
+																<button
 																	onClick={() =>
 																		removeRow(
 																			section,
 																			entry.id
 																		)
 																	}
+																	className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors"
 																>
 																	<Trash2 className="h-4 w-4" />
-																</Button>
+																</button>
 															</TableCell>
 														</TableRow>
-													)
-												)}
-											</TableBody>
-										</Table>
-									</div>
-								)
-							)}
+													))}
+												</TableBody>
+											</Table>
+										</div>
+									)
+								)}
 
-							<Card className="mt-4">
-								<CardHeader>
-									<CardTitle>Bilan financier</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="grid md:grid-cols-3 gap-4">
-										{[1, 2, 3].map((year, index) => (
-											<div
-												key={year}
-												className="border p-4 rounded-lg"
-											>
-												<h4 className="font-semibold mb-2">
-												Bilan de l'année {year}
-												</h4>
-												<p>
-													<strong>
-														Revenus:
-													</strong>{" "}
-													€
-													{totalRevenue[
-														index
-													].toLocaleString()}
-												</p>
-												<p>
-													<strong>
-														Total Expenses:
-													</strong>{" "}
-													€
-													{totalExpenses[
-														index
-													].toLocaleString()}
-												</p>
-												<p>
-													<strong>Net Profit:</strong>{" "}
-													€
-													{(
-														totalRevenue[index] -
-														totalExpenses[index]
-													).toLocaleString()}
-												</p>
-											</div>
-										))}
-									</div>
-								</CardContent>
-							</Card>
-						</CardContent>
-					</Card>
-				</TabsContent>
-			</Tabs>
+								<Card className="mt-4">
+									<CardHeader>
+										<CardTitle>Bilan financier</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="grid md:grid-cols-3 gap-4">
+											{[1, 2, 3].map((year, index) => (
+												<div
+													key={year}
+													className="border p-4 rounded-lg"
+												>
+													<h4 className="font-semibold mb-2">
+														Bilan de l'année {year}
+													</h4>
+													<p>
+														<strong>
+															Revenus:
+														</strong>{" "}
+														€
+														{totalRevenue[
+															index
+														].toLocaleString()}
+													</p>
+													<p>
+														<strong>
+															Total Expenses:
+														</strong>{" "}
+														€
+														{totalExpenses[
+															index
+														].toLocaleString()}
+													</p>
+													<p>
+														<strong>
+															Net Profit:
+														</strong>{" "}
+														€
+														{(
+															totalRevenue[
+																index
+															] -
+															totalExpenses[index]
+														).toLocaleString()}
+													</p>
+												</div>
+											))}
+										</div>
+									</CardContent>
+								</Card>
+							</CardContent>
+						</Card>
+					</TabsContent>
+				</Tabs>
+			</div>
 		</div>
 	);
 };
