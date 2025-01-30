@@ -55,8 +55,7 @@ Plan Financier : {{FP_D1_Investments}}, {{FP_12M_Investments}}, {{FP_3Y_Investme
 BMC : {{BMC_RevenueStreams}}, {{BMC_CostStructure}}
 SWOT : {{SWOT_Opportunities}}, {{SWOT_Threats}}
 Ansoff : {{Ansoff_MarketDevelopment}}, {{Ansoff_Diversification}}
-
-QUESTIONS: Combien d’argent cherches-tu à lever ? Comment sera-t-il utilisé et quel sera son impact sur la rentabilité de l’entreprise ?"
+et {{FP_Funding}}
 
 
 
@@ -296,7 +295,7 @@ Competitor Data Collection Plan
 
 Concurrent 1
 
-Nom : {{Nom_concurrent_1}}
+Nom : 
 Solution/produit concurrent : {{Solution_produit_concurrent_1}}
 Stratégie : {{Stratégie_concurrent_1}}
 Zone géographique : {{Zone_geographique_concurrent_1}}
