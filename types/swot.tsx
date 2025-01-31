@@ -11,6 +11,11 @@ export interface SwotCard {
 	description: string;
 }
 
+// Interface pour les QA responses
+export interface QAResponses {
+	[key: string]: string;
+}
+
 export interface SwotData {
 	strengths: SwotCard[];
 	weaknesses: SwotCard[];
@@ -18,6 +23,11 @@ export interface SwotData {
 	threats: SwotCard[];
 	lastAnalysis?: string;
 	lastUpdated?: string;
+}
+
+export interface CompleteSwotData {
+	data: SwotData;
+	qaResponses: QAResponses;
 }
 
 export interface ModalState {

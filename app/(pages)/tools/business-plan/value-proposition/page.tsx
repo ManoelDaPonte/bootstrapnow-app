@@ -150,7 +150,7 @@ const ValuePropositionCanvas: React.FC = () => {
 	);
 
 	return (
-		<div className="min-h-screen flex flex-col">
+		<div className="flex flex-col h-screen">
 			<Header
 				title="Value Proposition"
 				progress={calculateProgress(data)}

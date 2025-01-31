@@ -23,21 +23,20 @@ import { QAResponses } from "@/types/shared/qa-section";
 import { ModalProps } from "@/types/shared/card-modal";
 
 export default function AnsoffMatrix() {
-	const { cards, handleSaveCard, handleDeleteCard } = useAnsoffData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const {
+		cards,
+		qaResponses,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useAnsoffData();
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
 	const [error, setError] = useState(false);
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
 
 	const handleAddCard = (category: AnsoffCategory) => {
 		setModalState({
@@ -173,6 +172,7 @@ export default function AnsoffMatrix() {
 					data={ANSOFF_QA_DATA}
 					responses={qaResponses}
 					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
 				/>
 			</div>
 

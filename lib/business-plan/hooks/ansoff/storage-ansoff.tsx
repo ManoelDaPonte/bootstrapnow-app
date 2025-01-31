@@ -1,14 +1,15 @@
 // lib/business-plan/ansoff/storage-ansoff.ts
-import { AnsoffData } from "@/types/ansoff";
+import { AnsoffData, StoredData } from "@/types/ansoff";
 import { prisma } from "@/lib/db/prisma";
+import { QAResponses } from "@/types/shared/qa-section";
 
 export const STORAGE_KEY = "ansoff-data";
+export const QA_STORAGE_KEY = "ansoff-qa-responses";
 
-// Sauvegarder les données (localStorage uniquement)
-export const saveAnsoffData = (data: AnsoffData) => {
+export const saveAnsoffData = (data: AnsoffData, qaResponses: QAResponses) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder dans localStorage
+	// Save SWOT data
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -17,43 +18,48 @@ export const saveAnsoffData = (data: AnsoffData) => {
 		})
 	);
 
-	// Mettre à jour la progression dans la page parent
+	// Save QA responses separately
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
 	updateParentProgress(calculateProgress(data));
 };
 
-export async function updateAnsoffData(auth0Id: string, data: AnsoffData) {
+export async function updateAnsoffData(
+	auth0Id: string,
+	data: AnsoffData,
+	qaResponses: QAResponses
+) {
 	try {
-		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
 			update: {},
 			create: {
 				auth0Id,
-				email: "", // À remplir avec l'email de Auth0
+				email: "",
 			},
 		});
 
-		// Mettre à jour ou créer l'analyse Ansoff
 		const ansoffAnalysis = await prisma.ansoffAnalysis.upsert({
 			where: { userId: user.id },
 			update: {
 				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 				updatedAt: new Date(),
 			},
 			create: {
 				userId: user.id,
 				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 			},
 		});
 
 		return ansoffAnalysis;
 	} catch (error) {
-		console.error("Erreur détaillée lors de la sauvegarde:", error);
+		console.error("Detailed save error:", error);
 		throw error;
 	}
 }
 
-// Calculer la progression en fonction des cartes remplies
 export const calculateProgress = (data: AnsoffData): number => {
 	const categories = [
 		"penetration",
@@ -73,11 +79,21 @@ export const calculateProgress = (data: AnsoffData): number => {
 };
 
 // Charger les données depuis le localStorage
-export const loadAnsoffData = (): AnsoffData => {
-	if (typeof window === "undefined") return getEmptyAnsoffData();
+export const loadAnsoffData = (): StoredData => {
+	if (typeof window === "undefined") {
+		return {
+			data: getEmptyAnsoffData(),
+			qaResponses: {},
+		};
+	}
 
-	const stored = localStorage.getItem(STORAGE_KEY);
-	return stored ? JSON.parse(stored) : getEmptyAnsoffData();
+	const storedData = localStorage.getItem(STORAGE_KEY);
+	const storedQA = localStorage.getItem(QA_STORAGE_KEY);
+
+	return {
+		data: storedData ? JSON.parse(storedData) : getEmptyAnsoffData(),
+		qaResponses: storedQA ? JSON.parse(storedQA) : {},
+	};
 };
 
 // Retourner une structure de données vide
@@ -99,22 +115,27 @@ const updateParentProgress = (progress: number) => {
 };
 
 // Sauvegarder dans la base de données via l'API
-export const saveToDatabase = async (data: AnsoffData) => {
+export const saveToDatabase = async (
+	data: AnsoffData,
+	qaResponses: QAResponses
+) => {
 	try {
 		const response = await fetch("/api/business-plan/ansoff/save", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify({ data, qaResponses }),
 		});
 
 		if (!response.ok) {
-			throw new Error(
-				"Erreur lors de la sauvegarde dans la base de données"
-			);
+			throw new Error("Database save error");
 		}
+
+		const result = await response.json();
+		return result;
 	} catch (error) {
-		console.error("Erreur lors de la sauvegarde dans la BD:", error);
+		console.error("DB save error:", error);
+		throw error;
 	}
 };

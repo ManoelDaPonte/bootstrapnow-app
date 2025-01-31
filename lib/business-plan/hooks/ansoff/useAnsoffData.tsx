@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { AnsoffData, AnsoffCard } from "@/types/ansoff";
+import { QAResponses } from "@/types/shared/qa-section";
 import {
 	loadAnsoffData,
 	saveAnsoffData,
 	saveToDatabase,
 } from "@/lib/business-plan/hooks/ansoff/storage-ansoff";
 
-// Type utilitaire pour s'assurer que la catégorie est une clé valide de AnsoffData
 type AnsoffCategory = keyof Omit<AnsoffData, "lastAnalysis" | "lastUpdated">;
 
 export const useAnsoffData = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const [cards, setCards] = useState<AnsoffData>(loadAnsoffData());
+	const [data, setData] = useState<AnsoffData>(loadAnsoffData().data);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		loadAnsoffData().qaResponses
+	);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -25,15 +28,16 @@ export const useAnsoffData = () => {
 					if (response.ok) {
 						const serverData = await response.json();
 						if (serverData) {
-							setCards(serverData);
-							saveAnsoffData(serverData);
+							setData(serverData.data);
+							setQAResponses(serverData.qaResponses);
+							saveAnsoffData(
+								serverData.data,
+								serverData.qaResponses
+							);
 						}
 					}
 				} catch (error) {
-					console.error(
-						"Erreur lors du chargement des données:",
-						error
-					);
+					console.error("Data load error:", error);
 				}
 			}
 			setIsLoading(false);
@@ -44,18 +48,17 @@ export const useAnsoffData = () => {
 		}
 	}, [user, authLoading]);
 
-	const saveData = async (newCards: AnsoffData) => {
+	const saveCompleteData = async (
+		newData: AnsoffData,
+		newQAResponses: QAResponses
+	) => {
 		try {
-			// Sauvegarde locale
-			saveAnsoffData(newCards);
-
-			// Sauvegarde en base de données si l'utilisateur est connecté
+			saveAnsoffData(newData, newQAResponses);
 			if (user) {
-				await saveToDatabase(newCards);
+				await saveToDatabase(newData, newQAResponses);
 			}
 		} catch (error) {
-			console.error("Erreur lors de la sauvegarde:", error);
-			// Vous pourriez ajouter ici une notification d'erreur pour l'utilisateur
+			console.error("Save error:", error);
 		}
 	};
 
@@ -63,35 +66,67 @@ export const useAnsoffData = () => {
 		category: AnsoffCategory,
 		card: AnsoffCard
 	) => {
-		const newCards = {
-			...cards,
+		const newData = {
+			...data,
 			[category]: card.id
-				? cards[category].map((c) => (c.id === card.id ? card : c))
-				: [...cards[category], { ...card, id: Date.now() }],
+				? data[category].map((c) => (c.id === card.id ? card : c))
+				: [...data[category], { ...card, id: Date.now() }],
 		};
 
-		setCards(newCards);
-		await saveData(newCards);
+		setData(newData);
+		await saveCompleteData(newData, qaResponses);
 	};
 
 	const handleDeleteCard = async (
 		category: AnsoffCategory,
 		cardId: number
 	) => {
-		const newCards = {
-			...cards,
-			[category]: cards[category].filter((c) => c.id !== cardId),
+		const newData = {
+			...data,
+			[category]: data[category].filter((c) => c.id !== cardId),
 		};
 
-		setCards(newCards);
-		await saveData(newCards);
+		setData(newData);
+		await saveCompleteData(newData, qaResponses);
+	};
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		try {
+			const newQAResponses = {
+				...qaResponses,
+				[categoryId]: response,
+			};
+
+			// Local save
+			saveAnsoffData(data, newQAResponses);
+
+			// DB save if logged in
+			if (user) {
+				await saveToDatabase(data, newQAResponses);
+			}
+		} catch (error) {
+			console.error("Failed to save QA response:", error);
+		}
 	};
 
 	return {
-		cards,
+		cards: data,
+		qaResponses,
 		isLoading: isLoading || authLoading,
 		user,
 		handleSaveCard,
 		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
 	};
 };

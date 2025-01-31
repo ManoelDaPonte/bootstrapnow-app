@@ -1,4 +1,6 @@
 // types/ansoff.ts
+import { QAResponses } from "@/types/shared/qa-section";
+
 export interface AnsoffCard {
 	id: number;
 	title: string;
@@ -39,3 +41,8 @@ export type AnsoffCategory = keyof Omit<
 	AnsoffData,
 	"lastAnalysis" | "lastUpdated"
 >;
+
+export interface StoredData {
+	data: AnsoffData;
+	qaResponses: QAResponses;
+}

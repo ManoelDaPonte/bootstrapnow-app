@@ -7,48 +7,89 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model User {
-    id                       String                    @id @default(cuid())
-    auth0Id                  String                    @unique
-    email                    String                    @unique
-    swotAnalysis             SwotAnalysis?
-    ansoffAnalysis           AnsoffAnalysis?
-    pestelAnalysis           PestelAnalysis?
-    canvasAnalysis           CanvasAnalysis?
-    marketingMixAnalysis     MarketingMixAnalysis?
-    skillMatrix              SkillMatrix?
-    valuePropositionAnalysis ValuePropositionAnalysis?
-    funnelChartAnalysis      FunnelChartAnalysis?
-    generatedBusinessPlan    GeneratedBusinessPlan[]
-    createdAt                DateTime                  @default(now())
-    updatedAt                DateTime                  @updatedAt
+model BusinessPlanProgress {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    progress  Json // Stocke le progrès de chaque section
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model MonthlyProjectionAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model YearlyProjectionAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model MarketTrendsAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model CompetitorsAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model StartupExpensesAnalysis {
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model SwotAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model AnsoffAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model PestelAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model CanvasAnalysis {
@@ -61,12 +102,13 @@ model CanvasAnalysis {
 }
 
 model MarketingMixAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model SkillMatrix {
@@ -79,21 +121,23 @@ model SkillMatrix {
 }
 
 model ValuePropositionAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model FunnelChartAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model GeneratedBusinessPlan {
@@ -105,4 +149,27 @@ model GeneratedBusinessPlan {
     status    String   @default("draft") // draft, published, archived
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model User {
+    id                        String                     @id @default(cuid())
+    auth0Id                   String                     @unique
+    email                     String                     @unique
+    swotAnalysis              SwotAnalysis?
+    ansoffAnalysis            AnsoffAnalysis?
+    pestelAnalysis            PestelAnalysis?
+    canvasAnalysis            CanvasAnalysis?
+    marketingMixAnalysis      MarketingMixAnalysis?
+    skillMatrix               SkillMatrix?
+    valuePropositionAnalysis  ValuePropositionAnalysis?
+    funnelChartAnalysis       FunnelChartAnalysis?
+    monthlyProjectionAnalysis MonthlyProjectionAnalysis?
+    yearlyProjectionAnalysis  YearlyProjectionAnalysis?
+    marketTrendsAnalysis      MarketTrendsAnalysis?
+    competitorsAnalysis       CompetitorsAnalysis?
+    startupExpensesAnalysis   StartupExpensesAnalysis?
+    businessPlanProgress      BusinessPlanProgress?
+    generatedBusinessPlan     GeneratedBusinessPlan[]
+    createdAt                 DateTime                   @default(now())
+    updatedAt                 DateTime                   @updatedAt
 }
