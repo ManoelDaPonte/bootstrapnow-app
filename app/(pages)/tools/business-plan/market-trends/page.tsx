@@ -25,40 +25,7 @@ import {
 import { Trash2 } from "lucide-react";
 import { Header } from "@/components/business-plan/shared/Header";
 import { TrendEntry, MarketNumber } from "@/types/market-trends";
-
-const INITIAL_TRENDS: TrendEntry[] = [
-	{ id: "trend_1", annee: 2018, tauxCroissance: 5, variationDemande: 4 },
-	{ id: "trend_2", annee: 2019, tauxCroissance: 7, variationDemande: 6 },
-	{ id: "trend_3", annee: 2020, tauxCroissance: 8, variationDemande: 7 },
-	{ id: "trend_4", annee: 2021, tauxCroissance: 10, variationDemande: 9 },
-	{ id: "trend_5", annee: 2022, tauxCroissance: 12, variationDemande: 11 },
-];
-
-const INITIAL_MARKET_NUMBERS: MarketNumber[] = [
-	{
-		id: "market_size",
-		value: "1,200M€",
-		title: "Taille du marché",
-		description:
-			"C'est la taille actuelle du marché global, en pleine croissance.",
-		referenceLink: "https://example.com/market_size",
-	},
-	{
-		id: "annual_growth",
-		value: "12%",
-		title: "Croissance annuelle",
-		description:
-			"Le marché croît à un taux annuel de 12%, favorisant l'innovation.",
-		referenceLink: "https://example.com/annual_growth",
-	},
-	{
-		id: "market_share",
-		value: "30%",
-		title: "Part de marché des leaders",
-		description: "Les trois principaux acteurs dominent 30% du marché.",
-		referenceLink: "https://example.com/market_share",
-	},
-];
+import { useMarketTrends } from "@/lib/business-plan/hooks/market-trends/useMarketTrends";
 
 const FIELD_LABELS = {
 	annee: "Année",
@@ -67,10 +34,16 @@ const FIELD_LABELS = {
 };
 
 const Trends: React.FC = () => {
-	const [trends, setTrends] = useState<TrendEntry[]>(INITIAL_TRENDS);
-	const [marketNumbers, setMarketNumbers] = useState<MarketNumber[]>(
-		INITIAL_MARKET_NUMBERS
-	);
+	const {
+		trends,
+		marketNumbers,
+		isLoading,
+		addTrend,
+		updateTrend,
+		removeTrend,
+		updateMarketNumber,
+		saveTrend,
+	} = useMarketTrends();
 
 	// Calcul du progrès basé sur le remplissage des données
 	const calculateProgress = useCallback(() => {
@@ -100,50 +73,39 @@ const Trends: React.FC = () => {
 	}, [trends, marketNumbers]);
 
 	// Handler pour ajouter une nouvelle entrée
-	const handleAddTrend = useCallback(() => {
-		const newTrend: TrendEntry = {
-			id: `trend_${Date.now()}`,
-			annee: new Date().getFullYear(),
-			tauxCroissance: 0,
-			variationDemande: 0,
-		};
-		setTrends((prev) => [...prev, newTrend]);
-	}, []);
+	const handleAddTrend = () => {
+		addTrend();
+	};
 
-	// Handler pour supprimer une entrée
-	const handleRemoveTrend = useCallback((id: string) => {
-		setTrends((prev) => prev.filter((trend) => trend.id !== id));
-	}, []);
-
+	// Remplacer handleRemoveTrend
+	const handleRemoveTrend = (id: string) => {
+		removeTrend(id);
+	};
 	// Handler pour mettre à jour les données
-	const handleUpdateTrend = useCallback(
-		(id: string, field: keyof TrendEntry, value: string) => {
-			setTrends((prev) =>
-				prev.map((trend) => {
-					if (trend.id !== id) return trend;
-					const newValue =
-						field === "annee"
-							? parseInt(value)
-							: parseFloat(value) || 0;
-					return { ...trend, [field]: newValue };
-				})
-			);
-		},
-		[]
-	);
+	const handleUpdateTrend = (
+		id: string,
+		field: keyof TrendEntry,
+		value: string
+	) => {
+		updateTrend(id, field, value);
+	};
 
 	// Handler pour mettre à jour un grand chiffre
-	const handleUpdateMarketNumber = useCallback(
-		(id: string, field: keyof MarketNumber, value: string) => {
-			setMarketNumbers((prev) =>
-				prev.map((item) => {
-					if (item.id !== id) return item;
-					return { ...item, [field]: value };
-				})
-			);
-		},
-		[]
-	);
+	const handleUpdateMarketNumber = (
+		id: string,
+		field: keyof MarketNumber,
+		value: string
+	) => {
+		updateMarketNumber(id, field, value);
+	};
+
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col h-screen">
@@ -312,6 +274,9 @@ const Trends: React.FC = () => {
 																			.value
 																	)
 																}
+																onBlur={() =>
+																	saveTrend()
+																}
 															/>
 														</TableCell>
 													))}
@@ -385,6 +350,9 @@ const Trends: React.FC = () => {
 																			.value
 																	)
 																}
+																onBlur={() =>
+																	saveTrend()
+																}
 															/>
 														</TableCell>
 														<TableCell>
@@ -399,6 +367,9 @@ const Trends: React.FC = () => {
 																		e.target
 																			.value
 																	)
+																}
+																onBlur={() =>
+																	saveTrend()
 																}
 															/>
 														</TableCell>
@@ -415,6 +386,9 @@ const Trends: React.FC = () => {
 																			.value
 																	)
 																}
+																onBlur={() =>
+																	saveTrend()
+																}
 															/>
 														</TableCell>
 														<TableCell>
@@ -429,6 +403,9 @@ const Trends: React.FC = () => {
 																		e.target
 																			.value
 																	)
+																}
+																onBlur={() =>
+																	saveTrend()
 																}
 															/>
 														</TableCell>

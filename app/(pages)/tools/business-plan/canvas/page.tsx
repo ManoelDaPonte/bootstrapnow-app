@@ -7,7 +7,8 @@ import { Header } from "@/components/business-plan/shared/Header";
 import { CardModal } from "@/components/business-plan/shared/CardModal";
 import { CanvasSection } from "@/components/business-plan/CanvasSection";
 import QASection from "@/components/business-plan/shared/QASection";
-import { QAResponses } from "@/types/shared/qa-section";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import Skeleton from "@/components/ui/Skeleton";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
 	CANVAS_DESCRIPTIONS,
@@ -19,21 +20,22 @@ import {
 type CanvasCategory = keyof typeof CANVAS_HEADERS;
 
 export default function BusinessModelCanvas() {
-	const { cards, handleSaveCard, handleDeleteCard } = useCanvasData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const {
+		cards,
+		qaResponses,
+		isLoading,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useCanvasData();
+
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
-	const [error, setError] = useState(false);
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
+	const [error, setError] = useState<string | null>(null);
 
 	const handleAddCard = (category: CanvasCategory) => {
 		setModalState({
@@ -41,51 +43,65 @@ export default function BusinessModelCanvas() {
 			category,
 			card: { id: 0, title: "", description: "" },
 		});
-		setError(false);
+		setError(null);
 	};
 
 	const handleEditCard = (category: CanvasCategory, card: CanvasCard) => {
 		setModalState({ open: true, category, card });
-		setError(false);
+		setError(null);
 	};
 
-	const handleModalSave = () => {
+	const handleModalSave = async () => {
 		const { category, card } = modalState;
-		if (!card.title || !card.description) {
-			setError(true);
+		if (!card.title?.trim() || !card.description?.trim()) {
+			setError("Le titre et la description sont requis");
 			return;
 		}
 
-		handleSaveCard(category as CanvasCategory, card);
-		setModalState({
-			open: false,
-			category: "",
-			card: { id: 0, title: "", description: "" },
-		});
+		try {
+			await handleSaveCard(category as CanvasCategory, card);
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "" },
+			});
+			setError(null);
+		} catch (err) {
+			setError("Erreur lors de la sauvegarde de la carte");
+			console.error("Erreur de sauvegarde:", err);
+		}
 	};
 
-	const handleModalDelete = () => {
+	const handleModalDelete = async () => {
 		const { category, card } = modalState;
-		handleDeleteCard(category as CanvasCategory, card.id);
-		setModalState({
-			open: false,
-			category: "",
-			card: { id: 0, title: "", description: "" },
-		});
+		try {
+			await handleDeleteCard(category as CanvasCategory, card.id);
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "" },
+			});
+			setError(null);
+		} catch (err) {
+			setError("Erreur lors de la suppression de la carte");
+			console.error("Erreur de suppression:", err);
+		}
 	};
 
 	const modalProps: ModalProps<CanvasCard> = {
 		isOpen: modalState.open,
 		card: modalState.card,
-		onClose: () =>
+		onClose: () => {
 			setModalState({
 				open: false,
 				category: "",
 				card: { id: 0, title: "", description: "" },
-			}),
+			});
+			setError(null);
+		},
 		onSave: handleModalSave,
 		onDelete: handleModalDelete,
-		error,
+		error: error !== null,
 		isNew: !modalState.card.id,
 		onChange: (e) =>
 			setModalState((prev) => ({
@@ -104,12 +120,37 @@ export default function BusinessModelCanvas() {
 			: undefined,
 	};
 
+	if (isLoading) {
+		return (
+			<div className="flex flex-col h-screen">
+				<Header title="Canvas Business Model" progress={0} />
+				<div className="flex-1 max-w-8xl mx-auto w-full p-6">
+					<div className="grid grid-cols-12 gap-4 h-full min-h-[600px]">
+						{Array.from({ length: 9 }).map((_, i) => (
+							<div
+								key={i}
+								className={`col-span-${i < 3 ? "3" : "2"}`}
+							>
+								<Skeleton className="w-full h-full" />
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		);
+	}
 	return (
 		<div className="flex flex-col h-screen">
 			<Header
 				title="Canvas Business Model"
 				progress={calculateProgress(cards)}
 			/>
+
+			{error && (
+				<Alert variant="destructive" className="mx-6 mt-4">
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
+			)}
 
 			{/* Main Content */}
 			<div className="flex-1 max-w-8xl mx-auto w-full p-6 overflow-auto">
@@ -216,6 +257,8 @@ export default function BusinessModelCanvas() {
 					data={CANVAS_QA_DATA}
 					responses={qaResponses}
 					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+					className="mt-8"
 				/>
 			</div>
 

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Save } from "lucide-react"; // Ajout de l'icône Save
 import {
 	Table,
 	TableBody,
@@ -28,59 +28,69 @@ import {
 import { Header } from "@/components/business-plan/shared/Header";
 
 import { ProfitLossData, ProfitLossEntry } from "@/types/12-months";
-import {
-	INITIAL_PROFIT_LOSS_DATA,
-	months,
-} from "@/lib/business-plan/config/12-months";
+import { months } from "@/lib/business-plan/config/12-months";
+import { useProfitLossData } from "@/lib/business-plan/hooks/12-months/useProfitLossData";
+import { calculateProgress } from "@/lib/business-plan/hooks/12-months/storage-12-months";
 
 const TwelveMonthsProjection: React.FC = () => {
-	const [profitLossData, setProfitLossData] = useState<ProfitLossData>(
-		INITIAL_PROFIT_LOSS_DATA
-	);
-
-	// Calcul du progrès pour le Header
-	const calculateProgress = useCallback(() => {
-		const totalFields =
-			(profitLossData.revenue.length + profitLossData.expenses.length) *
-			13; // 12 mois + catégorie
-		const filledFields = [
-			...profitLossData.revenue,
-			...profitLossData.expenses,
-		].reduce((acc, entry) => {
-			const monthFields = months.reduce(
-				(sum, month) => sum + (entry[month] ? 1 : 0),
-				0
-			);
-			return acc + (entry.category ? 1 : 0) + monthFields;
-		}, 0);
-		return Math.round((filledFields / totalFields) * 100);
-	}, [profitLossData]);
+	const {
+		profitLossData,
+		isLoading,
+		isSaving,
+		hasUnsavedChanges,
+		handleUpdateData,
+		saveChanges,
+	} = useProfitLossData();
 
 	// Ajouter une ligne
-	const addRow = useCallback((section: keyof ProfitLossData) => {
-		const newId = `new_${section}_${Date.now()}`;
-		setProfitLossData((prev) => ({
-			...prev,
-			[section]: [
-				...prev[section],
-				{
-					id: newId,
-					category: "New Category",
-					...Object.fromEntries(months.map((m) => [m, 0])),
-				},
-			],
-		}));
-	}, []);
+	const addRow = useCallback(
+		(section: keyof ProfitLossData) => {
+			const newId = `new_${section}_${Date.now()}`;
+			// Créer un objet avec tous les mois initialisés à 0
+			const monthValues = {
+				Jan: 0,
+				Feb: 0,
+				Mar: 0,
+				Apr: 0,
+				May: 0,
+				Jun: 0,
+				Jul: 0,
+				Aug: 0,
+				Sep: 0,
+				Oct: 0,
+				Nov: 0,
+				Dec: 0,
+			};
+
+			const newData = {
+				...profitLossData,
+				[section]: [
+					...profitLossData[section],
+					{
+						id: newId,
+						category: "New Category",
+						...monthValues,
+					},
+				],
+			};
+			console.log("Nouvelles données à sauvegarder:", newData);
+			handleUpdateData(newData);
+		},
+		[profitLossData, handleUpdateData]
+	);
 
 	// Supprimer une ligne
 	const removeRow = useCallback(
 		(section: keyof ProfitLossData, id: string) => {
-			setProfitLossData((prev) => ({
-				...prev,
-				[section]: prev[section].filter((entry) => entry.id !== id),
-			}));
+			const newData = {
+				...profitLossData,
+				[section]: profitLossData[section].filter(
+					(entry) => entry.id !== id
+				),
+			};
+			handleUpdateData(newData);
 		},
-		[]
+		[profitLossData, handleUpdateData]
 	);
 
 	// Mettre à jour une cellule
@@ -91,14 +101,15 @@ const TwelveMonthsProjection: React.FC = () => {
 			field: string,
 			value: string | number
 		) => {
-			setProfitLossData((prev) => ({
-				...prev,
-				[section]: prev[section].map((entry) =>
+			const newData = {
+				...profitLossData,
+				[section]: profitLossData[section].map((entry) =>
 					entry.id === id ? { ...entry, [field]: value } : entry
 				),
-			}));
+			};
+			handleUpdateData(newData);
 		},
-		[]
+		[profitLossData, handleUpdateData]
 	);
 
 	// Calcul du total revenu par mois
@@ -131,19 +142,32 @@ const TwelveMonthsProjection: React.FC = () => {
 			months.map((month, index) => ({
 				name: month,
 				Revenue: totalRevenue[index],
-				Expenses: -totalExpenses[index], // Mettre en négatif pour affichage correct
+				Expenses: -totalExpenses[index],
 				Profit: totalRevenue[index] - totalExpenses[index],
 			})),
 		[totalRevenue, totalExpenses]
 	);
 
+	if (isLoading) {
+		return <div>Chargement...</div>;
+	}
+
 	return (
 		<div className="flex flex-col h-screen">
 			<Header
 				title="Prévisionnel à 12 mois"
-				progress={calculateProgress()}
+				progress={calculateProgress(profitLossData)}
+				rightContent={
+					<Button
+						onClick={saveChanges}
+						disabled={!hasUnsavedChanges || isSaving}
+						className="flex items-center gap-2"
+					>
+						<Save className="h-4 w-4" />
+						{isSaving ? "Sauvegarde..." : "Sauvegarder"}
+					</Button>
+				}
 			/>
-
 			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">
 				<Tabs defaultValue="overview" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-2">
@@ -155,7 +179,7 @@ const TwelveMonthsProjection: React.FC = () => {
 						</TabsTrigger>
 					</TabsList>
 
-					{/* Graphique */}
+					{/* Vue d'ensemble avec le graphique */}
 					<TabsContent value="overview">
 						<Card>
 							<CardHeader>
@@ -173,10 +197,10 @@ const TwelveMonthsProjection: React.FC = () => {
 												const formattedValue =
 													Math.abs(
 														value
-													).toLocaleString(); // Met l'abs de la valeur
+													).toLocaleString();
 												return value < 0
 													? `-€${formattedValue}`
-													: `€${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
+													: `€${formattedValue}`;
 											}}
 										/>
 										<Tooltip
@@ -193,7 +217,6 @@ const TwelveMonthsProjection: React.FC = () => {
 											}}
 										/>
 										<Legend />
-
 										<Bar
 											dataKey="Revenue"
 											fill="#3498db"
@@ -217,7 +240,7 @@ const TwelveMonthsProjection: React.FC = () => {
 						</Card>
 					</TabsContent>
 
-					{/* Tableau */}
+					{/* Vue détaillée avec le tableau */}
 					<TabsContent value="details">
 						<Card>
 							<CardHeader>
@@ -248,11 +271,7 @@ const TwelveMonthsProjection: React.FC = () => {
 							</CardHeader>
 
 							<CardContent className="p-0">
-								{" "}
-								{/* Suppression du padding */}
 								<div className="space-y-6 p-6">
-									{" "}
-									{/* Déplacement du padding ici */}
 									{(["revenue", "expenses"] as const).map(
 										(section) => (
 											<div
@@ -270,12 +289,8 @@ const TwelveMonthsProjection: React.FC = () => {
 												</div>
 
 												<div className="overflow-auto max-h-[400px]">
-													{" "}
-													{/* Limitation de la hauteur et scroll */}
 													<Table className="w-full">
 														<TableHeader className="sticky top-0 bg-white z-10">
-															{" "}
-															{/* Header fixe */}
 															<TableRow>
 																<TableHead
 																	rowSpan={2}
@@ -435,4 +450,5 @@ const TwelveMonthsProjection: React.FC = () => {
 		</div>
 	);
 };
+
 export default TwelveMonthsProjection;

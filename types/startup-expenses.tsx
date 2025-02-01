@@ -64,7 +64,6 @@ export interface DetailsProps {
 		id: string
 	) => void;
 }
-
 export interface RiskAssessmentProps {
 	risks: Risk[];
 	onUpdate: (

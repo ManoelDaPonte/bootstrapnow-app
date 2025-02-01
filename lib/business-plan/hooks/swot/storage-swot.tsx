@@ -68,7 +68,6 @@ export const calculateProgress = (data: SwotData): number => {
 			filledCategories++;
 		}
 	});
-
 	return Math.round((filledCategories / categories.length) * 100);
 };
 
@@ -110,6 +109,7 @@ const updateParentProgress = (progress: number) => {
 	window.dispatchEvent(event);
 };
 
+// Sauvegarder les données dans la base de données
 export const saveToDatabase = async (
 	data: SwotData,
 	qaResponses: QAResponses

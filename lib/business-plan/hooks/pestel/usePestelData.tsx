@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { PestelData, PestelCard } from "@/types/pestel";
+import { QAResponses } from "@/types/shared/qa-section";
 import {
 	loadPestelData,
 	savePestelData,
@@ -12,8 +13,12 @@ import {
 type PestelCategory = keyof Omit<PestelData, "lastAnalysis" | "lastUpdated">;
 
 export const usePestelData = () => {
-	const { user, isLoading } = useUser();
-	const [cards, setCards] = useState<PestelData>(loadPestelData());
+	const { user, isLoading: authLoading } = useUser();
+	const [cards, setCards] = useState<PestelData>(loadPestelData().data);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		loadPestelData().qaResponses
+	);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadInitialData = async () => {
@@ -26,10 +31,11 @@ export const usePestelData = () => {
 					if (response.ok) {
 						const serverData = await response.json();
 						if (serverData) {
-							setCards(serverData);
-							localStorage.setItem(
-								"pestel-data",
-								JSON.stringify(serverData)
+							setCards(serverData.data);
+							setQAResponses(serverData.qaResponses);
+							savePestelData(
+								serverData.data,
+								serverData.qaResponses
 							);
 						}
 					}
@@ -40,12 +46,27 @@ export const usePestelData = () => {
 					);
 				}
 			}
+			setIsLoading(false);
 		};
 
-		if (!isLoading) {
+		if (!authLoading) {
 			loadInitialData();
 		}
-	}, [user, isLoading]);
+	}, [user, authLoading]);
+
+	const saveCompleteData = async (
+		newData: PestelData,
+		newQAResponses: QAResponses
+	) => {
+		try {
+			savePestelData(newData, newQAResponses);
+			if (user) {
+				await saveToDatabase(newData, newQAResponses);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la sauvegarde:", error);
+		}
+	};
 
 	const handleSaveCard = async (
 		category: PestelCategory,
@@ -59,11 +80,7 @@ export const usePestelData = () => {
 		};
 
 		setCards(newCards);
-		savePestelData(newCards);
-
-		if (user) {
-			await saveToDatabase(newCards);
-		}
+		await saveCompleteData(newCards, qaResponses);
 	};
 
 	const handleDeleteCard = async (
@@ -76,18 +93,46 @@ export const usePestelData = () => {
 		};
 
 		setCards(newCards);
-		savePestelData(newCards);
+		await saveCompleteData(newCards, qaResponses);
+	};
 
-		if (user) {
-			await saveToDatabase(newCards);
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		try {
+			const newQAResponses = {
+				...qaResponses,
+				[categoryId]: response,
+			};
+
+			// Sauvegarde locale
+			savePestelData(cards, newQAResponses);
+
+			// Sauvegarde en BD si connecté
+			if (user) {
+				await saveToDatabase(cards, newQAResponses);
+			}
+		} catch (error) {
+			console.error("Failed to save QA response:", error);
 		}
 	};
 
 	return {
-		cards,
-		isLoading,
+		cards: cards,
+		qaResponses,
+		isLoading: isLoading || authLoading,
 		user,
 		handleSaveCard,
 		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
 	};
 };

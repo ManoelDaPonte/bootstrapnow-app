@@ -14,6 +14,7 @@ export async function GET() {
 			);
 		}
 
+		// Récupérer les données de l'utilisateur
 		const userData = await prisma.user.findUnique({
 			where: { auth0Id: user.sub },
 			include: { swotAnalysis: true },
