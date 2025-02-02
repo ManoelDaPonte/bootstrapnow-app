@@ -5,6 +5,7 @@ import {
 	ValuePropositionCategory,
 	ValuePropositionCard,
 } from "@/types/value-proposition";
+import { QAResponses } from "@/types/shared/qa-section";
 import {
 	loadValuePropositionData,
 	saveValuePropositionData,
@@ -12,10 +13,14 @@ import {
 } from "@/lib/business-plan/hooks/value-proposition/storage-value-proposition";
 
 export const useValuePropositionData = () => {
-	const { user, isLoading } = useUser();
+	const { user, isLoading: authLoading } = useUser();
 	const [data, setData] = useState<ValuePropositionData>(
-		loadValuePropositionData()
+		loadValuePropositionData().data
 	);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		loadValuePropositionData().qaResponses
+	);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadInitialData = async () => {
@@ -27,8 +32,12 @@ export const useValuePropositionData = () => {
 					if (response.ok) {
 						const serverData = await response.json();
 						if (serverData) {
-							setData(serverData);
-							saveValuePropositionData(serverData);
+							setData(serverData.data);
+							setQAResponses(serverData.qaResponses);
+							saveValuePropositionData(
+								serverData.data,
+								serverData.qaResponses
+							);
 						}
 					}
 				} catch (error) {
@@ -38,12 +47,27 @@ export const useValuePropositionData = () => {
 					);
 				}
 			}
+			setIsLoading(false);
 		};
 
-		if (!isLoading) {
+		if (!authLoading) {
 			loadInitialData();
 		}
-	}, [user, isLoading]);
+	}, [user, authLoading]);
+
+	const saveCompleteData = async (
+		newData: ValuePropositionData,
+		newQAResponses: QAResponses
+	) => {
+		try {
+			saveValuePropositionData(newData, newQAResponses);
+			if (user) {
+				await saveToDatabase(newData, newQAResponses);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la sauvegarde:", error);
+		}
+	};
 
 	const handleSaveItem = async (
 		category: ValuePropositionCategory,
@@ -63,11 +87,7 @@ export const useValuePropositionData = () => {
 		};
 
 		setData(newData);
-		saveValuePropositionData(newData);
-
-		if (user) {
-			await saveToDatabase(newData);
-		}
+		await saveCompleteData(newData, qaResponses);
 	};
 
 	const handleUpdateItem = async (
@@ -93,11 +113,7 @@ export const useValuePropositionData = () => {
 		};
 
 		setData(newData);
-		saveValuePropositionData(newData);
-
-		if (user) {
-			await saveToDatabase(newData);
-		}
+		await saveCompleteData(newData, qaResponses);
 	};
 
 	const handleDeleteItem = async (
@@ -110,19 +126,38 @@ export const useValuePropositionData = () => {
 		};
 
 		setData(newData);
-		saveValuePropositionData(newData);
+		await saveCompleteData(newData, qaResponses);
+	};
 
-		if (user) {
-			await saveToDatabase(newData);
-		}
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		const newQAResponses = {
+			...qaResponses,
+			[categoryId]: response,
+		};
+
+		setQAResponses(newQAResponses);
+		await saveCompleteData(data, newQAResponses);
 	};
 
 	return {
-		data,
-		isLoading,
+		cards: data,
+		qaResponses,
+		isLoading: isLoading || authLoading,
 		user,
 		handleSaveItem,
 		handleUpdateItem,
 		handleDeleteItem,
+		handleQAResponseChange,
+		handleQAResponseSave,
 	};
 };

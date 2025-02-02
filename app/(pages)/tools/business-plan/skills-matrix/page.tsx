@@ -47,22 +47,16 @@ export default function SkillMatrixPage() {
 	const {
 		people,
 		domains,
+		qaResponses, // Nouveau
 		isLoading,
 		addPerson,
 		addDomain,
 		updateSkill,
 		removePerson,
 		removeDomain,
+		handleQAResponseChange, // Nouveau
+		handleQAResponseSave, // Nouveau
 	} = useSkillMatrix();
-
-	const [qaResponses, setQAResponses] = React.useState<QAResponses>({});
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
 
 	const columns = React.useMemo(
 		() => [
@@ -222,6 +216,7 @@ export default function SkillMatrixPage() {
 					data={SKILLS_MATRIX_QA_DATA}
 					responses={qaResponses}
 					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
 				/>
 			</div>
 		</div>

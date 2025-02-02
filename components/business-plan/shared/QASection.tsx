@@ -11,11 +11,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { QAData, QAResponses } from "@/types/shared/qa-section";
+import { useState } from "react";
 
 interface QASectionProps {
 	data: QAData;
 	responses: QAResponses;
 	onResponseChange?: (categoryId: string, response: string) => void;
+	onResponseSave?: (categoryId: string, response: string) => void; // Renommé pour plus de clarté
 	className?: string;
 }
 
@@ -23,16 +25,36 @@ const QASection: React.FC<QASectionProps> = ({
 	data,
 	responses,
 	onResponseChange,
+	onResponseSave,
 	className = "",
 }) => {
 	const { sectionTitle, categories } = data;
 
+	// État local pour tracker les modifications
+	const [editedResponses, setEditedResponses] = useState<QAResponses>({});
+
 	const handleResponseChange = (categoryId: string, value: string) => {
+		setEditedResponses((prev) => ({
+			...prev,
+			[categoryId]: value,
+		}));
 		onResponseChange?.(categoryId, value);
 	};
 
+	const handleBlur = (categoryId: string, value: string) => {
+		// Vérifie si la valeur a été modifiée avant de sauvegarder
+		if (editedResponses[categoryId] !== undefined) {
+			onResponseSave?.(categoryId, value);
+			// Réinitialise l'état local après la sauvegarde
+			setEditedResponses((prev) => {
+				const newState = { ...prev };
+				delete newState[categoryId];
+				return newState;
+			});
+		}
+	};
 	return (
-		<div className={`max-w-7xl mx-auto w-full  py-8 ${className}`}>
+		<div className={` w-full  py-8 ${className}`}>
 			<h2 className="text-2xl font-bold mb-6">{sectionTitle}</h2>
 			<div className="grid gap-6">
 				{categories.map((category) => (
@@ -61,6 +83,9 @@ const QASection: React.FC<QASectionProps> = ({
 											category.id,
 											e.target.value
 										)
+									}
+									onBlur={(e) =>
+										handleBlur(category.id, e.target.value)
 									}
 								/>
 							</div>

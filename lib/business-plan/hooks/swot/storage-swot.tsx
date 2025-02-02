@@ -1,14 +1,14 @@
-// lib/business-plan/swot/storage-swot.ts
 import { SwotData } from "@/types/swot";
-import { prisma } from "@/lib/db/prisma"; // Adjust the import path as necessary
+import { QAResponses } from "@/types/shared/qa-section";
+import { prisma } from "@/lib/db/prisma";
 
 export const STORAGE_KEY = "swot-data";
+export const QA_STORAGE_KEY = "swot-qa-responses";
 
-// Sauvegarder les données (localStorage uniquement)
-export const saveSwotData = (data: SwotData) => {
+export const saveSwotData = (data: SwotData, qaResponses: QAResponses) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder dans localStorage
+	// Sauvegarder les données SWOT
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -17,32 +17,38 @@ export const saveSwotData = (data: SwotData) => {
 		})
 	);
 
-	// Mettre à jour la progression dans la page parent
+	// Sauvegarder les réponses QA séparément
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
 	updateParentProgress(calculateProgress(data));
 };
 
-export async function updateSwotData(auth0Id: string, data: SwotData) {
+export async function updateSwotData(
+	auth0Id: string,
+	data: SwotData,
+	qaResponses: QAResponses
+) {
 	try {
-		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
 			update: {},
 			create: {
 				auth0Id,
-				email: "", // À remplir avec l'email de Auth0
+				email: "",
 			},
 		});
 
-		// Mettre à jour ou créer l'analyse SWOT
 		const swotAnalysis = await prisma.swotAnalysis.upsert({
 			where: { userId: user.id },
 			update: {
-				data: JSON.parse(JSON.stringify(data)),
+				data: JSON.parse(JSON.stringify(data)), // Conversion nécessaire pour le type JSON
+				qaResponses: qaResponses,
 				updatedAt: new Date(),
 			},
 			create: {
 				userId: user.id,
 				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 			},
 		});
 
@@ -53,7 +59,6 @@ export async function updateSwotData(auth0Id: string, data: SwotData) {
 	}
 }
 
-// Calculer la progression en fonction des cartes remplies
 export const calculateProgress = (data: SwotData): number => {
 	const categories = ["strengths", "weaknesses", "opportunities", "threats"];
 	let filledCategories = 0;
@@ -63,19 +68,31 @@ export const calculateProgress = (data: SwotData): number => {
 			filledCategories++;
 		}
 	});
-
 	return Math.round((filledCategories / categories.length) * 100);
 };
 
-// Charger les données depuis le localStorage
-export const loadSwotData = (): SwotData => {
-	if (typeof window === "undefined") return getEmptySwotData();
+interface StoredData {
+	data: SwotData;
+	qaResponses: QAResponses;
+}
 
-	const stored = localStorage.getItem(STORAGE_KEY);
-	return stored ? JSON.parse(stored) : getEmptySwotData();
+export const loadSwotData = (): StoredData => {
+	if (typeof window === "undefined") {
+		return {
+			data: getEmptySwotData(),
+			qaResponses: {},
+		};
+	}
+
+	const storedData = localStorage.getItem(STORAGE_KEY);
+	const storedQA = localStorage.getItem(QA_STORAGE_KEY);
+
+	return {
+		data: storedData ? JSON.parse(storedData) : getEmptySwotData(),
+		qaResponses: storedQA ? JSON.parse(storedQA) : {},
+	};
 };
 
-// Retourner une structure de données vide
 export const getEmptySwotData = (): SwotData => ({
 	strengths: [],
 	weaknesses: [],
@@ -83,7 +100,6 @@ export const getEmptySwotData = (): SwotData => ({
 	threats: [],
 });
 
-// Mettre à jour la progression dans la page parent
 const updateParentProgress = (progress: number) => {
 	if (typeof window === "undefined") return;
 
@@ -93,16 +109,18 @@ const updateParentProgress = (progress: number) => {
 	window.dispatchEvent(event);
 };
 
-// Sauvegarder dans la base de données via l'API
-export const saveToDatabase = async (data: SwotData) => {
+// Sauvegarder les données dans la base de données
+export const saveToDatabase = async (
+	data: SwotData,
+	qaResponses: QAResponses
+) => {
 	try {
 		const response = await fetch("/api/business-plan/swot/save", {
-			// Nouvelle route
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify({ data, qaResponses }),
 		});
 
 		if (!response.ok) {
@@ -110,7 +128,11 @@ export const saveToDatabase = async (data: SwotData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
+
+		const result = await response.json();
+		return result;
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
+		throw error;
 	}
 };

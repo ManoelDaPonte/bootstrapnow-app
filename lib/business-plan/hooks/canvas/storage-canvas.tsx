@@ -3,14 +3,20 @@ import { CanvasData } from "@/types/canvas";
 import { prisma } from "@/lib/db/prisma";
 import { CanvasCard } from "@/types/canvas";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
+import { QAResponses } from "@/types/shared/qa-section";
 
 export const STORAGE_KEY = "canvas-data";
+export const QA_STORAGE_KEY = "canvas-qa-responses";
 
-// Sauvegarder les données (localStorage uniquement)
-export const saveCanvasData = (data: CanvasData) => {
+interface StoredData {
+	data: CanvasData;
+	qaResponses: QAResponses;
+}
+
+export const saveCanvasData = (data: CanvasData, qaResponses: QAResponses) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder dans localStorage
+	// Sauvegarder les données principales
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -19,85 +25,43 @@ export const saveCanvasData = (data: CanvasData) => {
 		})
 	);
 
-	// Mettre à jour la progression dans la page parent
+	// Sauvegarder les QA responses séparément
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
 	updateParentProgress(calculateProgress(data));
 };
 
-export async function updateCanvasData(auth0Id: string, data: CanvasData) {
+export async function updateCanvasData(
+	auth0Id: string,
+	data: CanvasData,
+	qaResponses: QAResponses
+) {
 	try {
-		// Récupérer les informations de session pour avoir l'email
 		const session = await getUserFromSession();
 		if (!session) {
 			throw new Error("Session utilisateur non trouvée");
 		}
 
-		// Vérifier et créer/mettre à jour l'utilisateur directement avec upsert
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
-			update: {}, // Pas besoin de mettre à jour quoi que ce soit
+			update: {},
 			create: {
 				auth0Id,
-				email: session.email || `${auth0Id}@temporary.com`, // Utiliser l'email de la session
+				email: session.email || `${auth0Id}@temporary.com`,
 			},
 		});
 
-		// S'assurer que les données sont bien structurées
-		const sanitizedData: CanvasData = {
-			keyPartners: Array.isArray(data.keyPartners)
-				? data.keyPartners
-				: [],
-			keyActivities: Array.isArray(data.keyActivities)
-				? data.keyActivities
-				: [],
-			keyResources: Array.isArray(data.keyResources)
-				? data.keyResources
-				: [],
-			valueProposition: Array.isArray(data.valueProposition)
-				? data.valueProposition
-				: [],
-			customerRelationships: Array.isArray(data.customerRelationships)
-				? data.customerRelationships
-				: [],
-			channels: Array.isArray(data.channels) ? data.channels : [],
-			customerSegments: Array.isArray(data.customerSegments)
-				? data.customerSegments
-				: [],
-			costStructure: Array.isArray(data.costStructure)
-				? data.costStructure
-				: [],
-			revenueStreams: Array.isArray(data.revenueStreams)
-				? data.revenueStreams
-				: [],
-		};
-
-		// Vérifier que chaque carte a la bonne structure
-		const validateCard = (card: any): card is CanvasCard => {
-			return (
-				typeof card === "object" &&
-				card !== null &&
-				typeof card.id === "number" &&
-				typeof card.title === "string" &&
-				typeof card.description === "string"
-			);
-		};
-
-		// S'assurer que toutes les cartes sont valides
-		Object.values(sanitizedData).forEach((cards) => {
-			if (!Array.isArray(cards) || !cards.every(validateCard)) {
-				throw new Error("Structure de carte invalide");
-			}
-		});
-
-		// Utiliser le type Json de Prisma explicitement
 		const canvasAnalysis = await prisma.canvasAnalysis.upsert({
 			where: { userId: user.id },
 			update: {
-				data: sanitizedData as any,
+				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 				updatedAt: new Date(),
 			},
 			create: {
 				userId: user.id,
-				data: sanitizedData as any,
+				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 			},
 		});
 
@@ -133,12 +97,50 @@ export const calculateProgress = (data: CanvasData): number => {
 	return Math.round((filledCategories / categories.length) * 100);
 };
 
-// Charger les données depuis le localStorage
-export const loadCanvasData = (): CanvasData => {
-	if (typeof window === "undefined") return getEmptyCanvasData();
+interface StoredData {
+	data: CanvasData;
+	qaResponses: QAResponses;
+}
 
-	const stored = localStorage.getItem(STORAGE_KEY);
-	return stored ? JSON.parse(stored) : getEmptyCanvasData();
+export const loadCanvasData = (): StoredData => {
+	if (typeof window === "undefined") {
+		return {
+			data: getEmptyCanvasData(),
+			qaResponses: {},
+		};
+	}
+
+	let parsedData = getEmptyCanvasData();
+	let parsedQA = {};
+
+	try {
+		const storedData = localStorage.getItem(STORAGE_KEY);
+		if (storedData) {
+			const parsed = JSON.parse(storedData);
+			if (parsed && typeof parsed === "object") {
+				parsedData = parsed;
+			}
+		}
+	} catch (error) {
+		console.error("Erreur lors du chargement des données:", error);
+	}
+
+	try {
+		const storedQA = localStorage.getItem(QA_STORAGE_KEY);
+		if (storedQA) {
+			const parsed = JSON.parse(storedQA);
+			if (parsed && typeof parsed === "object") {
+				parsedQA = parsed;
+			}
+		}
+	} catch (error) {
+		console.error("Erreur lors du chargement des QA responses:", error);
+	}
+
+	return {
+		data: parsedData,
+		qaResponses: parsedQA,
+	};
 };
 
 // Retourner une structure de données vide
@@ -165,23 +167,27 @@ const updateParentProgress = (progress: number) => {
 };
 
 // Sauvegarder dans la base de données via l'API
-export const saveToDatabase = async (data: CanvasData) => {
+export const saveToDatabase = async (
+	data: CanvasData,
+	qaResponses: QAResponses
+) => {
 	try {
 		const response = await fetch("/api/business-plan/canvas/save", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify({ data, qaResponses }),
 		});
 
-		const responseData = await response.json();
-
 		if (!response.ok) {
+			const responseData = await response.json();
 			throw new Error(
 				`Erreur ${response.status}: ${JSON.stringify(responseData)}`
 			);
 		}
+
+		return await response.json();
 	} catch (error) {
 		console.error("Erreur détaillée:", error);
 		throw error;

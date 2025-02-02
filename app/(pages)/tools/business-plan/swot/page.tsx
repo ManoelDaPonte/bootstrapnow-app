@@ -15,25 +15,25 @@ import {
 	SWOT_MODAL_DETAILED_DESCRIPTIONS,
 } from "@/lib/business-plan/config/swot";
 import QASection from "@/components/business-plan/shared/QASection";
-import { QAResponses } from "@/types/shared/qa-section";
 import { ModalProps } from "@/types/shared/card-modal";
 
 export default function SwotMatrix() {
-	const { cards, handleSaveCard, handleDeleteCard } = useSwotData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const {
+		cards,
+		qaResponses,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useSwotData();
+
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
 	const [error, setError] = useState(false);
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
+	const isLoading = cards === undefined || qaResponses === undefined;
 
 	const handleAddCard = (category: SwotCategory) => {
 		setModalState({
@@ -56,35 +56,18 @@ export default function SwotMatrix() {
 			return;
 		}
 
-		if (category !== "lastAnalysis" && category !== "lastUpdated") {
-			handleSaveCard(
-				category as
-					| "strengths"
-					| "weaknesses"
-					| "opportunities"
-					| "threats",
-				card
-			);
-		}
+		handleSaveCard(category as SwotCategory, card);
+
 		setModalState({
 			open: false,
 			category: "",
 			card: { id: 0, title: "", description: "" },
 		});
 	};
-
 	const handleModalDelete = () => {
 		const { category, card } = modalState;
-		if (category !== "lastAnalysis" && category !== "lastUpdated") {
-			handleDeleteCard(
-				category as
-					| "strengths"
-					| "weaknesses"
-					| "opportunities"
-					| "threats",
-				card.id
-			);
-		}
+		handleDeleteCard(category as SwotCategory, card.id);
+
 		setModalState({
 			open: false,
 			category: "",
@@ -120,6 +103,10 @@ export default function SwotMatrix() {
 			: undefined,
 	};
 
+	if (isLoading) {
+		return <div>Chargement...</div>; // Ou un composant de loading plus élaboré
+	}
+
 	return (
 		<div className="flex flex-col h-screen">
 			<Header title="Matrice SWOT" progress={calculateProgress(cards)} />
@@ -143,6 +130,7 @@ export default function SwotMatrix() {
 					data={SWOT_QA_DATA}
 					responses={qaResponses}
 					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
 				/>
 			</div>
 

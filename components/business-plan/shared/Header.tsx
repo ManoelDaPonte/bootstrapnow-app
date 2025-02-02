@@ -4,13 +4,22 @@ import { ChevronLeft } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { HeaderProps } from "@/types/shared/header";
 
-export const Header = ({ title, progress }: HeaderProps) => {
+interface ExtendedHeaderProps extends HeaderProps {
+	rightContent?: React.ReactNode; // Pour le bouton de sauvegarde
+}
+
+export const Header = ({
+	title,
+	progress,
+	rightContent,
+}: ExtendedHeaderProps) => {
 	const { user } = useUser();
 
 	return (
 		<div className="bg-white">
 			<div className="max-w-full mx-auto">
 				<div className="flex items-center justify-between p-3.5">
+					{/* Partie gauche avec le titre */}
 					<div className="flex items-center gap-4">
 						<Link
 							href="/tools/business-plan/"
@@ -22,7 +31,9 @@ export const Header = ({ title, progress }: HeaderProps) => {
 							{title}
 						</h1>
 					</div>
-					<div className="flex items-center gap-6 mx-16">
+
+					{/* Partie centrale avec la progression */}
+					<div className="flex items-center gap-6 mr-12">
 						<div className="flex items-center gap-2 text-sm">
 							<div className="w-24 bg-gray-200 rounded-full h-2">
 								<div
@@ -32,6 +43,8 @@ export const Header = ({ title, progress }: HeaderProps) => {
 							</div>
 							<span className="text-gray-600">{progress}%</span>
 						</div>
+
+						{/* Statut de synchronisation */}
 						{user ? (
 							<span className="text-sm text-emerald-600 flex items-center gap-1">
 								<div className="w-2 h-2 bg-emerald-500 rounded-full" />
@@ -41,6 +54,11 @@ export const Header = ({ title, progress }: HeaderProps) => {
 							<span className="text-sm text-gray-500">
 								Mode local
 							</span>
+						)}
+						{rightContent && (
+							<div className="flex items-center">
+								{rightContent}
+							</div>
 						)}
 					</div>
 				</div>

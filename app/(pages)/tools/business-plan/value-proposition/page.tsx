@@ -1,5 +1,3 @@
-//app/%28pages%29/tools/business-plan/value-proposition/page.tsx
-
 "use client";
 import React, { useState } from "react";
 import { useValuePropositionData } from "@/lib/business-plan/hooks/value-proposition/useValuePropositionData";
@@ -13,38 +11,31 @@ import {
 	ValuePropositionCard,
 	ModalState,
 } from "@/types/value-proposition";
-import { QAResponses } from "@/types/shared/qa-section";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
 	VALUE_PROPOSITION_SECTIONS,
-	CUSTOMER_SEGMENT_SECTIONS,
-	VALUE_PROPOSITION_SECTIONS_ORDER,
 	VALUE_PROPOSITION_QA_DATA,
 	VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS,
 } from "@/lib/business-plan/config/value-proposition";
 
 const ValuePropositionCanvas: React.FC = () => {
 	const {
-		data,
-		isLoading,
+		cards: data,
+		qaResponses,
 		handleSaveItem,
 		handleUpdateItem,
 		handleDeleteItem,
+		handleQAResponseChange,
+		handleQAResponseSave,
+		isLoading,
 	} = useValuePropositionData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "", content: "" },
 	});
 	const [error, setError] = useState(false);
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
 
 	const handleAddCard = (category: ValuePropositionCategory) => {
 		setModalState({
@@ -141,8 +132,8 @@ const ValuePropositionCanvas: React.FC = () => {
 		<ValuePropositionSection
 			title={VALUE_PROPOSITION_SECTIONS[category].title}
 			items={data[category]}
-			onAddCard={handleAddCard} // Changé de onAddItem
-			onEditCard={handleEditCard} // Ajouté
+			onAddCard={handleAddCard}
+			onEditCard={handleEditCard}
 			onDeleteItem={handleDeleteItem}
 			className={`${className} ${VALUE_PROPOSITION_SECTIONS[category].color}`}
 			sectionKey={category}
@@ -150,7 +141,7 @@ const ValuePropositionCanvas: React.FC = () => {
 	);
 
 	return (
-		<div className="min-h-screen flex flex-col">
+		<div className="flex flex-col h-screen">
 			<Header
 				title="Value Proposition"
 				progress={calculateProgress(data)}
@@ -205,11 +196,13 @@ const ValuePropositionCanvas: React.FC = () => {
 						data={VALUE_PROPOSITION_QA_DATA}
 						responses={qaResponses}
 						onResponseChange={handleQAResponseChange}
+						onResponseSave={handleQAResponseSave}
 						className="mt-8"
 					/>
-					<CardModal<ValuePropositionCard> {...modalProps} />
 				</div>
 			</div>
+
+			<CardModal<ValuePropositionCard> {...modalProps} />
 		</div>
 	);
 };

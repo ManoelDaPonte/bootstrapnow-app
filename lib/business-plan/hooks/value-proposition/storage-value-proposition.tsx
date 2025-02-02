@@ -1,14 +1,20 @@
-// lib/business-plan/value-proposition/storage.ts
-import { ValuePropositionData } from "@/types/value-proposition";
+import {
+	ValuePropositionData,
+	ValuePropositionCategory,
+} from "@/types/value-proposition";
+import { QAResponses } from "@/types/shared/qa-section";
 import { prisma } from "@/lib/db/prisma";
 
 export const STORAGE_KEY = "value-proposition-data";
+export const QA_STORAGE_KEY = "value-proposition-qa-responses";
 
-// Sauvegarder les données (localStorage uniquement)
-export const saveValuePropositionData = (data: ValuePropositionData) => {
+export const saveValuePropositionData = (
+	data: ValuePropositionData,
+	qaResponses: QAResponses
+) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder dans localStorage
+	// Sauvegarder les données Value Proposition
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -17,36 +23,39 @@ export const saveValuePropositionData = (data: ValuePropositionData) => {
 		})
 	);
 
-	// Mettre à jour la progression dans la page parent
+	// Sauvegarder les réponses QA séparément
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
 	updateParentProgress(calculateProgress(data));
 };
 
 export async function updateValuePropositionData(
 	auth0Id: string,
-	data: ValuePropositionData
+	data: ValuePropositionData,
+	qaResponses: QAResponses
 ) {
 	try {
-		// Trouver ou créer l'utilisateur
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
 			update: {},
 			create: {
 				auth0Id,
-				email: "", // À remplir avec l'email de Auth0
+				email: "",
 			},
 		});
 
-		// Mettre à jour ou créer l'analyse Value Proposition
 		const valuePropositionAnalysis =
 			await prisma.valuePropositionAnalysis.upsert({
 				where: { userId: user.id },
 				update: {
 					data: JSON.parse(JSON.stringify(data)),
+					qaResponses: qaResponses,
 					updatedAt: new Date(),
 				},
 				create: {
 					userId: user.id,
 					data: JSON.parse(JSON.stringify(data)),
+					qaResponses: qaResponses,
 				},
 			});
 
@@ -57,9 +66,8 @@ export async function updateValuePropositionData(
 	}
 }
 
-// Calculer la progression en fonction des sections remplies
 export const calculateProgress = (data: ValuePropositionData): number => {
-	const categories = [
+	const categories: ValuePropositionCategory[] = [
 		"customerJobs",
 		"pains",
 		"gains",
@@ -70,7 +78,7 @@ export const calculateProgress = (data: ValuePropositionData): number => {
 	let filledCategories = 0;
 
 	categories.forEach((category) => {
-		if ((data[category as keyof ValuePropositionData] ?? []).length > 0) {
+		if (data[category]?.length > 0) {
 			filledCategories++;
 		}
 	});
@@ -78,15 +86,30 @@ export const calculateProgress = (data: ValuePropositionData): number => {
 	return Math.round((filledCategories / categories.length) * 100);
 };
 
-// Charger les données depuis le localStorage
-export const loadValuePropositionData = (): ValuePropositionData => {
-	if (typeof window === "undefined") return getEmptyValuePropositionData();
+interface StoredData {
+	data: ValuePropositionData;
+	qaResponses: QAResponses;
+}
 
-	const stored = localStorage.getItem(STORAGE_KEY);
-	return stored ? JSON.parse(stored) : getEmptyValuePropositionData();
+export const loadValuePropositionData = (): StoredData => {
+	if (typeof window === "undefined") {
+		return {
+			data: getEmptyValuePropositionData(),
+			qaResponses: {},
+		};
+	}
+
+	const storedData = localStorage.getItem(STORAGE_KEY);
+	const storedQA = localStorage.getItem(QA_STORAGE_KEY);
+
+	return {
+		data: storedData
+			? JSON.parse(storedData)
+			: getEmptyValuePropositionData(),
+		qaResponses: storedQA ? JSON.parse(storedQA) : {},
+	};
 };
 
-// Retourner une structure de données vide
 export const getEmptyValuePropositionData = (): ValuePropositionData => ({
 	customerJobs: [],
 	pains: [],
@@ -96,7 +119,6 @@ export const getEmptyValuePropositionData = (): ValuePropositionData => ({
 	gainCreators: [],
 });
 
-// Mettre à jour la progression dans la page parent
 const updateParentProgress = (progress: number) => {
 	if (typeof window === "undefined") return;
 
@@ -106,8 +128,10 @@ const updateParentProgress = (progress: number) => {
 	window.dispatchEvent(event);
 };
 
-// Sauvegarder dans la base de données via l'API
-export const saveToDatabase = async (data: ValuePropositionData) => {
+export const saveToDatabase = async (
+	data: ValuePropositionData,
+	qaResponses: QAResponses
+) => {
 	try {
 		const response = await fetch(
 			"/api/business-plan/value-proposition/save",
@@ -116,7 +140,7 @@ export const saveToDatabase = async (data: ValuePropositionData) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify({ data, qaResponses }),
 			}
 		);
 
@@ -125,7 +149,11 @@ export const saveToDatabase = async (data: ValuePropositionData) => {
 				"Erreur lors de la sauvegarde dans la base de données"
 			);
 		}
+
+		const result = await response.json();
+		return result;
 	} catch (error) {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
+		throw error;
 	}
 };

@@ -1,7 +1,12 @@
-// hooks/useSkillMatrix.ts
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Person, Domain } from "@/types/skill-matrix";
+import { QAResponses } from "@/types/shared/qa-section";
+import {
+	loadSkillMatrixData,
+	saveSkillMatrixData,
+	saveToDatabase,
+} from "@/lib/business-plan/hooks/skills-matrix/storage-skills-matrix";
 
 interface SkillMatrixData {
 	people: Person[];
@@ -9,9 +14,14 @@ interface SkillMatrixData {
 }
 
 export const useSkillMatrix = () => {
-	const { user, isLoading } = useUser();
-	const [people, setPeople] = useState<Person[]>([]);
-	const [domains, setDomains] = useState<Domain[]>([]);
+	const { user, isLoading: authLoading } = useUser();
+	const initialData = loadSkillMatrixData();
+	const [people, setPeople] = useState<Person[]>(initialData.data.people);
+	const [domains, setDomains] = useState<Domain[]>(initialData.data.domains);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		initialData.qaResponses
+	);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadInitialData = async () => {
@@ -23,11 +33,12 @@ export const useSkillMatrix = () => {
 					if (response.ok) {
 						const serverData = await response.json();
 						if (serverData) {
-							setPeople(serverData.people);
-							setDomains(serverData.domains);
-							localStorage.setItem(
-								"skill-matrix-data",
-								JSON.stringify(serverData)
+							setPeople(serverData.data.people);
+							setDomains(serverData.data.domains);
+							setQAResponses(serverData.qaResponses);
+							saveSkillMatrixData(
+								serverData.data,
+								serverData.qaResponses
 							);
 						}
 					}
@@ -38,33 +49,22 @@ export const useSkillMatrix = () => {
 					);
 				}
 			}
+			setIsLoading(false);
 		};
 
-		if (!isLoading) {
+		if (!authLoading) {
 			loadInitialData();
 		}
-	}, [user, isLoading]);
+	}, [user, authLoading]);
 
-	const saveToDatabase = async (data: SkillMatrixData) => {
+	const handleSaveData = async (newData: SkillMatrixData) => {
 		try {
-			const response = await fetch(
-				"/api/business-plan/skill-matrix/save",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(data),
-				}
-			);
-
-			if (!response.ok) {
-				throw new Error(
-					"Erreur lors de la sauvegarde dans la base de données"
-				);
+			saveSkillMatrixData(newData, qaResponses);
+			if (user) {
+				await saveToDatabase(newData, qaResponses);
 			}
 		} catch (error) {
-			console.error("Erreur lors de la sauvegarde dans la BD:", error);
+			console.error("Erreur lors de la sauvegarde:", error);
 		}
 	};
 
@@ -76,10 +76,7 @@ export const useSkillMatrix = () => {
 		};
 		const newPeople = [...people, newPerson];
 		setPeople(newPeople);
-
-		if (user) {
-			await saveToDatabase({ people: newPeople, domains });
-		}
+		await handleSaveData({ people: newPeople, domains });
 	};
 
 	const addDomain = async (name: string) => {
@@ -89,10 +86,7 @@ export const useSkillMatrix = () => {
 		};
 		const newDomains = [...domains, newDomain];
 		setDomains(newDomains);
-
-		if (user) {
-			await saveToDatabase({ people, domains: newDomains });
-		}
+		await handleSaveData({ people, domains: newDomains });
 	};
 
 	const updateSkill = async (
@@ -112,48 +106,59 @@ export const useSkillMatrix = () => {
 				: person
 		);
 		setPeople(newPeople);
-
-		if (user) {
-			await saveToDatabase({ people: newPeople, domains });
-		}
+		await handleSaveData({ people: newPeople, domains });
 	};
 
 	const removePerson = async (personId: string) => {
 		const newPeople = people.filter((person) => person.id !== personId);
 		setPeople(newPeople);
-
-		if (user) {
-			await saveToDatabase({ people: newPeople, domains });
-		}
+		await handleSaveData({ people: newPeople, domains });
 	};
 
 	const removeDomain = async (domainId: string) => {
 		const newDomains = domains.filter((domain) => domain.id !== domainId);
 		const newPeople = people.map((person) => {
-			const { [domainId]: ignore, ...remainingSkills } = person.skills; // eslint-disable-line @typescript-eslint/no-unused-vars
+			const { [domainId]: ignore, ...remainingSkills } = person.skills;
 			return { ...person, skills: remainingSkills };
 		});
 
 		setDomains(newDomains);
 		setPeople(newPeople);
+		await handleSaveData({ people: newPeople, domains: newDomains });
+	};
 
-		if (user) {
-			await saveToDatabase({
-				people: newPeople,
-				domains: newDomains,
-			});
-		}
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		const newQAResponses = {
+			...qaResponses,
+			[categoryId]: response,
+		};
+
+		setQAResponses(newQAResponses);
+		await handleSaveData({ people, domains });
 	};
 
 	return {
 		people,
 		domains,
-		isLoading,
+		qaResponses,
+		isLoading: isLoading || authLoading,
 		user,
 		addPerson,
 		addDomain,
 		updateSkill,
 		removePerson,
 		removeDomain,
+		handleQAResponseChange,
+		handleQAResponseSave,
 	};
 };

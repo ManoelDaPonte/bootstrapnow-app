@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { prisma } from "@/lib/db/prisma";
 
-const INITIAL_SECTIONS = [
+export const INITIAL_SECTIONS = [
 	{
 		id: 1,
 		title: "Visibilité",
@@ -46,26 +46,48 @@ export async function GET() {
 		const user = await getUserFromSession();
 		if (!user) {
 			return NextResponse.json(
-				{ error: "Utilisateur non trouvé" },
-				{ status: 404 }
+				{ error: "Utilisateur non authentifié" },
+				{ status: 401 }
 			);
 		}
 
-		// Récupérer les données de l'utilisateur
 		const userData = await prisma.user.findUnique({
 			where: { auth0Id: user.sub },
 			include: { funnelChartAnalysis: true },
 		});
 
+		// Structure par défaut
+		const defaultData = {
+			data: INITIAL_SECTIONS,
+			qaResponses: {},
+		};
+
 		if (!userData?.funnelChartAnalysis) {
-			return NextResponse.json(INITIAL_SECTIONS);
+			return NextResponse.json(defaultData);
 		}
 
-		return NextResponse.json(userData.funnelChartAnalysis.data);
+		// Validation des données récupérées
+		const rawData = userData.funnelChartAnalysis.data;
+		const rawQAResponses = userData.funnelChartAnalysis.qaResponses;
+
+		// Vérification de base de la structure des données
+		if (!Array.isArray(rawData)) {
+			console.error("Données Funnel Chart invalides en base:", rawData);
+			return NextResponse.json(defaultData);
+		}
+
+		return NextResponse.json({
+			data: rawData,
+			qaResponses: rawQAResponses || {},
+		});
 	} catch (error) {
 		console.error("Erreur lors de la récupération:", error);
 		return NextResponse.json(
-			{ error: "Erreur lors de la récupération" },
+			{
+				error: "Erreur serveur lors de la récupération",
+				details:
+					process.env.NODE_ENV === "development" ? error : undefined,
+			},
 			{ status: 500 }
 		);
 	}

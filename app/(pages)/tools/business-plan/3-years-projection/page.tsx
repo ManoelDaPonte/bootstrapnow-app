@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Save } from "lucide-react";
 import {
 	Table,
 	TableBody,
@@ -27,60 +27,53 @@ import {
 } from "recharts";
 import { Header } from "@/components/business-plan/shared/Header";
 import { ProfitLossData, ProfitLossEntry } from "@/types/profit-loss";
-import { INITIAL_PROFIT_LOSS_DATA } from "@/lib/business-plan/config/profit-loss";
+import { useProfitLossData } from "@/lib/business-plan/hooks/3-years/useProfitLossData";
+import { calculateProgress } from "@/lib/business-plan/hooks/3-years/storage-profit-loss";
 
 const ProfitLossDashboard: React.FC = () => {
-	const [profitLossData, setProfitLossData] = useState<ProfitLossData>(
-		INITIAL_PROFIT_LOSS_DATA
-	);
-
-	// Calcul du progrès pour le Header
-	const calculateProgress = useCallback(() => {
-		const totalFields =
-			(profitLossData.revenue.length + profitLossData.expenses.length) *
-			4; // 4 champs par entrée
-		const filledFields = [
-			...profitLossData.revenue,
-			...profitLossData.expenses,
-		].reduce((acc, entry) => {
-			return (
-				acc +
-				((entry.category ? 1 : 0) +
-					(entry["Year 1"] ? 1 : 0) +
-					(entry["Year 2"] ? 1 : 0) +
-					(entry["Year 3"] ? 1 : 0))
-			);
-		}, 0);
-		return Math.round((filledFields / totalFields) * 100);
-	}, [profitLossData]);
+	const {
+		profitLossData,
+		isLoading,
+		isSaving,
+		hasUnsavedChanges,
+		handleUpdateData,
+		saveChanges,
+	} = useProfitLossData();
 
 	// Add new row to a section
-	const addRow = useCallback((section: keyof ProfitLossData) => {
-		const newId = `new_${section}_${Date.now()}`;
-		setProfitLossData((prev) => ({
-			...prev,
-			[section]: [
-				...prev[section],
-				{
-					id: newId,
-					category: "New Category",
-					"Year 1": 0,
-					"Year 2": 0,
-					"Year 3": 0,
-				},
-			],
-		}));
-	}, []);
+	const addRow = useCallback(
+		(section: keyof ProfitLossData) => {
+			const newId = `new_${section}_${Date.now()}`;
+			const newData = {
+				...profitLossData,
+				[section]: [
+					...profitLossData[section],
+					{
+						id: newId,
+						category: "New Category",
+						"Year 1": 0,
+						"Year 2": 0,
+						"Year 3": 0,
+					},
+				],
+			};
+			handleUpdateData(newData);
+		},
+		[profitLossData, handleUpdateData]
+	);
 
 	// Remove row from a section
 	const removeRow = useCallback(
 		(section: keyof ProfitLossData, id: string) => {
-			setProfitLossData((prev) => ({
-				...prev,
-				[section]: prev[section].filter((entry) => entry.id !== id),
-			}));
+			const newData = {
+				...profitLossData,
+				[section]: profitLossData[section].filter(
+					(entry) => entry.id !== id
+				),
+			};
+			handleUpdateData(newData);
 		},
-		[]
+		[profitLossData, handleUpdateData]
 	);
 
 	// Update row in a section
@@ -91,14 +84,15 @@ const ProfitLossDashboard: React.FC = () => {
 			field: keyof ProfitLossEntry,
 			value: string | number
 		) => {
-			setProfitLossData((prev) => ({
-				...prev,
-				[section]: prev[section].map((entry) =>
+			const newData = {
+				...profitLossData,
+				[section]: profitLossData[section].map((entry) =>
 					entry.id === id ? { ...entry, [field]: value } : entry
 				),
-			}));
+			};
+			handleUpdateData(newData);
 		},
-		[]
+		[profitLossData, handleUpdateData]
 	);
 
 	// Calculations
@@ -116,7 +110,6 @@ const ProfitLossDashboard: React.FC = () => {
 			),
 		[profitLossData]
 	);
-
 	const totalExpenses = useMemo(
 		() =>
 			[1, 2, 3].map((year) =>
@@ -138,17 +131,31 @@ const ProfitLossDashboard: React.FC = () => {
 			[0, 1, 2].map((index) => ({
 				name: `Year ${index + 1}`,
 				Revenue: totalRevenue[index],
-				Expenses: -totalExpenses[index], // Negative expenses
+				Expenses: -totalExpenses[index],
 				Profit: totalRevenue[index] - totalExpenses[index],
 			})),
 		[totalRevenue, totalExpenses]
 	);
 
+	if (isLoading) {
+		return <div>Chargement...</div>;
+	}
+
 	return (
 		<div className="flex flex-col h-screen">
 			<Header
-				title="Prévisionnel Financier"
-				progress={calculateProgress()}
+				title="Prévisionnel à 3 ans"
+				progress={calculateProgress(profitLossData)}
+				rightContent={
+					<Button
+						onClick={saveChanges}
+						disabled={!hasUnsavedChanges || isSaving}
+						className="flex items-center gap-2"
+					>
+						<Save className="h-4 w-4" />
+						{isSaving ? "Sauvegarde..." : "Sauvegarder"}
+					</Button>
+				}
 			/>
 
 			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">

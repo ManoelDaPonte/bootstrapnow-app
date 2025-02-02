@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { SwotData, SwotCard } from "@/types/swot";
+import { QAResponses } from "@/types/shared/qa-section";
 import {
 	loadSwotData,
 	saveSwotData,
@@ -11,7 +12,10 @@ type SwotCategory = keyof Omit<SwotData, "lastAnalysis" | "lastUpdated">;
 
 export const useSwotData = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const [cards, setCards] = useState<SwotData>(loadSwotData());
+	const [data, setData] = useState<SwotData>(loadSwotData().data);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		loadSwotData().qaResponses
+	);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -24,8 +28,12 @@ export const useSwotData = () => {
 					if (response.ok) {
 						const serverData = await response.json();
 						if (serverData) {
-							setCards(serverData);
-							saveSwotData(serverData);
+							setData(serverData.data);
+							setQAResponses(serverData.qaResponses);
+							saveSwotData(
+								serverData.data,
+								serverData.qaResponses
+							);
 						}
 					}
 				} catch (error) {
@@ -43,47 +51,78 @@ export const useSwotData = () => {
 		}
 	}, [user, authLoading]);
 
-	const saveData = async (newCards: SwotData) => {
+	const saveCompleteData = async (
+		newData: SwotData,
+		newQAResponses: QAResponses
+	) => {
 		try {
-			// Sauvegarde locale
-			saveSwotData(newCards);
-
-			// Sauvegarde en base de données si l'utilisateur est connecté
+			saveSwotData(newData, newQAResponses);
 			if (user) {
-				await saveToDatabase(newCards);
+				await saveToDatabase(newData, newQAResponses);
 			}
 		} catch (error) {
 			console.error("Erreur lors de la sauvegarde:", error);
 		}
 	};
-
 	const handleSaveCard = async (category: SwotCategory, card: SwotCard) => {
-		const newCards = {
-			...cards,
+		const newData = {
+			...data,
 			[category]: card.id
-				? cards[category].map((c) => (c.id === card.id ? card : c))
-				: [...cards[category], { ...card, id: Date.now() }],
+				? data[category].map((c) => (c.id === card.id ? card : c))
+				: [...data[category], { ...card, id: Date.now() }],
 		};
 
-		setCards(newCards);
-		await saveData(newCards);
+		setData(newData);
+		await saveCompleteData(newData, qaResponses);
 	};
 
 	const handleDeleteCard = async (category: SwotCategory, cardId: number) => {
-		const newCards = {
-			...cards,
-			[category]: cards[category].filter((c) => c.id !== cardId),
+		const newData = {
+			...data,
+			[category]: data[category].filter((c) => c.id !== cardId),
 		};
 
-		setCards(newCards);
-		await saveData(newCards);
+		setData(newData);
+		await saveCompleteData(newData, qaResponses);
+	};
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		try {
+			const newQAResponses = {
+				...qaResponses,
+				[categoryId]: response,
+			};
+
+			// Sauvegarde locale
+			saveSwotData(data, newQAResponses);
+
+			// Sauvegarde en BD si connecté
+			if (user) {
+				await saveToDatabase(data, newQAResponses);
+			}
+		} catch (error) {
+			console.error("Failed to save QA response:", error);
+		}
 	};
 
 	return {
-		cards,
+		cards: data,
+		qaResponses,
 		isLoading: isLoading || authLoading,
 		user,
 		handleSaveCard,
 		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
 	};
 };

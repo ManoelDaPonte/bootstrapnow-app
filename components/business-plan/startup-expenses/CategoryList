@@ -1,0 +1,81 @@
+// components/business-plan/startup-expenses/CategoryList.tsx
+import React from "react";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Trash2 } from "lucide-react";
+import { CategoryDefinition } from "@/types/startup-expenses";
+
+interface CategoryListProps {
+	categories: CategoryDefinition[];
+	onUpdate: (id: string, updates: Partial<CategoryDefinition>) => void;
+	onRemove: (id: string) => void;
+}
+
+export const CategoryList: React.FC<CategoryListProps> = ({
+	categories,
+	onUpdate,
+	onRemove,
+}) => {
+	return (
+		<div className="overflow-auto rounded-lg border bg-background mt-4">
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Nom</TableHead>
+						<TableHead>Couleur</TableHead>
+						<TableHead>Actions</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{categories.map((category) => (
+						<TableRow key={category.id}>
+							<TableCell>
+								<Input
+									value={category.name}
+									onChange={(e) =>
+										onUpdate(category.id, {
+											name: e.target.value,
+										})
+									}
+									className="bg-background"
+								/>
+							</TableCell>
+							<TableCell>
+								<div className="flex items-center gap-2">
+									<Input
+										type="color"
+										value={category.color}
+										onChange={(e) =>
+											onUpdate(category.id, {
+												color: e.target.value,
+											})
+										}
+										className="w-20 h-8 p-1"
+									/>
+									<span className="text-sm">
+										{category.color}
+									</span>
+								</div>
+							</TableCell>
+							<TableCell>
+								<button
+									onClick={() => onRemove(category.id)}
+									className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+								>
+									<Trash2 className="h-4 w-4" />
+								</button>
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</div>
+	);
+};

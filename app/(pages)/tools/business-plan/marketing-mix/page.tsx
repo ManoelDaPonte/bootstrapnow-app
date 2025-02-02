@@ -7,7 +7,6 @@ import { Header } from "@/components/business-plan/shared/Header";
 import { CardModal } from "@/components/business-plan/shared/CardModal";
 import { MarketingMixSection } from "@/components/business-plan/MarketingMixSection";
 import QASection from "@/components/business-plan/shared/QASection";
-import { QAResponses } from "@/types/shared/qa-section";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
 	MARKETING_MIX_DESCRIPTIONS,
@@ -20,21 +19,20 @@ import {
 type MarketingMixCategory = keyof typeof MARKETING_MIX_HEADERS;
 
 export default function MarketingMixMatrix() {
-	const { cards, handleSaveCard, handleDeleteCard } = useMarketingMixData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const {
+		cards,
+		qaResponses,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useMarketingMixData();
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
 	const [error, setError] = useState(false);
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
 
 	const handleAddCard = (category: MarketingMixCategory) => {
 		setModalState({
@@ -135,6 +133,7 @@ export default function MarketingMixMatrix() {
 					data={MARKETING_MIX_QA_DATA}
 					responses={qaResponses}
 					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
 				/>
 			</div>
 

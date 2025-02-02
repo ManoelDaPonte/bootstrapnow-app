@@ -18,7 +18,7 @@ export const useTemplateProgress = () => {
 	const { cards: swotData } = useSwotData();
 	const { cards: pestelData } = usePestelData();
 	const { cards: canvasData } = useCanvasData();
-	const { data: valuePropositionData } = useValuePropositionData();
+	const { cards: valuePropositionData } = useValuePropositionData();
 	const { cards: marketingMixData } = useMarketingMixData();
 	const { cards: ansoffData } = useAnsoffData();
 	const { sections: funnelChartData } = useFunnelChartData();
@@ -26,19 +26,20 @@ export const useTemplateProgress = () => {
 	return {
 		market: {
 			"Business Model Canvas": calculateCanvasProgress(canvasData),
-			"Funnel Chart": calculateFunnelChartProgress(funnelChartData),
+			"Funnel d'acquisition":
+				calculateFunnelChartProgress(funnelChartData),
 		},
 		strategy: {
 			"Marketing Mix": calculateMarketingMixProgress(marketingMixData),
 			PESTEL: calculatePestelProgress(pestelData),
 		},
 		economic: {
-			"Matrice Ansoff": calculateAnsoffProgress(ansoffData),
+			"Matrice d'Ansoff": calculateAnsoffProgress(ansoffData),
 			SWOT: calculateSwotProgress(swotData),
 		},
 		execution: {
-			"Skills Matrix": 100,
-			"Value Proposition":
+			"Matrice de compétences": 100,
+			"Proposition de valeur":
 				calculateValuePropositionProgress(valuePropositionData),
 		},
 		financial: {

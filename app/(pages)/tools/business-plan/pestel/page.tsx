@@ -1,14 +1,12 @@
+// app/%28pages%29/tools/business-plan/pestel/page.tsx
 "use client";
 import React, { useState } from "react";
+import { PestelSection } from "@/components/business-plan/PestelSection";
 import { PestelCard, ModalState } from "@/types/pestel";
 import { usePestelData } from "@/lib/business-plan/hooks/pestel/usePestelData";
 import { calculateProgress } from "@/lib/business-plan/hooks/pestel/storage-pestel";
 import { Header } from "@/components/business-plan/shared/Header";
 import { CardModal } from "@/components/business-plan/shared/CardModal";
-import { PestelSection } from "@/components/business-plan/PestelSection";
-import QASection from "@/components/business-plan/shared/QASection";
-import { QAResponses } from "@/types/shared/qa-section";
-import { ModalProps } from "@/types/shared/card-modal";
 import {
 	PESTEL_DESCRIPTIONS,
 	PESTEL_HEADERS,
@@ -16,25 +14,27 @@ import {
 	PESTEL_MODAL_DETAILED_DESCRIPTIONS,
 	PESTEL_QA_DATA,
 } from "@/lib/business-plan/config/pestel";
+import QASection from "@/components/business-plan/shared/QASection";
+import { ModalProps } from "@/types/shared/card-modal";
 
 type PestelCategory = keyof typeof PESTEL_HEADERS;
 
 export default function PestelMatrix() {
-	const { cards, handleSaveCard, handleDeleteCard } = usePestelData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const {
+		cards,
+		qaResponses,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = usePestelData();
+
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
 		card: { id: 0, title: "", description: "" },
 	});
 	const [error, setError] = useState(false);
-
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
 
 	const handleAddCard = (category: PestelCategory) => {
 		setModalState({
@@ -132,6 +132,7 @@ export default function PestelMatrix() {
 					data={PESTEL_QA_DATA}
 					responses={qaResponses}
 					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
 				/>
 			</div>
 

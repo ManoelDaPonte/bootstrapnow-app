@@ -13,7 +13,8 @@ import { Header } from "@/components/business-plan/shared/Header";
 import { CardModal } from "@/components/business-plan/shared/CardModal";
 import FunnelChart from "@/components/business-plan/FunnelChartSection";
 import QASection from "@/components/business-plan/shared/QASection";
-import { QAResponses } from "@/types/shared/qa-section";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import Skeleton from "@/components/ui/Skeleton";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
 	FUNNEL_MODAL_DETAILED_DESCRIPTIONS,
@@ -26,13 +27,20 @@ const createDebouncedUpdate = (updateFn: (sections: FunnelSection[]) => void) =>
 	}, 500);
 
 export default function FunnelChartPage() {
-	const { sections, handleUpdateSections } = useFunnelChartData();
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const {
+		sections,
+		qaResponses,
+		isLoading,
+		handleUpdateSections,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useFunnelChartData();
+
 	const [editingCard, setEditingCard] = useState<EditingCard>(null);
-	const [error, setError] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const [localSections, setLocalSections] = useState(sections);
 
-	// Update local sections when DB sections change
+	// Mise à jour des sections locales quand les sections DB changent
 	useEffect(() => {
 		setLocalSections(sections);
 	}, [sections]);
@@ -42,78 +50,84 @@ export default function FunnelChartPage() {
 		[handleUpdateSections]
 	);
 
-	const handleQAResponseChange = (categoryId: string, response: string) => {
-		setQAResponses((prev) => ({
-			...prev,
-			[categoryId]: response,
-		}));
-	};
-
 	const handleAddCard = (sectionId: FunnelSectionId) => {
 		const newCard: FunnelCard = {
-			id: Date.now(), // ou bien Math.random(), comme dans les autres pages
+			id: Date.now(),
 			title: "",
 			description: "",
 		};
 		setEditingCard({ sectionId, card: newCard });
-		setError(false);
+		setError(null);
 	};
 
 	const handleEditCard = (sectionId: FunnelSectionId, card: FunnelCard) => {
 		setEditingCard({ sectionId, card: { ...card } });
-		setError(false);
+		setError(null);
 	};
 
-	const handleModalSave = () => {
+	const handleModalSave = async () => {
 		if (!editingCard) return;
 
-		if (!editingCard.card.title || !editingCard.card.description) {
-			setError(true);
+		if (
+			!editingCard.card.title?.trim() ||
+			!editingCard.card.description?.trim()
+		) {
+			setError("Le titre et la description sont requis");
 			return;
 		}
 
-		const newSections = sections.map((section) => {
-			if (section.id === editingCard.sectionId) {
-				const existingCardIndex = section.cards.findIndex(
-					(c) => c.id === editingCard.card.id
-				);
-				if (existingCardIndex >= 0) {
-					const newCards = [...section.cards];
-					newCards[existingCardIndex] = editingCard.card;
-					return { ...section, cards: newCards };
-				} else {
-					return {
-						...section,
-						cards: [...section.cards, editingCard.card],
-					};
+		try {
+			const newSections = sections.map((section) => {
+				if (section.id === editingCard.sectionId) {
+					const existingCardIndex = section.cards.findIndex(
+						(c) => c.id === editingCard.card.id
+					);
+					if (existingCardIndex >= 0) {
+						const newCards = [...section.cards];
+						newCards[existingCardIndex] = editingCard.card;
+						return { ...section, cards: newCards };
+					} else {
+						return {
+							...section,
+							cards: [...section.cards, editingCard.card],
+						};
+					}
 				}
-			}
-			return section;
-		});
+				return section;
+			});
 
-		handleUpdateSections(newSections);
-		setEditingCard(null);
-		setError(false);
+			await handleUpdateSections(newSections);
+			setEditingCard(null);
+			setError(null);
+		} catch (err) {
+			setError("Erreur lors de la sauvegarde de la carte");
+			console.error("Erreur de sauvegarde:", err);
+		}
 	};
 
-	const handleModalDelete = () => {
+	const handleModalDelete = async () => {
 		if (!editingCard) return;
 
-		const newSections = sections.map((section) => {
-			if (section.id === editingCard.sectionId) {
-				return {
-					...section,
-					cards: section.cards.filter(
-						(c) => c.id !== editingCard.card.id
-					),
-				};
-			}
-			return section;
-		});
+		try {
+			const newSections = sections.map((section) => {
+				if (section.id === editingCard.sectionId) {
+					return {
+						...section,
+						cards: section.cards.filter(
+							(c) => c.id !== editingCard.card.id
+						),
+					};
+				}
+				return section;
+			});
 
-		handleUpdateSections(newSections);
-		setEditingCard(null);
-		setError(false);
+			await handleUpdateSections(newSections);
+			setEditingCard(null);
+			setError(null);
+		} catch (err) {
+			setError("Erreur lors de la suppression de la carte");
+			console.error("Erreur de suppression:", err);
+		}
 	};
 
 	const handleSizeChange = (sectionId: number, newSize: number) => {
@@ -140,11 +154,11 @@ export default function FunnelChartPage() {
 		card: editingCard?.card || { id: 0, title: "", description: "" },
 		onClose: () => {
 			setEditingCard(null);
-			setError(false);
+			setError(null);
 		},
 		onSave: handleModalSave,
 		onDelete: handleModalDelete,
-		error,
+		error: error !== null,
 		isNew: editingCard ? !editingCard.card.id : true,
 		onChange: (e) => {
 			if (editingCard) {
@@ -167,6 +181,17 @@ export default function FunnelChartPage() {
 			: undefined,
 	};
 
+	if (isLoading) {
+		return (
+			<div className="flex flex-col h-screen">
+				<Header title="Funnel Chart" progress={0} />
+				<div className="flex-1 p-6">
+					<Skeleton className="w-full h-[600px]" />
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="flex flex-col h-screen">
 			<Header
@@ -174,18 +199,29 @@ export default function FunnelChartPage() {
 				progress={calculateProgress(sections)}
 			/>
 
-			<FunnelChart
-				sections={localSections}
-				onSizeChange={handleSizeChange}
-				onAddCard={handleAddCard}
-				onEditCard={handleEditCard}
-			/>
+			{error && (
+				<Alert variant="destructive" className="mx-6 mt-4">
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
+			)}
 
-			<QASection
-				data={FUNNEL_QA_DATA}
-				responses={qaResponses}
-				onResponseChange={handleQAResponseChange}
-			/>
+			<div className="flex-1">
+				<FunnelChart
+					sections={localSections}
+					onSizeChange={handleSizeChange}
+					onAddCard={handleAddCard}
+					onEditCard={handleEditCard}
+				/>
+
+				<div className="p-6">
+					<QASection
+						data={FUNNEL_QA_DATA}
+						responses={qaResponses}
+						onResponseChange={handleQAResponseChange}
+						onResponseSave={handleQAResponseSave}
+					/>
+				</div>
+			</div>
 
 			<CardModal<FunnelCard> {...modalProps} />
 		</div>

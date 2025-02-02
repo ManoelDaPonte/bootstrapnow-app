@@ -5,6 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	greenIcon,
+	redIcon,
+} from "@/lib/business-plan/config/competitors/map-icons";
 import { Plus, Trash2 } from "lucide-react";
 import {
 	Table,
@@ -34,31 +38,22 @@ import {
 	FIELD_LABELS,
 	zoneCoordinates,
 } from "@/lib/business-plan/config/competitors";
-import { greenIcon, redIcon } from "@/lib/business-plan/config/competitors";
 import CustomTooltip from "@/components/business-plan/competitors/CustomTooltip";
 import CustomShape from "@/components/business-plan/competitors/CustomShape";
 import { CustomShapeProps } from "@/types/competitors";
+import { useCompetitors } from "@/lib/business-plan/hooks/competitors/useCompetitors";
 
 // Main Component
 const Competitors: React.FC = () => {
-	const [competitors, setCompetitors] =
-		useState<CompetitorEntry[]>(INITIAL_COMPETITORS);
-
-	// Calcul du progrès
-	const calculateProgress = useCallback(() => {
-		const totalFields =
-			competitors.length * Object.keys(FIELD_LABELS).length;
-		const filledFields = competitors.reduce((acc, competitor) => {
-			return (
-				acc +
-				Object.keys(FIELD_LABELS).reduce((fieldAcc, field) => {
-					const value = competitor[field as keyof CompetitorEntry];
-					return fieldAcc + (value ? 1 : 0);
-				}, 0)
-			);
-		}, 0);
-		return Math.round((filledFields / totalFields) * 100);
-	}, [competitors]);
+	const {
+		competitors,
+		isLoading,
+		addCompetitor,
+		updateCompetitor,
+		removeCompetitor,
+		calculateProgress,
+		saveCompetitor,
+	} = useCompetitors();
 
 	// Memoized values
 	const chartBounds = useMemo(() => {
@@ -73,48 +68,14 @@ const Competitors: React.FC = () => {
 		};
 	}, [competitors]);
 
-	// Handlers
-	const handleAddCompetitor = useCallback(() => {
-		const newCompetitor: CompetitorEntry = {
-			id: `comp_${Date.now()}`,
-			nom: "",
-			solution: "",
-			prix: 0,
-			valeurPercue: 0,
-			strategie: "",
-			zoneGeographique: "",
-			ciblageClient: "",
-			forces: "",
-			faiblesses: "",
-			impactDirect: "",
-			impactIndirect: "",
-		};
-		setCompetitors((prev) => [...prev, newCompetitor]);
-	}, []);
-
-	const handleRemoveCompetitor = useCallback((id: string) => {
-		if (id !== "my_company") {
-			setCompetitors((prev) => prev.filter((comp) => comp.id !== id));
-		}
-	}, []);
-
-	const handleUpdateCompetitor = useCallback(
-		(id: string, field: keyof CompetitorEntry, value: string) => {
-			setCompetitors((prev) =>
-				prev.map((comp) => {
-					if (comp.id !== id) return comp;
-
-					const newValue =
-						field === "prix" || field === "valeurPercue"
-							? parseFloat(value) || 0
-							: value;
-
-					return { ...comp, [field]: newValue };
-				})
-			);
-		},
-		[]
-	);
+	// Ajouter la gestion du chargement
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col h-screen">
@@ -216,7 +177,7 @@ const Competitors: React.FC = () => {
 										Concurrents
 									</CardTitle>
 									<Button
-										onClick={handleAddCompetitor}
+										onClick={addCompetitor}
 										variant="outline"
 										size="sm"
 										className="text-primary hover:text-primary/80"
@@ -274,12 +235,15 @@ const Competitors: React.FC = () => {
 																	]
 																}
 																onChange={(e) =>
-																	handleUpdateCompetitor(
+																	updateCompetitor(
 																		competitor.id,
 																		field,
 																		e.target
 																			.value
 																	)
+																}
+																onBlur={() =>
+																	saveCompetitor()
 																}
 																className={
 																	competitor.isMyCompany
@@ -293,7 +257,7 @@ const Competitors: React.FC = () => {
 														{!competitor.isMyCompany && (
 															<button
 																onClick={() =>
-																	handleRemoveCompetitor(
+																	removeCompetitor(
 																		competitor.id
 																	)
 																}
