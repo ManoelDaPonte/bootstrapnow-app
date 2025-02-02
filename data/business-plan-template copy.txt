@@ -1,7 +1,7 @@
 Confidentiality Agreement
 I. Executive Summary
 
-1. "Décris en une ou deux phrases l’idée générale de l'entreprise en t’appuyant sur les éléments suivants :
+{{ES_Overview}} : 1. "Décris en une ou deux phrases l’idée générale de l'entreprise en t’appuyant sur les éléments suivants :
 
 Business Model Canvas (BMC) : {{BMC_KeyActivities}}, {{BMC_ValueProposition}}, {{BMC_CustomerSegments}}
 PESTEL : {{PESTEL_Opportunities}}, {{PESTEL_Threats}}
@@ -9,7 +9,7 @@ SWOT : {{SWOT_Strengths}}, {{SWOT_Opportunities}}
 Ansoff : {{Ansoff_GrowthStrategy}}
 Décris quelle est l’innovation ou la proposition de valeur unique qui différencie cette entreprise sur son marché"
 
-2. "Décris le produit/service et explique quels problèmes il résout pour tes clients cibles en utilisant les éléments suivants :
+{{ES_Description}} : 2. "Décris le produit/service et explique quels problèmes il résout pour tes clients cibles en utilisant les éléments suivants :
 
 Value Proposition Canvas : {{VP_Jobs}}, {{VP_Pains}}, {{VP_Gains}}, {{VP_Product}}
 BMC : {{BMC_ValueProposition}}, {{BMC_CustomerSegments}}
@@ -17,7 +17,7 @@ SWOT : {{SWOT_Strengths}}, {{SWOT_Opportunities}}
 Marketing Funnel : {{MF_PainPoints}}, {{MF_Awareness}}
 Explique pourquoi le produit/service est essentiel pour les clients et quels bénéfices ils leur apporte"
 
-3. "Définis les objectifs de l'entreprise à court, moyen et long terme en te basant sur :
+{{ES_Goal_123}} : 3. "Définis les objectifs de l'entreprise à court, moyen et long terme en te basant sur :
 
 BMC : {{BMC_KeyActivities}}, {{BMC_RevenueStreams}}
 SWOT : {{SWOT_Opportunities}}, {{SWOT_Threats}}
@@ -25,7 +25,7 @@ Ansoff : {{Ansoff_GrowthStrategy}}
 Plan Financier : {{FP_D1_Investments}}, {{FP_12M_Investments}}, {{FP_3Y_Investments}}, {{FP_D1_Revenue}}, {{FP_12M_Revenue}}, {{FP_3Y_Revenue}}
 Explique quels sont les principaux jalons atteint dans 1 an, 3 ans et 5 ans en te basant sur le plan financier"
 
-4. "Décris le marché cible et les clients idéaux en utilisant :
+{{ES_target_market}} : 4. "Décris le marché cible et les clients idéaux en utilisant :
 
 BMC : {{BMC_CustomerSegments}}
 Marketing Funnel : {{MF_Awareness}}, {{MF_Interest}}
@@ -33,7 +33,7 @@ Value Proposition Canvas : {{VP_CustomerProfiles}}
 PESTEL : {{PESTEL_Social}}
 Décris quel est le profil démographique et psychographique du client idéal, ainsi que ses attentes"
 
-5. "Identifie les principaux concurrents et explique comment l'entreprise se différencie grâce à :
+{{ES_competition}} : 5. "Identifie les principaux concurrents et explique comment l'entreprise se différencie grâce à :
 
 BMC : {{BMC_ValueProposition}}, {{BMC_CustomerRelationships}}
 SWOT : {{SWOT_Strengths}}, {{SWOT_Weaknesses}}, {{SWOT_Threats}}
@@ -41,7 +41,7 @@ Marketing Funnel : {{MF_Consideration}}, {{MF_Purchase}}
 Value Proposition Canvas : {{VP_DifferentiationFactors}}
 Explique quelle est la proposition de vente unique qui permettra de se démarquer"
 
-6. "Présente l'équipe de direction et leurs compétences clés en t’appuyant sur :
+{{ES_management_team}} : 6. "Présente l'équipe de direction et leurs compétences clés en t’appuyant sur :
 
 Skill Matrix : {{SkillMatrix_ManagementSkills}}, {{SkillMatrix_LeadershipSkills}}
 BMC : {{BMC_KeyResources}}
@@ -49,7 +49,7 @@ SWOT : {{SWOT_Strengths}}
 7P : {{7P_People}}
 Décris quels sont les atouts et expertises de l'équipe qui renforceront le succès de l'entreprise"
 
-7. "Décris les perspectives financières de l'entreprise en utilisant :
+{{ES_financial_outlook}} : 7. "Décris les perspectives financières de l'entreprise en utilisant :
 
 Plan Financier : {{FP_D1_Investments}}, {{FP_12M_Investments}}, {{FP_3Y_Investments}}, {{FP_D1_Revenue}}, {{FP_12M_Revenue}}, {{FP_3Y_Revenue}}
 BMC : {{BMC_RevenueStreams}}, {{BMC_CostStructure}}
@@ -61,85 +61,84 @@ et {{FP_Funding}}
 
 II. Company Description
 
-1. "Rédige un énoncé de mission clair et percutant en intégrant :
+{{Company_mission_statement}} : 1. "Rédige un énoncé de mission clair et percutant en intégrant :
 Proposition de valeur {{BMC_ValueProposition}}
 Public cible {{BMC_CustomerSegments}}
 Problèmes clients à résoudre {{VP_Jobs}}, {{VP_Pain}}
 Impact recherché {{SWOT_Opportunities}}
 En une ou deux phrases, décris la raison d’être de l'entreprise et son impact sur ses clients."
 
-2. "Décris les valeurs fondamentales qui définissent la culture de l'entreprise en t’appuyant sur :
+{{Company_philosophy_and_vision}} : 2. "Décris les valeurs fondamentales qui définissent la culture de l'entreprise en t’appuyant sur :
 Éthique et engagement {{7P_People}}
 Facteurs socioculturels {{PESTEL_Social}}
 Avantages concurrentiels immatériels {{SWOT_Strengths}}
 Explique quelles sont les valeurs essentielles qui guident les décisions et actions de l’entreprise"
 
-"Définis la vision de l'entreprise à long terme en intégrant :
+{{Company_goals_longTerm}} : "Définis la vision de l'entreprise à long terme en intégrant :
 Ambition de croissance {{Ansoff_GrowthStrategy}}
 Tendances du secteur {{PESTEL_IndustryTrends}}
 Objectifs stratégiques {{SWOT_Opportunities}}
 Explique comment l'entreprise évoluera dans 5 à 10 ans en fonction du Plan financier : {{FP_D1_Revenue}}, {{FP_D1_Profit}}, {{FP_D1_CashFlow}}, {{FP_D1_Investments}}, {{FP_D1_Assets}}, {{FP_D1_Liabilities}}, {{FP_12M_Revenue}}, {{FP_12M_Profit}}, {{FP_12M_CashFlow}}, {{FP_12M_Investments}}, {{FP_12M_Assets}}, {{FP_12M_Liabilities}}, {{FP_3Y_Revenue}}, {{FP_3Y_Profit}}, {{FP_3Y_CashFlow}}, {{FP_3Y_Investments}}, {{FP_3Y_Assets}}, {{FP_3Y_Liabilities}}"
 
-
-3. "Précise les objectifs de l'entreprise à court, moyen et long terme en utilisant :
+{{Company_goals_shortandmidTerm}} : 3. "Précise les objectifs de l'entreprise à court, moyen et long terme en utilisant :
 KPI et mesures de succès {{FP_12M_Revenue}}, {{FP_12M_Profit}}, {{FP_12M_CashFlow}}
 Stratégie de croissance {{Ansoff_MarketDevelopment}}, {{Ansoff_Diversification}}
 Points de repère {{BMC_KeyActivities}}
 Explique quels sont les objectifs clés et comment on mesurera leur progression"
 
-4. "Décris brièvement le marché cible en intégrant :
+{{Company_target_market}}  : 4. "Décris brièvement le marché cible en intégrant :
 Segmentation client {{BMC_CustomerSegments}}
 Profil psychographique et besoins {{VP_CustomerProfiles}}
 Données de marché {{PESTEL_MarketTrends}}
 Décris qui sont tes clients idéaux et quels sont leurs besoins principaux"
 
-5. "Décris le secteur d’activité et ses perspectives d’évolution en intégrant :
+{{Company_industry}} : 5. "Décris le secteur d’activité et ses perspectives d’évolution en intégrant :
 Analyse du marché {{PESTEL_Economic}}, {{PESTEL_Technological}}
 Facteurs de croissance {{SWOT_Opportunities}}
 Risques du secteur {{SWOT_Threats}}
 Décris la croissance du secteur, sa maturité ou stabilité, et ses opportunités en fonction de {{MARKET_DATA}}"
 
-b. "Explique comment l'entreprise se différencie de la concurrence en intégrant :
+{{Company_industry_b}} :  "Explique comment l'entreprise se différencie de la concurrence en intégrant :
 Forces internes {{SWOT_Strengths}}
 Facteurs différenciants {{VP_DifferentiationFactors}}
 Concurrents directs et indirects {{BMC_CompetitorAnalysis}}
 Décris qui sont les principaux concurrents et quel est l'avantage compétitif de l'entreprise"
 
-6. "Explique la structure juridique de l'entreprise en précisant :
+{{Company_legal_structure}} 6. "Explique la structure juridique de l'entreprise en précisant :
 Type d’entité {{LEGAL_DATA}}
 Justification du choix {{FP_TaxLegalConsiderations}}
 Impact sur la gouvernance {{SkillMatrix_LeadershipOwnership}}
 Explique pourquoi le choix de cette forme juridique pour l'entreprise est cohérent"
 
-b. "Décris la répartition de la propriété de l’entreprise en intégrant :
+{{Company_legal_structure_b}} : b. "Décris la répartition de la propriété de l’entreprise en intégrant :
 Associés et parts détenues {{BMC_KeyPartners}}
 Investissements et capitaux levés {{FP_D1_Investments}}, {{FP_12M_Investments}}, {{FP_3Y_Investments}}
 Décris comment la propriété est-elle répartie entre les fondateurs, investisseurs et autres parties prenantes en fonction du plan financier"
 
 III. Products & Services
 
-1. "Décris les produits et/ou services que propose l'entreprise en intégrant :
+{{PnS_What}} : 1. "Décris les produits et/ou services que propose l'entreprise en intégrant :
 Proposition de valeur {{BMC_ValueProposition}}
 Mode de production ou fourniture {{BMC_KeyActivities}}, {{BMC_KeyResources}}
 Relations avec les fournisseurs et partenaires {{BMC_KeyPartners}}
 Chaîne d'approvisionnement et logistique {{PESTEL_Economic}}, {{PESTEL_Technological}}
 Explique quels sont les éléments clés de la production et de la distribution des produits/services"
 
-2. "Explique en quoi le produit/service répond à un problème du marché en t’appuyant sur :
+{{PnS_Why}} : 2. "Explique en quoi le produit/service répond à un problème du marché en t’appuyant sur :
 Besoins et frustrations des clients {{VP_Jobs}}, {{VP_Pain}}
 Tendances du marché {{PESTEL_MarketTrends}}
 Problèmes non couverts par les concurrents {{SWOT_Opportunities}}
 Différenciation par rapport aux solutions existantes {{BMC_CompetitorAnalysis}}, {{VP_Solution}}
 Explique quels problèmes résolvent les produits/services et en quoi sont-ils plus efficaces que ceux de la concurrence"
 
-3. "Identifie les éléments exclusifs qui confèrent un avantage compétitif au produit/service en intégrant :
+{{PnS_Competitive}} : 3. "Identifie les éléments exclusifs qui confèrent un avantage compétitif au produit/service en intégrant :
 Propriété intellectuelle {{SWOT_Strengths}}, {{BMC_KeyResources}}
 Différenciation stratégique {{VP_Gains}}
 Barrières à l’entrée pour les concurrents {{SWOT_Opportunities}}, {{SWOT_Threats}}
 Facteurs d’innovation {{PESTEL_Technological}}
 Explique pourquoi le produit/service bénéficie d’une protection ou d’une exclusivité qui limite la concurrence"
 
-4. "Décris la stratégie de tarification de ton produit/service en intégrant :
+{{PnS_HowMuch}} : 4. "Décris la stratégie de tarification de ton produit/service en intégrant :
 Modèle de revenus {{BMC_RevenueStreams}}
 Analyse concurrentielle des prix {{BMC_CompetitorAnalysis}}, {{BMC_MarketPositioning}}
 Marge bénéficiaire et seuil de rentabilité {{FP_12M_Profit}}, {{FP_12M_Revenue}}, {{FP_3Y_Profit}}, {{FP_3Y_Revenue}}, {{FP_12M_Costs}}, {{FP_3Y_Costs}}, {{FP_3Y_Revenue}}
@@ -148,28 +147,28 @@ Explique comment sont fixés les prix et la marge bénéficiaire prévisionnelle
 
 IV. Marketing Plan
 
-1. "Analyse la taille et les tendances de l'industrie en intégrant :
+{{Market_SizeAndTrends}} : 1. "Analyse la taille et les tendances de l'industrie en intégrant :
 Données de marché {{PESTEL_Economic}}, {{PESTEL_IndustryTrends}}
 Facteurs de croissance ou de déclin du secteur {{SWOT_Opportunities}}, {{SWOT_Threats}}
 Évolution des préférences consommateurs {{BMC_CustomerSegments}}, {{VP_CustomerInsights}}
 Impact des nouvelles technologies et innovations {{PESTEL_Technological}}
 Décris la taille de l'industrie et son évolution ?"
 
-2. "Décris les caractéristiques et l’évolution du marché cible en t’appuyant sur :
+{{Market_evolution}} : 2. "Décris les caractéristiques et l’évolution du marché cible en t’appuyant sur :
 Segmentation du marché {{BMC_CustomerSegments}}
 Besoins et attentes des clients {{VP_Jobs}}, {{VP_Pain}}
 Tendances de consommation et évolution des comportements {{PESTEL_SocialTrends}}
 Opportunités d’expansion vers de nouveaux segments {{Ansoff_MarketDevelopment}}
 Explique qui sont les clients cibles et comment leurs attentes évoluent"
 
-3. "Analyse les concurrents et leur impact sur l'entreprise en intégrant :
+{{Market_competency}} : 3. "Analyse les concurrents et leur impact sur l'entreprise en intégrant :
 Identification des principaux acteurs du marché {{BMC_CompetitorAnalysis}}
 Forces et faiblesses des concurrents directs et indirects {{SWOT_CompetitorStrengths}}, {{SWOT_CompetitorWeaknesses}}
 Avantages compétitifs de l'entreprise {{VP_Solution}}
 Barrières à l’entrée et menaces concurrentielles {{PESTEL_Competitive}}, {{PESTEL_Economical}}
 Explique qui sont tes concurrents et quel est notre avantage concurrentiel"
 
-4. "Estime la part de marché que l'entreprise peut obtenir en fonction :
+{{Market_MaxShare}} : 4. "Estime la part de marché que l'entreprise peut obtenir en fonction :
 Taille du marché cible et taux de pénétration réaliste {{FP_12M_Revenue}}, {{FP_3Y_Revenue}}
 Comportements d’achat et fidélisation client {{MF_Awareness}}, {{MF_Loyalty}}
 Facteurs différenciants qui favorisent l’adoption {{VP_Gains}}
@@ -178,47 +177,47 @@ Décris la part du marché cible que l'entreprise peut capter et comment"
 
 Barrières à l'entrée
 
-1. "Identifie les obstacles liés aux coûts de démarrage et propose des solutions pour les surmonter en utilisant :
+{{BarriersToEntry_obstaclesStartup}} : 1. "Identifie les obstacles liés aux coûts de démarrage et propose des solutions pour les surmonter en utilisant :
 Structure des coûts de démarrage {{BMC_CostStructure}}, {{FP_D1_Costs}}, {{FP_D1_Investments}}
 Sources de financement pour couvrir les coûts de démarrage {{FP_Funding}}, {{FP_CapitalNeeds}}
 Stratégies pour réduire les coûts initiaux {{BMC_KeyPartners}}
 Explique quels sont les coûts élevés de démarrage et comment vas-t-on les gérer"
 
-2. "Décris les obstacles liés aux coûts de production et les solutions pour les contourner en utilisant :
+{{BarriersToEntry_obstaclesProduction}} : 2. "Décris les obstacles liés aux coûts de production et les solutions pour les contourner en utilisant :
 Structure des coûts de production {{BMC_KeyResources}}, {{BMC_CostStructure}}
 Optimisation de la chaîne de valeur et gestion des coûts {{SWOT_Strengths}}, {{SWOT_EconomiesOfScale}}, {{SWOT_OperationalEfficiency}}
 Recherche de fournisseurs et partenaires pour réduire les coûts {{BMC_KeyPartners}}, {{VP_Gains}}
 Explique quels sont les défis liés aux coûts de production et comment on compte les surmonter"
 
-2. "Identifie les risques associés aux changements technologiques rapides et comment les surmonter, en t’appuyant sur :
+{{BarriersToEntry_risks}} : 3. "Identifie les risques associés aux changements technologiques rapides et comment les surmonter, en t’appuyant sur :
 Technologies émergentes qui pourraient affecter ton produit ou service: {{PESTEL_Technological}}, {{BMC_KeyResources}}
 Impact des évolutions technologiques sur la compétitivité de l'entreprise: {{SWOT_Threats}}
 Adoption rapide de nouvelles technologies et mises à jour nécessaires: {{VP_Gains}}
 Anticipation des besoins futurs en matière d’innovation technologique: {{Ansoff_ProductDevelopment}}, {{Ansoff_TechnologicalForecasting}}
 Décris les évolutions technologiques qui pourraient affecter l'entreprise et comment vas-t-on les gérer"
 
-3. "Analyse comment les fluctuations économiques pourraient impacter l'entreprise et comment tu vas gérer ces risques en utilisant :
+{{BarriersToEntry_economicalInfluence}} : 4. "Analyse comment les fluctuations économiques pourraient impacter l'entreprise et comment tu vas gérer ces risques en utilisant :
 Impacts des cycles économiques sur la demande de ton produit ou service: {{PESTEL_Economical}}, {{SWOT_Threats}}
 Inflation, récession ou autres facteurs économiques affectant la rentabilité: {{SWOT_Threats}}
 Prévisions économiques et adaptation stratégique à long terme: {{BMC_KeyResources}}
 Planification pour des fluctuations économiques majeures (modifications de la production, ajustements tarifaires): {{FP_RiskAssessment}}
 Explique comment les changements économiques affecteront l'entreprise et comment on s'y prépare"
 
-4. "Examine comment les tendances du secteur pourraient offrir des opportunités pour l'entreprise et comment on peut en tirer parti, en utilisant :
+{{BarriersToEntry_trends}} : 5. "Examine comment les tendances du secteur pourraient offrir des opportunités pour l'entreprise et comment on peut en tirer parti, en utilisant :
 Opportunités de croissance dans le secteur liées à l’évolution des tendances: {{PESTEL_IndustryTrends}}, {{SWOT_Opportunities}}
 Adaptation aux besoins changeants des consommateurs dans ton secteur: {{VP_Pains}}, {{VP_Gains}}
 Évolution des besoins du marché et des innovations sectorielles: {{Ansoff_MarketDevelopment}}, {{Ansoff_ProductDevelopment}}
 Exploitation des niches de marché ou sous-segments en expansion: {{BMC_CustomerSegments}}, {{BMC_ValueProposition}}
 Explique les changements du secteur représentent une opportunité et comment nous nous y positionnerions"
 
-5. "Évalue les opportunités offertes par le développement de nouveaux marchés (géographiques ou de niche) et comment l'entreprise peut en bénéficier, en t’appuyant sur :
+{{BarriersToEntry_opportunities}} : 6. "Évalue les opportunités offertes par le développement de nouveaux marchés (géographiques ou de niche) et comment l'entreprise peut en bénéficier, en t’appuyant sur :
 Expansion géographique et analyse des marchés internationaux: {{Ansoff_MarketDevelopment}}, {{PESTEL_GeographicalTrends}}
 Nouvelles tendances de consommation ou de comportement qui ouvrent de nouveaux marchés: {{SWOT_Opportunities}}
 Utilisation des forces de l'entreprise pour capter ces nouveaux segments: {{BMC_ValueProposition}}, {{BMC_CustomerSegments}}
 Partenariats stratégiques pour l’entrée sur de nouveaux marchés: {{BMC_KeyPartners}}, {{BMC_Channels}}
 Décris les nouveaux marchés qui pourraient représenter des opportunités pour l'entreprise et comment s'y adapter"
 
-6. "Identifie les risques liés à une concurrence accrue du secteur et propose des stratégies pour les gérer, en intégrant :
+{{BarriersToEntry_competencyRisks}} : 7. "Identifie les risques liés à une concurrence accrue du secteur et propose des stratégies pour les gérer, en intégrant :
 Pression concurrentielle et stratégies de différenciation: {{SWOT_Threats}}, {{VP_Gains}}
 Surveillance de la concurrence et analyse de leur évolution: {{BMC_CompetitorAnalysis}}, {{MF}}
 Stratégies pour maintenir un avantage concurrentiel dans un marché saturé: {{SWOT_Strengths}}
@@ -226,51 +225,51 @@ Innovation continue et fidélisation de la clientèle pour contrer la concurrenc
 Explique comment vas-t-on gérer la pression de la concurrence croissante et se différencier"
 
 Fonctionnalités et bénéfices du {{PRODUIT}}
-1. "Décris les caractéristiques clés du produit ou service en utilisant :
+{{MarketingPlan_Caracteristiques}} : 1. "Décris les caractéristiques clés du produit ou service en utilisant :
 Les spécificités techniques et fonctionnalités qui le distinguent sur le marché: {{VP_Product}}, {{BMC_KeyResources}}
 L’innovation ou l’unicité de ton produit/service par rapport à la concurrence: {{SWOT_Strengths}}, {{BMC_ValueProposition}}
 Les matériaux, technologies ou processus particuliers utilisés pour créer le produit/service: {{BMC_KeyActivities}}, {{BMC_KeyResources}}
 Les éléments différenciateurs qui apportent une valeur unique aux clients: {{SWOT_Opportunities}}
 Explique les principales caractéristiques du produit/service qui le rendent unique et qui répondent aux besoins des clients"
 
-2. "Explique les principaux avantages que ton produit/service offre à tes clients, en t’appuyant sur :
+{{MarketingPlan_Avantages}} : 2. "Explique les principaux avantages que ton produit/service offre à tes clients, en t’appuyant sur :
 Les besoins ou les problèmes spécifiques que ton produit/service résout pour le client: {{VP_Pains}}, {{VP_Gains}}, {{BMC_CustomerSegments}}
 L’impact du produit/service sur l’amélioration de la vie ou de l’entreprise du client: {{BMC_ValueProposition}}, {{BMC_CustomerBenefits}}
 Les gains à long terme pour le client, tels que des économies de temps, d’argent ou d'effort: {{SWOT_Strengths}}, {{VP_Gains}}
 Comment ces avantages sont mesurables ou perceptibles pour le client: {{SWOT_Opportunities}}, {{BMC_CustomerRelationships}}
 Explique les avantages clés que le produit/service offre aux clients et comment il répond à leurs attentes"
 
-3. "Explique comment organiser la livraison du produit/service, en utilisant :
+{{MarketingPlan_Livraison}} : 3. "Explique comment organiser la livraison du produit/service, en utilisant :
 Options de livraison proposées (standard, express, internationale, etc.): {{BMC_Channels}}, {{BMC_CustomerRelationships}}
 Partenariats logistiques pour garantir une distribution efficace: {{BMC_KeyPartners}}, {{BMC_Channels}}
 Suivi de la livraison pour assurer la satisfaction client: {{SWOT_Strengths}}
 Explique comment gérer la livraison du produit/service et quelles options offrira-t-on aux clients"
 
-4. "Décris la garantie que l'on propose pour le produit/service, en détaillant :
+{{MarketingPlan_Garanties}} : 4. "Décris la garantie que l'on propose pour le produit/service, en détaillant :
 Durée et couverture de la garantie (réparations, remplacements, etc.): {{BMC_CustomerRelationships}}, {{VP_RiskReducers}}
 Les termes et conditions liés à la garantie, et comment tu comptes rassurer tes clients: {{SWOT_Strengths}}
 Comment la garantie renforce la confiance et la fidélité des clients: {{BMC_CustomerRelationships}}, {{VP_TrustBuilding}}
 Explique la garantie proposée pour le produit/service et comment cela améliore l’expérience client"
 
-5. "Décris les contrats de service que l'on compte offrir aux clients, en précisant :
+{{MarketingPlan_Contrats}} : 5. "Décris les contrats de service que l'on compte offrir aux clients, en précisant :
 Détails des services continus ou de maintenance associés au produit/service: {{BMC_KeyActivities}}, {{BMC_CustomerRelationships}}
 Options de support à long terme et d’entretien (révisions, mises à jour, etc.): {{BMC_KeyResources}}, {{BMC_CustomerRelationships}}
 Personnalisation des contrats selon les besoins des clients: {{VP_Solution}}
 Explique quels types de contrats de service proposera-t-on et comment ces services ajouteront de la valeur à l’expérience client"
 
-6. "Décris comment tu comptes fournir une assistance permanente à tes clients, en t’appuyant sur :
+{{MarketingPlan_SAV}} : 6. "Décris comment tu comptes fournir une assistance permanente à tes clients, en t’appuyant sur :
 Canaux d’assistance disponibles (téléphone, chat en ligne, email, etc.): {{BMC_Channels}}, {{BMC_CustomerRelationships}}
 Disponibilité du support (horaires, réactivité): {{SWOT_Strengths}}
 Formation des clients pour qu’ils maximisent l’utilisation du produit/service: {{VP_Gains}}, {{BMC_CustomerRelationships}}
 Explique comment vas-t-on offrir un support client constant et garantir une satisfaction continue"
 
-7. "Précise les programmes de formation que l'entreprise offrira, en détaillant :
+{{MarketingPlan_Formation}} : 7. "Précise les programmes de formation que l'entreprise offrira, en détaillant :
 Formations en ligne, en présentiel ou via des guides pratiques: {{BMC_KeyActivities}}, {{BMC_CustomerRelationships}}
 Support pour les clients pour qu'ils apprennent à utiliser pleinement le produit/service: {{VP_Pains}}
 Plans de formation adaptés aux différents niveaux d’utilisateur ou aux besoins spécifiques: {{SWOT_Opportunities}}
 Explique quels types de formations offriras-t-on et comment cela renforcera l’expérience client"
 
-8. "Explique la politique de remboursement et comment elle répond aux attentes des clients, en utilisant :
+{{MarketingPlan_Policy}} : 8. "Explique la politique de remboursement et comment elle répond aux attentes des clients, en utilisant :
 Conditions de remboursement (période, procédures, exclusions): {{BMC_CustomerRelationships}}, {{VP_RiskReducers}}
 Facilité de retour ou de remboursement pour garantir la satisfaction client: {{SWOT_Strengths}}
 Rassurer les clients sur leur achat et améliorer la fidélité: {{SWOT_Opportunities}}
@@ -278,14 +277,14 @@ Explique comment vas-t-on structurer la politique de remboursement pour garantir
 
 Target Customer:
 
-"Analyse les informations suivantes entre accolades et utilise-les pour définir un client idéal (Buyer Persona) pour notre entreprise. Décris ce persona en précisant son profil démographique, ses besoins, ses comportements d'achat et ses motivations. Intègre les segments de clientèle du Business Model Canvas (BMC), l'étape du marketing funnel concernée (Awareness/Interest), ainsi que les opportunités identifiées dans l'analyse SWOT. Prends également en compte la stratégie de développement de marché (Ansoff) et l'importance des personnes (7P_People) impliquées dans le processus d'achat. Voici les informations :
+{{MarketingPlan_BuyerPersona}} : "Analyse les informations suivantes et définis un client idéal (Buyer Persona) pour notre entreprise. Décris ce persona en précisant son profil démographique, ses besoins, ses comportements d'achat et ses motivations. Intègre les segments de clientèle du Business Model Canvas (BMC), l'étape du marketing funnel concernée (Awareness/Interest), ainsi que les opportunités identifiées dans l'analyse SWOT. Prends également en compte la stratégie de développement de marché (Ansoff) et l'importance des personnes (7P_People) impliquées dans le processus d'achat. Voici les informations :
 
 Segments de clientèle (BMC) : {{BMC_CustomerSegments}}
 Marketing Funnel (Awareness/Interest) : {{MF_Awareness}}, {{MF_Interest}}
 Opportunités SWOT : {{SWOT_Opportunities}}
 Stratégie de développement de marché (Ansoff) : {{Ansoff_MarketDevelopment}}
 Facteur humain (7P - People) : {{7P_People}}
-"À partir de ces données, rédige un Buyer Persona clair et détaillé qui pourrait être inclus dans un business plan."
+"À partir de ces données, rédige un Buyer Persona clair et détaillé qui sera inclus dans un business plan."
 
 
 
@@ -342,275 +341,215 @@ Impact sur le marché : {{Impact_concurrence_indirecte_2}}
 
 
 Marketing Expenses Strategy Chart
-Positionnement / Niche:
-"En prenant en compte l'évaluation du secteur d'activité {{BMC_KeyActivities}}, du produit/service {{BMC_Propositions_de_valeur}}, des clients {{MF_Interest}}, et des concurrents {{SWOT_CompetitorWeaknesses}}, décris clairement le créneau unique du marché (segment spécifique auquel l'entreprise s'adresse) ainsi que son positionnement (comment on souhaite que l'entreprise soit perçue par les clients). Résume cela dans un court paragraphe en intégrant les éléments suivants :
+{{MarketingPlan_Niche}} : "En prenant en compte l'évaluation du secteur d'activité {{BMC_KeyActivities}}, du produit/service {{BMC_Propositions_de_valeur}}, des clients {{MF_Interest}}, et des concurrents {{SWOT_CompetitorWeaknesses}}, décris clairement le créneau unique du marché (segment spécifique auquel l'entreprise s'adresse) ainsi que son positionnement (comment on souhaite que l'entreprise soit perçue par les clients).
+Exprime le créneau spécifique dans lequel l'entreprise se positionne (ex : marché des jeunes actifs, marché des produits écologiques, etc.).
+Expliques comment souhaite-t-on que le produit/service soit perçu par les clients par rapport à la concurrence ? (ex : prix abordable, qualité premium, innovation technologique, etc.).
+Expliques les opportunités du marché que nous souhaitons exploiter pour se différencier.
 
-Segment unique du marché (créneau) :
+{{MarketingPlan_Niche_b}} : À partir des information du PESTEL suivant:
+Politique :{{PESTEL_Political}}, 
+Economique: {{PESTEL_Economic}}, 
+Social: {{PESTEL_Social}}, 
+Technologique: {{PESTEL_Technological}}, 
+Environnemental: {{PESTEL_Environmental}}, 
+Légal: {{PESTEL_Legal}},
+Expliques comment les facteurs politiques, économiques, socioculturels, technologiques, écologiques et légaux influencent notre positionnement.
 
-{{BMC_KeyActivities}} : Exprime le créneau spécifique dans lequel l'entreprise se positionne (ex : marché des jeunes actifs, marché des produits écologiques, etc.).
-Positionnement :
+{{MarketingPlan_Niche_c}} : À partir des informations de stratégie de visibilité ({{MF_Awareness}}), Décris à quel stade de l'entonnoir de marketing souhaitons nous attirer nos clients
+En analysant les personnes du modèle 7P ({{7P_People}}), ainsi que les segments clients du modèle BMC ({{BMC_CustomerSegments}}): Décris le profil spécifique de notre clientèle cible en termes de comportement, besoins et attentes, ainsi que les caractéristiques démographiques et psychographiques de nos segments de clients.
 
-{{BMC_Propositions_de_valeur}} : Expliques comment souhaite-t-on que le produit/service soit perçu par les clients par rapport à la concurrence ? (ex : prix abordable, qualité premium, innovation technologique, etc.).
-{{SWOT_Opportunities}} : Expliques les opportunités du marché que nous souhaitons exploiter pour se différencier
-{{PESTEL_Political}}, {{PESTEL_Economic}}, {{PESTEL_Social}}, {{PESTEL_Technological}}, {{PESTEL_Environmental}}, {{PESTEL_Legal}} : Expliques comment les facteurs politiques, économiques, socioculturels, technologiques, écologiques et légaux influencent notre positionnement
-
-Ciblage client :
-{{MF_Awareness}} : Décris à quel stade de l'entonnoir de marketing souhaitons nous attirer nos clients
-{{7P_People}} : Décris le profil spécifique de notre clientèle cible en termes de comportement, besoins et attentes
-{{BMC_CustomerSegments}} : Décris les caractéristiques démographiques et psychographiques de nos segments de clients
-Utilise ces informations pour décrire en une ou deux phrases comment l'entreprise se positionne et où elle se distingue sur le marché."
+{{MarketingPlan_Niche_d}} : Utilise ces informations: {{MarketingPlan_Niche}} {{MarketingPlan_Niche_b}} {{MarketingPlan_Niche_c}}
+Décris en deux phrases comment l'entreprise se positionne et où elle se distingue sur le marché."
 
 
 Commercialisation
-"Explique comment nous allons commercialiser notre produit/service en utilisant les tactiques de marketing et de publicité appropriées. Dans cette section, inclue des informations sur les canaux de publicité et de marketing que nous prévoyons d'utiliser, en t'appuyant sur les sections suivantes des templates.
+{{MarketingPlan_HOW}} : "Explique comment nous allons commercialiser notre {{Produit/service}} en utilisant les tactiques de marketing et de publicité appropriées. Dans cette section, inclue des informations sur les canaux de publicité et de marketing que nous prévoyons d'utiliser:
+Cannaux (template BMC et marketing funnel) :  {{BMC_Channels}}, {{MF_Pruchase}},
+Promotion (7P) : {{7P_Promotion}}.
+Décris aussi la fréquence de publication, et le public cible pour chaque canal"
 
-Publicité :
+{{MarketingPlan_Tactics}} : " Explique quelles tactiques de marketing  allons nous utiliser en fonction des informations suivantes:
+Proposition de valeur: {{BMC_Propositions_de_valeur}}, 
+Forces de notre valeur: {{SWOT_Strengths}},
+Marketing (visibilité de l'entonnoir de vente et promotion) : {{MF_Awareness}}, {{7P_Promotion}}
+Intéret de l'entonnoir de vente: {{MF_Interest}}, 
+Relation client: {{BMC_CustomerRelationships}},
+Marketing de contenu : {{7P_Product}}, {{VP_Customer_Jobs}},
+Opportunité et influence sociale:{{SWOT_Opportunities}}, {{PESTEL_Société}}
+Bouche-à-oreille et recommandations: {{MF_Advocacy}}
 
-Médias en ligne : {{BMC_Channels}}, {{MF_Pruchase}}
-Publicité imprimée, radio, télévision, hors domicile : {{7P_Promotion}}
-Fréquence et ciblage des publicités : Décris la fréquence de publication, et le public cible pour chaque canal
-Tactiques de marketing :
-
-Site web de l'entreprise : {{BMC_Propositions_de_valeur}}, {{SWOT_Strengths}}
-Marketing dans les médias sociaux : {{MF_Awareness}}, {{7P_Promotion}}
-Marketing par courriel, mobile, et SEO : {{MF_Interest}}, {{BMC_CustomerRelationships}}
-Marketing de contenu : {{7P_Product}}, {{VP_Customer_Jobs}}
-Relations publiques, salons professionnels, réseautage : {{SWOT_Opportunities}}, {{PESTEL_Société}}
-Bouche-à-oreille et recommandations : {{BMC_CustomerRelationships}}, {{MF_Advocacy}}
-Image de marque et éléments de conception :
-
-Image de la marque : Expliques comment souhaitons nous que l'entreprise soit perçue (ex : fiable, innovante, accessible) ?
-Éléments de conception : {{7P_Product}}, {{SWOT_Strengths}}, {{BMC_Propositions_de_valeur}}
+{{MarketingPlan_LogoAndBranding}} : "Expliques comment souhaitons nous que l'entreprise soit perçue (ex : fiable, innovante, accessible), en fonction des éléments de conception suivants:
+{{7P_Product}}, {{SWOT_Strengths}}, {{BMC_Propositions_de_valeur}}
 Explique comment ces éléments de conception soutiendront la stratégie marketing et l'image de notre marque.
-En utilisant ces éléments des sections ci-dessus, décris los tactiques publicitaires et de marketing, ainsi que la manière dont elles vont soutenir notre positionnement sur le marché et la reconnaissance de la marque."
+
+{{MarketingPlan_FirstConclusion}} : "En utilisant ces éléments des sections suivantes: {{MarketingPlan_HOW}} {{MarketingPlan_Tactics}} {{MarketingPlan_LogoAndBranding}}
+Décris en deux phrases les tactiques publicitaires et de marketing, ainsi que la manière dont elles vont soutenir notre positionnement sur le marché et la reconnaissance de la marque."
 
 Budget Promotionnel:
-"Définis notre budget promotionnel en vous basant sur les dépenses prévues pour le marketing et la publicité. Assure-toi de bien distinguer les dépenses avant le démarrage et les dépenses continues. Utilise les sections pertinentes pour déterminer les coûts.
-
-Budget avant démarrage (inclus dans votre budget de démarrage) :
-
-Publicité en ligne, imprimée, radio, télévision : {{BMC_Channels}}, {{7P_Promotion}}
-Marketing web, réseaux sociaux, SEO, marketing par courriel : {{MF_Interest}}, {{VP_Customer_Jobs}}
-Éléments de conception et image de la marque : {{7P_Product}}, {{SWOT_Opportunities}}
-Estimez le montant total nécessaire pour lancer ces activités avant le démarrage de votre entreprise.
-Budget sur une base continue (inclus dans le budget du plan d'exploitation) :
-
-Dépenses récurrentes pour les canaux de marketing continu (réseaux sociaux, publicité en ligne, relations publiques, marketing de contenu) : {{MF_Advocacy}}, {{BMC_CustomerRelationships}}
-Publicité continue (en ligne, médias imprimés, radio) : {{7P_Promotion}}
-Salons professionnels, réseautage, recommandations : {{SWOT_Opportunities}}, {{BMC_CustomerRelationships}}
-Estimez combien vous souhaitez investir chaque mois/année pour maintenir ces activités après le démarrage.
-Utilise ces sections pour déterminer le montant alloué à la publicité et au marketing, et définis le budget avant et après le lancement de l'entreprise."
+{{MarketingPlan_PromotionalBudget}} : "Définis notre budget promotionnel en te basant sur les dépenses prévues pour le marketing et la publicité. Assure-toi de bien distinguer les dépenses avant le démarrage et les dépenses continues. Utilise les sections pertinentes pour déterminer les coûts.
+Budget avant démarrage (inclus dans votre budget de démarrage) : {{FP_D1_Assets}}{{FP_D1_CashFlow}}{{FP_D1_Investments}}
+Publicité: {{BMC_Channels}}, {{7P_Promotion}} 
+Outils : {{MF_Interest}}, {{VP_Customer_Jobs}}
+Éléments de conception et image de la marque : {{7P_Product}}, {{SWOT_Opportunities}}, {{MF_Advocacy}}, {{BMC_CustomerRelationships}}
+{{SWOT_Opportunities}}
 
 Pricing Strategy
-"Décris la stratégie de prix en prenant en compte la position de l'entreprise sur le marché, les attentes des clients et les marges bénéficiaires. Utilise les sections pertinentes pour établir une stratégie qui soutient le positionnement.
-
-Stratégie de prix et positionnement :
-
-Expliques pourquoi la stratégie de prix reflète notre positionnement ? : {{BMC_Propositions_de_valeur}}, {{SWOT_Opportunities}}
+{{MarketingPlan_PricingStrategy}} : "Décris la stratégie de prix en prenant en compte la position de l'entreprise sur le marché, les attentes des clients et les marges bénéficiaires. Utilise les sections suivantes pour établir une stratégie qui soutient le positionnement.
+Proposition de valeur: {{BMC_Propositions_de_valeur}}, 
+Opportunités: {{SWOT_Opportunities}}
 Décris comment le prix soutient le positionnement (ex : qualité premium, prix compétitifs, service supérieur, etc.).
-Comparaison avec la concurrence :
 
-Compare nos prix avec ceux de nos concurrents : {{SWOT_CompetitorWeaknesses}}, {{BMC_Channels}}
+{{MarketingPlan_PricingStrategy_competitors}} : Compare nos prix avec ceux de nos concurrents: {{CompetitorsTable}}
+Faiblesses :{{SWOT_CompetitorWeaknesses}}, 
+Canaux: {{BMC_Channels}},
 Explique pourquoi nous avons choisi cette approche par rapport à nos concurrents directs et indirects.
-
-Importance du prix pour vos clients :
-
 Explique si le prix est un facteur décisif pour nos clients: {{BMC_CustomerSegments}}, {{MF_Interest}}
 
-QUESTIONS: Quelles recherches avez-vous faites pour évaluer la sensibilité au prix de votre marché cible ?
-
-Politiques de service à la clientèle et de crédit :
-
-Expliques les politiques en matière de service à la clientèle et de crédit en fonction de: {{7P_Process}}, {{BMC_CustomerRelationships}}
+{{MarketingPlan_PricingStrategy_Clientelle}} : Expliques les politiques en matière de service à la clientèle et de crédit en fonction du process (7P): {{7P_Process}}, 
+et de la relation client: {{BMC_CustomerRelationships}}.
 Décris les politiques concernant le service client (ex : garanties, retours, assistance) et le crédit (ex : conditions de paiement, options de financement).
 En utilisant ces informations, définis clairement la stratégie de prix en fonction du positionnement, des attentes du marché et de la concurrence."
 
 
+--> emplacement physique? oui
+    --> déja choisi? oui
+    {{MarketingPlan_Location}} : "L'emplacement physique de l'entreprise possède toutes ces caractéristiques:
+    Emplacement : {{BMC_CustomerSegments}}, {{MF_Awareness}}, {{7P_Place}}
+    Infrastructure: {{PESTEL_Infrastructures}}, {{BMC_KeyResources}}
+    Type d'espace (industriel, commercial, etc.) :{{BMC_CostStructure}}, {{SWOT_Opportunities}}
+    Expliques pourquoi l'emplacement choisi est pratique pour nos client, et décris pourquoi c'est facilement accessible pour notre public cible. Analyse si le choix de l'emplacement peut-il améliorer l'expérience client.
+    Décris si l'emplacement offre-t-il un parking suffisant. Explique pourquoi cet emplacement peut améliorer l'accessibilité de l'entreprise pour les clients et les employés, réduisant ainsi le temps de déplacement.
+    Expliques le type d'espace envisagé et pourquoi, en fonction de notre modèle d'affaires, ce type d'espace est le plus adapté à nos besoins opérationnels"
+    Si précisé, décris les types d'entreprises à proximité, et si l'emplacement est stratégique en termes de synergies avec d'autres entreprises (ex : proximité d'autres entreprises similaires, complémentarité avec d'autres secteurs)
+    
+    --> déja choisi? non
+    {{MarketingPlan_Location}} : "L'emplacement physique de l'entreprise devrait posséder toutes ces caractéristiques:
+    Emplacement : {{BMC_CustomerSegments}}, {{MF_Awareness}}, {{7P_Place}}
+    Infrastructure: {{PESTEL_Infrastructures}}, {{BMC_KeyResources}}
+    Type d'espace (industriel, commercial, etc.) :{{BMC_CostStructure}}, {{SWOT_Opportunities}}
+    Expliques pourquoi un emplacement similaire serait pratique pour nos client, et décris pourquoi c'est facilement accessible pour notre public cible. Analyse si le choix de l'emplacement peut-il améliorer l'expérience client.
+    Décris si l'emplacement offre-t-il un parking suffisant. Explique pourquoi cet emplacement peut améliorer l'accessibilité de l'entreprise pour les clients et les employés, réduisant ainsi le temps de déplacement.
+    Expliques le type d'espace envisagé et pourquoi, en fonction de notre modèle d'affaires, ce type d'espace est le plus adapté à nos besoins opérationnels"
+    Si précisé, décris les types d'entreprises à proximité, et si l'emplacement est stratégique en termes de synergies avec d'autres entreprises (ex : proximité d'autres entreprises similaires, complémentarité avec d'autres secteurs)
+--> emplacement physique? non
+    {{MarketingPlan_Location}} : "L'entreprise n'envisage pas d'emplacement physique:
+    Emplacement : {{BMC_CustomerSegments}}, {{MF_Awareness}}, {{7P_Place}}
+    Infrastructure: {{PESTEL_Infrastructures}}, {{BMC_KeyResources}}
+    Type d'espace (industriel, commercial, etc.) :{{BMC_CostStructure}}, {{SWOT_Opportunities}}
+    Explique pourquoi ce choix est cohérent avec le modèle de l'entreprise.
 
-Distribution Channel Assessment Worksheet
-EMPLACEMENT:
-"Si vous avez choisi un emplacement pour votre entreprise, expliquez en quoi il est bien situé en utilisant les critères suivants. Si vous n'avez pas encore choisi un emplacement, expliquez les éléments que vous recherchez et pourquoi ces facteurs sont importants pour votre startup. Utilisez les sections pertinentes pour étayer votre décision.
-
-Un emplacement pratique pour les clients :
-QUSTIONS:
-Emplacement : {{BMC_CustomerSegments}}, {{MF_Awareness}}
-Expliques pourquoi l'emplacement choisi est pratique pour nos client, et décris pourquoi c'est facilement accessible pour notre public cible. Analyse si le choix de l'emplacement peut-il améliorer l'expérience client.
-Si c'est un emplacement physique, décris si l'emplacement offre-t-il un parking suffisant : {{PESTEL_Infrastructures}}, {{BMC_KeyResources}}
-Décris si l'emplacement permet un accès facile pour nos employés et clients, ce qui peut être crucial pour attirer des clients réguliers.
-
-Proximité des transports publics ou des grands axes routiers :{{7P_Place}}
-Décris si l'emplacement est proche des transports publics ou des grands axes routiers 
-
-Ce critère peut-il améliorer l'accessibilité de votre entreprise pour les clients et les employés, réduisant ainsi le temps de déplacement ?
-
-Type d'espace (industriel, commercial, etc.) :{{BMC_CostStructure}}, {{SWOT_Opportunities}}
-
-Expliques le type d'espace envisagé et pourquoi, en fonction de notre modèle d'affaires, ce type d'espace est le plus adapté à nos besoins opérationnels
-
-Types d'entreprises à proximité :{{BMC_KeyPartners}}, {{SWOT_Opportunities}}
-Décris les types d'entreprises à proximité, et si l'emplacement est stratégique en termes de synergies avec d'autres entreprises (ex : proximité d'autres entreprises similaires, complémentarité avec d'autres secteurs)
-En utilisant ces informations, justifie pourquoi cet emplacement est stratégique pour votre startup
-// ou, si on n'a pas encore choisi, les critères clés que vous recherchez dans un emplacement."
 
 CANNAUX DE DISTRIBUTION:
-"Décrivez les méthodes de distribution que vous allez utiliser pour vendre vos produits et/ou services. Utilisez les sections pertinentes des templates pour élaborer une stratégie de distribution qui soutient vos objectifs d'affaires.
+{{MarketingPlan_DistributionChannel}} : "Décris les méthodes de distribution que nous allons utiliser pour vendre nos produits et/ou services:
+Méthodes de distribution :{{BMC_Channels}}, {{7P_Place}},
+S'il y en a plusieurs, classe les par ordre d'importance"
 
-Méthodes de distribution :{{BMC_Channels}}, {{7P_Place}}
-Décris les méthodes de distribution que nous allons utiliser. 
-
-Partenariats stratégiques et relations avec des distributeurs :{{BMC_KeyPartners}}, {{Ansoff_MarketDevelopment}}
-Expliques nos partenariats stratégiques et relations avec des distributeurs clés. 
-//Si oui, explique comment ces partenariats ou relations joueront un rôle important dans le succès de notre distribution (ex : partenariats avec des revendeurs, relations avec des détaillants, accords de distribution exclusive, etc.).
-Explique pourquoi ces méthodes sont efficaces pour notre modèle d'affaires.
-
+{{MarketingPlan_PartnershipsAndDistributors}} : "Partenariats stratégiques et relations avec des distributeurs :{{BMC_KeyPartners}}, {{Ansoff_MarketDevelopment}}
 Raison des méthodes de distribution choisies: {{SWOT_Opportunities}}, {{VP_Gains}}
-Justifie le choix des méthodes de distribution par rapport à la stratégie globale de l'entreprise et à la façon dont elles soutiendront notre proposition de valeur unique.
-En utilisant ces informations, explique clairement la stratégie de distribution choisie et la façon dont elle contribue à la réussite de votre entreprise."
+Décris les et explique comment ces partenariats ou relations joueront un rôle important dans le succès de notre distribution (ex : partenariats avec des revendeurs, relations avec des détaillants, accords de distribution exclusive, etc.).
+Explique pourquoi ces méthodes sont efficaces pour notre modèle d'affaires. Justifie le choix des méthodes de distribution par rapport à la stratégie globale de l'entreprise et à la façon dont elles soutiendront notre proposition de valeur unique"
+
+{{MarketingPlan_ChannelConclusion}} : En utilisant ces informations: {{MarketingPlan_DistributionChannel}}, {{MarketingPlan_PartnershipsAndDistributors}},
+explique clairement en deux phrases la stratégie de distribution choisie et la façon dont elle contribue à la réussite de votre entreprise."
 
 V. Operational Plan
 PRODUCTION
-"Décrivez comment vous allez fabriquer votre produit ou fournir votre service. Utilisez les sections pertinentes des templates pour détailler les méthodes de production, l'équipement nécessaire et le coût de production.
-
+{{OP_Production}} : "Notre Produit/service sera produit et fourni de cette manière:
 Méthodes de production : {{BMC_KeyResources}}, {{SWOT_Threats}}, {{PESTEL_Technological}}
+Expliques comment nous allons fabriquer notre produit ou fournir notre service, avec les processus de fabrication ou de fourniture du service. 
+Expliques les étapes clés de production ou de prestation de service. Inclure les méthodes, les processus et les technologies impliquées.
 
-Expliques comment nous allons fabriquer notre produit ou fournir notre service, avec les processus de fabrication ou de fourniture du service. Expliques les étapes clés de production ou de prestation de service. Inclue les méthodes, les processus et les technologies impliquées.
-
-Équipement nécessaire :{{BMC_KeyResources}}, {{7P_Process}}
+{{OP_Production_ressources}} : Voici les Équipement planifiés (Ressources clés et process) :{{BMC_KeyResources}}, {{7P_Process}}
 Décris les équipement à utiliser pour la production ou la prestation de service, avec les machines, outils, ou infrastructures nécessaires. Inclure des informations sur les technologies ou les outils spécifiques qui seront essentiels.
 
-Coût de production :{{BMC_CostStructure}}, {{FP_12M_Costs}}, {{FP_3Y_Costs}}
+{{OP_Production_cost}} : Voici les coûts de production :{{BMC_CostStructure}}, {{FP_D1_Costs}}, {{FP_12M_Costs}}, {{FP_3Y_Costs}}
 Décris le coût de production du produit/service, en estimant les coûts associés à la production (y compris les coûts des matières premières, de la main-d'œuvre, des machines, etc.). Explique comment ces coûts sont intégrés dans notre structure de coûts globale. Donne le coût par unité produite ou par service fourni.
 
-Objectifs d'efficacité :{{SWOT_Opportunities}}, {{Ansoff_ProductDevelopment}}
+{{OP_Production_efficiency}} : Objectifs d'efficacité :{{SWOT_Opportunities}}, {{Ansoff_ProductDevelopment}}
 Décris les objectifs d'efficacité dans la production ou prestation de service, ainsi que les stratégies mises en place pour en améliorer l'efficacité (réduction des coûts, amélioration de la qualité, innovation dans les processus)
 
 CONTROLE QUALITÉ:
-"Décrivez comment vous allez gérer le contrôle qualité de vos produits ou services. Utilisez les sections pertinentes des templates pour détailler les procédures opérationnelles standard, l'inspection et les tests, le retour d'information des clients, ainsi que les plans d'urgence en cas de défaillance.
+{{OP_QualityControl}} : "Décrivez comment nous allons gérer le contrôle qualité de nos produits ou services. Détaille les procédures opérationnelles standard, l'inspection et les tests, le retour d'information des clients, ainsi que les plans d'urgence en cas de défaillance, à l'iade des informations suivantes:
+Procédures opérationnelles standard (POS) :{{OP_Control_POS}}
+Activité clé et process: {{BMC_KeyActivities}}, {{7P_Process}}"
 
-Procédures opérationnelles standard (POS) :{{BMC_KeyActivities}}, {{7P_Process}}
+{{OP_QualityControl_b}} : "Précise comment nous allons tester et inspecter nos produits ou services pour s'assurer qu'ils répondent aux standards de qualité. Explique les méthodes ou outils qui détecteront et corrigeront les défauts ou défaillances en fonction de:
+{{OP_Control_inspection}}, {{SWOT_Weaknesses}} 
+Ainsi que le retour d'information des clients et amélioration continue : {{OP_Control_retourInformation}},{{BMC_CustomerRelationships}},{{MF_Loyalty}}"
+Décris comment nous allons intégrer les retours des clients dans votre processus d'amélioration continue. Quels mécanismes de rétroaction mettez-vous en place (enquêtes, suivi, service après-vente) et comment cela ajustera et améliorera nos produits/services ?
 
-QUESTIONS: Quelles sont vos procédures opérationnelles standard (POS) pour assurer la qualité ?
-Décris les processus et protocoles à suivre pour garantir la qualité des produits ou services. Cela inclut les étapes définies pour chaque activité de production ou prestation de service.
-
-Inspection et essais :{{SWOT_Weaknesses}}
-QUESTIONS: Comment allez-vous procéder pour l'inspection et les essais ? : 
-Précisez comment vous allez tester et inspecter vos produits ou services pour vous assurer qu'ils répondent aux standards de qualité. Quelles méthodes ou outils serez-vous amené à utiliser pour détecter et corriger les défauts ou défaillances ?
-
-Retour d'information des clients et amélioration continue :{{BMC_CustomerRelationships}}, {{MF_Loyalty}}
-
-QUESTIONS: Comment allez-vous recueillir le retour d'information des clients et améliorer continuellement la qualité: 
-Décrivez comment vous allez intégrer les retours des clients dans votre processus d'amélioration continue. Quels mécanismes de rétroaction mettez-vous en place (enquêtes, suivi, service après-vente) et comment cela vous aidera-t-il à ajuster et améliorer vos produits/services ?
-
-Certifications et normes industrielles : {{PESTEL_Political}}, {{SWOT_Opportunities}}
+{{OP_QualityControl_c}} : Décris les certifications et normes industrielles : {{PESTEL_Political}}, {{SWOT_Opportunities}}
 Expliques les certifications ou normes industrielles à suivre pour garantir la qualité du produit/service.
-
-
-Plans d'urgence en cas de défauts ou défaillances :{{BMC_CostStructure}}, {{7P_PhysicalEvidence}}
-Décris le plan d'urgence pour traiter les défauts ou les défaillances des produits/services.
+Ainsi que le ou les plans d'urgences en cas de défauts ou défaillances :{{BMC_CostStructure}}, {{7P_PhysicalEvidence}}
 
 LOCALISATION:
-"Décrivez les détails concernant l'emplacement de votre entreprise, en abordant les points suivants et en utilisant les sections appropriées des templates pour structurer les informations :
+{{OP_Location}} : "Voici les détails concernant l'emplacement de l'entreprise: {{MarketingPlan_Location}}
+Réecris une description bien détaillée et spécifies pourquoi ce type d'établissement est adapté à nos besoins.
+Décris si l'emplacement est-il accessible pour les clients, employés, fournisseurs et pour le transport, si nécessaire, sachant:
+la relation client ({{BMC_CustomerRelationships}}), et le positionnement 7P: ({{7P_Place}})
 
-Taille de l'établissement :{{7P_PhysicalEvidence}}, {{BMC_KeyActivities}}, {{PESTEL_Economic Factors}}
-Précise la superficie du local (en mètres carrés ou autres unités pertinentes) et la configuration de l'espace (bureaux, espace de vente, entrepôt, etc.).
-Spécifies si c'est un commerce de détail, un local industriel, un espace commercial, ou autre, et pourquoi ce type d'établissement est adapté à nos besoins.
-
-QUESTIONS:
-Existe-t-il des restrictions de zonage ou des règlements concernant votre emplacement ? : {{PESTEL_LegalFactors}}, {{SWOT_Opportunities}}
-Décrivez les règles de zonage qui pourraient affecter votre entreprise (par exemple, restrictions sur les types d’activités autorisées dans la zone ou exigences spécifiques pour les locaux commerciaux).
-Accessibilité :
-
-L'emplacement est-il accessible pour les clients, employés, fournisseurs et pour le transport, si nécessaire ? : {{BMC_CustomerRelationships}}, {{7P_Place}}
-
-Précisez la facilité d'accès au local, y compris la proximité des transports publics, des grands axes routiers, du stationnement pour les clients et les employés, et tout autre facteur d'accessibilité.
-Coûts associés à l'emplacement :
-Quels sont les coûts liés à votre emplacement ? : {{BMC_CostStructure}}, {{7P_Price}}
-Détaillez les coûts tels que le loyer, l'entretien, les services publics, l'assurance, et les coûts de construction ou de rénovation si applicable. Comment ces coûts s'intègrent-ils dans votre budget et votre structure de prix ?
-Services publics :
-Quels services publics sont nécessaires pour le bon fonctionnement de l'entreprise ? : {{SWOT_Weaknesses}}, {{PESTEL_Technological}}
-Listez les services publics nécessaires (électricité, eau, chauffage, internet, etc.) et précisez si des installations spécifiques sont requises pour votre activité.
-
+{{OP_Location_b}} : {{OP_localisation_restrictions}}, {{PESTEL_LegalFactors}}, {{SWOT_Opportunities}}
+Décris les règles de zonage qui pourraient affecter l'entreprise (par exemple, restrictions sur les types d’activités autorisées dans la zone ou exigences spécifiques pour les locaux commerciaux).
 
 LEGAL:
-"Décrivez l'environnement juridique dans lequel votre entreprise va opérer, en tenant compte des éléments suivants et en utilisant les sections appropriées des templates pour structurer les informations :
-
-Licences et/ou permis nécessaires :{{PESTEL_LegalFactors}}, {{SWOT_Weaknesses}}
-
-Détaille les licences et permis requis pour le secteur d'activité 
-QUESTIONS: et précise si on a déjà obtenu ces documents ou si des démarches sont en cours.
-Marques déposées, droits d'auteur ou brevets :
-Avez-vous des marques déposées, des droits d'auteur ou des brevets, ou êtes-vous en train de les demander ?
-{{SWOT_Opportunities}}, {{BMC_KeyResources}}
+{{OP_Legal_data}} : "Décris l'environnement juridique dans lequel l'entreprise va opérer
+Données: {{LEGAL_DATA}}, {{PESTEL_LegalFactors}}, {{SWOT_Weaknesses}}
+Licences et/ou permis nécessaires: {{OP_Legal_licenses}}
+Détaille les licences et permis requis pour le secteur d'activité et précise si on a déjà obtenu ces documents ou si des démarches sont en cours.
+Marques déposées, droits d'auteur ou brevets : {{OP_Legal_officialbrand}}
 Explique les protections légales en place pour nos produits, services, logo ou technologie, et les démarches effectuées ou à effectuer pour protéger ces actifs.
-Assurance requise et coût :
-Quelle couverture d'assurance votre entreprise nécessite-t-elle et quel en est le coût ?
+
+
+{{OP_Legal_data_b}} : Assurance requise et coût : {{OP_Legal_warranty}} 
 {{PESTEL_Economic Factors}}, {{BMC_CostStructure}}
 Liste les types d'assurance dont nous avons besoin (assurance responsabilité civile, assurance des biens, assurance des employés, etc.) et précise le coût estimé pour ces couvertures.
-Réglementations environnementales, sanitaires ou relatives aux conditions de travail :
-Quelles régulations environnementales, sanitaires ou relatives aux conditions de travail affectent votre entreprise ?
-{{PESTEL_Environmental}}, {{SWOT_Opportunities}}
 
+{{OP_Legal_data_c}} : "Sachant les activités clés de l'entreprise ({{BMC_KeyActivities}})
+et les données de reglementation suivantes:
+Réglementations environnementales, sanitaires ou relatives aux conditions de travail : {{OP_Legal_environmentalregulations}} 
+Régulations spécifiques au secteur d'activité : {{OP_Legal_particularregulations}} 
+Exigences de cautionnement (si applicable) : {{OP_Legal_cautions}} 
 Décris les lois et régulations qui concernent votre entreprise en matière d'environnement, de sécurité au travail, de santé des employés ou de conformité aux normes écologiques.
-Régulations spécifiques au secteur d'activité :
-
-Quelles sont les régulations particulières affectant le secteur d'activité?
-{{PESTEL_LegalFactors}}, {{BMC_KeyActivities}}
-Précise les régulations spécifiques qui gouvernent notre industrie, comme les restrictions légales, les normes de qualité, les obligations fiscales, ou toute législation propre à notre domaine.
-Exigences de cautionnement (si applicable) :
-
-L'entreprise doit-elle remplir des exigences de cautionnement ? Si oui, explique-les.
-{{PESTEL_LegalFactors}}
-Si des exigences de cautionnement s'appliquent à l'entreprise (par exemple pour les contrats gouvernementaux, les projets de construction, ou autres), précise ces exigences et comment on prévoit de s'y conformer.
+De plus, si des exigences de cautionnement s'appliquent à l'entreprise (par exemple pour les contrats gouvernementaux, les projets de construction, ou autres), précise ces exigences et comment on prévoit de s'y conformer2
 
 
 PERSONNES:
-"Décrivez les besoins en personnel pour votre entreprise en tenant compte des éléments suivants et en utilisant les sections pertinentes des templates pour structurer les informations :
-
+{{OP_Personnel}} : "Décris les besoins en personnel pour l'entreprise en tenant compte des élements suivants:
 Types d'employés nécessaires :{{BMC_KeyResources}}, {{7P_People}}, {{SkillMatrix_TechnicalSkills}}, {{SkillMatrix_ManagementSkills}}, {{SkillMatrix_CommunicationSkills}}
 Décris le types d'employés nécessaire, ainsi que les exigences en matière de licence ou de formation
-Précise les rôles clés nécessaires dans votre entreprise (par exemple, personnel de vente, gestion, production, service client) et les compétences spécifiques requises. Inclu les certifications, licences ou formations nécessaires (par exemple, certifications professionnelles, diplômes spécifiques).
+Précise les rôles clés nécessaires dans votre entreprise (par exemple, personnel de vente, gestion, production, service client) et les compétences spécifiques requises. Inclu les certifications, licences ou formations nécessaires (par exemple, certifications professionnelles, diplômes spécifiques)"
 
-Nombre d'employés requis :{{BMC_KeyActivities}}, {{SWOT_Opportunities}}
+{{OP_Personnel_numbers}} : Nombre d'employés requis :{{BMC_KeyActivities}}, {{SWOT_Opportunities}},{{SkillMatrix_TechnicalSkills}},{{SkillMatrix_ManagementSkills}}
 Estime le nombre d'employés nécessaires pour chaque département ou rôle (par exemple, nombre de vendeurs, de gestionnaires, de personnel administratif, etc.) et leur répartition au sein de l’entreprise.
 Freelances ou entrepreneurs indépendants :{{BMC_KeyPartners}}, {{7P_People}}
 Précise si on prévoit d’externaliser certaines fonctions via des freelances ou des entrepreneurs indépendants (par exemple, consultants, développeurs externes, ou experts spécifiques à certains domaines).
 
-Descriptions de postes :{{BMC_KeyResources}}, {{7P_People}}
-Inclure des descriptions de postes pour les rôles clés. Pour chaque poste, donne une description détaillée des responsabilités, des qualifications requises, des tâches quotidiennes et des objectifs à atteindre pour chaque rôle (par exemple, responsable des ventes, responsable des opérations, etc.).
-
-Structure de rémunération :{{BMC_CostStructure}}, {{SWOT_Opportunities}}, {{7P_People}}
-Explique quelle est la structure de la rémunération pour chaque poste (horaire, salariat, base plus commission, etc.). Décris le type de rémunération pour chaque poste (par exemple, salaire fixe, rémunération à la commission, ou un modèle hybride avec salaire de base plus commissions ou primes).
-
+{{OP_Personnel_costStructure}} : Structure de rémunération :{{BMC_CostStructure}}, {{SWOT_Opportunities}}, {{7P_People}}
 Recrutement et qualification des employés :{{BMC_Channels}}, {{SWOT_Opportunities}}
-Expliques comment prévoyez-vous de trouver des employés qualifiés. Explique les stratégies de recrutement que vous allez utiliser pour attirer des candidats qualifiés (par exemple, recrutement via des agences, publicité en ligne, partenariats avec des écoles, ou par le biais de réseaux professionnels).
-
 Formation des employés :{{BMC_KeyActivities}}, {{7P_Process}}
-Explique quel type de formation est nécessaire pour vos employés et comment allez-vous les former. Détaille les programmes de formation nécessaires pour chaque rôle, comment la formation sera dispensée (en interne, via des experts externes, formation en ligne), et la manière dont vous vous assurerez que les employés acquièrent les compétences nécessaires.
+Explique quelle est la structure de la rémunération pour chaque poste (horaire, salariat, base plus commission, etc.). Décris le type de rémunération pour chaque poste (par exemple, salaire fixe, rémunération à la commission, ou un modèle hybride avec salaire de base plus commissions ou primes).
+Expliques comment nous prévoyons de trouver des employés qualifiés si c'est spécifié.
+Explique quel type de formation est nécessaire pour nos employés et comment seront-ils formés. Détaille les programmes de formation nécessaires pour chaque rôle, comment la formation sera dispensée, et la manière de la superviser"
 
 INVENTAIRE:
-"Décrivez la gestion de l'inventaire pour votre entreprise en tenant compte des éléments suivants, en utilisant les sections pertinentes des templates pour structurer les informations :
+--> Y aura t il un inventaire à gérer dans l'entreprise? oui
+    "Décris la gestion de l'inventaire pour l'entreprise:
+    Type de stock à conserver : {{OP_Inventaire_stocktype}}
+    Valeur moyenne des stocks : {{OP_Inventaire_stockcost}}
+    Taux de rotation des stocks : {{OP_Inventaire_stockchurn}}
+    Variations saisonnières des stocks : {{OP_Inventaire_stockvariation}}
+    Délai de commande des stocks : {{OP_Inventaire_stockdelay}}
+    En fonction de ces données et des ressources suivantes:
+    {{BMC_KeyResources}}, {{BMC_Channels}}, {{SWOT_Weaknesses}}{{BMC_CostStructure}},
+    Explique quel type de stock nous conserverons (matières premières, fournitures, produits finis, etc.). Décris les types de stocks que vous allez maintenir, qu'il s'agisse de matières premières, de fournitures nécessaires à la production, de produits finis ou d'autres types de stocks. Par exemple, pour une entreprise de fabrication, les matières premières seront essentielles, tandis que pour une entreprise de commerce électronique, les produits finis ou en cours de production seront plus importants.
+    Spécifie quelle sera la valeur moyenne des stocks (combien nous investissons dans les stocks). Estime la valeur totale de nos stocks à tout moment et comment nous prévoyons de gérer cette valeur par rapport à la trésorerie disponible et aux besoins opérationnels.
+    Spécifies le taux de rotation des stocks, et comment se situe-t-il par rapport aux moyennes du secteur. Explique comment on suivra la fréquence à laquelle on renouvelera les stocks, et comment ce taux de rotation se compare à la norme de l'industrie. Par exemple, dans les secteurs où la demande est élevée, les stocks peuvent se tourner plus rapidement que dans ceux où la demande est plus stable.
+    Décris si l'entreprise prévoit des variations saisonnières dans ses besoins en stocks. Par exemple, un détaillant pourrait augmenter ses stocks pour la période des fêtes, ou une entreprise agroalimentaire pourrait avoir des pics de demande à certaines périodes de l'année.
+    Détaille le temps nécessaire pour commander de nouveaux stocks, ainsi que le processus d'approvisionnement. Inclure des informations sur les relations avec les fournisseurs et la manière dont on gére le réapprovisionnement des stocks (par exemple, délais de livraison, fréquence des commandes, gestion des stocks excédentaires, etc.).
 
-Type de stock à conserver :{{BMC_KeyResources}}, {{BMC_Channels}}, {{SWOT_Weaknesses}}
-
-Explique quel type de stock nous conserverons (matières premières, fournitures, produits finis, etc.). Décris les types de stocks que vous allez maintenir, qu'il s'agisse de matières premières, de fournitures nécessaires à la production, de produits finis ou d'autres types de stocks. Par exemple, pour une entreprise de fabrication, les matières premières seront essentielles, tandis que pour une entreprise de commerce électronique, les produits finis ou en cours de production seront plus importants.
-
-Valeur moyenne des stocks :{{BMC_CostStructure}}, {{FP_3Y_CashFlow}}, {{FP_12M_CashFlow}}
-Spécifie quelle sera la valeur moyenne des stocks (combien nous investissons dans les stocks). Estime la valeur totale de nos stocks à tout moment et comment nous prévoyons de gérer cette valeur par rapport à la trésorerie disponible et aux besoins opérationnels.
-
-Taux de rotation des stocks :{{PESTEL_Economic}}, {{SWOT_Opportunities}}, {{BMC_CostStructure}}
-Spécifies le taux de rotation des stocks, et comment se situe-t-il par rapport aux moyennes du secteur. Explique comment on suivra la fréquence à laquelle on renouvelera les stocks, et comment ce taux de rotation se compare à la norme de l'industrie. Par exemple, dans les secteurs où la demande est élevée, les stocks peuvent se tourner plus rapidement que dans ceux où la demande est plus stable.
-
-Variations saisonnières des stocks :{{BMC_Channels}}, {{MF}}
-Décris si l'entreprise prévoit des variations saisonnières dans ses besoins en stocks. Par exemple, un détaillant pourrait augmenter ses stocks pour la période des fêtes, ou une entreprise agroalimentaire pourrait avoir des pics de demande à certaines périodes de l'année.
-
-Délai de commande des stocks :{{BMC_KeyResources}}, {{SWOT_Weaknesses}}, {{BMC_CostStructure}}
-Détaille le temps nécessaire pour commander de nouveaux stocks, ainsi que le processus d'approvisionnement. Inclure des informations sur les relations avec les fournisseurs et la manière dont on gére le réapprovisionnement des stocks (par exemple, délais de livraison, fréquence des commandes, gestion des stocks excédentaires, etc.).
 
 FOURNISSEURS:
-"Décrivez vos principaux fournisseurs en utilisant les informations suivantes, en vous aidant des sections pertinentes des templates pour formuler une analyse complète :
-CRÉER UN TABLEAU
-Noms, adresses et sites web des fournisseurs :
-
+"Décrivez vos principaux fournisseurs en utilisant les informations suivantes:
 Qui sont vos principaux fournisseurs ?
 Incluez leurs noms, adresses et sites web.
 {{BMC_KeyResources}}, {{BMC_KeyPartners}}

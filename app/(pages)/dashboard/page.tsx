@@ -142,12 +142,12 @@ export default function DashboardPage() {
 							</Button>
 							<Button variant="outline" asChild>
 								<Link href="/tools/search-hunter">
-									Search-Hunter
+									SmartHunter
 								</Link>
 							</Button>
 							<Button variant="outline" asChild>
 								<Link href="/tools/market-tester">
-									Market-Tester
+									Market Analytics
 								</Link>
 							</Button>
 						</div>
