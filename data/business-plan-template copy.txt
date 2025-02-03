@@ -545,7 +545,7 @@ Explique quel type de formation est nécessaire pour nos employés et comment se
 
 INVENTAIRE:
 --> Y aura t il un inventaire à gérer dans l'entreprise? oui
-    "Décris la gestion de l'inventaire pour l'entreprise:
+{{OP_Inventaire}} : "Décris la gestion de l'inventaire pour l'entreprise:
     Type de stock à conserver : {{OP_Inventaire_stocktype}}
     Valeur moyenne des stocks : {{OP_Inventaire_stockcost}}
     Taux de rotation des stocks : {{OP_Inventaire_stockchurn}}
@@ -561,32 +561,32 @@ INVENTAIRE:
 
 
 FOURNISSEURS:
-"Décris les principaux fournisseurs en utilisant les informations suivantes:
+{{OP_Fournisseurs_List}} : "Décris les principaux fournisseurs en utilisant les informations suivantes:
 Principaux fournisseurs: {{BMC_IdentificationFournisseurs}}, {{BMC_KeyResources}}, {{BMC_KeyPartners}}
 Fournissez les informations de base sur vos fournisseurs clés, y compris leur localisation et leur site web pour permettre une identification facile de ces acteurs importants.
 
 
-"Décris le type et quelle quantité des stocks fournis, grâce aux informations : 
+{{OP_Fournisseurs_ Type}} : "Décris le type et quelle quantité des stocks fournis, grâce aux informations : 
 {{BMC_KeyResources}}, {{BMC_ProduitCritiquestock}}, {{OP_Inventaire_stocktype}}, {{OP_Inventaire_stockchurn}}, {{BMC_Channels}}
 Décris les produits ou matériaux que les fournisseurs fourniront, ainsi que la quantité de chaque article nécessaire pour les opérations.
 
-"Expliques la politique en matière de crédit et de livraison de vos fournisseurs
+{{OP_Fournisseurs_Politics}} : "Expliques la politique en matière de crédit et de livraison de vos fournisseurs
 {{BMC_PolitiquedeCredit}}, {{BMC_CostStructure}}, {{7P_Place}}
 Indique les conditions de paiement proposées par les fournisseurs (par exemple, délais de paiement, escompte de paiement rapide) et la politique de livraison (frais de transport, délais de livraison, etc.).
 
-Spécifies les antécédents et la fiabilité de vos fournisseurs
+{{OP_Fournisseurs_Reliability}} : Spécifies les antécédents et la fiabilité de vos fournisseurs
 {{BMC_AntécédentsetFiabilité}}, {{SWOT_Weaknesses}}, {{SWOT_Opportunities}}
 Évalue la solidité des fournisseurs sur la base de leur réputation dans l'industrie et de leurs antécédents.
 
-Décris si on prévoit des ruptures d'approvisionnement ou des problèmes de livraison à court terme, ainsi que leur gestion
+{{OP_Fournisseurs_Crash}} : Décris si on prévoit des ruptures d'approvisionnement ou des problèmes de livraison à court terme, ainsi que leur gestion
 {{BMC_RuptureApprovisionnement}}, {{BMC_KeyResources}}, {{BMC_CustomerRelationships}}, {{SWOT_Weaknesses}}
 Précise comment anticiper ces risques s'ils existent, ainsi que les stratégies pour y faire face (par exemple, gestion des stocks de sécurité, relation avec des fournisseurs alternatifs, etc.).
 
-Décris si les articles critiques ont plusieurs fournisseurs (comme solution de secours)
+{{OP_Fournisseurs_Critical}} : Décris si les articles critiques ont plusieurs fournisseurs (comme solution de secours)
 {{BMC_DiversificationdesFournisseurs}}, {{BMC_KeyPartners}}, {{BMC_KeyResources}}
 Indique si on a prévu de travailler avec plusieurs fournisseurs pour des articles particulièrement stratégiques ou à forte demande pour garantir la continuité des opérations en cas de défaillance d'un fournisseur.
 
-Si le coût des fournitures varie, décris comment nous y feront face
+{{OP_Fournisseurs_Costs}} : Si le coût des fournitures varie, décris comment nous y feront face
 {{BMC_VariationCoutsFournitures}}, {{PESTEL_Economic}}, {{BMC_CostStructure}}
 Analyse la tendance des coûts des matières premières ou des produits fournis par les fournisseurs et comment nous nous préparons à d'éventuelles hausses de coûts (par exemple, stratégies de fixation des prix, renégociation des contrats, diversification des sources d'approvisionnement).
 
