@@ -39,39 +39,50 @@ export const VALUE_PROPOSITION_SECTIONS_ORDER: ValuePropositionCategory[] = [
 ];
 
 export const VALUE_PROPOSITION_QA_DATA: QAData = {
-	sectionTitle: "Questions pour Approfondir Votre Proposition de Valeur",
+	sectionTitle: "Les questions Premium pour votre proposition de valeur",
 	categories: [
 		{
-			id: "customer-needs",
-			title: "Besoins Clients",
+			id: "VP_CustomerProfiles",
+			title: "Profil des clients cibles",
 			question:
-				"Comment avez-vous identifié et validé les besoins principaux de vos clients ?",
+				"Qui sont vos clients idéaux en termes de profils psychographiques et quels sont leurs principaux besoins ?",
 			examples: [
-				"Études de marché ciblées",
-				"Entretiens avec des clients potentiels",
-				"Analyse des retours clients existants",
+				"Profil psychographique : Les clients idéaux sont des jeunes professionnels de 25 à 35 ans, soucieux de leur santé et de leur bien-être, qui cherchent à adopter un mode de vie plus actif. Besoins : Ils ont besoin de solutions pratiques et accessibles pour intégrer l’exercice physique dans leur quotidien chargé, comme des programmes d'entraînement à domicile ou des applications de fitness personnalisées.",
+				"Profil psychographique : Les clients idéaux sont des familles avec enfants, qui recherchent des produits écologiques et durables pour réduire leur impact environnemental. Besoins : Ils ont besoin de produits ménagers non toxiques, de solutions zéro déchet et d’alternatives écologiques à leurs achats quotidiens.",
+				"Profil psychographique : Les clients idéaux sont des retraités actifs de plus de 60 ans, qui souhaitent rester indépendants tout en améliorant leur confort à domicile. Besoins : Ils ont besoin de technologies simples à utiliser pour améliorer leur sécurité (comme des systèmes de surveillance intelligents) et des produits adaptés pour faciliter les tâches ménagères sans trop d’effort.",
 			],
 		},
 		{
-			id: "value-differentiation",
-			title: "Différenciation",
+			id: "VP_DifferentiationFactors",
+			title: "Différenciation de la concurrence",
 			question:
-				"En quoi votre proposition de valeur se différencie-t-elle de la concurrence ?",
+				"Comment votre entreprise se différencie-t-elle de la concurrence et quels sont les facteurs clés qui la rendent unique ?",
 			examples: [
-				"Innovation produit unique",
-				"Meilleur rapport qualité-prix",
-				"Service client supérieur",
+				"Différenciation : Nous proposons un produit bio et équitable, tandis que la plupart de nos concurrents utilisent des ingrédients industriels ou non durables. Facteurs clés : Nous garantissons la traçabilité totale de nos produits et mettons un point d'honneur à soutenir des projets locaux en Afrique. Cela attire les consommateurs soucieux de l'impact environnemental et social de leurs achats.",
+				"Différenciation : Notre application de gestion de finances personnelles se distingue par son interface ultra-simplifiée et son approche ludique, qui la rend accessible même aux utilisateurs non experts. Facteurs clés : Nous offrons des fonctionnalités personnalisées adaptées aux jeunes adultes qui commencent tout juste à gérer leurs finances, ce que peu de nos concurrents proposent. De plus, notre application est gratuite et sans publicité intrusive.",
+				"Différenciation : Nous sommes les seuls à proposer un service de livraison de repas entièrement préparés à base de plantes, tout en offrant des recettes innovantes chaque semaine. Facteurs clés : Contrairement aux concurrents qui se limitent à des options végétariennes classiques, nous nous concentrons sur des plats végétaliens gourmets, avec des options créatives adaptées aux régimes spécifiques (gluten-free, keto, etc.).",
 			],
 		},
 		{
-			id: "solution-fit",
-			title: "Adéquation Solution",
+			id: "VP_CustomerInsights",
+			title: "Préférences des consommateurs",
 			question:
-				"Comment votre solution répond-elle spécifiquement aux problèmes identifiés ?",
+				"Comment l'évolution des préférences des consommateurs impacte-t-elle votre secteur et quelles sont les principales tendances actuelles ?",
 			examples: [
-				"Fonctionnalités développées sur mesure",
-				"Solutions basées sur des retours clients",
-				"Innovations technologiques ciblées",
+				"Impact des préférences : Les consommateurs recherchent de plus en plus des produits respectueux de l'environnement et des marques engagées socialement. Cela influence directement notre secteur, car nous constatons une demande croissante pour des produits biologiques et durables. Tendances : La tendance vers des produits écologiques et zéro déchet est en forte croissance, et cela pousse notre entreprise à développer des emballages compostables et à privilégier des sources d'approvisionnement durables.",
+				"Impact des préférences : Les consommateurs privilégient désormais les solutions numériques et la commodité, avec un intérêt croissant pour les services en ligne. Cela transforme notre industrie des services financiers, car une part importante des transactions se fait maintenant via des applications mobiles. Tendances : L'usage des applications mobiles et des services financiers dématérialisés (comme le paiement sans contact et les portefeuilles électroniques) continue d'augmenter, avec un accent mis sur la rapidité, la sécurité et la personnalisation.",
+				"Impact des préférences : Les clients dans le secteur de la mode se tournent de plus en plus vers des achats en ligne, réduisant la fréquentation des magasins physiques. Cela change la dynamique du marché, nous incitant à investir dans notre plateforme e-commerce et à renforcer notre présence en ligne. Tendances : La tendance du shopping virtuel et l'émergence de la réalité augmentée dans le commerce en ligne permettent aux consommateurs d’essayer les produits de manière interactive avant de les acheter. Cette évolution nous pousse à adopter des technologies plus immersives et interactives pour mieux répondre à leurs attentes.",
+			],
+		},
+		{
+			id: "VP_RiskReducers",
+			title: "Garantie et confiance",
+			question:
+				"Quelle est la garantie que vous proposez pour votre produit/service, en détaillant la durée et la couverture (réparations, remplacements, etc.), ainsi que votre politique de remboursement (conditions, période, procédures, exclusions) ?",
+			examples: [
+				"Garantie du produit/service : Nous proposons une garantie de 2 ans sur nos produits, couvrant les défauts de fabrication et les problèmes techniques. Si un produit tombe en panne, nous nous engageons à le réparer ou à le remplacer sans frais supplémentaires pour le client. Politique de remboursement : En cas de non-satisfaction dans les 30 jours suivant l'achat, le client peut demander un remboursement complet. Les produits doivent être retournés dans leur état d'origine, et les frais de retour sont à la charge du client, sauf en cas de défaut de fabrication.",
+				"Garantie du produit/service : Nos services bénéficient d'une garantie de satisfaction de 60 jours. Si le client n’est pas satisfait de la prestation fournie, il peut demander un remboursement complet ou un service de remplacement à sa convenance. Politique de remboursement : Les remboursements sont traités dans un délai de 14 jours après réception de la demande. Cependant, cette politique de remboursement ne s'applique pas aux services déjà fournis ou aux achats effectués lors de promotions spéciales.",
+				"Garantie du produit/service : Tous nos appareils électroniques sont garantis pour une période de 1 an à compter de la date d'achat. Cette garantie couvre les réparations en cas de panne matérielle et permet un remplacement en cas de défectuosité irréparable. Politique de remboursement : Nous offrons un remboursement complet pour les produits retournés dans les 30 jours suivant l'achat, à condition que les produits soient en parfait état, dans leur emballage d'origine et accompagnés de la preuve d'achat. Les produits ouverts ou utilisés ne sont pas remboursables, sauf si un défaut est constaté.",
 			],
 		},
 	],

@@ -4,21 +4,20 @@ export const QA_DATA = {
 	sectionTitle: "Questions pour Approfondir Votre Analyse Financière",
 	categories: [
 		{
-			id: "initial-investment",
-			title: "Investissement Initial",
+			id: "FP_TaxLegalConsiderations",
+			title: "Aspects fiscaux et juridiques",
 			question:
-				"Quels sont les investissements prioritaires pour le démarrage de votre entreprise et pourquoi ces choix ?",
+				"Quels sont les principaux aspects fiscaux et juridiques à prendre en compte pour la création et la gestion de votre entreprise ? Ces éléments ont-ils une influence sur votre stratégie ?",
 			examples: [
-				"Nous prévoyons d'investir principalement dans le développement technologique car c'est notre coeur de métier",
-				"L'acquisition de matériel spécialisé est prioritaire pour notre production",
-				"Le budget marketing représente notre investissement principal pour acquérir rapidement des parts de marché",
+				"Nous devons tenir compte des régulations fiscales locales concernant la TVA et des impôts sur les sociétés, car elles affectent directement notre rentabilité. Nous avons aussi consulté un avocat pour être conformes à la législation sur la protection des données personnelles (RGPD).",
+				"Nous prévoyons d'opter pour un statut juridique qui nous permet de bénéficier de certaines exonérations fiscales, ce qui nous aidera à optimiser notre rentabilité. De plus, nous avons besoin de nous assurer que tous nos contrats commerciaux respectent les normes légales pour éviter des litiges.",
 			],
 		},
 		{
-			id: "risk-management",
-			title: "Gestion des Risques",
+			id: "FP_Funding",
+			title: "Modes de financement",
 			question:
-				"Comment planifiez-vous de gérer les risques financiers identifiés dans votre analyse ?",
+				"Quels sont les modes de financement envisagés pour lancer et développer votre entreprise ? Avez-vous prévu des sources de financement spécifiques ?",
 			examples: [
 				"Diversification des sources de financement pour réduire la dépendance",
 				"Constitution d'une réserve de trésorerie pour les imprévus",
@@ -26,14 +25,33 @@ export const QA_DATA = {
 			],
 		},
 		{
-			id: "break-even",
-			title: "Point Mort",
+			id: "FP_CapitelNeeds",
+			title: "Besoins en capitaux",
 			question:
-				"Quel est votre plan pour atteindre le point d'équilibre et dans quel délai ?",
+				"Quel montant de capital est nécessaire pour couvrir les besoins de votre entreprise à court et moyen terme ? En quoi ce capital est-il essentiel pour votre activité ?",
 			examples: [
-				"Optimisation des coûts opérationnels dès le démarrage",
-				"Stratégie de pricing adaptée pour maximiser les marges",
-				"Focus sur les produits/services à forte rentabilité",
+				"Nous estimons que nous avons besoin de 500 000 € pour couvrir les coûts de production, le marketing initial, ainsi que pour renforcer notre équipe. Ce capital est crucial pour assurer notre lancement sur le marché avec un produit de qualité.",
+				"Un capital de 200 000 € est nécessaire pour couvrir les dépenses liées à l'achat d'équipement et à la mise en place d'une infrastructure solide pour le lancement de notre service.",
+			],
+		},
+		{
+			id: "FP_Budget",
+			title: "Budget",
+			question:
+				"Quel est le budget prévisionnel pour les premières années de votre entreprise ? Comment ce budget est-il réparti entre les différents postes de dépenses ?",
+			examples: [
+				"Nous avons prévu un budget de 300 000 € pour les deux premières années, réparti entre la R&D (40 %), le marketing (30 %), et les frais généraux (30 %).",
+				"Le budget de lancement est estimé à 100 000 €, dont 50 000 € sont alloués à l’achat de matériel, et les 50 000 € restants sont dédiés aux campagnes de publicité et à la rémunération des employés.",
+			],
+		},
+		{
+			id: "FP_ExternalCost",
+			title: "Coûts externes",
+			question:
+				"Quels coûts externes (partenaires, fournisseurs, services externes) avez-vous anticipés pour faire fonctionner votre entreprise ? Comment ces coûts influencent-ils votre plan financier ?",
+			examples: [
+				"Nous avons estimé un coût de 50 000 € pour les services externes tels que la logistique et le marketing digital. Ces dépenses sont nécessaires pour assurer une gestion fluide de la production et augmenter notre visibilité en ligne.",
+				"Les coûts externes, incluant les frais de consultants et les services cloud pour héberger nos données, sont évalués à 30 000 €. Ces dépenses sont cruciales pour maintenir la qualité de notre service tout en contrôlant les coûts fixes.",
 			],
 		},
 	],

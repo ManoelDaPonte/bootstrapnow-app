@@ -45,39 +45,17 @@ export const MARKETING_MIX_COLORS = {
 } as const;
 
 export const MARKETING_MIX_QA_DATA: QAData = {
-	sectionTitle: "Questions pour Approfondir Votre Mix Marketing",
+	sectionTitle: "Questions supplémentaires de votre Mix Marketing",
 	categories: [
 		{
-			id: "product-differentiation",
-			title: "Différenciation Produit",
+			id: "MarketingPlan_Sensibility",
+			title: "Sensibilité au prix",
 			question:
-				"Comment votre produit ou service se différencie-t-il de la concurrence ?",
+				"Quelles recherches avez-vous faites pour évaluer la sensibilité au prix de votre marché cible ?",
 			examples: [
-				"Caractéristiques uniques qui répondent à des besoins spécifiques",
-				"Innovation technologique ou design distinctif",
-				"Service après-vente supérieur à la moyenne du marché",
-			],
-		},
-		{
-			id: "pricing-strategy",
-			title: "Stratégie de Prix",
-			question:
-				"Comment avez-vous déterminé votre stratégie de prix par rapport à votre positionnement ?",
-			examples: [
-				"Analyse détaillée des coûts et marges",
-				"Étude des prix pratiqués par la concurrence",
-				"Valeur perçue par les clients cibles",
-			],
-		},
-		{
-			id: "distribution-efficiency",
-			title: "Efficacité de la Distribution",
-			question:
-				"Comment optimisez-vous vos canaux de distribution pour maximiser l'accessibilité ?",
-			examples: [
-				"Analyse de la couverture géographique",
-				"Évaluation des partenaires de distribution",
-				"Solutions multicanales intégrées",
+				"Analyse des concurrents : Nous avons étudié les prix pratiqués par nos concurrents directs et indirects pour évaluer les fourchettes tarifaires acceptées par notre marché cible.",
+				"Enquêtes et sondages : Nous avons mené des enquêtes auprès de notre clientèle potentielle pour comprendre leur perception du prix et leur disposition à payer pour notre produit/service.",
+				"Tests A/B et études de marché : Nous avons réalisé des tests de tarification en proposant différentes options à des segments de clients afin d'observer leur comportement d'achat et d'identifier le prix optimal.",
 			],
 		},
 	],
