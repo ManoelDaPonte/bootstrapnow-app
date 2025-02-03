@@ -4,8 +4,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { prisma } from "@/lib/db/prisma";
-import { formatBusinessPlanData } from "@/lib/business-plan/prompt/formatBusinessPlanData";
-import { replacePlaceholders } from "@/lib/business-plan/prompt/replacePlaceholders";
+import { formatBusinessPlanData } from "@/lib/openai/prompt/formatBusinessPlanData";
+import { replacePlaceholders } from "@/lib/openai/prompt/replacePlaceholders";
 
 export async function GET() {
 	try {

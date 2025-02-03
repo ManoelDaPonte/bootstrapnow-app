@@ -26,7 +26,7 @@ const templates = [
 				name: "Competiteurs",
 				route: "/tools/business-plan/competitors",
 				description: "Différenciez vous",
-			}
+			},
 		],
 	},
 	{
