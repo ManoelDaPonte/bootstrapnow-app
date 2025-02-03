@@ -40,36 +40,25 @@ export const ANSOFF_QA_DATA: QAData = {
 	sectionTitle: "Questions pour Approfondir Votre Matrice Ansoff",
 	categories: [
 		{
-			id: "market-penetration",
-			title: "Pénétration du Marché",
+			id: "Ansoff_GrowthStrategy",
+			title: "Menaces à long terme",
 			question:
-				"Quelles sont vos stratégies actuelles pour augmenter votre part de marché avec les produits existants ?",
+				"Quelles sont les principales menaces ou défis externes que vous anticipez dans l'atteinte de vos objectifs de croissance à long terme, et comment prévoyez-vous de les surmonter ?",
 			examples: [
-				"Mise en place d'une campagne promotionnelle agressive pour stimuler les ventes",
-				"Développement de programmes de fidélisation pour augmenter la fréquence d'achat",
-				"Optimisation de la distribution pour améliorer la disponibilité des produits",
+				"Menace: La concurrence accrue dans le secteur. Réponse : Améliorer la différenciation de nos produits par l’innovation.",
+				"Défi: Des barrières légales dans les nouveaux marchés. Réponse : Adapter nos produits pour respecter les régulations locales et collaborer avec des partenaires locaux pour faciliter l’entrée sur le marché.",
+				"Menace: Les changements rapides dans la technologie. Réponse : Investir dans la recherche et le développement pour rester à la pointe de l’innovation technologique.",
 			],
 		},
 		{
-			id: "product-development",
-			title: "Développement Produit",
+			id: "Ansoff_TechnologicalForecasting",
+			title: "Veille Technologique",
 			question:
-				"Comment planifiez-vous d'innover et de développer de nouveaux produits pour votre marché actuel ?",
+				"Comment prévoyez-vous d'évaluer et d'intégrer de nouvelles technologies émergentes dans votre modèle d'affaires pour assurer une compétitivité à long terme, et quels critères de sélection utilisez-vous pour ces innovations ?",
 			examples: [
-				"Investissement en R&D pour créer des versions améliorées des produits existants",
-				"Développement de produits complémentaires pour répondre aux besoins adjacents",
-				"Intégration de nouvelles technologies pour moderniser l'offre",
-			],
-		},
-		{
-			id: "market-development",
-			title: "Développement du Marché",
-			question:
-				"Quels nouveaux marchés ou segments de clientèle envisagez-vous pour vos produits actuels ?",
-			examples: [
-				"Expansion géographique vers de nouvelles régions ou pays",
-				"Adaptation des produits existants pour de nouveaux segments de marché",
-				"Développement de nouveaux canaux de distribution",
+				"Critères d'évaluation : Impact sur l'efficacité opérationnelle et la réduction des coûts. Réponse : Nous évaluerons d'abord la technologie en fonction de son retour sur investissement et de son potentiel à réduire les coûts de production.",
+				"Intégration de la technologie : Adopter des solutions de cloud computing. Réponse : Nous allons migrer vers des solutions cloud afin de faciliter l'évolutivité de nos opérations et de nous adapter plus rapidement aux demandes du marché.",
+				"Innovation spécifique : L'IA pour personnaliser l’expérience client. Réponse : Nous allons intégrer une plateforme d'IA pour analyser les données clients et personnaliser les recommandations, afin d’améliorer l’expérience utilisateur",
 			],
 		},
 	],

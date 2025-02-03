@@ -29,3 +29,31 @@ export const TRENDS_HELP = {
 		"**Tendance baissière :** Une diminution progressive peut signaler un marché en déclin",
 	],
 };
+
+export const MARKET_TRENDS_QA_DATA = {
+	sectionTitle: "Questions supplémentaires",
+	categories: [
+		{
+			id: "MARKET_DATA",
+			title: "Données de marché",
+			question:
+				"Quelles sont les principales données de marché qui influencent votre activité ?",
+			examples: [
+				"Une demande croissante pour les produits éco-responsables",
+				"Un ralentissement économique impactant le pouvoir d’achat des consommateurs",
+				"L’émergence de nouvelles technologies disruptives.",
+			],
+		},
+		{
+			id: "LEGAL_DATA_Anticipate",
+			title: "Anticipation des enjeux",
+			question:
+				"Quels sont les enjeux juridiques et réglementaires à anticiper ?",
+			examples: [
+				"Respect du RGPD et protection des données personnelles.",
+				"Réglementation spécifique pour les produits alimentaires",
+				"Obligations fiscales et déclarations légales pour une entreprise internationale.",
+			],
+		},
+	],
+};

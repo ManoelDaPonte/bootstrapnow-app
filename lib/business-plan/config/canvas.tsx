@@ -55,38 +55,143 @@ export const CANVAS_QA_DATA: QAData = {
 	sectionTitle: "Questions pour Approfondir Votre Business Model Canvas",
 	categories: [
 		{
-			id: "value-proposition-validation",
-			title: "Validation de la Proposition de Valeur",
+			id: "PRODUITouSERVICE",
+			title: "Ce que vous offrez concrètement",
 			question:
-				"Comment avez-vous validé que votre proposition de valeur répond réellement aux besoins de vos segments de clientèle ?",
+				"Quel est le nom de votre {{PRODUITouSERVICE}} et comment ce nom reflète-t-il sa mission ou son objectif ?",
 			examples: [
-				"Études de marché et enquêtes auprès des clients potentiels",
-				"Tests utilisateurs et prototypes validés",
-				"Retours des premiers clients sur la solution proposée",
+				"Le produit s'appelle EcoSmart. Ce nom reflète notre mission de proposer des solutions écologiques et intelligentes pour la maison, combinant technologie avancée et respect de l’environnement.",
+				"Notre produit s'appelle FlexiFit. Ce nom est conçu pour transmettre l’idée de flexibilité et d’adaptabilité, en offrant des vêtements sportifs qui s'ajustent à tous les types de corps et besoins.",
+				"Le produit s'appelle PureGlow. Il représente notre engagement à fournir des soins de la peau totalement naturels, mettant en avant l'idée de pureté et de beauté éclatante.",
 			],
 		},
 		{
-			id: "revenue-model",
-			title: "Modèle de Revenus",
+			id: "idée_globale",
+			title: "Idée globale",
 			question:
-				"Comment votre modèle de revenus s'aligne-t-il avec la valeur fournie à vos clients ?",
+				"Quelle est l'idée globale de votre entreprise et quelle est sa mission principale ?",
 			examples: [
-				"Structure de prix basée sur la valeur perçue par le client",
-				"Différents flux de revenus complémentaires",
-				"Modèle d'abonnement avec différents niveaux de service",
+				"L’idée globale de l'entreprise est de révolutionner l’industrie du nettoyage en offrant des produits 100% biodégradables. Nous souhaitons aider les consommateurs à rendre leur maison propre tout en respectant la planète.",
+				"Notre mission est de rendre la mobilité urbaine plus accessible et plus durable en proposant des scooters électriques à prix abordable, pour les citadins soucieux de l'environnement.",
+				"Nous sommes une entreprise dédiée à la création de vêtements de sport adaptés aux femmes, avec un focus sur la durabilité et l’ergonomie. Notre mission est d’offrir des produits de qualité qui soutiennent la performance tout en réduisant l’empreinte environnementale.",
 			],
 		},
 		{
-			id: "key-resources-optimization",
-			title: "Optimisation des Ressources Clés",
+			id: "BMC_CompetitorAnalysis",
+			title: "Positionnement des compétiteurs",
 			question:
-				"Comment optimisez-vous l'utilisation de vos ressources clés pour maximiser leur efficacité ?",
+				"Comment vos concurrents se positionnent-ils sur le marché, et quelles sont leurs forces et leurs faiblesses en termes de modèle commercial et d'approche ?",
 			examples: [
-				"Système de gestion des ressources intégré",
-				"Formation continue des équipes",
-				"Investissements stratégiques dans les technologies clés",
+				"Un concurrent se distingue par sa stratégie de prix bas et sa distribution en masse, ce qui lui permet d’attirer une large clientèle. Cependant, cette approche compromet la qualité du service client. Nous devons nous différencier en offrant une expérience plus personnalisée et en créant des partenariats stratégiques avec des revendeurs premium.",
+				"Un autre concurrent mise sur des produits de haute technologie et des innovations constantes, mais a des coûts de production élevés. Nous pourrions capitaliser sur une offre de produits moins coûteux tout en intégrant des technologies accessibles pour atteindre un marché plus large sans sacrifier la qualité.",
+				"Un de nos concurrents a une forte présence en ligne avec une plateforme de commerce électronique bien optimisée. Cependant, il manque de services physiques. Nous pourrions combiner un site de vente en ligne performant avec une offre en magasin afin de répondre aux besoins des clients qui privilégient l’expérience physique.",
 			],
 		},
+		{
+			id: "BMC_MarketPositioning",
+			title: "Positionnement au marché",
+			question:
+				"Comment positionnez-vous votre entreprise par rapport à vos concurrents sur le marché, et quelle est votre proposition de valeur unique pour attirer les clients ?",
+			examples: [
+				"Nous nous positionnons comme un fournisseur de produits écologiques et durables, une valeur ajoutée qui attire une clientèle soucieuse de l’environnement. Notre proposition de valeur unique réside dans le fait que tous nos produits sont certifiés 100% biodégradables, ce qui nous distingue de la concurrence axée sur des produits chimiques.",
+				"Nous nous différencions en offrant une qualité supérieure à des prix compétitifs dans un segment de marché haut de gamme. Notre positionnement repose sur la personnalisation des produits et un service client exceptionnel, une approche que nos concurrents ne privilégient pas suffisamment.",
+				"Nous avons choisi de nous positionner comme une marque premium en nous concentrant sur un marché de niche, avec des produits de luxe exclusifs et une expérience client ultra personnalisée. En comparaison, nos concurrents ciblent des segments plus larges, ce qui nous permet de capter une clientèle plus sélective.",
+			],
+		},		
+		{
+			id: "BMC_IdentificationFournisseurs",
+			title: "Identification des fournisseurs clés",
+			question:
+				"Quels sont les critères qui vous ont poussé à choisir vos fournisseurs clés?(Prix, fiabilité, proximité, qualité, etc.)",
+			examples: [
+				"",
+			],
+		},
+		{
+			id: "BMC_ProduitCritiquestock",
+			title: "Produits critiques dans les stocks",
+			question:
+				"Y a-t-il des produits critiques nécessitant une attention particulière en termes de stockage ou de livraison ?",
+			examples: [
+				"",
+			],
+		},
+		{
+			id: "BMC_PolitiquedeCredit",
+			title: "Politique de crédit et de livraison des fournisseurs",
+			question:
+				"Quels sont les délais de paiement que vos fournisseurs vous accordent ? (30 jours, 60 jours, paiement à la commande, etc.). Offrent-ils des escomptes pour paiements anticipés ? Si oui, quels sont les pourcentages de réduction ? Comment sont gérés les frais de transport et les délais de livraison ? (Qui prend en charge les coûts ? Quel est le délai moyen de livraison ?). En cas de retard de paiement, quelles sont les pénalités appliquées par vos fournisseurs ?",
+			examples: [
+				"",
+			],
+		},
+		{
+			id: "BMC_AntécédentsetFiabilité",
+			title: "Antécédents et fiabilité des fournisseurs",
+			question:
+				"Depuis combien de temps travaillez-vous avec ces fournisseurs ? Quelle est leur réputation dans l’industrie ? Ont-ils déjà eu des problèmes de fiabilité ou de qualité ? Avez-vous déjà rencontré des difficultés avec un fournisseur ? (Retards, problèmes de conformité, etc.)",
+			examples: [
+				"",
+			],
+		},
+		{
+			id: "BMC_RuptureApprovisionnement",
+			title: "Gestion des risques liés aux ruptures d’approvisionnement",
+			question:
+				"Y a-t-il un risque de pénurie ou de rupture de stock pour certains produits ? Comment gérez-vous ces risques ? (Stock de sécurité, fournisseurs alternatifs, etc.) En cas de retard de livraison, quelles solutions avez-vous mises en place pour minimiser l’impact sur votre activité ?",
+			examples: [
+				"",
+			],
+		},
+		{
+			id: "BMC_VariationCoutsFournitures",
+			title: "Gestion des variations de coût des fournitures",
+			question:
+				"Le coût des matières premières ou produits que vous achetez est-il sujet à des fluctuations ? Comment anticipez-vous ces variations de prix ? (Contrats à long terme, fournisseurs multiples, stock tampon, etc.) Prévoyez-vous d’indexer vos prix de vente en fonction des variations du coût d’approvisionnement ?",
+			examples: [
+				"",
+			],
+		},
+		{
+			id: "OP_Control_POS",
+			title: "Procédures opérationnelles standard",
+			question: "Quelles sont vos procédures opérationnelles standard (POS) pour assurer la qualité ?",
+			examples: [
+			"Nous avons mis en place un manuel de procédures détaillant chaque étape de production et les contrôles qualité à respecter.",
+			"Nos équipes suivent des formations régulières pour garantir l'application des meilleures pratiques et la conformité aux normes en vigueur.",
+			"Des audits internes sont réalisés périodiquement pour identifier et corriger toute déviation des standards établis."
+			]
+		},
+		{
+			id: "OP_Control_inspection",
+			title: "Inspections et essais",
+			question: "Comment allez-vous procéder pour l'inspection et les essais ?",
+			examples: [
+			"Nous effectuons des inspections systématiques à chaque étape de production afin d’identifier les défauts avant la mise sur le marché.",
+			"Nous utilisons des protocoles de tests standardisés pour évaluer la performance et la conformité de nos produits.",
+			"Des échantillons aléatoires sont soumis à des contrôles approfondis en laboratoire pour garantir leur qualité."
+			]
+		},
+		{
+			id: "OP_Control_retourInformation",
+			title: "Retour d’informations et amélioration continue",
+			question: "Comment allez-vous recueillir le retour d'information des clients et améliorer continuellement la qualité ?",
+			examples: [
+			"Nous mettons en place des enquêtes de satisfaction et recueillons les avis clients via nos canaux digitaux.",
+			"Un service client dédié analyse les réclamations et suggestions afin d'identifier les points d'amélioration.",
+			"Des réunions d’équipe régulières sont organisées pour adapter nos processus en fonction des retours clients et des tendances du marché."
+			]
+		},
+		{
+			id: "OP_localisation_restrictions",
+			title: "Restrictions de localisation",
+			question: "Existe-t-il des restrictions de zonage ou des règlements concernant votre emplacement ?",
+			examples: [
+			"Nous avons consulté les réglementations locales pour nous assurer de la conformité de notre activité avec les règles d’urbanisme.",
+			"Des échanges avec les autorités compétentes et la municipalité ont été menés pour anticiper toute restriction potentielle.",
+			"Une veille réglementaire est effectuée pour nous adapter rapidement à toute évolution des lois et règlements."
+			]
+		}
 	],
 };
 

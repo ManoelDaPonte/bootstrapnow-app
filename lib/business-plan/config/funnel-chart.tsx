@@ -55,25 +55,36 @@ export const FUNNEL_QA_DATA: QAData = {
 	sectionTitle: "Questions pour Optimiser Votre Entonnoir de Conversion",
 	categories: [
 		{
-			id: "visibility-optimization",
-			title: "Optimisation de la Visibilité",
+			id: "MF_Loyalty",
+			title: "Rétention",
 			question:
-				"Comment pouvez-vous augmenter la visibilité de votre offre auprès de votre cible ?",
+				"Comment votre entreprise encourage-t-elle la fidélisation des clients et quelles stratégies mettez-vous en place pour recueillir et utiliser leurs retours afin d'améliorer continuellement votre produit/service ?",
 			examples: [
-				"Stratégie SEO optimisée pour les mots-clés pertinents",
-				"Présence active sur les réseaux sociaux appropriés",
-				"Campagnes publicitaires ciblées par audience",
+				"Nous avons un programme de fidélité où les clients accumulent des points à chaque achat, qu’ils peuvent échanger contre des réductions ou des produits gratuits. Nous recueillons les retours des clients via des enquêtes de satisfaction après chaque achat et les utilisons pour ajuster nos offres et services. Cela nous aide à améliorer constamment l’expérience client.",
+				"Nous proposons des abonnements mensuels avec des avantages exclusifs pour les clients réguliers, tels que des offres spéciales et un accès anticipé aux nouveaux produits. Les retours sont collectés via des formulaires en ligne et des interactions sur les réseaux sociaux. Ces informations sont ensuite analysées pour affiner nos produits et ajuster nos stratégies de communication.",
+				"Nous mettons en place une politique de récompense pour les clients fidèles, offrant des réductions ou des cadeaux après un certain nombre d'achats. Nous utilisons des systèmes de suivi de la satisfaction client, notamment des évaluations post-achat, pour obtenir des retours directs. Ces retours alimentent nos sessions de brainstorming et nous aident à peaufiner nos produits et services.",
 			],
 		},
 		{
-			id: "conversion-optimization",
-			title: "Optimisation des Conversions",
+			id: "MF_Advocacy",
+			title: "Recommandation",
 			question:
-				"Quelles actions spécifiques mettez-vous en place pour améliorer vos taux de conversion à chaque étape ?",
+				"Quel est votre plan pour encourager le bouche-à-oreille et les recommandations clients, et comment comptez-vous mesurer l'impact des dépenses récurrentes dans les canaux de marketing (réseaux sociaux, publicité en ligne, relations publiques, marketing de contenu) sur l'efficacité de ces actions de recommandation ?",
 			examples: [
-				"Tests A/B sur les pages clés du parcours client",
-				"Personnalisation du contenu selon le comportement utilisateur",
-				"Simplification du processus d'achat",
+				"Bouche-à-oreille : Mise en place de programmes de parrainage. Réponse : Nous offrirons des réductions ou des avantages aux clients qui recommandent notre produit à d'autres, encourageant ainsi les recommandations personnelles.",
+				"Impact des dépenses marketing : Publicité sur les réseaux sociaux pour accroître la visibilité. Réponse : Nous investirons dans des campagnes ciblées sur Facebook et Instagram pour augmenter la notoriété de la marque, et nous analyserons le nombre de recommandations et de partages pour mesurer le retour sur investissement.",
+				"Relations publiques : Collaboration avec des influenceurs. Réponse : Nous travaillerons avec des influenceurs pour promouvoir notre produit via des recommandations authentiques, et nous suivrons le taux de conversion généré par ces collaborations pour évaluer l'impact sur les ventes",
+			],
+		},
+		{
+			id: "MF_PainPoints",
+			title: "Problème Résolu",
+			question:
+				"Quel problème majeur votre produit/service résout-il pour vos clients cibles, et en quoi cette solution améliore-t-elle leur situation ou répond-elle à une douleur spécifique dans leur quotidien ?",
+			examples: [
+				"Notre application centralise toutes les fonctionnalités de gestion de projet, permettant ainsi à nos clients de suivre leurs tâches, leurs équipes et leurs progrès en un seul endroit, économisant ainsi du temps et des efforts.",
+				"Notre plateforme permet aux patients de prendre des rendez-vous en ligne avec des médecins en temps réel, réduisant considérablement le temps d'attente et améliorant l'accès aux soins.",
+				"Notre service propose des recommandations de produits basées sur des algorithmes d'intelligence artificielle qui apprennent des préférences des clients, offrant ainsi une expérience d'achat beaucoup plus personnalisée et pertinente.",
 			],
 		},
 	],

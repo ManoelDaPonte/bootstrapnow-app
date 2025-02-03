@@ -31,7 +31,7 @@ export const SWOT_QA_DATA: QAData = {
 	sectionTitle: "Questions pour Approfondir Votre Analyse SWOT",
 	categories: [
 		{
-			id: "forces-des-concurrents",
+			id: "SWOT_CompetitorStrengths",
 			title: "Forces des Concurrents",
 			question:
 				"Quelles sont les forces distinctives de vos concurrents qui pourraient constituer une menace pour votre positionnement sur le marché, et comment pouvez-vous vous différencier de manière stratégique ?",
@@ -42,7 +42,7 @@ export const SWOT_QA_DATA: QAData = {
 			],
 		},
 		{
-			id: "faiblesses-des-concurrents",
+			id: "SWOT_CompetitorWeaknesses",
 			title: "Faiblesses des Concurrents",
 			question:
 				"Quelles sont les faiblesses notables de vos concurrents qui représentent des opportunités pour vous sur le marché ?",
@@ -53,7 +53,7 @@ export const SWOT_QA_DATA: QAData = {
 			],
 		},
 		{
-			id: "economies-echelle",
+			id: "SWOT_EconomiesOfScale",
 			title: "Économies d'Échelle",
 			question:
 				"Comment les économies d'échelle de vos concurrents influencent-elles leur avantage concurrentiel, et quels sont les moyens par lesquels vous pouvez atteindre une échelle comparable ?",
@@ -64,7 +64,7 @@ export const SWOT_QA_DATA: QAData = {
 			],
 		},
 		{
-			id: "efficacite-operationnelle",
+			id: "SWOT_OperationalEfficiency",
 			title: "Efficacité Opérationnelle",
 			question:
 				"En quoi les processus opérationnels de vos concurrents vous paraissent-ils plus efficaces et comment pouvez-vous améliorer votre propre efficacité opérationnelle ?",

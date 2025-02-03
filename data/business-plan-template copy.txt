@@ -1,3 +1,14 @@
+MANQUANTS:
+{{Company_name}}
+{{Street_Address}} 
+{{City}}, {{state}}, {{ZIPcode}} 
+{{Business_phone}}
+{{Website_URL}}
+{{Email_address}}
+{{NOM_Projet}}
+{{NOM_Founder}}
+{{LEGAL_DATA}}
+
 Confidentiality Agreement
 I. Executive Summary
 
@@ -343,7 +354,7 @@ Impact sur le marché : {{Impact_concurrence_indirecte_2}}
 Marketing Expenses Strategy Chart
 {{MarketingPlan_Niche}} : "En prenant en compte l'évaluation du secteur d'activité {{BMC_KeyActivities}}, du produit/service {{BMC_Propositions_de_valeur}}, des clients {{MF_Interest}}, et des concurrents {{SWOT_CompetitorWeaknesses}}, décris clairement le créneau unique du marché (segment spécifique auquel l'entreprise s'adresse) ainsi que son positionnement (comment on souhaite que l'entreprise soit perçue par les clients).
 Exprime le créneau spécifique dans lequel l'entreprise se positionne (ex : marché des jeunes actifs, marché des produits écologiques, etc.).
-Expliques comment souhaite-t-on que le produit/service soit perçu par les clients par rapport à la concurrence ? (ex : prix abordable, qualité premium, innovation technologique, etc.).
+Expliques comment souhaite-t-on que le produit/service soit perçu par les clients par rapport à la concurrence (ex : prix abordable, qualité premium, innovation technologique, etc.).
 Expliques les opportunités du marché que nous souhaitons exploiter pour se différencier.
 
 {{MarketingPlan_Niche_b}} : À partir des information du PESTEL suivant:
@@ -387,7 +398,7 @@ Décris en deux phrases les tactiques publicitaires et de marketing, ainsi que l
 
 Budget Promotionnel:
 {{MarketingPlan_PromotionalBudget}} : "Définis notre budget promotionnel en te basant sur les dépenses prévues pour le marketing et la publicité. Assure-toi de bien distinguer les dépenses avant le démarrage et les dépenses continues. Utilise les sections pertinentes pour déterminer les coûts.
-Budget avant démarrage (inclus dans votre budget de démarrage) : {{FP_D1_Assets}}{{FP_D1_CashFlow}}{{FP_D1_Investments}}
+Budget avant démarrage (inclus dans votre budget de démarrage) : {{FP_Budget}}{{FP_D1_Assets}}{{FP_D1_CashFlow}}{{FP_D1_Investments}}
 Publicité: {{BMC_Channels}}, {{7P_Promotion}} 
 Outils : {{MF_Interest}}, {{VP_Customer_Jobs}}
 Éléments de conception et image de la marque : {{7P_Product}}, {{SWOT_Opportunities}}, {{MF_Advocacy}}, {{BMC_CustomerRelationships}}
@@ -395,6 +406,7 @@ Outils : {{MF_Interest}}, {{VP_Customer_Jobs}}
 
 Pricing Strategy
 {{MarketingPlan_PricingStrategy}} : "Décris la stratégie de prix en prenant en compte la position de l'entreprise sur le marché, les attentes des clients et les marges bénéficiaires. Utilise les sections suivantes pour établir une stratégie qui soutient le positionnement.
+Sensibilité au prix du marché cible : {{MarketingPlan_Sensibility}},
 Proposition de valeur: {{BMC_Propositions_de_valeur}}, 
 Opportunités: {{SWOT_Opportunities}}
 Décris comment le prix soutient le positionnement (ex : qualité premium, prix compétitifs, service supérieur, etc.).
@@ -476,7 +488,7 @@ Activité clé et process: {{BMC_KeyActivities}}, {{7P_Process}}"
 {{OP_QualityControl_b}} : "Précise comment nous allons tester et inspecter nos produits ou services pour s'assurer qu'ils répondent aux standards de qualité. Explique les méthodes ou outils qui détecteront et corrigeront les défauts ou défaillances en fonction de:
 {{OP_Control_inspection}}, {{SWOT_Weaknesses}} 
 Ainsi que le retour d'information des clients et amélioration continue : {{OP_Control_retourInformation}},{{BMC_CustomerRelationships}},{{MF_Loyalty}}"
-Décris comment nous allons intégrer les retours des clients dans votre processus d'amélioration continue. Quels mécanismes de rétroaction mettez-vous en place (enquêtes, suivi, service après-vente) et comment cela ajustera et améliorera nos produits/services ?
+Décris comment nous allons intégrer les retours des clients dans votre processus d'amélioration continue. Quels mécanismes de rétroaction mettez-vous en place (enquêtes, suivi, service après-vente) et comment cela ajustera et améliorera nos produits/services
 
 {{OP_QualityControl_c}} : Décris les certifications et normes industrielles : {{PESTEL_Political}}, {{SWOT_Opportunities}}
 Expliques les certifications ou normes industrielles à suivre pour garantir la qualité du produit/service.
@@ -493,7 +505,7 @@ Décris les règles de zonage qui pourraient affecter l'entreprise (par exemple,
 
 LEGAL:
 {{OP_Legal_data}} : "Décris l'environnement juridique dans lequel l'entreprise va opérer
-Données: {{LEGAL_DATA}}, {{PESTEL_LegalFactors}}, {{SWOT_Weaknesses}}
+Données: {{LEGAL_DATA}}, {{LEGAL_DATA_enjeux}}, {{PESTEL_LegalFactors}}, {{SWOT_Weaknesses}}
 Licences et/ou permis nécessaires: {{OP_Legal_licenses}}
 Détaille les licences et permis requis pour le secteur d'activité et précise si on a déjà obtenu ces documents ou si des démarches sont en cours.
 Marques déposées, droits d'auteur ou brevets : {{OP_Legal_officialbrand}}
@@ -549,70 +561,53 @@ INVENTAIRE:
 
 
 FOURNISSEURS:
-"Décrivez vos principaux fournisseurs en utilisant les informations suivantes:
-Qui sont vos principaux fournisseurs ?
-Incluez leurs noms, adresses et sites web.
-{{BMC_KeyResources}}, {{BMC_KeyPartners}}
+"Décris les principaux fournisseurs en utilisant les informations suivantes:
+Principaux fournisseurs: {{BMC_IdentificationFournisseurs}}, {{BMC_KeyResources}}, {{BMC_KeyPartners}}
 Fournissez les informations de base sur vos fournisseurs clés, y compris leur localisation et leur site web pour permettre une identification facile de ces acteurs importants.
-Type et quantité de stocks fournis :
 
-Quel type et quelle quantité de stocks ces fournisseurs fournissent-ils ?
-{{BMC_KeyResources}}, {{BMC_Channels}}
-Décrivez les produits ou matériaux que vos fournisseurs vous fourniront, ainsi que la quantité de chaque article nécessaire pour vos opérations.
-Politique en matière de crédit et de livraison :
 
-Quelle est la politique en matière de crédit et de livraison de vos fournisseurs ?
-{{BMC_CostStructure}}, {{7P_Place}}
-Indiquez les conditions de paiement proposées par vos fournisseurs (par exemple, délais de paiement, escompte de paiement rapide) et la politique de livraison (frais de transport, délais de livraison, etc.).
-Antécédents et fiabilité des fournisseurs :
+"Décris le type et quelle quantité des stocks fournis, grâce aux informations : 
+{{BMC_KeyResources}}, {{BMC_ProduitCritiquestock}}, {{OP_Inventaire_stocktype}}, {{OP_Inventaire_stockchurn}}, {{BMC_Channels}}
+Décris les produits ou matériaux que les fournisseurs fourniront, ainsi que la quantité de chaque article nécessaire pour les opérations.
 
-Quels sont les antécédents et la fiabilité de vos fournisseurs ?
-{{SWOT_Weaknesses}}, {{SWOT_Opportunities}}
-Évaluez la solidité de vos fournisseurs sur la base de leur réputation dans l'industrie et de leurs antécédents. Sont-ils réputés pour respecter leurs engagements ?
-Ruptures d'approvisionnement ou problèmes de livraison :
+"Expliques la politique en matière de crédit et de livraison de vos fournisseurs
+{{BMC_PolitiquedeCredit}}, {{BMC_CostStructure}}, {{7P_Place}}
+Indique les conditions de paiement proposées par les fournisseurs (par exemple, délais de paiement, escompte de paiement rapide) et la politique de livraison (frais de transport, délais de livraison, etc.).
 
-Prévoyez-vous des ruptures d'approvisionnement ou des problèmes de livraison à court terme ? Dans ce cas, comment allez-vous les gérer ?
-{{BMC_KeyResources}}, {{BMC_CustomerRelationships}}, {{SWOT_Weaknesses}}
-Précisez si vous anticipez des risques liés aux ruptures de stock ou aux problèmes logistiques. Si ces risques existent, décrivez vos stratégies pour y faire face (par exemple, gestion des stocks de sécurité, relation avec des fournisseurs alternatifs, etc.).
-Multiples fournisseurs pour les articles critiques :
+Spécifies les antécédents et la fiabilité de vos fournisseurs
+{{BMC_AntécédentsetFiabilité}}, {{SWOT_Weaknesses}}, {{SWOT_Opportunities}}
+Évalue la solidité des fournisseurs sur la base de leur réputation dans l'industrie et de leurs antécédents.
 
-Avez-vous plus d'un fournisseur pour les articles critiques (comme solution de secours) ?
-{{BMC_KeyPartners}}, {{BMC_KeyResources}}
-Indiquez si vous avez prévu de travailler avec plusieurs fournisseurs pour des articles particulièrement stratégiques ou à forte demande pour garantir la continuité de vos opérations en cas de défaillance d'un fournisseur.
-Fluctuation des coûts des fournitures :
+Décris si on prévoit des ruptures d'approvisionnement ou des problèmes de livraison à court terme, ainsi que leur gestion
+{{BMC_RuptureApprovisionnement}}, {{BMC_KeyResources}}, {{BMC_CustomerRelationships}}, {{SWOT_Weaknesses}}
+Précise comment anticiper ces risques s'ils existent, ainsi que les stratégies pour y faire face (par exemple, gestion des stocks de sécurité, relation avec des fournisseurs alternatifs, etc.).
 
-Vous attendez-vous à ce que le coût des fournitures reste stable ou fluctue ? Dans ce dernier cas, comment ferez-vous face à l'évolution des coûts ?
-{{PESTEL_Economic}}, {{BMC_CostStructure}}
-Analysez la tendance des coûts des matières premières ou des produits fournis par vos fournisseurs et comment vous vous préparerez à d'éventuelles hausses de coûts (par exemple, stratégies de fixation des prix, renégociation des contrats, diversification des sources d'approvisionnement).
-Conditions de paiement des fournisseurs :
+Décris si les articles critiques ont plusieurs fournisseurs (comme solution de secours)
+{{BMC_DiversificationdesFournisseurs}}, {{BMC_KeyPartners}}, {{BMC_KeyResources}}
+Indique si on a prévu de travailler avec plusieurs fournisseurs pour des articles particulièrement stratégiques ou à forte demande pour garantir la continuité des opérations en cas de défaillance d'un fournisseur.
 
-Quelles sont les conditions de paiement de vos fournisseurs ?
-{{BMC_CostStructure}}
-Précisez les conditions de paiement telles que le délai de paiement, les escomptes pour paiements anticipés, ou toute autre condition négociée avec vos fournisseurs.
-Ce prompt vous aidera à dresser un tableau clair et détaillé de vos relations avec vos fournisseurs tout en vous appuyant sur les sections pertinentes des templates de business plan pour structurer votre analyse."
+Si le coût des fournitures varie, décris comment nous y feront face
+{{BMC_VariationCoutsFournitures}}, {{PESTEL_Economic}}, {{BMC_CostStructure}}
+Analyse la tendance des coûts des matières premières ou des produits fournis par les fournisseurs et comment nous nous préparons à d'éventuelles hausses de coûts (par exemple, stratégies de fixation des prix, renégociation des contrats, diversification des sources d'approvisionnement).
+
 
 CRÉDIT:
 "Si vous envisagez de vendre à des clients à crédit, décrivez les éléments suivants en vous appuyant sur les sections pertinentes de vos templates pour structurer votre réponse :
 
 Pratique courante dans votre secteur d'activité :{{PESTEL_Social}}, {{BMC_CustomerRelationships}}
-QUESTIONS: 
-La vente à crédit est-elle courante dans votre secteur ?
-Les clients s'y attendent-ils ?
+{{OP_Credit_common}}
 Indiquez si la pratique du crédit est fréquente dans votre industrie. Les clients s'attendent-ils à ce que les entreprises offrent des conditions de crédit, ou est-ce une option supplémentaire ? Utilisez les tendances sociales ou comportementales pour justifier cette analyse.
 
 Politique en matière de crédit :
-QUESTIONS: Quelle sera votre politique en matière de crédit ? Quel montant de crédit accorderez-vous ? Quels sont les critères d'octroi du crédit ?
-{{BMC_CostStructure}}, {{BMC_CustomerRelationships}}
+{{OP_Credit_policy}}, {{BMC_CostStructure}}, {{BMC_CustomerRelationships}}
 Décrivez les règles de votre entreprise pour accorder du crédit. Par exemple, vous pouvez préciser le montant maximal accordé en crédit à chaque client et les critères nécessaires pour être éligible (antécédents de paiement, solvabilité, etc.).
 
 Vérification de la solvabilité des nouveaux clients :
-QUESTIONS: Comment allez-vous vérifier la solvabilité des nouveaux clients ?
-{{SWOT_Weaknesses}}, {{BMC_CustomerRelationships}}
+{{OP_Credit_verification}}, {{SWOT_Weaknesses}}, {{BMC_CustomerRelationships}}
 Précisez les méthodes que vous utiliserez pour évaluer la solvabilité des clients (par exemple, utilisation de rapports de crédit, consultation d'agences de notation, etc.).
 
 Conditions de crédit proposées :
-QUESTIONS: Quelles conditions de crédit proposerez-vous à vos clients ?
-{{BMC_CostStructure}}, {{7P_Price}}
+{{OP_Credit_conditions}}, {{BMC_CostStructure}}, {{7P_Price}}
 Décrivez les conditions de crédit (taux d'intérêt, durée de paiement, escomptes pour paiement rapide, etc.) que vous offrirez à vos clients.
 Coût de l'offre de crédit et impact sur votre structure de prix :
 
@@ -621,8 +616,8 @@ Détaillez ce que vous coûtera l'offre de crédit et comment ces coûts sont in
 Indiquez le coût d'offrir du crédit (par exemple, frais d'intérêts, coûts administratifs pour gérer les paiements, risques de créances irrécouvrables) et montrez comment vous avez pris en compte ces coûts dans la fixation des prix de vos produits ou services.
 
 Gestion des paiements en retard :
-QUESTIONS: Comment traiterez-vous les clients qui paient lentement ? 
-QUESTIONS: Quelle est votre politique en matière de paiements en retard et quand ferez-vous appel à un avocat ou une agence de recouvrement ?
+{{OP_Credit_slowpayments}} 
+{{OP_Credit_latepayments}}
 {{BMC_CustomerRelationships}}, {{SWOT_Weaknesses}}
 Décrivez votre politique concernant les paiements en retard (pénalités, relances, délais avant de prendre des mesures légales) et précisez à quel moment vous ferez appel à un avocat ou à une agence de recouvrement si nécessaire.
 
@@ -638,46 +633,34 @@ Décris l'expérience professionnelle, les compétences, les qualifications et l
 Propriétaire(s) et expérience en entrepreneuriat :
 Expérience antérieure dans la création et la gestion d'entreprises :
 {{SkillMatrix_EntrepreneurshipSkills}}, {{SWOT_Strengths}}, {{BMC_KeyResources}}
-Si l'un des membres de l'équipe a de l'expérience dans la création ou la gestion d'une entreprise, incluez des détails sur ces expériences antérieures, notamment les réussites et les défis rencontrés. Décrivez également les compétences en gestion et leadership acquises au fil du temps.
+Si l'un des membres de l'équipe a de l'expérience dans la création ou la gestion d'une entreprise, inclus des détails sur ces expériences antérieures, notamment les réussites et les défis rencontrés. Décris également les compétences en gestion et leadership acquises au fil du temps.
+
 Compétences complémentaires :
-
-Quelles compétences supplémentaires apportent les membres de votre équipe ?
 {{SkillMatrix_ProblemSolving}}, {{SkillMatrix_Creativity}}, {{SkillMatrix_LeadershipSkills}}
-Détaillez les compétences uniques ou spécifiques de chaque membre de l'équipe qui ajoutent de la valeur à l'entreprise. Cela peut inclure des compétences techniques, en gestion, en marketing, en finance, etc.
-Motivation et préparation à réussir :
+Détaille les compétences uniques ou spécifiques de chaque membre de l'équipe qui ajoutent de la valeur à l'entreprise.
 
-Pourquoi cette équipe est-elle prête à réussir ?
+Motivation et préparation à réussir :
 {{BMC_ValueProposition}}
-Expliquez pourquoi les compétences, l'expérience et les qualifications de votre équipe la rendent particulièrement bien équipée pour réussir dans le domaine de votre entreprise. Utilisez des exemples concrets de réussites passées ou de stratégies qui ont bien fonctionné.
+Explique pourquoi les compétences, l'expérience et les qualifications de l'équipe la rendent particulièrement bien équipée pour réussir dans le domaine l'entreprise. Utilisez des exemples concrets de réussites passées ou de stratégies qui ont bien fonctionné.
 
 LACUNES:
-"Dans cette section, expliquez comment vous comptez combler les lacunes en matière de gestion et/ou d'expérience au sein de votre entreprise. Utilisez les informations issues des templates suivants pour structurer votre réponse.
+"Dans cette section, explique comment vous comptez combler les lacunes en matière de gestion et/ou d'expérience au sein de votre entreprise. Utilisez les informations issues des templates suivants pour structurer votre réponse.
 
 Identifications des lacunes :
-Quelles sont les lacunes spécifiques en matière de gestion ou d’expérience ?
 {{SWOT_Weaknesses}}, {{SkillMatrix_Gaps}}
-Identifiez les domaines dans lesquels vous manquez de compétences, comme la gestion financière, les ventes, le marketing, la production, ou toute autre fonction clé. Utilisez les informations de la SWOT et de la Skill Matrix pour mettre en évidence les lacunes.
+Identifie les domaines dans lesquels nous manquons de compétences, comme la gestion financière, les ventes, le marketing, la production, ou toute autre fonction clé. Utilisez les informations de la SWOT et de la Skill Matrix pour mettre en évidence les lacunes.
+
 Plan pour combler les lacunes :
-
-Comment allez-vous combler ces lacunes ?
-{{BMC_KeyResources}}, {{BMC_Partenaires clés}}, {{FP_3Y_Investments}}, {{FP_12M_Investments}}
+{{SkillMatrix_Training}}, {{BMC_KeyResources}},
 Expliquez comment vous prévoyez de combler ces lacunes en fonction de votre stratégie. Par exemple, si vous manquez d'expertise financière, envisagez-vous d’embaucher un directeur financier, de faire appel à un comptable externe ou de suivre des formations pour renforcer vos compétences internes ? Si vous manquez de compétences en vente, prévoyez-vous d’embaucher un directeur des ventes ou de collaborer avec des représentants commerciaux externes ? Intégrez vos ressources et partenariats clés à cette analyse.
+
 Embauche ou recours à des services externes :
-
-Qui allez-vous recruter ou quel type de service externe allez-vous utiliser pour compenser ces lacunes ?
-{{BMC_KeyResources}}, {{MF_Pruchase}}, {{FP_ExternalCost}}
-Décrivez le profil des personnes que vous allez recruter (par exemple, un directeur financier, un responsable des ventes, etc.) et/ou les services externes (comptables, consultants, etc.) que vous allez engager. Précisez également si ces ressources sont internes (embauches) ou externes (services ou freelances).
-Plan de formation ou de collaboration externe :
-
-Quel est votre plan pour garantir que ces lacunes soient comblées efficacement ?
-{{SkillMatrix_Training}}, {{BMC_KeyResources}}
-Précisez les moyens que vous mettrez en place pour vous former ou pour former vos collaborateurs afin d’acquérir ces compétences. Est-ce que vous prévoyez de faire appel à des formations externes, à des mentorats ou à des partenariats stratégiques ?
-Objectifs et résultats attendus :
-
-Quels résultats attendez-vous de ces actions ?
+{{BMC_KeyResources}}, {{MF_Pruchase}}, {{FP_ExternalCost}}, {{SkillMatrix_Training}}
+Décris le profil des personnes que vous allez recruter (par exemple, un directeur financier, un responsable des ventes, etc.) et/ou les services externes (comptables, consultants, etc.) que nous allons engager. Précise également si ces ressources sont internes (embauches) ou externes (services ou freelances).
+Précise les moyens que nous mettons en place pour se former ou pour former nos collaborateurs afin d’acquérir ces compétences. Et si nous prévoyons de faire appel à des formations externes, à des mentorats ou à des partenariats stratégiques
+Ensuite, en fonction de:
 {{SWOT_Opportunities}}, {{Ansoff_MarketPenetration}}
-Expliquez les résultats que vous espérez obtenir en comblant ces lacunes, que ce soit pour améliorer votre gestion financière, renforcer votre force de vente, ou toute autre fonction nécessaire à la croissance de l'entreprise. Reliez cela à vos opportunités de croissance ou à votre stratégie de développement.
-Ce prompt vous aidera à fournir une analyse complète de la manière dont vous comptez combler les lacunes en gestion et expérience, en vous appuyant sur les informations provenant de vos différents templates pour une approche plus structurée et précise."
+Explique les résultats espérés, que ce soit pour améliorer la gestion financière, renforcer la force de vente, ou toute autre fonction nécessaire à la croissance de l'entreprise. Et relie cela à vos opportunités de croissance ou à votre stratégie de développement.
 
 ADVISORS:
 "Dans cette section, listez les membres de votre équipe de soutien professionnel et/ou de conseil, en incluant les personnes suivantes et les informations pertinentes sur chacun :
