@@ -592,34 +592,32 @@ Analyse la tendance des coûts des matières premières ou des produits fournis 
 
 
 CRÉDIT:
-"Si vous envisagez de vendre à des clients à crédit, décrivez les éléments suivants en vous appuyant sur les sections pertinentes de vos templates pour structurer votre réponse :
 
-Pratique courante dans votre secteur d'activité :{{PESTEL_Social}}, {{BMC_CustomerRelationships}}
+{{OP_Credit}} : Dans le secteur d'activité :{{PESTEL_Social}}, {{BMC_CustomerRelationships}}
 {{OP_Credit_common}}
-Indiquez si la pratique du crédit est fréquente dans votre industrie. Les clients s'attendent-ils à ce que les entreprises offrent des conditions de crédit, ou est-ce une option supplémentaire ? Utilisez les tendances sociales ou comportementales pour justifier cette analyse.
+Indiquez si la pratique du crédit est fréquente dans votre industrie. Spécifies si les clients s'attendent à ce que les entreprises offrent des conditions de crédit, ou est-ce une option supplémentaire. Utilise les tendances sociales ou comportementales pour justifier cette analyse.
 
-Politique en matière de crédit :
+{{OP_Credit_Politics}} : Politique en matière de crédit :
 {{OP_Credit_policy}}, {{BMC_CostStructure}}, {{BMC_CustomerRelationships}}
-Décrivez les règles de votre entreprise pour accorder du crédit. Par exemple, vous pouvez préciser le montant maximal accordé en crédit à chaque client et les critères nécessaires pour être éligible (antécédents de paiement, solvabilité, etc.).
+Décris les règles de l'entreprise pour accorder du crédit. Par exemple, précise le montant maximal accordé en crédit à chaque client et les critères nécessaires pour être éligible (antécédents de paiement, solvabilité, etc.).
 
-Vérification de la solvabilité des nouveaux clients :
+{{OP_Credit_Verif}} : Vérification de la solvabilité des nouveaux clients :
 {{OP_Credit_verification}}, {{SWOT_Weaknesses}}, {{BMC_CustomerRelationships}}
-Précisez les méthodes que vous utiliserez pour évaluer la solvabilité des clients (par exemple, utilisation de rapports de crédit, consultation d'agences de notation, etc.).
+Précise les méthodes pour évaluer la solvabilité des clients (par exemple, utilisation de rapports de crédit, consultation d'agences de notation, etc.).
 
-Conditions de crédit proposées :
+{{OP_Credit_Conds}} : Conditions de crédit proposées :
 {{OP_Credit_conditions}}, {{BMC_CostStructure}}, {{7P_Price}}
-Décrivez les conditions de crédit (taux d'intérêt, durée de paiement, escomptes pour paiement rapide, etc.) que vous offrirez à vos clients.
-Coût de l'offre de crédit et impact sur votre structure de prix :
+Décris les conditions de crédit (taux d'intérêt, durée de paiement, escomptes pour paiement rapide, etc.) offert aux clients.
 
-Détaillez ce que vous coûtera l'offre de crédit et comment ces coûts sont intégrés dans votre structure de prix.
+{{OP_Credit_Cost}} : Détaillez ce que vous coûtera l'offre de crédit et comment ces coûts sont intégrés dans votre structure de prix.
 {{BMC_CostStructure}}
-Indiquez le coût d'offrir du crédit (par exemple, frais d'intérêts, coûts administratifs pour gérer les paiements, risques de créances irrécouvrables) et montrez comment vous avez pris en compte ces coûts dans la fixation des prix de vos produits ou services.
+Indique le coût d'offrir du crédit (par exemple, frais d'intérêts, coûts administratifs pour gérer les paiements, risques de créances irrécouvrables) et montre comment la fixation des prix des produits ou services prends en compte ce coût.
 
-Gestion des paiements en retard :
+{{OP_Credit_Payments}} : Gestion des paiements en retard :
 {{OP_Credit_slowpayments}} 
 {{OP_Credit_latepayments}}
 {{BMC_CustomerRelationships}}, {{SWOT_Weaknesses}}
-Décrivez votre politique concernant les paiements en retard (pénalités, relances, délais avant de prendre des mesures légales) et précisez à quel moment vous ferez appel à un avocat ou à une agence de recouvrement si nécessaire.
+Décris la politique concernant les paiements en retard (pénalités, relances, délais avant de prendre des mesures légales) et précise à quel moment on fera appel à un avocat ou à une agence de recouvrement si nécessaire.
 
 VI. Management
 
