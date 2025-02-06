@@ -26,9 +26,13 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { Header } from "@/components/business-plan/shared/Header";
-
+import { QAResponses } from "@/types/shared/qa-section";
+import QASection from "@/components/business-plan/shared/QASection";
 import { ProfitLossData, ProfitLossEntry } from "@/types/12-months";
-import { months } from "@/lib/business-plan/config/12-months";
+import {
+	months,
+	INVENTAIRE_QA_DATA,
+} from "@/lib/business-plan/config/12-months";
 import { useProfitLossData } from "@/lib/business-plan/hooks/12-months/useProfitLossData";
 import { calculateProgress } from "@/lib/business-plan/hooks/12-months/storage-12-months";
 
@@ -40,6 +44,9 @@ const TwelveMonthsProjection: React.FC = () => {
 		hasUnsavedChanges,
 		handleUpdateData,
 		saveChanges,
+		qaResponses,
+		handleQAResponseChange,
+		handleQAResponseSave,
 	} = useProfitLossData();
 
 	// Ajouter une ligne
@@ -446,6 +453,12 @@ const TwelveMonthsProjection: React.FC = () => {
 						</Card>
 					</TabsContent>
 				</Tabs>
+				<QASection
+					data={INVENTAIRE_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+				/>
 			</div>
 		</div>
 	);

@@ -1,13 +1,18 @@
 // lib/business-plan/hooks/12-months/storage-12-months.tsx
-import { ProfitLossData } from "@/types/12-months";
+import { ProfitLossData, MonthlyProjectionData } from "@/types/12-months";
 import { prisma } from "@/lib/db/prisma";
+import { QAResponses } from "@/types/shared/qa-section";
 
 export const STORAGE_KEY = "profit-loss-data";
+export const QA_STORAGE_KEY = "profit-loss-qa-responses";
 
-export const saveProfitLossData = (data: ProfitLossData) => {
+export const saveProfitLossData = (
+	data: ProfitLossData,
+	qaResponses: QAResponses
+) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder les données localement
+	// Sauvegarder les données principales
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -16,12 +21,16 @@ export const saveProfitLossData = (data: ProfitLossData) => {
 		})
 	);
 
+	// Sauvegarder les réponses QA séparément
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
 	updateParentProgress(calculateProgress(data));
 };
 
 export async function updateProfitLossData(
 	auth0Id: string,
-	data: ProfitLossData
+	data: ProfitLossData,
+	qaResponses: QAResponses
 ) {
 	try {
 		const user = await prisma.user.upsert({
@@ -37,12 +46,14 @@ export async function updateProfitLossData(
 			await prisma.monthlyProjectionAnalysis.upsert({
 				where: { userId: user.id },
 				update: {
-					data: JSON.parse(JSON.stringify(data)), // Conversion nécessaire pour le type JSON
+					data: JSON.parse(JSON.stringify(data)),
+					qaResponses: qaResponses,
 					updatedAt: new Date(),
 				},
 				create: {
 					userId: user.id,
 					data: JSON.parse(JSON.stringify(data)),
+					qaResponses: qaResponses,
 				},
 			});
 
@@ -70,13 +81,22 @@ export const calculateProgress = (data: ProfitLossData): number => {
 	return Math.round((filledFields / totalFields) * 100);
 };
 
-export const loadProfitLossData = (): ProfitLossData => {
+export const loadProfitLossData = (): MonthlyProjectionData => {
 	if (typeof window === "undefined") {
-		return getEmptyProfitLossData();
+		return {
+			data: getEmptyProfitLossData(),
+			qaResponses: {},
+		};
 	}
 
 	const storedData = localStorage.getItem(STORAGE_KEY);
-	return storedData ? JSON.parse(storedData) : getEmptyProfitLossData();
+	const storedQA = localStorage.getItem(QA_STORAGE_KEY);
+
+	return {
+		data: storedData ? JSON.parse(storedData) : getEmptyProfitLossData(),
+		qaResponses:
+			storedQA && storedQA !== "undefined" ? JSON.parse(storedQA) : {},
+	};
 };
 
 export const getEmptyProfitLossData = (): ProfitLossData => ({
@@ -93,14 +113,17 @@ const updateParentProgress = (progress: number) => {
 	window.dispatchEvent(event);
 };
 
-export const saveToDatabase = async (data: ProfitLossData) => {
+export const saveToDatabase = async (
+	data: ProfitLossData,
+	qaResponses: QAResponses
+) => {
 	try {
 		const response = await fetch("/api/business-plan/12-months/save", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ data }),
+			body: JSON.stringify({ data, qaResponses }),
 		});
 
 		if (!response.ok) {

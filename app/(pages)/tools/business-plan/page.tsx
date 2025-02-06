@@ -147,31 +147,34 @@ export default function BusinessPlanPage() {
 		};
 	};
 
-	//const progress: ProgressType = useTemplateProgress();
+	const progress: ProgressType = useTemplateProgress();
+	console.log("Progress:", progress);
 
-	//const getTemplateProgress = (sectionId: string, templateName: string) => {
-	//	return progress[sectionId]?.[templateName] || 0;
-	//};
+	const getTemplateProgress = (sectionId: string, templateName: string) => {
+		console.log(sectionId, templateName);
+		console.log(progress[sectionId]?.[templateName]);
+		return progress[sectionId]?.[templateName] || 0;
+	};
 
-	//const totalProgress = Math.round(
-	//	Object.entries(progress).reduce((acc, [sectionId, section]) => {
-	//		if (sectionId === "execution") {
-	//			return acc + (section["Value Proposition"] || 0);
-	//		}
-	//		if (sectionId === "financial") {
-	//			return acc; // Exclure la section financière
-	//		}
-	//		return (
-	//			acc +
-	//			Object.values(section).reduce((sum, value) => sum + value, 0)
-	//		);
-	//	}, 0) /
-	//		(Object.values(progress).reduce(
-	//			(acc, section) => acc + Object.keys(section).length,
-	//			0
-	//		) -
-	//			4) // Ajuster pour exclure Skills Matrix et les 3 pages financières
-	//);
+	const totalProgress = Math.round(
+		Object.entries(progress).reduce((acc, [sectionId, section]) => {
+			if (sectionId === "execution") {
+				return acc + (section["Value Proposition"] || 0);
+			}
+			if (sectionId === "financial") {
+				return acc; // Exclure la section financière
+			}
+			return (
+				acc +
+				Object.values(section).reduce((sum, value) => sum + value, 0)
+			);
+		}, 0) /
+			(Object.values(progress).reduce(
+				(acc, section) => acc + Object.keys(section).length,
+				0
+			) -
+				4) // Ajuster pour exclure Skills Matrix et les 3 pages financières
+	);
 
 	const handleGenerateBusinessPlan = async () => {
 		setIsLoading(true);
@@ -253,7 +256,7 @@ export default function BusinessPlanPage() {
 								</h1>
 							</div>
 							<div className="flex items-center gap-8">
-								{/* <div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg">
+								<div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg">
 									<Progress
 										value={totalProgress}
 										className="w-32 h-2"
@@ -261,7 +264,7 @@ export default function BusinessPlanPage() {
 									<span className="text-sm font-medium">
 										{totalProgress}%
 									</span>
-								</div> */}
+								</div>
 
 								{isLoading ? (
 									<div className="flex items-center gap-2">
@@ -275,9 +278,9 @@ export default function BusinessPlanPage() {
 										<Button
 											onClick={handleGenerateBusinessPlan}
 											className="bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary)_/_0.9)]"
-											// disabled={
-											// 	totalProgress < 10 || isLoading
-											// }
+											disabled={
+												totalProgress < 10 || isLoading
+											}
 										>
 											Générer le Business Plan
 										</Button>
@@ -316,11 +319,17 @@ export default function BusinessPlanPage() {
 
 							<div className="grid grid-cols-1 gap-4">
 								{section.templates.map((template) => {
-									// const templateProgress =
-									// 	getTemplateProgress(
-									// 		section.id,
-									// 		template.name
-									// 	);
+									const templateProgress =
+										getTemplateProgress(
+											section.id,
+											template.name
+										);
+									{
+										console.log(
+											"templateProgress",
+											templateProgress
+										);
+									}
 									return (
 										<div
 											key={template.name}
@@ -346,21 +355,21 @@ export default function BusinessPlanPage() {
 															}
 														</p>
 													</div>
-													{/* {templateProgress ===
+													{templateProgress ===
 													100 ? (
 														<CheckCircle2 className="w-5 h-5 text-green-500" />
 													) : (
 														<AlertCircle className="w-5 h-5 text-[hsl(var(--primary))]" />
-													)} */}
+													)}
 												</div>
 												<div className="space-y-1">
-													{/* <Progress
+													<Progress
 														value={templateProgress}
 														className="h-1.5"
 													/>
 													<div className="text-sm text-right text-muted-foreground">
 														{templateProgress}%
-													</div> */}
+													</div>
 												</div>
 											</div>
 										</div>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { ProfitLossData } from "@/types/12-months";
+import { QAResponses } from "@/types/shared/qa-section";
 import {
 	loadProfitLossData,
 	saveProfitLossData,
@@ -10,7 +11,8 @@ import {
 
 export const useProfitLossData = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const [data, setData] = useState<ProfitLossData>(loadProfitLossData());
+	const [data, setData] = useState<ProfitLossData>(loadProfitLossData().data);
+	const [qaResponses, setQAResponses] = useState<QAResponses>({});
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
 	const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -26,7 +28,12 @@ export const useProfitLossData = () => {
 						const serverData = await response.json();
 						if (serverData) {
 							setData(serverData.data);
-							saveProfitLossData(serverData.data);
+							// S'assurer que qaResponses existe dans la réponse
+							setQAResponses(serverData.qaResponses || {});
+							saveProfitLossData(
+								serverData.data,
+								serverData.qaResponses || {}
+							);
 						}
 					}
 				} catch (error) {
@@ -44,19 +51,46 @@ export const useProfitLossData = () => {
 		}
 	}, [user, authLoading]);
 
-	// Mise à jour locale uniquement
 	const handleUpdateData = (newData: ProfitLossData) => {
 		setData(newData);
-		saveProfitLossData(newData); // Sauvegarde locale
+		saveProfitLossData(newData, qaResponses);
 		setHasUnsavedChanges(true);
 	};
 
-	// Sauvegarde en base de données
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+		setHasUnsavedChanges(true);
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		const newQAResponses = {
+			...qaResponses,
+			[categoryId]: response,
+		};
+		setQAResponses(newQAResponses);
+
+		try {
+			if (user) {
+				await saveToDatabase(data, newQAResponses);
+			}
+			saveProfitLossData(data, newQAResponses);
+			setHasUnsavedChanges(false);
+		} catch (error) {
+			console.error("Failed to save QA response:", error);
+		}
+	};
+
 	const saveChanges = async () => {
 		setIsSaving(true);
 		try {
 			if (user) {
-				await saveToDatabase(data);
+				await saveToDatabase(data, qaResponses);
 			}
 			setHasUnsavedChanges(false);
 		} catch (error) {
@@ -68,11 +102,14 @@ export const useProfitLossData = () => {
 
 	return {
 		profitLossData: data,
+		qaResponses,
 		isLoading: isLoading || authLoading,
 		isSaving,
 		hasUnsavedChanges,
 		user,
 		handleUpdateData,
+		handleQAResponseChange,
+		handleQAResponseSave,
 		saveChanges,
 	};
 };

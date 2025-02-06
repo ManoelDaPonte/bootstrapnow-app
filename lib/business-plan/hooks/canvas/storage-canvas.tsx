@@ -93,6 +93,8 @@ export const calculateProgress = (data: CanvasData): number => {
 			filledCategories++;
 		}
 	});
+	console.log("filledCategories", filledCategories);
+	console.log("categories.length", categories.length);
 
 	return Math.round((filledCategories / categories.length) * 100);
 };

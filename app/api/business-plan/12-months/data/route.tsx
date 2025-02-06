@@ -22,6 +22,7 @@ export async function GET() {
 		// Si pas de données, retourner une structure vide mais valide
 		const emptyData = {
 			data: getEmptyProfitLossData(),
+			qaResponses: {},
 		};
 
 		if (!userData?.monthlyProjectionAnalysis) {
@@ -30,6 +31,7 @@ export async function GET() {
 
 		// Validation des données
 		const rawData = userData.monthlyProjectionAnalysis.data;
+		const rawQAResponses = userData.monthlyProjectionAnalysis.qaResponses;
 
 		// Vérification que les données sont bien structurées
 		const isValidData = validateProfitLossData(rawData);
@@ -40,6 +42,7 @@ export async function GET() {
 
 		return NextResponse.json({
 			data: rawData,
+			qaResponses: rawQAResponses || {}, // S'assurer de toujours retourner un objet pour qaResponses
 		});
 	} catch (error) {
 		console.error("Erreur lors de la récupération:", error);
@@ -49,7 +52,6 @@ export async function GET() {
 		);
 	}
 }
-
 function validateProfitLossData(data: any): boolean {
 	const requiredCategories = ["revenue", "expenses"];
 

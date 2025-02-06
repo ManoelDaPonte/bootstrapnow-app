@@ -24,7 +24,7 @@ export const useTemplateProgress = () => {
 	const { sections: funnelChartData } = useFunnelChartData();
 
 	return {
-		market: {
+		model: {
 			"Business Model Canvas": calculateCanvasProgress(canvasData),
 			"Funnel d'acquisition":
 				calculateFunnelChartProgress(funnelChartData),
@@ -46,6 +46,10 @@ export const useTemplateProgress = () => {
 			"Projection sur 3 ans": 100,
 			"Projection sur 12 mois": 100,
 			"Dépenses de démarrage": 100,
+		},
+		market: {
+			"Tendances du marché": 100,
+			Competiteurs: 100,
 		},
 	};
 };

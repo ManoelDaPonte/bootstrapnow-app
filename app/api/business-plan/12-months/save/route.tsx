@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { updateProfitLossData } from "@/lib/business-plan/hooks/12-months/storage-12-months";
 import { ProfitLossData } from "@/types/12-months";
+import { QAResponses } from "@/types/shared/qa-section";
 
 export async function POST(request: Request) {
-	console.log("Début de la requête POST");
 	try {
 		const user = await getUserFromSession();
 		if (!user?.sub) {
@@ -16,29 +16,24 @@ export async function POST(request: Request) {
 		}
 
 		const body = await request.json();
-		console.log("Corps de la requête reçu:", body);
 
-		// Validation du corps de la requête
 		if (!isValidRequestBody(body)) {
-			console.log("Validation du corps de la requête échouée");
 			return NextResponse.json(
 				{ error: "Format de données invalide" },
 				{ status: 400 }
 			);
 		}
 
-		const { data } = body;
+		const { data, qaResponses } = body;
 
-		// Vérification des données avant sauvegarde
 		if (!validateProfitLossData(data)) {
-			console.log("Validation des données profit/loss échouée");
 			return NextResponse.json(
 				{ error: "Structure profit/loss invalide" },
 				{ status: 400 }
 			);
 		}
 
-		const result = await updateProfitLossData(user.sub, data);
+		const result = await updateProfitLossData(user.sub, data, qaResponses);
 
 		return NextResponse.json({
 			success: true,
@@ -57,11 +52,17 @@ export async function POST(request: Request) {
 		);
 	}
 }
-
-function isValidRequestBody(body: any): body is { data: ProfitLossData } {
-	return typeof body === "object" && body !== null && "data" in body;
+function isValidRequestBody(
+	body: any
+): body is { data: ProfitLossData; qaResponses: QAResponses } {
+	return (
+		typeof body === "object" &&
+		body !== null &&
+		"data" in body &&
+		"qaResponses" in body &&
+		typeof body.qaResponses === "object"
+	);
 }
-
 function validateProfitLossData(data: any): boolean {
 	console.log("Données à valider:", JSON.stringify(data, null, 2));
 
