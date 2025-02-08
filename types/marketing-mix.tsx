@@ -13,7 +13,7 @@ export interface MarketingMixData {
 	promotion: MarketingMixCard[];
 	people: MarketingMixCard[];
 	process: MarketingMixCard[];
-	physical_evidence: MarketingMixCard[];
+	physicalEvidence: MarketingMixCard[];
 	lastAnalysis?: string;
 	lastUpdated?: string;
 }
@@ -52,7 +52,7 @@ export const DEFAULT_MARKETING_MIX_DATA: MarketingMixData = {
 	promotion: [],
 	people: [],
 	process: [],
-	physical_evidence: [],
+	physicalEvidence: [],
 	lastAnalysis: new Date().toISOString(),
 	lastUpdated: new Date().toISOString(),
 };
@@ -102,7 +102,7 @@ export const EXAMPLE_MARKETING_MIX_DATA: MarketingMixData = {
 			description: "Étapes du processus de vente et service client",
 		},
 	],
-	physical_evidence: [
+	physicalEvidence: [
 		{
 			id: 1,
 			title: "Environnement physique",

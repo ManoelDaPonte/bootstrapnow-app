@@ -19,11 +19,11 @@ import {
 } from "@/components/ui/table";
 import {
 	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
+	// DialogContent,
+	// DialogHeader,
+	// DialogTitle,
 	DialogTrigger,
-	DialogClose,
+	// DialogClose,
 } from "@/components/ui/dialog";
 import {
 	Plus,

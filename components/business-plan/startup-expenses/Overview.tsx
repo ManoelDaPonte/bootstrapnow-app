@@ -112,7 +112,7 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
 							<XAxis dataKey="category" />
 							<YAxis domain={[0, 10]} />
 							<Tooltip
-								formatter={(value, name) => {
+								formatter={(value) => {
 									return [
 										`Score: ${value}`,
 										"Niveau de risque",

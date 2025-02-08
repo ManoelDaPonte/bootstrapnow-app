@@ -10,7 +10,7 @@ export const MARKETING_MIX_SECTION_ORDER: MarketingMixCategory[] = [
 	"promotion",
 	"people",
 	"process",
-	"physical_evidence",
+	"physicalEvidence", // Changé de "physical_evidence" à "physicalEvidence"
 ];
 
 export const MARKETING_MIX_DESCRIPTIONS = {
@@ -20,18 +20,17 @@ export const MARKETING_MIX_DESCRIPTIONS = {
 	promotion: "Stratégies de communication et actions marketing.",
 	people: "Personnel, formation et service client.",
 	process: "Processus de livraison et expérience client.",
-	physical_evidence:
-		"Environnement physique et preuves tangibles du service.",
+	physicalEvidence: "Environnement physique et preuves tangibles du service.",
 } as const;
 
 export const MARKETING_MIX_HEADERS = {
-	product: { title: "Produit", color: "text-blue-700" },
-	price: { title: "Prix", color: "text-emerald-700" },
-	place: { title: "Distribution", color: "text-purple-700" },
-	promotion: { title: "Promotion", color: "text-orange-700" },
-	people: { title: "Personnel", color: "text-red-700" },
-	process: { title: "Processus", color: "text-cyan-700" },
-	physical_evidence: { title: "Preuve Physique", color: "text-yellow-700" },
+	product: { title: "Produit" },
+	price: { title: "Prix" },
+	place: { title: "Distribution" },
+	promotion: { title: "Promotion" },
+	people: { title: "Personnel" },
+	process: { title: "Processus" },
+	physicalEvidence: { title: "Preuve Physique" }, // Assurez-vous que la clé correspond
 } as const;
 
 export const MARKETING_MIX_COLORS = {
@@ -41,7 +40,7 @@ export const MARKETING_MIX_COLORS = {
 	promotion: "bg-orange-50 border-orange-200 hover:bg-orange-100",
 	people: "bg-red-50 border-red-200 hover:bg-red-100",
 	process: "bg-cyan-50 border-cyan-200 hover:bg-cyan-100",
-	physical_evidence: "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
+	physicalEvidence: "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
 } as const;
 
 export const MARKETING_MIX_QA_DATA: QAData = {
@@ -137,7 +136,7 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 			"**Innovation:** Méthodes d'amélioration des processus",
 		],
 	},
-	physical_evidence: {
+	physicalEvidence: {
 		title: "Preuve Physique",
 		content:
 			"Développez les aspects tangibles qui rendent votre service visible et crédible aux yeux des clients.",

@@ -27,7 +27,11 @@ const StartupExpenses: React.FC = () => {
 	} = useStartupData();
 
 	if (isLoading) {
-		return <div>Chargement...</div>;
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
 	}
 
 	return (

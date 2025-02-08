@@ -138,7 +138,11 @@ const ProfitLossDashboard: React.FC = () => {
 	);
 
 	if (isLoading) {
-		return <div>Chargement...</div>;
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
 	}
 
 	return (
@@ -389,7 +393,8 @@ const ProfitLossDashboard: React.FC = () => {
 													className="border p-4 rounded-lg"
 												>
 													<h4 className="font-semibold mb-2">
-														Bilan de l'année {year}
+														Bilan de l&apos;année{" "}
+														{year}
 													</h4>
 													<p>
 														<strong>

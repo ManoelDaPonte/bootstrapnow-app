@@ -14,7 +14,6 @@ import { CardModal } from "@/components/business-plan/shared/CardModal";
 import FunnelChart from "@/components/business-plan/FunnelChartSection";
 import QASection from "@/components/business-plan/shared/QASection";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import Skeleton from "@/components/ui/Skeleton";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
 	FUNNEL_MODAL_DETAILED_DESCRIPTIONS,
@@ -183,11 +182,8 @@ export default function FunnelChartPage() {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col h-screen">
-				<Header title="Funnel Chart" progress={0} />
-				<div className="flex-1 p-6">
-					<Skeleton className="w-full h-[600px]" />
-				</div>
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
 			</div>
 		);
 	}

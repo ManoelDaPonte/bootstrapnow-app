@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-	greenIcon,
-	redIcon,
-} from "@/lib/business-plan/config/competitors/map-icons";
 import { Plus, Trash2 } from "lucide-react";
 import {
 	Table,
@@ -29,14 +25,11 @@ import {
 	Label,
 } from "recharts";
 import { Header } from "@/components/business-plan/shared/Header";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 
-import { CompetitorEntry } from "@/types/competitors";
+// import { CompetitorEntry } from "@/types/competitors";
 import {
-	INITIAL_COMPETITORS,
+	// INITIAL_COMPETITORS,
 	FIELD_LABELS,
-	zoneCoordinates,
 } from "@/lib/business-plan/config/competitors";
 import CustomTooltip from "@/components/business-plan/competitors/CustomTooltip";
 import CustomShape from "@/components/business-plan/competitors/CustomShape";
@@ -88,14 +81,14 @@ const Competitors: React.FC = () => {
 				<Tabs defaultValue="overview" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-3">
 						<TabsTrigger value="overview">
-							Vue d'ensemble
+							Vue d&apos;ensemble
 						</TabsTrigger>
 						<TabsTrigger value="details">
 							Détail des concurrents
 						</TabsTrigger>
-						<TabsTrigger value="mapping">
-							Mapping 'Beta'
-						</TabsTrigger>
+						{/* <TabsTrigger value="mapping">
+							Mapping &apos;Beta&apos;
+						</TabsTrigger> */}
 					</TabsList>
 
 					{/* Vue d'ensemble */}
@@ -277,15 +270,15 @@ const Competitors: React.FC = () => {
 					</TabsContent>
 
 					{/* Mapping */}
-					<TabsContent value="mapping" className="mt-6">
-						<Card className="bg-card">
+					{/* <TabsContent value="mapping" className="mt-6"> */}
+					{/* <Card className="bg-card">
 							<CardHeader>
 								<CardTitle className="text-xl font-semibold text-foreground">
 									Carte des concurrents
 								</CardTitle>
 								<p className="text-sm text-muted-foreground">
-									ATTENTION: Cette carte n'est pour l'instant
-									valable que pour la France
+									ATTENTION: Cette carte n&apos;est pour
+									l&apos;instant valable que pour la France
 								</p>
 							</CardHeader>
 							<CardContent>
@@ -343,10 +336,9 @@ const Competitors: React.FC = () => {
 												</Marker>
 											);
 										})}
-										{/* Légende */}
 										<div className="absolute pointer-events-none bottom-10 left-10 p-2.5 rounded-lg z-[1000] bg-white bg-opacity-90">
 											<div className="flex items-center mb-1.5">
-												<img
+												<Image
 													src="/icons/map-pin-green.svg"
 													alt="Mon Entreprise"
 													className="w-[30px] h-[40px] mr-2.5"
@@ -356,7 +348,7 @@ const Competitors: React.FC = () => {
 												</span>
 											</div>
 											<div className="flex items-center">
-												<img
+												<Image
 													src="/icons/map-pin-red.svg"
 													alt="Autres Compétiteurs"
 													className="w-[30px] h-[40px] mr-2.5"
@@ -367,8 +359,8 @@ const Competitors: React.FC = () => {
 									</MapContainer>
 								</div>
 							</CardContent>
-						</Card>
-					</TabsContent>
+						</Card> */}
+					{/* </TabsContent> */}
 				</Tabs>
 			</div>
 		</div>

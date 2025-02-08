@@ -26,9 +26,8 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { Header } from "@/components/business-plan/shared/Header";
-import { QAResponses } from "@/types/shared/qa-section";
 import QASection from "@/components/business-plan/shared/QASection";
-import { ProfitLossData, ProfitLossEntry } from "@/types/12-months";
+import { ProfitLossData } from "@/types/12-months";
 import {
 	months,
 	INVENTAIRE_QA_DATA,
@@ -156,7 +155,11 @@ const TwelveMonthsProjection: React.FC = () => {
 	);
 
 	if (isLoading) {
-		return <div>Chargement...</div>;
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
 	}
 
 	return (

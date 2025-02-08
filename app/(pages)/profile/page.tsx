@@ -29,6 +29,8 @@ export default function ProfilePage() {
 		}
 	}, [user, metadata, loading, fetchUserMetadata]);
 
+	console.log("metadata", user);
+
 	useEffect(() => {
 		if (metadata) {
 			const {
@@ -103,7 +105,7 @@ export default function ProfilePage() {
 				<div className="text-center space-y-3">
 					<h1 className="text-3xl font-bold">Mon profil</h1>
 					<p className="text-muted-foreground text-sm">
-						Bonjour {user.name || user.nickname}, personnalisez
+						Bonjour {user.nickname || user.name}, personnalisez
 						votre expérience.
 					</p>
 				</div>

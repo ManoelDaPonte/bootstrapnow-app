@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,8 +47,8 @@ const Trends: React.FC = () => {
 
 	// Calcul du progrès basé sur le remplissage des données
 	const calculateProgress = useCallback(() => {
-		const hasMarketNumbers = marketNumbers.length > 0;
-		const hasTrends = trends.length > 0;
+		// const hasMarketNumbers = marketNumbers.length > 0;
+		// const hasTrends = trends.length > 0;
 		const totalFields = marketNumbers.length * 4 + trends.length * 3; // 4 champs pour marketNumbers, 3 pour trends
 		const filledFields =
 			marketNumbers.reduce((acc, item) => {
@@ -117,7 +117,7 @@ const Trends: React.FC = () => {
 				<Tabs defaultValue="overview" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-2 mb-6">
 						<TabsTrigger value="overview">
-							Vue d'ensemble du marché
+							Vue d&apos;ensemble du marché
 						</TabsTrigger>
 						<TabsTrigger value="details">
 							Détail du marché

@@ -1,7 +1,7 @@
 // app/business-plan/swot/page.tsx
 "use client";
 import React, { useState } from "react";
-import SwotSection from "@/components/business-plan/SwotSection";
+import { SwotSection } from "@/components/business-plan/SwotSection";
 import { SwotCard, ModalState, SwotCategory } from "@/types/swot";
 import { useSwotData } from "@/lib/business-plan/hooks/swot/useSwotData";
 import { calculateProgress } from "@/lib/business-plan/hooks/swot/storage-swot";
@@ -9,7 +9,7 @@ import { Header } from "@/components/business-plan/shared/Header";
 import { CardModal } from "@/components/business-plan/shared/CardModal";
 import {
 	SWOT_QA_DATA,
-	SWOT_DESCRIPTIONS,
+	// SWOT_DESCRIPTIONS,
 	SWOT_HEADERS,
 	SWOT_SECTION_ORDER,
 	SWOT_MODAL_DETAILED_DESCRIPTIONS,
@@ -104,25 +104,28 @@ export default function SwotMatrix() {
 	};
 
 	if (isLoading) {
-		return <div>Chargement...</div>; // Ou un composant de loading plus élaboré
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
 	}
-
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header title="Matrice SWOT" progress={calculateProgress(cards)} />
 
-			<div className="flex-1 max-w-7xl mx-auto w-full p-6">
-				<div className="grid grid-cols-2 gap-6 h-[calc(100vh-8rem)]">
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="grid grid-cols-2 gap-6">
 					{SWOT_SECTION_ORDER.map((category) => (
-						<SwotSection
-							key={category}
-							category={category}
-							title={SWOT_HEADERS[category].title}
-							description={SWOT_DESCRIPTIONS[category]}
-							cards={cards[category]}
-							onAddCard={handleAddCard}
-							onEditCard={handleEditCard}
-						/>
+						<div key={category} className="h-64">
+							<SwotSection
+								category={category}
+								title={SWOT_HEADERS[category].title}
+								cards={cards[category] || []}
+								onAddCard={handleAddCard}
+								onEditCard={handleEditCard}
+							/>
+						</div>
 					))}
 				</div>
 

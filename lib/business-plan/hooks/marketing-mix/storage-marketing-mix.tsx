@@ -122,7 +122,7 @@ export const getEmptyMarketingMixData = (): MarketingMixData => ({
 	promotion: [],
 	people: [],
 	process: [],
-	physical_evidence: [],
+	physicalEvidence: [],
 	lastUpdated: new Date().toISOString(),
 });
 

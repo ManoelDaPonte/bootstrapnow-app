@@ -1,7 +1,6 @@
 // lib/business-plan/canvas/storage-canvas.ts
 import { CanvasData } from "@/types/canvas";
 import { prisma } from "@/lib/db/prisma";
-import { CanvasCard } from "@/types/canvas";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { QAResponses } from "@/types/shared/qa-section";
 
