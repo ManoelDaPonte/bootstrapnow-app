@@ -1,46 +1,32 @@
-// app/business-plan/pestel/page.tsx
 "use client";
 import React, { useState } from "react";
-import PestelSection from "@/components/business-plan/pestel/PestelSection";
-import PestelModal from "@/components/business-plan/pestel/PestelModal";
+import { PestelSection } from "@/components/business-plan/PestelSection";
 import { PestelCard, ModalState } from "@/types/pestel";
-import { usePestelData } from "@/lib/hooks/business-plan/pestel/usePestelData";
-import { calculateProgress } from "@/lib/hooks/business-plan/pestel/storage-pestel";
+import { usePestelData } from "@/lib/business-plan/hooks/pestel/usePestelData";
+import { calculateProgress } from "@/lib/business-plan/hooks/pestel/storage-pestel";
 import { Header } from "@/components/business-plan/shared/Header";
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import QASection from "@/components/business-plan/shared/QASection";
+import { ModalProps } from "@/types/shared/card-modal";
+import {
+	PESTEL_HEADERS,
+	PESTEL_SECTION_ORDER,
+	PESTEL_MODAL_DETAILED_DESCRIPTIONS,
+	PESTEL_QA_DATA,
+} from "@/lib/business-plan/config/pestel";
 
-const PESTEL_DESCRIPTIONS = {
-	political:
-		"Facteurs liés aux politiques gouvernementales et à la réglementation.",
-	economic: "Variables économiques qui peuvent influencer votre marché.",
-	social: "Tendances sociales et démographiques affectant votre activité.",
-	technological:
-		"Innovations et changements technologiques impactant votre secteur.",
-	environmental: "Considérations environnementales et écologiques.",
-	legal: "Cadre juridique et conformité réglementaire.",
-} as const;
-
-const PESTEL_HEADERS = {
-	political: { title: "Politique", color: "text-purple-700" },
-	economic: { title: "Économique", color: "text-emerald-700" },
-	social: { title: "Social", color: "text-blue-700" },
-	technological: { title: "Technologique", color: "text-orange-700" },
-	environmental: { title: "Environnemental", color: "text-green-700" },
-	legal: { title: "Légal", color: "text-red-700" },
-} as const;
-
-type PestelCategory = keyof typeof PESTEL_DESCRIPTIONS;
-
-const sectionOrder: PestelCategory[] = [
-	"political",
-	"economic",
-	"social",
-	"technological",
-	"environmental",
-	"legal",
-];
+type PestelCategory = keyof typeof PESTEL_HEADERS;
 
 export default function PestelMatrix() {
-	const { cards, handleSaveCard, handleDeleteCard } = usePestelData();
+	const {
+		cards,
+		qaResponses,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+		isLoading,
+	} = usePestelData();
 
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
@@ -70,9 +56,7 @@ export default function PestelMatrix() {
 			return;
 		}
 
-		if (category) {
-			handleSaveCard(category as PestelCategory, card);
-		}
+		handleSaveCard(category as PestelCategory, card);
 		setModalState({
 			open: false,
 			category: "",
@@ -82,9 +66,7 @@ export default function PestelMatrix() {
 
 	const handleModalDelete = () => {
 		const { category, card } = modalState;
-		if (category) {
-			handleDeleteCard(category as PestelCategory, card.id);
-		}
+		handleDeleteCard(category as PestelCategory, card.id);
 		setModalState({
 			open: false,
 			category: "",
@@ -92,47 +74,71 @@ export default function PestelMatrix() {
 		});
 	};
 
-	return (
-		<div className="flex flex-col h-screen">
-			<Header title="PesteL" progress={calculateProgress(cards)} />
+	const modalProps: ModalProps<PestelCard> = {
+		isOpen: modalState.open,
+		card: modalState.card,
+		onClose: () =>
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "" },
+			}),
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error,
+		isNew: !modalState.card.id,
+		onChange: (e) =>
+			setModalState((prev) => ({
+				...prev,
+				card: { ...prev.card, [e.target.name]: e.target.value },
+			})),
+		modalTitle: modalState.card.id
+			? "Modifier l'élément"
+			: "Nouvel élément",
+		titlePlaceholder: "Entrez le titre...",
+		descriptionPlaceholder: "Entrez la description...",
+		categoryDescription: modalState.category
+			? PESTEL_MODAL_DETAILED_DESCRIPTIONS[
+					modalState.category as PestelCategory
+			  ]
+			: undefined,
+	};
 
-			<div className="flex-1 w-full p-6 overflow-y-auto">
-				<div className="grid grid-cols-3 gap-6">
-					{sectionOrder.map((category) => (
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="min-h-screen bg-background flex flex-col">
+			<Header title="PESTEL" progress={calculateProgress(cards)} />
+
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					{PESTEL_SECTION_ORDER.map((category) => (
 						<PestelSection
 							key={category}
 							category={category}
 							title={PESTEL_HEADERS[category].title}
-							description={PESTEL_DESCRIPTIONS[category]}
-							cards={cards[category]}
+							cards={cards[category] || []}
 							onAddCard={handleAddCard}
 							onEditCard={handleEditCard}
 						/>
 					))}
 				</div>
+
+				<QASection
+					data={PESTEL_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+				/>
 			</div>
 
-			<PestelModal
-				isOpen={modalState.open}
-				card={modalState.card}
-				onClose={() =>
-					setModalState({
-						open: false,
-						category: "",
-						card: { id: 0, title: "", description: "" },
-					})
-				}
-				onSave={handleModalSave}
-				onDelete={handleModalDelete}
-				error={error}
-				isNew={!modalState.card.id}
-				onChange={(e) =>
-					setModalState((prev) => ({
-						...prev,
-						card: { ...prev.card, [e.target.name]: e.target.value },
-					}))
-				}
-			/>
+			<CardModal<PestelCard> {...modalProps} />
 		</div>
 	);
 }

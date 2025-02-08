@@ -1,7 +1,7 @@
 // lib/stripe/webhooks/handleCheckoutSessionCompleted.ts
 import Stripe from "stripe";
-import getManagementToken from "@/lib/auth0/getManagementToken";
 import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
+import getManagementToken from "@/lib/auth0/getManagementToken";
 
 /**
  * Gère l'événement checkout.session.completed.

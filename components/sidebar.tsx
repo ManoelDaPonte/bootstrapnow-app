@@ -18,6 +18,8 @@ import { useUserMetadata } from "@/context/userMetadataProvider";
 
 const navItems = [
 	{ href: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
+	{ href: "/tools/business-plan", label: "Business Plan", icon: FileText },
+
 	{
 		href: "/tools/search-hunter",
 		label: "Search-Hunter",
@@ -30,7 +32,6 @@ const navItems = [
 		icon: Wrench,
 		requiresSubscription: true,
 	},
-	{ href: "/tools/business-plan", label: "Business Plan", icon: FileText },
 	{ href: "/abonnement", label: "Abonnement", icon: CreditCard },
 	{ href: "/profile", label: "Profil", icon: User },
 	{ href: "/aide", label: "Aide", icon: HelpCircle },
@@ -50,8 +51,8 @@ export default function Sidebar() {
 					<Image
 						src="/logo/logo_bootstrapnow.png"
 						alt="logo"
-						width={35}
-						height={35}
+						width={40}
+						height={0}
 					/>
 					<span className="font-bold text-xl">BootstrapNow</span>
 				</div>

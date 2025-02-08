@@ -31,7 +31,9 @@ export function UserMetadataProvider({
 		setError(null);
 		try {
 			const res = await axios.get(
-				`/api/user/get-metadata?userId=${encodeURIComponent(userId)}`
+				`/api/auth/user/get-metadata?userId=${encodeURIComponent(
+					userId
+				)}`
 			);
 			setMetadata(res.data.metadata);
 		} catch (err: any) {

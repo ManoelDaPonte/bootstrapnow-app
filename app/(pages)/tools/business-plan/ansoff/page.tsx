@@ -1,37 +1,30 @@
 "use client";
 import React, { useState } from "react";
-import { AnsoffCard, ModalState, AnsoffData } from "@/types/ansoff";
-import { useAnsoffData } from "@/lib/hooks/business-plan/ansoff/useAnsoffData";
-import { AnsoffSection } from "@/components/business-plan/ansoff/AnsoffSection";
-import { AnsoffModal } from "@/components/business-plan/ansoff/AnsoffModal";
-import { calculateProgress } from "@/lib/hooks/business-plan/ansoff/storage-ansoff";
+import { AnsoffCard, ModalState, AnsoffCategory } from "@/types/ansoff";
+import { useAnsoffData } from "@/lib/business-plan/hooks/ansoff/useAnsoffData";
+import { calculateProgress } from "@/lib/business-plan/hooks/ansoff/storage-ansoff";
 import { Header } from "@/components/business-plan/shared/Header";
-
-// Définition du type AnsoffCategory
-type AnsoffCategory = keyof Omit<AnsoffData, "lastAnalysis" | "lastUpdated">;
-
-const ANSOFF_DESCRIPTIONS = {
-	penetration: "Vendre plus de produits existants aux marchés existants.",
-	development_market: "Vendre des produits existants à de nouveaux marchés.",
-	development_product: "Vendre de nouveaux produits aux marchés existants.",
-	diversification: "Vendre de nouveaux produits à de nouveaux marchés.",
-} as const;
-
-const ANSOFF_HEADERS = {
-	penetration: { title: "Pénétration du marché", color: "text-blue-700" },
-	development_market: {
-		title: "Développement du marché",
-		color: "text-emerald-700",
-	},
-	development_product: {
-		title: "Développement du produit",
-		color: "text-orange-700",
-	},
-	diversification: { title: "Diversification", color: "text-purple-700" },
-} as const;
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import { AnsoffSection } from "@/components/business-plan/AnsoffSection";
+import QASection from "@/components/business-plan/shared/QASection";
+import {
+	ANSOFF_QA_DATA,
+	ANSOFF_HEADERS,
+	ANSOFF_SECTION_ORDER,
+	ANSOFF_MODAL_DETAILED_DESCRIPTIONS,
+} from "@/lib/business-plan/config/ansoff";
+import { ModalProps } from "@/types/shared/card-modal";
 
 export default function AnsoffMatrix() {
-	const { cards, handleSaveCard, handleDeleteCard } = useAnsoffData();
+	const {
+		cards,
+		qaResponses,
+		handleSaveCard,
+		handleDeleteCard,
+		handleQAResponseChange,
+		handleQAResponseSave,
+		isLoading,
+	} = useAnsoffData();
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
 		category: "",
@@ -82,114 +75,110 @@ export default function AnsoffMatrix() {
 		});
 	};
 
+	const modalProps: ModalProps<AnsoffCard> = {
+		isOpen: modalState.open,
+		card: modalState.card,
+		onClose: () =>
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "" },
+			}),
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error,
+		isNew: !modalState.card.id,
+		onChange: (e) =>
+			setModalState((prev) => ({
+				...prev,
+				card: { ...prev.card, [e.target.name]: e.target.value },
+			})),
+		modalTitle: modalState.card.id
+			? "Modifier la stratégie"
+			: "Nouvelle stratégie",
+		titlePlaceholder: "Entrez le titre de votre stratégie...",
+		descriptionPlaceholder: "Décrivez votre stratégie...",
+		categoryDescription: modalState.category
+			? ANSOFF_MODAL_DETAILED_DESCRIPTIONS[
+					modalState.category as AnsoffCategory
+			  ]
+			: undefined,
+	};
+
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
+
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Matrice Ansoff"
 				progress={calculateProgress(cards)}
 			/>
 
-			{/* Matrix Grid */}
-			<div className="flex-1 max-w-7xl mx-auto w-full p-6">
-				<div className="relative flex flex-col h-full">
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="relative">
 					{/* Product Type Label (Top) */}
-					<div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-						<span className="text-sm font-medium text-gray-600">
+					<div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
+						<span className="text-sm font-medium text-muted-foreground">
 							Produit
 						</span>
-						<div className="flex gap-64 mt-2">
-							<span className="text-xs font-medium text-gray-600">
+						<div className="flex w-full justify-between px-40 mt-2">
+							<span className="text-xs font-medium text-muted-foreground">
 								Existant
 							</span>
-							<span className="text-xs font-medium text-gray-600">
+							<span className="text-xs font-medium text-muted-foreground">
 								Nouveau
 							</span>
 						</div>
 					</div>
 
 					{/* Market Type Label (Left) */}
-					<div className="absolute top-1/2 -translate-y-1/2 flex items-center">
-						{/* Label Marché */}
-						<span className="text-sm font-medium text-gray-600 -rotate-90 whitespace-nowrap">
+					<div className="absolute -left-8 top-1/2 -translate-y-1/2 flex items-center">
+						<span className="text-sm font-medium text-muted-foreground -rotate-90 whitespace-nowrap">
 							Marché
 						</span>
-						{/* Labels Existant/Nouveau */}
-						<div className="flex flex-col gap-64">
-							<span className="text-xs font-medium text-gray-600 -rotate-90 whitespace-nowrap">
+						<div className="flex flex-col justify-between h-[32rem] -ml-2">
+							<span className="text-xs font-medium text-muted-foreground -rotate-90 whitespace-nowrap translate-y-20">
 								Existant
 							</span>
-							<span className="text-xs font-medium text-gray-600 -rotate-90 whitespace-nowrap">
+							<span className="text-xs font-medium text-muted-foreground -rotate-90 whitespace-nowrap -translate-y-20">
 								Nouveau
 							</span>
 						</div>
 					</div>
 
 					{/* Matrix Content */}
-					<div className="flex-1 mt-12 ml-24">
-						<div className="grid grid-cols-2 gap-6 h-[calc(100vh-12rem)]">
-							<AnsoffSection
-								category="penetration"
-								title={ANSOFF_HEADERS.penetration.title}
-								description={ANSOFF_DESCRIPTIONS.penetration}
-								cards={cards.penetration}
-								onAddCard={handleAddCard}
-								onEditCard={handleEditCard}
-							/>
-							<AnsoffSection
-								category="development_product"
-								title={ANSOFF_HEADERS.development_product.title}
-								description={
-									ANSOFF_DESCRIPTIONS.development_product
-								}
-								cards={cards.development_product}
-								onAddCard={handleAddCard}
-								onEditCard={handleEditCard}
-							/>
-							<AnsoffSection
-								category="development_market"
-								title={ANSOFF_HEADERS.development_market.title}
-								description={
-									ANSOFF_DESCRIPTIONS.development_market
-								}
-								cards={cards.development_market}
-								onAddCard={handleAddCard}
-								onEditCard={handleEditCard}
-							/>
-							<AnsoffSection
-								category="diversification"
-								title={ANSOFF_HEADERS.diversification.title}
-								description={
-									ANSOFF_DESCRIPTIONS.diversification
-								}
-								cards={cards.diversification}
-								onAddCard={handleAddCard}
-								onEditCard={handleEditCard}
-							/>
+					<div className="mt-8 ml-12">
+						<div className="grid grid-cols-2 gap-6">
+							{ANSOFF_SECTION_ORDER.map((category) => (
+								<div key={category} className="h-64">
+									<AnsoffSection
+										category={category}
+										title={ANSOFF_HEADERS[category].title}
+										cards={cards[category] || []}
+										onAddCard={handleAddCard}
+										onEditCard={handleEditCard}
+									/>
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
+
+				<QASection
+					data={ANSOFF_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+				/>
 			</div>
 
-			<AnsoffModal
-				isOpen={modalState.open}
-				card={modalState.card}
-				onClose={() =>
-					setModalState({
-						open: false,
-						category: "",
-						card: { id: 0, title: "", description: "" },
-					})
-				}
-				onSave={handleModalSave}
-				onDelete={handleModalDelete}
-				error={error}
-				onChange={(e) =>
-					setModalState((prev) => ({
-						...prev,
-						card: { ...prev.card, [e.target.name]: e.target.value },
-					}))
-				}
-			/>
+			<CardModal<AnsoffCard> {...modalProps} />
 		</div>
 	);
 }

@@ -1,10 +1,19 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Trash2, Save } from "lucide-react"; // Ajout de l'icône Save
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import {
 	ComposedChart,
 	Bar,
@@ -16,83 +25,78 @@ import {
 	Legend,
 	ResponsiveContainer,
 } from "recharts";
-import { Plus, Trash2 } from "lucide-react";
+import { Header } from "@/components/business-plan/shared/Header";
+import QASection from "@/components/business-plan/shared/QASection";
+import { ProfitLossData } from "@/types/12-months";
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-
-// Définitions des mois sous forme M1, M2, ..., M12
-const months = Array.from({ length: 12 }, (_, i) => `M${i + 1}`);
-
-interface ProfitLossEntry {
-	id: string;
-	category: string;
-	[month: string]: number | string;
-}
-
-interface ProfitLossData {
-	revenue: ProfitLossEntry[];
-	expenses: ProfitLossEntry[];
-}
+	months,
+	INVENTAIRE_QA_DATA,
+} from "@/lib/business-plan/config/12-months";
+import { useProfitLossData } from "@/lib/business-plan/hooks/12-months/useProfitLossData";
+import { calculateProgress } from "@/lib/business-plan/hooks/12-months/storage-12-months";
 
 const TwelveMonthsProjection: React.FC = () => {
-	const [profitLossData, setProfitLossData] = useState<ProfitLossData>({
-		revenue: [
-			{
-				id: "rev1",
-				category: "Product Sales",
-				...Object.fromEntries(months.map((m) => [m, 10000])),
-			},
-			{
-				id: "rev2",
-				category: "Service Revenue",
-				...Object.fromEntries(months.map((m) => [m, 5000])),
-			},
-		],
-		expenses: [
-			{
-				id: "exp1",
-				category: "Operating Expenses",
-				...Object.fromEntries(months.map((m) => [m, 8000])),
-			},
-			{
-				id: "exp2",
-				category: "Marketing",
-				...Object.fromEntries(months.map((m) => [m, 2000])),
-			},
-		],
-	});
+	const {
+		profitLossData,
+		isLoading,
+		isSaving,
+		hasUnsavedChanges,
+		handleUpdateData,
+		saveChanges,
+		qaResponses,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useProfitLossData();
 
 	// Ajouter une ligne
-	const addRow = useCallback((section: keyof ProfitLossData) => {
-		const newId = `new_${section}_${Date.now()}`;
-		setProfitLossData((prev) => ({
-			...prev,
-			[section]: [
-				...prev[section],
-				{
-					id: newId,
-					category: "New Category",
-					...Object.fromEntries(months.map((m) => [m, 0])),
-				},
-			],
-		}));
-	}, []);
+	const addRow = useCallback(
+		(section: keyof ProfitLossData) => {
+			const newId = `new_${section}_${Date.now()}`;
+			// Créer un objet avec tous les mois initialisés à 0
+			const monthValues = {
+				Jan: 0,
+				Feb: 0,
+				Mar: 0,
+				Apr: 0,
+				May: 0,
+				Jun: 0,
+				Jul: 0,
+				Aug: 0,
+				Sep: 0,
+				Oct: 0,
+				Nov: 0,
+				Dec: 0,
+			};
+
+			const newData = {
+				...profitLossData,
+				[section]: [
+					...profitLossData[section],
+					{
+						id: newId,
+						category: "New Category",
+						...monthValues,
+					},
+				],
+			};
+			console.log("Nouvelles données à sauvegarder:", newData);
+			handleUpdateData(newData);
+		},
+		[profitLossData, handleUpdateData]
+	);
 
 	// Supprimer une ligne
 	const removeRow = useCallback(
 		(section: keyof ProfitLossData, id: string) => {
-			setProfitLossData((prev) => ({
-				...prev,
-				[section]: prev[section].filter((entry) => entry.id !== id),
-			}));
+			const newData = {
+				...profitLossData,
+				[section]: profitLossData[section].filter(
+					(entry) => entry.id !== id
+				),
+			};
+			handleUpdateData(newData);
 		},
-		[]
+		[profitLossData, handleUpdateData]
 	);
 
 	// Mettre à jour une cellule
@@ -103,14 +107,15 @@ const TwelveMonthsProjection: React.FC = () => {
 			field: string,
 			value: string | number
 		) => {
-			setProfitLossData((prev) => ({
-				...prev,
-				[section]: prev[section].map((entry) =>
+			const newData = {
+				...profitLossData,
+				[section]: profitLossData[section].map((entry) =>
 					entry.id === id ? { ...entry, [field]: value } : entry
 				),
-			}));
+			};
+			handleUpdateData(newData);
 		},
-		[]
+		[profitLossData, handleUpdateData]
 	);
 
 	// Calcul du total revenu par mois
@@ -143,216 +148,239 @@ const TwelveMonthsProjection: React.FC = () => {
 			months.map((month, index) => ({
 				name: month,
 				Revenue: totalRevenue[index],
-				Expenses: -totalExpenses[index], // Mettre en négatif pour affichage correct
+				Expenses: -totalExpenses[index],
 				Profit: totalRevenue[index] - totalExpenses[index],
 			})),
 		[totalRevenue, totalExpenses]
 	);
 
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
+
 	return (
-		<div className="container mx-auto p-4 space-y-6">
-			<Tabs defaultValue="overview">
-				<TabsList className="grid w-full grid-cols-2">
-					<TabsTrigger value="overview">
-						Profit & Loss Overview
-					</TabsTrigger>
-					<TabsTrigger value="details">
-						Detailed Breakdown
-					</TabsTrigger>
-				</TabsList>
+		<div className="flex flex-col h-screen">
+			<Header
+				title="Prévisionnel à 12 mois"
+				progress={calculateProgress(profitLossData)}
+				rightContent={
+					<Button
+						onClick={saveChanges}
+						disabled={!hasUnsavedChanges || isSaving}
+						className="flex items-center gap-2"
+					>
+						<Save className="h-4 w-4" />
+						{isSaving ? "Sauvegarde..." : "Sauvegarder"}
+					</Button>
+				}
+			/>
+			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">
+				<Tabs defaultValue="overview" className="space-y-6">
+					<TabsList className="grid w-full grid-cols-2">
+						<TabsTrigger value="overview">
+							Bénéfices et pertes
+						</TabsTrigger>
+						<TabsTrigger value="details">
+							Prévisions détaillées
+						</TabsTrigger>
+					</TabsList>
 
-				{/* Graphique */}
-				<TabsContent value="overview">
-					<Card>
-						<CardHeader>
-							<CardTitle>Monthly Financial Projection</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<ResponsiveContainer width="100%" height={300}>
-								<ComposedChart data={netProfitData}>
-									<CartesianGrid strokeDasharray="3 3" />
-									<XAxis dataKey="name" />
-									<YAxis
-										tickFormatter={(value) => {
-											const formattedValue =
-												Math.abs(
-													value
-												).toLocaleString(); // Met l'abs de la valeur
-											return value < 0
-												? `-$${formattedValue}`
-												: `$${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
-										}}
-									/>
-									<Tooltip
-										formatter={(value, name) => {
-											const formattedValue = `$${Math.abs(
-												Number(value)
-											).toLocaleString()}`;
-											return name === "Profit"
-												? [formattedValue, "Net Profit"]
-												: [formattedValue, name];
-										}}
-									/>
-									<Legend />
+					{/* Vue d'ensemble avec le graphique */}
+					<TabsContent value="overview">
+						<Card>
+							<CardHeader>
+								<CardTitle>
+									Prévisionnel des Finances mensuelles
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<ResponsiveContainer width="100%" height={300}>
+									<ComposedChart data={netProfitData}>
+										<CartesianGrid strokeDasharray="3 3" />
+										<XAxis dataKey="name" />
+										<YAxis
+											tickFormatter={(value) => {
+												const formattedValue =
+													Math.abs(
+														value
+													).toLocaleString();
+												return value < 0
+													? `-€${formattedValue}`
+													: `€${formattedValue}`;
+											}}
+										/>
+										<Tooltip
+											formatter={(value, name) => {
+												const formattedValue = `€${Math.abs(
+													Number(value)
+												).toLocaleString()}`;
+												return name === "Profit"
+													? [
+															formattedValue,
+															"Net Profit",
+													  ]
+													: [formattedValue, name];
+											}}
+										/>
+										<Legend />
+										<Bar
+											dataKey="Revenue"
+											fill="#3498db"
+											stackId="a"
+										/>
+										<Bar
+											dataKey="Expenses"
+											fill="#e74c3c"
+											stackId="b"
+											fillOpacity={0.7}
+										/>
+										<Line
+											type="monotone"
+											dataKey="Profit"
+											stroke="#2ecc71"
+											strokeWidth={3}
+										/>
+									</ComposedChart>
+								</ResponsiveContainer>
+							</CardContent>
+						</Card>
+					</TabsContent>
 
-									<Bar
-										dataKey="Revenue"
-										fill="#3498db"
-										stackId="a"
-									/>
-									<Bar
-										dataKey="Expenses"
-										fill="#e74c3c"
-										stackId="b"
-										fillOpacity={0.7}
-									/>
-									<Line
-										type="monotone"
-										dataKey="Profit"
-										stroke="#2ecc71"
-										strokeWidth={3}
-									/>
-								</ComposedChart>
-							</ResponsiveContainer>
-						</CardContent>
-					</Card>
-				</TabsContent>
+					{/* Vue détaillée avec le tableau */}
+					<TabsContent value="details">
+						<Card>
+							<CardHeader>
+								<CardTitle className="flex justify-between items-center">
+									Bénéfices et pertes détaillés
+									<div className="flex space-x-2">
+										{(["revenue", "expenses"] as const).map(
+											(section) => (
+												<Button
+													key={section}
+													variant="outline"
+													size="sm"
+													onClick={() =>
+														addRow(section)
+													}
+												>
+													<Plus className="mr-2 h-4 w-4" />
+													Add{" "}
+													{section === "revenue"
+														? "Revenue"
+														: "Expense"}{" "}
+													Row
+												</Button>
+											)
+										)}
+									</div>
+								</CardTitle>
+							</CardHeader>
 
-				{/* Tableau détaillé */}
-				<TabsContent value="details">
-					<Card>
-						<CardHeader>
-							<CardTitle className="flex justify-between items-center">
-								Profit and Loss Details
-								<div className="flex space-x-2">
+							<CardContent className="p-0">
+								<div className="space-y-6 p-6">
 									{(["revenue", "expenses"] as const).map(
 										(section) => (
-											<Button
+											<div
 												key={section}
-												variant="outline"
-												size="sm"
-												onClick={() => addRow(section)}
+												className={`${
+													section === "revenue"
+														? "bg-green-100"
+														: "bg-red-100"
+												} rounded-lg`}
 											>
-												<Plus className="mr-2 h-4 w-4" />
-												Add{" "}
-												{section === "revenue"
-													? "Revenue"
-													: "Expense"}{" "}
-												Row
-											</Button>
-										)
-									)}
-								</div>
-							</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-6">
-							{(["revenue", "expenses"] as const).map(
-								(section) => (
-									<div
-										key={section}
-										className={`${
-											section === "revenue"
-												? "bg-green-100"
-												: "bg-red-100"
-										} p-4 rounded-lg`} // Ajout de couleurs de fond différenciées
-									>
-										<h3 className="text-lg font-semibold mb-2 capitalize">
-											{section}
-										</h3>
-										<div className="overflow-x-auto">
-											<Table className="table-auto min-w-max">
-												<TableHeader>
-													<TableRow>
-														<TableHead
-															rowSpan={2}
-															className="align-middle"
-														>
-															Category
-														</TableHead>
-														<TableHead
-															colSpan={6}
-															className="text-center border-b"
-														>
-															First Half
-														</TableHead>
-														<TableHead
-															colSpan={6}
-															className="text-center border-b"
-														>
-															Second Half
-														</TableHead>
-														<TableHead
-															rowSpan={2}
-															className="align-middle"
-														>
-															Actions
-														</TableHead>
-													</TableRow>
-													<TableRow>
-														{months
-															.slice(0, 6)
-															.map((month) => (
+												<div className="p-4">
+													<h3 className="text-lg font-semibold mb-2 capitalize">
+														{section}
+													</h3>
+												</div>
+
+												<div className="overflow-auto max-h-[400px]">
+													<Table className="w-full">
+														<TableHeader className="sticky top-0 bg-white z-10">
+															<TableRow>
 																<TableHead
-																	key={month}
-																	className="text-center"
+																	rowSpan={2}
+																	className="sticky left-0 bg-white z-20"
 																>
-																	{month}
+																	Categorie
 																</TableHead>
-															))}
-														{months
-															.slice(6)
-															.map((month) => (
 																<TableHead
-																	key={month}
-																	className="text-center"
+																	colSpan={6}
+																	className="text-center border-b"
 																>
-																	{month}
+																	Premier
+																	semestre
 																</TableHead>
-															))}
-													</TableRow>
-												</TableHeader>
-												<TableBody>
-													{profitLossData[
-														section
-													].map((entry) => (
-														<TableRow
-															key={entry.id}
-														>
-															<TableCell className="whitespace-nowrap max-w-[150px]">
-																{" "}
-																{/* Limite la largeur des cellules catégorie */}
-																<Input
-																	value={
-																		entry.category
-																	}
-																	onChange={(
-																		e
-																	) =>
-																		updateRow(
-																			section,
-																			entry.id,
-																			"category",
-																			e
-																				.target
-																				.value
-																		)
-																	}
-																/>
-															</TableCell>
-															{months.map(
-																(month) => (
-																	<TableCell
-																		key={
+																<TableHead
+																	colSpan={6}
+																	className="text-center border-b"
+																>
+																	Deuxième
+																	semestre
+																</TableHead>
+																<TableHead
+																	rowSpan={2}
+																	className="sticky right-0 bg-white z-20"
+																>
+																	Actions
+																</TableHead>
+															</TableRow>
+															<TableRow>
+																{months
+																	.slice(0, 6)
+																	.map(
+																		(
 																			month
-																		}
-																		className="max-w-[120px]"
-																	>
-																		<Input
-																			type="number"
-																			value={
-																				entry[
+																		) => (
+																			<TableHead
+																				key={
 																					month
-																				]
+																				}
+																				className="text-center bg-white"
+																			>
+																				{
+																					month
+																				}
+																			</TableHead>
+																		)
+																	)}
+																{months
+																	.slice(6)
+																	.map(
+																		(
+																			month
+																		) => (
+																			<TableHead
+																				key={
+																					month
+																				}
+																				className="text-center bg-white"
+																			>
+																				{
+																					month
+																				}
+																			</TableHead>
+																		)
+																	)}
+															</TableRow>
+														</TableHeader>
+														<TableBody>
+															{profitLossData[
+																section
+															].map((entry) => (
+																<TableRow
+																	key={
+																		entry.id
+																	}
+																>
+																	<TableCell className="sticky left-0 bg-white">
+																		<Input
+																			value={
+																				entry.category
 																			}
 																			onChange={(
 																				e
@@ -360,44 +388,81 @@ const TwelveMonthsProjection: React.FC = () => {
 																				updateRow(
 																					section,
 																					entry.id,
-																					month,
-																					Number(
-																						e
-																							.target
-																							.value
-																					)
+																					"category",
+																					e
+																						.target
+																						.value
 																				)
 																			}
 																		/>
 																	</TableCell>
-																)
-															)}
-															<TableCell>
-																<Button
-																	variant="destructive"
-																	size="icon"
-																	onClick={() =>
-																		removeRow(
-																			section,
-																			entry.id
+																	{months.map(
+																		(
+																			month
+																		) => (
+																			<TableCell
+																				key={
+																					month
+																				}
+																			>
+																				<Input
+																					type="number"
+																					value={
+																						entry[
+																							month
+																						]
+																					}
+																					onChange={(
+																						e
+																					) =>
+																						updateRow(
+																							section,
+																							entry.id,
+																							month,
+																							Number(
+																								e
+																									.target
+																									.value
+																							)
+																						)
+																					}
+																				/>
+																			</TableCell>
 																		)
-																	}
-																>
-																	<Trash2 className="h-4 w-4" />
-																</Button>
-															</TableCell>
-														</TableRow>
-													))}
-												</TableBody>
-											</Table>
-										</div>
-									</div>
-								)
-							)}
-						</CardContent>
-					</Card>
-				</TabsContent>
-			</Tabs>
+																	)}
+																	<TableCell className="sticky right-0 bg-white">
+																		<button
+																			onClick={() =>
+																				removeRow(
+																					section,
+																					entry.id
+																				)
+																			}
+																			className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+																		>
+																			<Trash2 className="h-4 w-4" />
+																		</button>
+																	</TableCell>
+																</TableRow>
+															))}
+														</TableBody>
+													</Table>
+												</div>
+											</div>
+										)
+									)}
+								</div>
+							</CardContent>
+						</Card>
+					</TabsContent>
+				</Tabs>
+				<QASection
+					data={INVENTAIRE_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+				/>
+			</div>
 		</div>
 	);
 };

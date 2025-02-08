@@ -1,231 +1,202 @@
-// app/business-plan/value-proposition/page.tsx
 "use client";
-
 import React, { useState } from "react";
-import { Plus, Trash2, HelpCircle } from "lucide-react";
-import { useValuePropositionData } from "@/lib/hooks/business-plan/proposition-value/useValuePropositionData";
-import type {
+import { useValuePropositionData } from "@/lib/business-plan/hooks/value-proposition/useValuePropositionData";
+import { calculateProgress } from "@/lib/business-plan/hooks/value-proposition/storage-value-proposition";
+import { Header } from "@/components/business-plan/shared/Header";
+import { ValuePropositionSection } from "@/components/business-plan/ValuePropositionSection";
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import QASection from "@/components/business-plan/shared/QASection";
+import {
 	ValuePropositionCategory,
 	ValuePropositionCard,
-	TooltipMessages,
+	ModalState,
 } from "@/types/value-proposition";
-import { calculateProgress } from "@/lib/hooks/business-plan/proposition-value/storage-value-proposition";
-import { Header } from "@/components/business-plan/shared/Header";
-
-const tooltips: TooltipMessages = {
-	customerJobs:
-		"Décrivez les tâches que vos clients essaient d'accomplir dans leur travail ou leur vie.",
-	pains: "Listez les mauvaises expériences, émotions et risques que vos clients expérimentent.",
-	gains: "Identifiez les bénéfices que vos clients attendent et les résultats positifs qu'ils désirent.",
-	products:
-		"Énumérez tous les produits et services que votre proposition de valeur constitue.",
-	painRelievers:
-		"Décrivez comment vos produits et services soulagent les problèmes spécifiques des clients.",
-	gainCreators:
-		"Expliquez comment vos produits et services créent des bénéfices pour vos clients.",
-};
-
-interface EditableListProps {
-	items: ValuePropositionCard[];
-	onAddItem: (content: string) => void;
-	onUpdateItem: (id: number, content: string) => void;
-	onDeleteItem: (id: number) => void;
-}
-
-const EditableList: React.FC<EditableListProps> = ({
-	items,
-	onAddItem,
-	onUpdateItem,
-	onDeleteItem,
-}) => {
-	const [newItem, setNewItem] = useState<string>("");
-
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (newItem.trim()) {
-			onAddItem(newItem.trim());
-			setNewItem("");
-		}
-	};
-
-	return (
-		<div className="space-y-2">
-			{items.map((item) => (
-				<div key={item.id} className="flex items-start gap-2">
-					<input
-						type="text"
-						value={item.content}
-						onChange={(e) => onUpdateItem(item.id, e.target.value)}
-						className="w-full p-1 border rounded text-sm bg-white/80"
-					/>
-					<button
-						onClick={() => onDeleteItem(item.id)}
-						className="text-red-500 hover:text-red-700 p-1"
-						title="Supprimer"
-					>
-						<Trash2 size={16} />
-					</button>
-				</div>
-			))}
-			<form onSubmit={handleSubmit} className="flex gap-2">
-				<input
-					type="text"
-					value={newItem}
-					onChange={(e) => setNewItem(e.target.value)}
-					placeholder="Ajouter..."
-					className="w-full p-1 border rounded text-sm bg-white/80"
-				/>
-				<button
-					type="submit"
-					className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
-				>
-					<Plus size={16} />
-				</button>
-			</form>
-		</div>
-	);
-};
-
-interface SectionProps {
-	title: string;
-	items: ValuePropositionCard[];
-	onAddItem: (content: string) => void;
-	onUpdateItem: (id: number, content: string) => void;
-	onDeleteItem: (id: number) => void;
-	className: string;
-	sectionKey: ValuePropositionCategory;
-}
-
-const Section: React.FC<SectionProps> = ({
-	title,
-	items,
-	onAddItem,
-	onUpdateItem,
-	onDeleteItem,
-	className,
-	sectionKey,
-}) => (
-	<div className={`p-3 relative group ${className}`}>
-		<div className="flex items-center justify-between mb-2">
-			<h3 className="text-sm font-semibold text-gray-800">{title}</h3>
-			<div className="relative">
-				<HelpCircle
-					size={16}
-					className="text-gray-400 hover:text-gray-600 cursor-help"
-				/>
-				<div className="absolute bottom-full right-0 mb-2 w-64 p-2 bg-white rounded shadow-lg text-xs text-gray-600 hidden group-hover:block">
-					{tooltips[sectionKey]}
-				</div>
-			</div>
-		</div>
-		<EditableList
-			items={items}
-			onAddItem={onAddItem}
-			onUpdateItem={onUpdateItem}
-			onDeleteItem={onDeleteItem}
-		/>
-	</div>
-);
+import { ModalProps } from "@/types/shared/card-modal";
+import {
+	VALUE_PROPOSITION_SECTIONS,
+	VALUE_PROPOSITION_QA_DATA,
+	VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS,
+} from "@/lib/business-plan/config/value-proposition";
 
 const ValuePropositionCanvas: React.FC = () => {
 	const {
-		data,
-		isLoading,
+		cards: data,
+		qaResponses,
 		handleSaveItem,
 		handleUpdateItem,
 		handleDeleteItem,
+		handleQAResponseChange,
+		handleQAResponseSave,
+		isLoading,
 	} = useValuePropositionData();
+
+	const [modalState, setModalState] = useState<ModalState>({
+		open: false,
+		category: "",
+		card: { id: 0, title: "", description: "", content: "" },
+	});
+	const [error, setError] = useState(false);
+
+	const handleAddCard = (category: ValuePropositionCategory) => {
+		setModalState({
+			open: true,
+			category,
+			card: { id: 0, title: "", description: "", content: "" },
+		});
+		setError(false);
+	};
+
+	const handleEditCard = (
+		category: ValuePropositionCategory,
+		card: ValuePropositionCard
+	) => {
+		setModalState({ open: true, category, card });
+		setError(false);
+	};
+
+	const handleModalSave = () => {
+		const { category, card } = modalState;
+		if (!card.title || !card.description) {
+			setError(true);
+			return;
+		}
+
+		// Si la carte a un ID, c'est une mise à jour
+		if (card.id) {
+			handleUpdateItem(
+				category as ValuePropositionCategory,
+				card.id,
+				card.title,
+				card.description
+			);
+		} else {
+			// Sinon, c'est une nouvelle carte
+			handleSaveItem(
+				category as ValuePropositionCategory,
+				card.title,
+				card.description
+			);
+		}
+
+		setModalState({
+			open: false,
+			category: "",
+			card: { id: 0, title: "", description: "", content: "" },
+		});
+	};
+
+	const handleModalDelete = () => {
+		const { category, card } = modalState;
+		handleDeleteItem(category as ValuePropositionCategory, card.id);
+		setModalState({
+			open: false,
+			category: "",
+			card: { id: 0, title: "", description: "", content: "" },
+		});
+	};
+
+	const modalProps: ModalProps<ValuePropositionCard> = {
+		isOpen: modalState.open,
+		card: modalState.card,
+		onClose: () =>
+			setModalState({
+				open: false,
+				category: "",
+				card: { id: 0, title: "", description: "", content: "" },
+			}),
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error,
+		isNew: !modalState.card.id,
+		onChange: (e) =>
+			setModalState((prev) => ({
+				...prev,
+				card: {
+					...prev.card,
+					[e.target.name]: e.target.value,
+					content: e.target.value,
+				},
+			})),
+		modalTitle: modalState.card.id
+			? "Modifier l'élément"
+			: "Nouvel élément",
+		titlePlaceholder: "Entrez le titre...",
+		descriptionPlaceholder: "Entrez la description...",
+		categoryDescription: modalState.category
+			? VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS[
+					modalState.category as ValuePropositionCategory
+			  ]
+			: undefined,
+	};
 
 	if (isLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<div className="text-gray-600">Chargement...</div>
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
 			</div>
 		);
 	}
 
 	const renderSection = (
 		category: ValuePropositionCategory,
-		title: string,
-		className: string
+		className: string = ""
 	) => (
-		<Section
-			title={title}
+		<ValuePropositionSection
+			title={VALUE_PROPOSITION_SECTIONS[category].title}
 			items={data[category]}
-			onAddItem={(content) => handleSaveItem(category, content)}
-			onUpdateItem={(id, content) =>
-				handleUpdateItem(category, id, content)
-			}
-			onDeleteItem={(id) => handleDeleteItem(category, id)}
-			className={className}
+			onAddCard={handleAddCard}
+			onEditCard={handleEditCard}
+			onDeleteItem={handleDeleteItem}
+			className={`${className} ${VALUE_PROPOSITION_SECTIONS[category].color}`}
 			sectionKey={category}
 		/>
 	);
 
 	return (
-		<div className="min-h-screen flex flex-col">
-			{/* Header */}
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
-				title="Value-Proposition"
+				title="Value Proposition"
 				progress={calculateProgress(data)}
 			/>
 
-			{/* Canvas Container */}
-			<div className="flex-1 flex items-center justify-center">
-				<div className="max-w-6xl w-full p-8">
-					<div className="relative flex flex-col lg:flex-row justify-center gap-4">
-						{/* Customer Segment (Circle) */}
-						<div className="lg:w-1/2 relative">
-							<div className="aspect-square rounded-full border-4 border-blue-500 p-2 bg-blue-50">
-								<div className="h-full flex flex-col">
-									{renderSection(
-										"customerJobs",
-										"Tâches du Client",
-										"flex-1 border-b-2 border-blue-200"
-									)}
-									<div className="flex flex-1">
-										{renderSection(
-											"pains",
-											"Problèmes",
-											"flex-1 border-r-2 border-blue-200"
-										)}
-										{renderSection(
-											"gains",
-											"Gains Attendus",
-											"flex-1"
-										)}
-									</div>
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="flex flex-col lg:flex-row justify-center items-center gap-8">
+					{/* Customer Segment Circle */}
+					<div className="lg:w-1/2 relative aspect-square">
+						<div className="absolute inset-0 rounded-full border-2 border-blue-500/30">
+							<div className="h-full flex flex-col">
+								{renderSection("customerJobs", "flex-1")}
+								<div className="flex flex-1">
+									{renderSection("pains", "flex-1")}
+									{renderSection("gains", "flex-1")}
 								</div>
 							</div>
 						</div>
+					</div>
 
-						{/* Value Proposition (Square) */}
-						<div className="lg:w-1/2 relative">
-							<div className="aspect-square border-4 border-green-500 p-2 bg-green-50">
-								<div className="h-full flex flex-col">
-									{renderSection(
-										"products",
-										"Produits & Services",
-										"flex-1 border-b-2 border-green-200"
-									)}
-									<div className="flex flex-1">
-										{renderSection(
-											"painRelievers",
-											"Solutions aux Problèmes",
-											"flex-1 border-r-2 border-green-200"
-										)}
-										{renderSection(
-											"gainCreators",
-											"Créateurs de Gains",
-											"flex-1"
-										)}
-									</div>
+					{/* Value Proposition Square */}
+					<div className="lg:w-1/2 relative aspect-square">
+						<div className="absolute inset-0 border-2 border-emerald-500/30">
+							<div className="h-full flex flex-col">
+								{renderSection("products", "flex-1")}
+								<div className="flex flex-1">
+									{renderSection("painRelievers", "flex-1")}
+									{renderSection("gainCreators", "flex-1")}
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<QASection
+					data={VALUE_PROPOSITION_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+				/>
 			</div>
+
+			<CardModal<ValuePropositionCard> {...modalProps} />
 		</div>
 	);
 };

@@ -1,14 +1,24 @@
-// app/business-plan/funnel-chart/page.tsx
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
-import { FunnelChartModal } from "@/components/business-plan/funnel-chart/FunnelChartModal";
-import { FunnelCard, EditingCard } from "@/types/funnel-chart";
-import { useFunnelChartData } from "@/lib/hooks/business-plan/funnel-chart/useFunnelChartData";
-import { calculateProgress } from "@/lib/hooks/business-plan/funnel-chart/storage-funnel-chart";
-import FunnelChart from "@/components/business-plan/funnel-chart/FunnelChart";
+import {
+	FunnelSection,
+	FunnelCard,
+	EditingCard,
+	FunnelSectionId,
+} from "@/types/funnel-chart";
+import { useFunnelChartData } from "@/lib/business-plan/hooks/funnel-chart/useFunnelChartData";
+import { calculateProgress } from "@/lib/business-plan/hooks/funnel-chart/storage-funnel-chart";
 import { Header } from "@/components/business-plan/shared/Header";
-import { FunnelSection } from "@/types/funnel-chart";
+import { CardModal } from "@/components/business-plan/shared/CardModal";
+import FunnelChart from "@/components/business-plan/FunnelChartSection";
+import QASection from "@/components/business-plan/shared/QASection";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ModalProps } from "@/types/shared/card-modal";
+import {
+	FUNNEL_MODAL_DETAILED_DESCRIPTIONS,
+	FUNNEL_QA_DATA,
+} from "@/lib/business-plan/config/funnel-chart";
 
 const createDebouncedUpdate = (updateFn: (sections: FunnelSection[]) => void) =>
 	_.debounce((newSections: FunnelSection[]) => {
@@ -16,85 +26,20 @@ const createDebouncedUpdate = (updateFn: (sections: FunnelSection[]) => void) =>
 	}, 500);
 
 export default function FunnelChartPage() {
-	const { sections, handleUpdateSections } = useFunnelChartData();
+	const {
+		sections,
+		qaResponses,
+		isLoading,
+		handleUpdateSections,
+		handleQAResponseChange,
+		handleQAResponseSave,
+	} = useFunnelChartData();
 
 	const [editingCard, setEditingCard] = useState<EditingCard>(null);
-	const [error, setError] = useState(false);
-
-	const handleAddCard = (sectionId: number) => {
-		const newCard: FunnelCard = {
-			id: crypto.randomUUID(),
-			title: "",
-			description: "",
-		};
-		setEditingCard({ sectionId, card: newCard });
-	};
-
-	const handleEditCard = (sectionId: number, card: FunnelCard) => {
-		setEditingCard({ sectionId, card: { ...card } });
-	};
-
-	const handleModalClose = () => {
-		setEditingCard(null);
-		setError(false);
-	};
-
-	const handleModalSave = () => {
-		if (!editingCard) return;
-
-		if (
-			!editingCard.card.title.trim() ||
-			!editingCard.card.description.trim()
-		) {
-			setError(true);
-			return;
-		}
-
-		const newSections = sections.map((section) => {
-			if (section.id === editingCard.sectionId) {
-				const existingCardIndex = section.cards.findIndex(
-					(c) => c.id === editingCard.card.id
-				);
-				if (existingCardIndex >= 0) {
-					const newCards = [...section.cards];
-					newCards[existingCardIndex] = editingCard.card;
-					return { ...section, cards: newCards };
-				} else {
-					return {
-						...section,
-						cards: [...section.cards, editingCard.card],
-					};
-				}
-			}
-			return section;
-		});
-
-		handleUpdateSections(newSections);
-		handleModalClose();
-	};
-
-	const handleModalDelete = () => {
-		if (!editingCard) return;
-
-		const newSections = sections.map((section) => {
-			if (section.id === editingCard.sectionId) {
-				return {
-					...section,
-					cards: section.cards.filter(
-						(c) => c.id !== editingCard.card.id
-					),
-				};
-			}
-			return section;
-		});
-
-		handleUpdateSections(newSections);
-		handleModalClose();
-	};
-
+	const [error, setError] = useState<string | null>(null);
 	const [localSections, setLocalSections] = useState(sections);
 
-	// Update local sections when DB sections change
+	// Mise à jour des sections locales quand les sections DB changent
 	useEffect(() => {
 		setLocalSections(sections);
 	}, [sections]);
@@ -103,6 +48,86 @@ export default function FunnelChartPage() {
 		() => createDebouncedUpdate(handleUpdateSections),
 		[handleUpdateSections]
 	);
+
+	const handleAddCard = (sectionId: FunnelSectionId) => {
+		const newCard: FunnelCard = {
+			id: Date.now(),
+			title: "",
+			description: "",
+		};
+		setEditingCard({ sectionId, card: newCard });
+		setError(null);
+	};
+
+	const handleEditCard = (sectionId: FunnelSectionId, card: FunnelCard) => {
+		setEditingCard({ sectionId, card: { ...card } });
+		setError(null);
+	};
+
+	const handleModalSave = async () => {
+		if (!editingCard) return;
+
+		if (
+			!editingCard.card.title?.trim() ||
+			!editingCard.card.description?.trim()
+		) {
+			setError("Le titre et la description sont requis");
+			return;
+		}
+
+		try {
+			const newSections = sections.map((section) => {
+				if (section.id === editingCard.sectionId) {
+					const existingCardIndex = section.cards.findIndex(
+						(c) => c.id === editingCard.card.id
+					);
+					if (existingCardIndex >= 0) {
+						const newCards = [...section.cards];
+						newCards[existingCardIndex] = editingCard.card;
+						return { ...section, cards: newCards };
+					} else {
+						return {
+							...section,
+							cards: [...section.cards, editingCard.card],
+						};
+					}
+				}
+				return section;
+			});
+
+			await handleUpdateSections(newSections);
+			setEditingCard(null);
+			setError(null);
+		} catch (err) {
+			setError("Erreur lors de la sauvegarde de la carte");
+			console.error("Erreur de sauvegarde:", err);
+		}
+	};
+
+	const handleModalDelete = async () => {
+		if (!editingCard) return;
+
+		try {
+			const newSections = sections.map((section) => {
+				if (section.id === editingCard.sectionId) {
+					return {
+						...section,
+						cards: section.cards.filter(
+							(c) => c.id !== editingCard.card.id
+						),
+					};
+				}
+				return section;
+			});
+
+			await handleUpdateSections(newSections);
+			setEditingCard(null);
+			setError(null);
+		} catch (err) {
+			setError("Erreur lors de la suppression de la carte");
+			console.error("Erreur de suppression:", err);
+		}
+	};
 
 	const handleSizeChange = (sectionId: number, newSize: number) => {
 		const newSections = [...localSections];
@@ -119,11 +144,49 @@ export default function FunnelChartPage() {
 			newSections[i].size = Math.min(newSections[i].size, newSize);
 		}
 
-		// Update local state immediately
 		setLocalSections(newSections);
-		// Debounce the update to database
 		debouncedUpdateSections(newSections);
 	};
+
+	const modalProps: ModalProps<FunnelCard> = {
+		isOpen: !!editingCard,
+		card: editingCard?.card || { id: 0, title: "", description: "" },
+		onClose: () => {
+			setEditingCard(null);
+			setError(null);
+		},
+		onSave: handleModalSave,
+		onDelete: handleModalDelete,
+		error: error !== null,
+		isNew: editingCard ? !editingCard.card.id : true,
+		onChange: (e) => {
+			if (editingCard) {
+				setEditingCard({
+					...editingCard,
+					card: {
+						...editingCard.card,
+						[e.target.name]: e.target.value,
+					},
+				});
+			}
+		},
+		modalTitle: editingCard?.card.id
+			? "Modifier l'élément"
+			: "Nouvel élément",
+		titlePlaceholder: "Entrez le titre...",
+		descriptionPlaceholder: "Entrez la description...",
+		categoryDescription: editingCard
+			? FUNNEL_MODAL_DETAILED_DESCRIPTIONS[editingCard.sectionId]
+			: undefined,
+	};
+
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col h-screen">
@@ -132,33 +195,31 @@ export default function FunnelChartPage() {
 				progress={calculateProgress(sections)}
 			/>
 
-			<FunnelChart
-				sections={localSections}
-				onSizeChange={handleSizeChange}
-				onAddCard={handleAddCard}
-				onEditCard={handleEditCard}
-			/>
-
-			{editingCard && (
-				<FunnelChartModal
-					isOpen={!!editingCard}
-					onClose={handleModalClose}
-					card={editingCard.card}
-					onSave={handleModalSave}
-					onDelete={handleModalDelete}
-					error={error}
-					isNew={!editingCard.card.id}
-					onChange={(e) => {
-						setEditingCard({
-							...editingCard,
-							card: {
-								...editingCard.card,
-								[e.target.name]: e.target.value,
-							},
-						});
-					}}
-				/>
+			{error && (
+				<Alert variant="destructive" className="mx-6 mt-4">
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
 			)}
+
+			<div className="flex-1">
+				<FunnelChart
+					sections={localSections}
+					onSizeChange={handleSizeChange}
+					onAddCard={handleAddCard}
+					onEditCard={handleEditCard}
+				/>
+
+				<div className="p-6">
+					<QASection
+						data={FUNNEL_QA_DATA}
+						responses={qaResponses}
+						onResponseChange={handleQAResponseChange}
+						onResponseSave={handleQAResponseSave}
+					/>
+				</div>
+			</div>
+
+			<CardModal<FunnelCard> {...modalProps} />
 		</div>
 	);
 }
