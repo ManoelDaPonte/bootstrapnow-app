@@ -2,15 +2,15 @@
 import { PestelData } from "@/types/pestel";
 import { QAResponses } from "@/types/shared/qa-section";
 import { prisma } from "@/lib/db/prisma";
+import { PESTEL_QA_DATA } from "@/lib/business-plan/config/pestel";
 
 export const STORAGE_KEY = "pestel-data";
 export const QA_STORAGE_KEY = "pestel-qa-responses";
 
 // Sauvegarder les données (localStorage uniquement)
-export const savePestelData = (data: PestelData, qaResponse: QAResponses) => {
+export const savePestelData = (data: PestelData, qaResponses: QAResponses) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder dans localStorage
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -19,11 +19,10 @@ export const savePestelData = (data: PestelData, qaResponse: QAResponses) => {
 		})
 	);
 
-	// Sauvegarder les réponses QA séparément
-	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponse));
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
 
-	// Mettre à jour la progression dans la page parent
-	updateParentProgress(calculateProgress(data));
+	// Mettre à jour avec les deux paramètres
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
 export async function updatePestelData(
@@ -65,7 +64,11 @@ export async function updatePestelData(
 }
 
 // Calculer la progression en fonction des cartes remplies
-export const calculateProgress = (data: PestelData): number => {
+export const calculateProgress = (
+	data: PestelData,
+	qaResponses: QAResponses = {}
+): number => {
+	// 1. Calculer la progression des sections PESTEL
 	const categories = [
 		"political",
 		"economic",
@@ -74,15 +77,34 @@ export const calculateProgress = (data: PestelData): number => {
 		"environmental",
 		"legal",
 	];
-	let filledCategories = 0;
 
+	let filledCategories = 0;
 	categories.forEach((category) => {
 		if ((data[category as keyof PestelData] ?? []).length > 0) {
 			filledCategories++;
 		}
 	});
 
-	return Math.round((filledCategories / categories.length) * 100);
+	// 2. Calculer la progression des réponses QA
+	const questionIds = PESTEL_QA_DATA.categories.map((cat) => cat.id);
+	const answeredQuestions = questionIds.filter(
+		(id) => qaResponses[id] && qaResponses[id].trim() !== ""
+	).length;
+	const totalQAQuestions = questionIds.length;
+
+	// 3. Calculer la progression totale
+	const categoriesWeight = 0.7; // 70% pour les sections PESTEL
+	const qaWeight = 0.3; // 30% pour les questions
+
+	const categoriesProgress = (filledCategories / categories.length) * 100;
+	const qaProgress =
+		totalQAQuestions > 0 ? (answeredQuestions / totalQAQuestions) * 100 : 0;
+
+	const totalProgress = Math.round(
+		categoriesProgress * categoriesWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };
 
 interface StoredData {

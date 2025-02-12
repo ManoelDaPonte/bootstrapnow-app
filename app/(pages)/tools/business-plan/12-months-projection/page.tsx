@@ -302,8 +302,8 @@ export default function TwelveMonthsProjection() {
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
 			<Header
-				title="Dépenses de Démarrage"
-				progress={calculateProgress(profitLossData)}
+				title="Projection sur 12 mois"
+				progress={calculateProgress(profitLossData, qaResponses)}
 				rightContent={
 					<Button
 						onClick={saveChanges}

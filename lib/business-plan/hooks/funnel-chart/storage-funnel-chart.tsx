@@ -2,6 +2,7 @@
 import { FunnelSection } from "@/types/funnel-chart";
 import { QAResponses } from "@/types/shared/qa-section";
 import { prisma } from "@/lib/db/prisma";
+import { FUNNEL_QA_DATA } from "@/lib/business-plan/config/funnel-chart";
 
 export const STORAGE_KEY = "funnel-chart-data";
 export const QA_STORAGE_KEY = "funnel-chart-qa-responses";
@@ -55,7 +56,6 @@ export const saveFunnelChartData = (
 ) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder les données principales
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -64,10 +64,10 @@ export const saveFunnelChartData = (
 		})
 	);
 
-	// Sauvegarder les QA responses séparément
 	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
 
-	updateParentProgress(calculateProgress(data));
+	// Mettre à jour avec les deux paramètres
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
 export async function updateFunnelChartData(
@@ -147,17 +147,39 @@ export const loadFunnelChartData = (): StoredData => {
 	};
 };
 
-export const calculateProgress = (sections: FunnelSection[] = []): number => {
-	if (!sections || sections.length === 0) return 0;
-
-	let totalCards = 0;
+export const calculateProgress = (
+	sections: FunnelSection[] = [],
+	qaResponses: QAResponses = {}
+): number => {
+	// 1. Calculer la progression des sections de l'entonnoir
+	const totalSections = sections.length;
+	let filledSections = 0;
 	sections.forEach((section) => {
 		if (section.cards && section.cards.length > 0) {
-			totalCards++;
+			filledSections++;
 		}
 	});
 
-	return Math.round((totalCards / sections.length) * 100);
+	// 2. Calculer la progression des réponses QA
+	const totalQAQuestions = FUNNEL_QA_DATA.categories.length;
+	const answeredQuestions = Object.values(qaResponses).filter(
+		(response) => response && response.trim() !== ""
+	).length;
+
+	// 3. Calculer la progression totale
+	const sectionsWeight = 0.7; // 70% du score pour les sections
+	const qaWeight = 0.3; // 30% du score pour les questions
+
+	const sectionsProgress =
+		totalSections > 0 ? (filledSections / totalSections) * 100 : 0;
+	const qaProgress =
+		totalQAQuestions > 0 ? (answeredQuestions / totalQAQuestions) * 100 : 0;
+
+	const totalProgress = Math.round(
+		sectionsProgress * sectionsWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };
 
 const updateParentProgress = (progress: number) => {

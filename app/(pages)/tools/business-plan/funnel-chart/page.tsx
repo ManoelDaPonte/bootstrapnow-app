@@ -200,8 +200,8 @@ export default function FunnelChartPage() {
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
 			<Header
-				title="Funnel Chart"
-				progress={calculateProgress(sections)}
+				title="Entonnoir de conversion"
+				progress={calculateProgress(sections, qaResponses)}
 			/>
 
 			{error && (

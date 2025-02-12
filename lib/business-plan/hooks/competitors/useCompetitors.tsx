@@ -106,13 +106,40 @@ export const useCompetitors = () => {
 	};
 
 	const calculateProgress = useCallback(() => {
-		const totalFields = competitors.length * 11; // 11 champs par concurrent
+		// On utilise keyof pour s'assurer que les champs correspondent à l'interface
+		const fieldsToCount: Array<keyof CompetitorEntry> = [
+			"nom",
+			"solution",
+			"prix",
+			"valeurPercue",
+			"strategie",
+			"zoneGeographique",
+			"ciblageClient",
+			"forces",
+			"faiblesses",
+			"impactDirect",
+			"impactIndirect",
+		];
+		const totalFields = competitors.length * fieldsToCount.length;
+
 		const filledFields = competitors.reduce((acc, comp) => {
 			return (
-				acc + Object.values(comp).filter((value) => value !== "").length
+				acc +
+				fieldsToCount.reduce((fieldAcc, field) => {
+					const value = comp[field];
+					// Vérification spécifique selon le type de champ
+					const isFieldFilled =
+						typeof value === "number"
+							? value > 0
+							: typeof value === "string"
+							? value.trim() !== ""
+							: false;
+					return fieldAcc + (isFieldFilled ? 1 : 0);
+				}, 0)
 			);
 		}, 0);
-		return Math.round((filledFields / totalFields) * 100);
+
+		return Math.min(100, Math.round((filledFields / totalFields) * 100));
 	}, [competitors]);
 
 	return {
@@ -122,6 +149,5 @@ export const useCompetitors = () => {
 		saveCompetitor,
 		addCompetitor,
 		removeCompetitor,
-		calculateProgress,
 	};
 };

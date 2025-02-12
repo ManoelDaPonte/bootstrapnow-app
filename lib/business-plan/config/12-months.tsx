@@ -32,7 +32,7 @@ export const INITIAL_PROFIT_LOSS_DATA: ProfitLossData = {
 };
 
 export const INVENTAIRE_QA_DATA: QAData = {
-	sectionTitle: "Questions pour Approfondir Vos Dépenses de Démarrage",
+	sectionTitle: "Questions pour Approfondir projection de revenus",
 	categories: [
 		{
 			id: "OP_Inventaire_stocktype",

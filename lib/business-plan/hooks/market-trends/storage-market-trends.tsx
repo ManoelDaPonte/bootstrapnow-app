@@ -19,8 +19,18 @@ export const saveMarketTrendsData = (data: MarketTrendsData) => {
 			lastUpdated: new Date().toISOString(),
 		})
 	);
+
+	// Ajouter la mise à jour de la progression
+	updateParentProgress(calculateProgress(data));
 };
 
+const updateParentProgress = (progress: number) => {
+	if (typeof window === "undefined") return;
+	const event = new CustomEvent("marketTrendsProgressUpdate", {
+		detail: { progress },
+	});
+	window.dispatchEvent(event);
+};
 export async function updateMarketTrendsData(
 	auth0Id: string,
 	data: MarketTrendsData
@@ -91,4 +101,26 @@ export const saveToDatabase = async (data: MarketTrendsData) => {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 		throw error;
 	}
+};
+
+export const calculateProgress = (data: MarketTrendsData): number => {
+	// 1. Calculer la progression des tendances et chiffres du marché
+	const totalFields = data.trends.length * 3 + data.marketNumbers.length * 4;
+	if (totalFields === 0) return 0;
+
+	const filledFields =
+		data.trends.reduce((acc, trend) => {
+			return (
+				acc +
+				Object.values(trend).filter((value) => value !== "").length
+			);
+		}, 0) +
+		data.marketNumbers.reduce((acc, item) => {
+			return (
+				acc + Object.values(item).filter((value) => value !== "").length
+			);
+		}, 0);
+
+	// Puisqu'il n'y a pas de QA dans ce composant, on utilise un poids de 100%
+	return Math.min(100, Math.round((filledFields / totalFields) * 100));
 };

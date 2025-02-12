@@ -120,7 +120,10 @@ export default function MarketingMixMatrix() {
 
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
-			<Header title="Mix Marketing" progress={calculateProgress(cards)} />
+			<Header
+				title="Mix Marketing"
+				progress={calculateProgress(cards, qaResponses)}
+			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

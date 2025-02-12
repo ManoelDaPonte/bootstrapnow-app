@@ -115,7 +115,10 @@ export default function SwotMatrix() {
 	}
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
-			<Header title="Matrice SWOT" progress={calculateProgress(cards)} />
+			<Header
+				title="Matrice SWOT"
+				progress={calculateProgress(cards, qaResponses)}
+			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
 				<div className="grid grid-cols-2 gap-6">

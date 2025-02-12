@@ -115,25 +115,25 @@ export const useMarketTrends = () => {
 		await handleSaveData({ trends, marketNumbers });
 	};
 
-	const calculateProgress = useCallback(() => {
-		const totalFields = trends.length * 3 + marketNumbers.length * 4;
-		if (totalFields === 0) return 0;
+	// const calculateProgress = useCallback(() => {
+	// 	const totalFields = trends.length * 3 + marketNumbers.length * 4;
+	// 	if (totalFields === 0) return 0;
 
-		const filledFields =
-			trends.reduce((acc, trend) => {
-				return (
-					acc +
-					Object.values(trend).filter((value) => value !== "").length
-				);
-			}, 0) +
-			marketNumbers.reduce((acc, item) => {
-				return (
-					acc +
-					Object.values(item).filter((value) => value !== "").length
-				);
-			}, 0);
-		return Math.round((filledFields / totalFields) * 100);
-	}, [trends, marketNumbers]);
+	// 	const filledFields =
+	// 		trends.reduce((acc, trend) => {
+	// 			return (
+	// 				acc +
+	// 				Object.values(trend).filter((value) => value !== "").length
+	// 			);
+	// 		}, 0) +
+	// 		marketNumbers.reduce((acc, item) => {
+	// 			return (
+	// 				acc +
+	// 				Object.values(item).filter((value) => value !== "").length
+	// 			);
+	// 		}, 0);
+	// 	return Math.round((filledFields / totalFields) * 100);
+	// }, [trends, marketNumbers]);
 
 	return {
 		trends,
@@ -145,6 +145,5 @@ export const useMarketTrends = () => {
 		removeTrend,
 		updateMarketNumber,
 		saveMarketNumber,
-		calculateProgress,
 	};
 };

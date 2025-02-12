@@ -2,6 +2,7 @@
 import { AnsoffData, StoredData } from "@/types/ansoff";
 import { prisma } from "@/lib/db/prisma";
 import { QAResponses } from "@/types/shared/qa-section";
+import { ANSOFF_QA_DATA } from "@/lib/business-plan/config/ansoff";
 
 export const STORAGE_KEY = "ansoff-data";
 export const QA_STORAGE_KEY = "ansoff-qa-responses";
@@ -9,7 +10,6 @@ export const QA_STORAGE_KEY = "ansoff-qa-responses";
 export const saveAnsoffData = (data: AnsoffData, qaResponses: QAResponses) => {
 	if (typeof window === "undefined") return;
 
-	// Save SWOT data
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -18,10 +18,10 @@ export const saveAnsoffData = (data: AnsoffData, qaResponses: QAResponses) => {
 		})
 	);
 
-	// Save QA responses separately
 	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
 
-	updateParentProgress(calculateProgress(data));
+	// Mettre à jour avec les deux paramètres
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
 export async function updateAnsoffData(
@@ -60,22 +60,45 @@ export async function updateAnsoffData(
 	}
 }
 
-export const calculateProgress = (data: AnsoffData): number => {
+export const calculateProgress = (
+	data: AnsoffData,
+	qaResponses: QAResponses = {}
+): number => {
+	// 1. Calculer la progression des sections Ansoff
 	const categories = [
 		"penetration",
 		"development_market",
 		"development_product",
 		"diversification",
 	];
-	let filledCategories = 0;
 
+	let filledCategories = 0;
 	categories.forEach((category) => {
 		if ((data[category as keyof AnsoffData] ?? []).length > 0) {
 			filledCategories++;
 		}
 	});
 
-	return Math.round((filledCategories / categories.length) * 100);
+	// 2. Calculer la progression des réponses QA
+	const questionIds = ANSOFF_QA_DATA.categories.map((cat) => cat.id);
+	const answeredQuestions = questionIds.filter(
+		(id) => qaResponses[id] && qaResponses[id].trim() !== ""
+	).length;
+	const totalQAQuestions = questionIds.length;
+
+	// 3. Calculer la progression totale
+	const categoriesWeight = 0.7; // 70% pour la matrice Ansoff
+	const qaWeight = 0.3; // 30% pour les questions
+
+	const categoriesProgress = (filledCategories / categories.length) * 100;
+	const qaProgress =
+		totalQAQuestions > 0 ? (answeredQuestions / totalQAQuestions) * 100 : 0;
+
+	const totalProgress = Math.round(
+		categoriesProgress * categoriesWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };
 
 // Charger les données depuis le localStorage
