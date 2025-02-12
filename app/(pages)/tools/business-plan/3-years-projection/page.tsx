@@ -29,6 +29,7 @@ import { Header } from "@/components/business-plan/shared/Header";
 import { ProfitLossData, ProfitLossEntry } from "@/types/profit-loss";
 import { useProfitLossData } from "@/lib/business-plan/hooks/3-years/useProfitLossData";
 import { calculateProgress } from "@/lib/business-plan/hooks/3-years/storage-profit-loss";
+import OverviewSection from "@/components/business-plan/profit-loss/OverviewSection";
 
 const ProfitLossDashboard: React.FC = () => {
 	const {
@@ -137,6 +138,9 @@ const ProfitLossDashboard: React.FC = () => {
 		[totalRevenue, totalExpenses]
 	);
 
+	const hasData =
+		profitLossData.revenue.length > 0 || profitLossData.expenses.length > 0;
+
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-screen">
@@ -174,73 +178,11 @@ const ProfitLossDashboard: React.FC = () => {
 					</TabsList>
 
 					<TabsContent value="overview">
-						<Card>
-							<CardHeader>
-								<CardTitle>
-									Financial Performance Projection
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<ResponsiveContainer width="100%" height={300}>
-									<ComposedChart data={netProfitData}>
-										<CartesianGrid strokeDasharray="3 3" />
-										<XAxis dataKey="name" />
-										<YAxis
-											tickFormatter={(value) => {
-												const formattedValue =
-													Math.abs(
-														value
-													).toLocaleString(); // Met l'abs de la valeur
-												return value < 0
-													? `-€${formattedValue}`
-													: `€${formattedValue}`; // Ajoute le signe '-' pour les valeurs négatives
-											}}
-										/>
-
-										<Tooltip
-											formatter={(value, name) => {
-												const formattedValue = `€${Math.abs(
-													Number(value)
-												).toLocaleString()}`;
-												return name === "Profit"
-													? [
-															formattedValue,
-															"Net Profit",
-													  ]
-													: [formattedValue, name];
-											}}
-										/>
-										<Legend />
-
-										<Bar
-											dataKey="Revenue"
-											fill="#3498db"
-											stackId="a"
-										/>
-
-										<Bar
-											dataKey="Expenses"
-											fill="#e74c3c"
-											stackId="b"
-											fillOpacity={0.7}
-										/>
-
-										<Line
-											type="monotone"
-											dataKey="Profit"
-											stroke="#2ecc71"
-											strokeWidth={3}
-											dot={{
-												stroke: "#2ecc71",
-												fill: "white",
-												strokeWidth: 2,
-												r: 8,
-											}}
-										/>
-									</ComposedChart>
-								</ResponsiveContainer>
-							</CardContent>
-						</Card>
+						<OverviewSection
+							netProfitData={netProfitData}
+							hasData={hasData}
+							onAddClick={() => addRow("revenue")}
+						/>
 					</TabsContent>
 
 					<TabsContent value="details">
@@ -393,8 +335,7 @@ const ProfitLossDashboard: React.FC = () => {
 													className="border p-4 rounded-lg"
 												>
 													<h4 className="font-semibold mb-2">
-														Bilan de l&apos;année{" "}
-														{year}
+														Bilan de l'année {year}
 													</h4>
 													<p>
 														<strong>

@@ -69,11 +69,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Définissez les caractéristiques, avantages et bénéfices de votre produit ou service. Cette section doit mettre en avant ce qui rend votre offre unique et attractive pour vos clients.",
 		examples: [
-			"**Caractéristiques clés:** Description des fonctionnalités principales qui répondent aux besoins des clients",
-			"**Avantages concurrentiels:** Ce qui différencie votre produit de la concurrence",
-			"**Qualité et design:** Standards de qualité et aspects esthétiques",
-			"**Marque et packaging:** Identité visuelle et présentation du produit",
-			"**Services associés:** Support, garantie et services après-vente",
+			"Caractéristiques clés:** Description des fonctionnalités principales qui répondent aux besoins des clients",
+			"Avantages concurrentiels:** Ce qui différencie votre produit de la concurrence",
+			"Qualité et design:** Standards de qualité et aspects esthétiques",
+			"Marque et packaging:** Identité visuelle et présentation du produit",
+			"Services associés:** Support, garantie et services après-vente",
 		],
 	},
 	price: {
@@ -81,11 +81,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Déterminez votre stratégie de tarification en tenant compte des coûts, de la concurrence et de la valeur perçue par les clients.",
 		examples: [
-			"**Structure tarifaire:** Grille de prix et options de tarification",
-			"**Positionnement prix:** Comparaison avec la concurrence",
-			"**Politique de remise:** Conditions et critères d'application",
-			"**Marge et rentabilité:** Analyse des marges par produit/service",
-			"**Méthodes de paiement:** Options et facilités de paiement",
+			"Structure tarifaire:** Grille de prix et options de tarification",
+			"Positionnement prix:** Comparaison avec la concurrence",
+			"Politique de remise:** Conditions et critères d'application",
+			"Marge et rentabilité:** Analyse des marges par produit/service",
+			"Méthodes de paiement:** Options et facilités de paiement",
 		],
 	},
 	place: {
@@ -93,11 +93,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Définissez vos canaux de distribution et optimisez la disponibilité de vos produits ou services pour vos clients cibles.",
 		examples: [
-			"**Canaux de vente:** Points de vente physiques, en ligne, partenaires",
-			"**Couverture géographique:** Zones desservies et expansion prévue",
-			"**Logistique:** Organisation de la chaîne d'approvisionnement",
-			"**Stock et inventaire:** Gestion des stocks et disponibilité",
-			"**Partenariats:** Collaborations avec des distributeurs clés",
+			"Canaux de vente:** Points de vente physiques, en ligne, partenaires",
+			"Couverture géographique:** Zones desservies et expansion prévue",
+			"Logistique:** Organisation de la chaîne d'approvisionnement",
+			"Stock et inventaire:** Gestion des stocks et disponibilité",
+			"Partenariats:** Collaborations avec des distributeurs clés",
 		],
 	},
 	promotion: {
@@ -105,11 +105,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Élaborez votre stratégie de communication et vos actions marketing pour atteindre et convaincre votre cible.",
 		examples: [
-			"**Publicité:** Campagnes publicitaires et médias utilisés",
-			"**Marketing digital:** Stratégie web et réseaux sociaux",
-			"**Relations publiques:** Communication institutionnelle et événements",
-			"**Promotion des ventes:** Offres spéciales et programmes de fidélité",
-			"**Marketing direct:** Campagnes email et communication personnalisée",
+			"Publicité:** Campagnes publicitaires et médias utilisés",
+			"Marketing digital:** Stratégie web et réseaux sociaux",
+			"Relations publiques:** Communication institutionnelle et événements",
+			"Promotion des ventes:** Offres spéciales et programmes de fidélité",
+			"Marketing direct:** Campagnes email et communication personnalisée",
 		],
 	},
 	people: {
@@ -117,11 +117,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Gérez votre capital humain et assurez une expérience client optimale grâce à votre équipe.",
 		examples: [
-			"**Formation:** Programmes de formation et développement des compétences",
-			"**Service client:** Standards de service et gestion de la relation client",
-			"**Culture d'entreprise:** Valeurs et engagement des équipes",
-			"**Recrutement:** Profils recherchés et processus de sélection",
-			"**Performance:** Évaluation et motivation des équipes",
+			"Formation:** Programmes de formation et développement des compétences",
+			"Service client:** Standards de service et gestion de la relation client",
+			"Culture d'entreprise:** Valeurs et engagement des équipes",
+			"Recrutement:** Profils recherchés et processus de sélection",
+			"Performance:** Évaluation et motivation des équipes",
 		],
 	},
 	process: {
@@ -129,11 +129,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Optimisez vos processus opérationnels pour garantir une prestation de qualité constante.",
 		examples: [
-			"**Automatisation:** Outils et systèmes pour améliorer l'efficacité",
-			"**Qualité:** Contrôle qualité et amélioration continue",
-			"**Service delivery:** Étapes de livraison du service",
-			"**Support client:** Processus de gestion des demandes clients",
-			"**Innovation:** Méthodes d'amélioration des processus",
+			"Automatisation:** Outils et systèmes pour améliorer l'efficacité",
+			"Qualité:** Contrôle qualité et amélioration continue",
+			"Service delivery:** Étapes de livraison du service",
+			"Support client:** Processus de gestion des demandes clients",
+			"Innovation:** Méthodes d'amélioration des processus",
 		],
 	},
 	physicalEvidence: {
@@ -141,11 +141,11 @@ export const MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Développez les aspects tangibles qui rendent votre service visible et crédible aux yeux des clients.",
 		examples: [
-			"**Environnement:** Aménagement des espaces et ambiance",
-			"**Documentation:** Supports de communication et documents commerciaux",
-			"**Équipement:** Matériel visible et outils utilisés",
-			"**Apparence:** Tenue du personnel et identité visuelle",
-			"**Certification:** Preuves de qualité et accréditations",
+			"Environnement:** Aménagement des espaces et ambiance",
+			"Documentation:** Supports de communication et documents commerciaux",
+			"Équipement:** Matériel visible et outils utilisés",
+			"Apparence:** Tenue du personnel et identité visuelle",
+			"Certification:** Preuves de qualité et accréditations",
 		],
 	},
 } as const;

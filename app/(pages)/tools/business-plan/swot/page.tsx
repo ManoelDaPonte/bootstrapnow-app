@@ -93,7 +93,10 @@ export default function SwotMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id ? "Modifier la carte" : "Nouvelle carte",
+		modalTitle: `${
+			SWOT_HEADERS[modalState.category as SwotCategory]?.title || ""
+		} - ${modalState.card.id ? "Modifier la carte" : "Ajouter une carte"}`,
+
 		titlePlaceholder: "Entrez le titre de votre élément SWOT...",
 		descriptionPlaceholder: "Décrivez cet élément SWOT...",
 		categoryDescription: modalState.category

@@ -107,9 +107,11 @@ export default function CanvasPage() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			CANVAS_HEADERS[modalState.category as CanvasCategory]?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category

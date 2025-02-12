@@ -10,11 +10,8 @@ import {
 
 export const useMarketTrends = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const initialData = loadMarketTrendsData();
-	const [trends, setTrends] = useState<TrendEntry[]>(initialData.trends);
-	const [marketNumbers, setMarketNumbers] = useState<MarketNumber[]>(
-		initialData.marketNumbers
-	);
+	const [trends, setTrends] = useState<TrendEntry[]>([]);
+	const [marketNumbers, setMarketNumbers] = useState<MarketNumber[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -38,6 +35,10 @@ export const useMarketTrends = () => {
 						error
 					);
 				}
+			} else {
+				const localData = loadMarketTrendsData();
+				setTrends(localData.trends);
+				setMarketNumbers(localData.marketNumbers);
 			}
 			setIsLoading(false);
 		};
@@ -58,7 +59,6 @@ export const useMarketTrends = () => {
 		}
 	};
 
-	// Mise à jour locale sans sauvegarde
 	const updateTrend = (
 		id: string,
 		field: keyof TrendEntry,
@@ -76,7 +76,6 @@ export const useMarketTrends = () => {
 		);
 	};
 
-	// Sauvegarde lors de la perte du focus
 	const saveTrend = async () => {
 		await handleSaveData({ trends, marketNumbers });
 	};
@@ -99,7 +98,6 @@ export const useMarketTrends = () => {
 		await handleSaveData({ trends: newTrends, marketNumbers });
 	};
 
-	// Mise à jour locale sans sauvegarde
 	const updateMarketNumber = (
 		id: string,
 		field: keyof MarketNumber,
@@ -113,13 +111,14 @@ export const useMarketTrends = () => {
 		);
 	};
 
-	// Sauvegarde lors de la perte du focus
 	const saveMarketNumber = async () => {
 		await handleSaveData({ trends, marketNumbers });
 	};
 
 	const calculateProgress = useCallback(() => {
 		const totalFields = trends.length * 3 + marketNumbers.length * 4;
+		if (totalFields === 0) return 0;
+
 		const filledFields =
 			trends.reduce((acc, trend) => {
 				return (

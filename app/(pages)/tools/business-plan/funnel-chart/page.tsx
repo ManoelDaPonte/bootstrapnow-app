@@ -6,6 +6,7 @@ import {
 	FunnelCard,
 	EditingCard,
 	FunnelSectionId,
+	FUNNEL_SECTIONS_CONFIG,
 } from "@/types/funnel-chart";
 import { useFunnelChartData } from "@/lib/business-plan/hooks/funnel-chart/useFunnelChartData";
 import { calculateProgress } from "@/lib/business-plan/hooks/funnel-chart/storage-funnel-chart";
@@ -170,9 +171,17 @@ export default function FunnelChartPage() {
 				});
 			}
 		},
-		modalTitle: editingCard?.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: editingCard
+			? `${
+					FUNNEL_SECTIONS_CONFIG.DEFAULT_SECTIONS.find(
+						(s) => s.id === editingCard.sectionId
+					)?.title || ""
+			  } - ${
+					editingCard.card.id
+						? "Modifier la carte"
+						: "Ajouter une carte"
+			  }`
+			: "",
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: editingCard
@@ -189,7 +198,7 @@ export default function FunnelChartPage() {
 	}
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Funnel Chart"
 				progress={calculateProgress(sections)}

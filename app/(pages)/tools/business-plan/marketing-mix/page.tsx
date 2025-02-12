@@ -95,9 +95,12 @@ export default function MarketingMixMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			MARKETING_MIX_HEADERS[modalState.category as MarketingMixCategory]
+				?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category

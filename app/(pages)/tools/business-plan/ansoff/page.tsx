@@ -93,9 +93,9 @@ export default function AnsoffMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier la stratégie"
-			: "Nouvelle stratégie",
+		modalTitle: `${
+			ANSOFF_HEADERS[modalState.category as AnsoffCategory]?.title || ""
+		} - ${modalState.card.id ? "Modifier la carte" : "Ajouter une carte"}`,
 		titlePlaceholder: "Entrez le titre de votre stratégie...",
 		descriptionPlaceholder: "Décrivez votre stratégie...",
 		categoryDescription: modalState.category

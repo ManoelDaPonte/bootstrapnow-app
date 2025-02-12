@@ -117,9 +117,13 @@ const ValuePropositionCanvas: React.FC = () => {
 					content: e.target.value,
 				},
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			VALUE_PROPOSITION_SECTIONS[
+				modalState.category as ValuePropositionCategory
+			]?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category

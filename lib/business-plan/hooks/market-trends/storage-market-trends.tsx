@@ -64,45 +64,11 @@ export const loadMarketTrendsData = (): MarketTrendsData => {
 };
 
 export const getEmptyMarketTrendsData = (): MarketTrendsData => ({
-	trends: [
-		{ id: "trend_1", annee: 2020, tauxCroissance: 5, variationDemande: 4 },
-		{ id: "trend_2", annee: 2021, tauxCroissance: 7, variationDemande: 6 },
-		{ id: "trend_3", annee: 2022, tauxCroissance: 8, variationDemande: 7 },
-		{ id: "trend_4", annee: 2023, tauxCroissance: 10, variationDemande: 9 },
-		{
-			id: "trend_5",
-			annee: 2024,
-			tauxCroissance: 12,
-			variationDemande: 11,
-		},
-	],
-	marketNumbers: [
-		{
-			id: "market_size",
-			value: "1,200M€",
-			title: "Taille du marché",
-			description:
-				"C'est la taille actuelle du marché global, en pleine croissance.",
-			referenceLink: "https://example.com/market_size",
-		},
-		{
-			id: "annual_growth",
-			value: "12%",
-			title: "Croissance annuelle",
-			description:
-				"Le marché croît à un taux annuel de 12%, favorisant l'innovation.",
-			referenceLink: "https://example.com/annual_growth",
-		},
-		{
-			id: "market_share",
-			value: "30%",
-			title: "Part de marché des leaders",
-			description: "Les trois principaux acteurs dominent 30% du marché.",
-			referenceLink: "https://example.com/market_share",
-		},
-	],
+	trends: [],
+	marketNumbers: [],
 	lastUpdated: new Date().toISOString(),
 });
+
 export const saveToDatabase = async (data: MarketTrendsData) => {
 	try {
 		const response = await fetch("/api/business-plan/market-trends/save", {

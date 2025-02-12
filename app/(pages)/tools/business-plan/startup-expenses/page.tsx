@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "@/components/business-plan/shared/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Overview } from "@/components/business-plan/startup-expenses/Overview";
@@ -12,6 +12,8 @@ import { useStartupData } from "@/lib/business-plan/hooks/startup-expenses/useSt
 import { calculateProgress } from "@/lib/business-plan/hooks/startup-expenses/storage-startup";
 
 const StartupExpenses: React.FC = () => {
+	const [activeTab, setActiveTab] = useState("overview");
+
 	const {
 		data,
 		isLoading,
@@ -26,6 +28,10 @@ const StartupExpenses: React.FC = () => {
 		saveChanges,
 	} = useStartupData();
 
+	const handleTabChange = (tab: string) => {
+		setActiveTab(tab);
+	};
+
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-screen">
@@ -35,7 +41,7 @@ const StartupExpenses: React.FC = () => {
 	}
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Dépenses de Démarrage"
 				progress={calculateProgress(data)}
@@ -51,8 +57,12 @@ const StartupExpenses: React.FC = () => {
 				}
 			/>
 
-			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">
-				<Tabs defaultValue="overview" className="space-y-6">
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<Tabs
+					value={activeTab}
+					onValueChange={handleTabChange}
+					className="space-y-6"
+				>
 					<TabsList className="grid w-full grid-cols-3">
 						<TabsTrigger value="overview">Vue globale</TabsTrigger>
 						<TabsTrigger value="details">Détails</TabsTrigger>
@@ -62,7 +72,7 @@ const StartupExpenses: React.FC = () => {
 					</TabsList>
 
 					<TabsContent value="overview">
-						<Overview data={data} />
+						<Overview data={data} onNavigate={handleTabChange} />
 					</TabsContent>
 
 					<TabsContent value="details">

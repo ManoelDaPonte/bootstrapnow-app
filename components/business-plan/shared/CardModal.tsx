@@ -1,5 +1,5 @@
 // components/business-plan/shared/CardModal.tsx
-import React from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { X } from "lucide-react";
 import { ModalProps, BaseCard } from "@/types/shared/card-modal";
 import { cn } from "@/lib/utils";
@@ -24,12 +24,52 @@ export function CardModal<T extends BaseCard>({
 	descriptionPlaceholder = "Entrez une description...",
 	categoryDescription,
 }: ModalProps<T>) {
+	const [isClickInside, setIsClickInside] = useState(false);
+
+	const handleEscapeKey = useCallback(
+		(event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				onClose();
+			}
+		},
+		[onClose]
+	);
+
+	// Gestionnaires des événements de souris
+	const handleMouseDown = useCallback((event: React.MouseEvent) => {
+		if (event.target === event.currentTarget) {
+			setIsClickInside(false);
+		} else {
+			setIsClickInside(true);
+		}
+	}, []);
+
+	const handleMouseUp = useCallback(
+		(event: React.MouseEvent) => {
+			if (!isClickInside && event.target === event.currentTarget) {
+				onClose();
+			}
+			setIsClickInside(false);
+		},
+		[isClickInside, onClose]
+	);
+
+	useEffect(() => {
+		if (isOpen) {
+			document.addEventListener("keydown", handleEscapeKey);
+			return () => {
+				document.removeEventListener("keydown", handleEscapeKey);
+			};
+		}
+	}, [isOpen, handleEscapeKey]);
+
 	if (!isOpen) return null;
 
 	return (
 		<div
 			className="fixed inset-0 bg-background/80 backdrop-blur-sm flex justify-center items-center z-50"
-			onClick={onClose}
+			onMouseDown={handleMouseDown}
+			onMouseUp={handleMouseUp}
 		>
 			<div
 				className="bg-card rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 scale-100 opacity-100 m-4 flex flex-col max-h-[90vh]" // Ajout du flex et max-h
