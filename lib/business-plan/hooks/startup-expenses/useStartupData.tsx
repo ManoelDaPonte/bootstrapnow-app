@@ -1,7 +1,7 @@
-// lib/business-plan/hooks/startup-expenses/useStartupData.tsx
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { FinancialData, FinancialEntry, Risk } from "@/types/startup-expenses";
+import { QAResponses } from "@/types/shared/qa-section";
 import {
 	loadStartupData,
 	saveStartupData,
@@ -10,7 +10,11 @@ import {
 
 export const useStartupData = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const [data, setData] = useState<FinancialData>(loadStartupData());
+	const initialData = loadStartupData();
+	const [data, setData] = useState<FinancialData>(initialData.data);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		initialData.qaResponses
+	);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
 	const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -26,7 +30,11 @@ export const useStartupData = () => {
 						const serverData = await response.json();
 						if (serverData) {
 							setData(serverData.data);
-							saveStartupData(serverData.data);
+							setQAResponses(serverData.qaResponses || {});
+							saveStartupData(
+								serverData.data,
+								serverData.qaResponses || {}
+							);
 						}
 					}
 				} catch (error) {
@@ -47,7 +55,28 @@ export const useStartupData = () => {
 	// Mise à jour locale
 	const handleUpdateData = (newData: FinancialData) => {
 		setData(newData);
-		saveStartupData(newData);
+		saveStartupData(newData, qaResponses);
+		setHasUnsavedChanges(true);
+	};
+
+	const handleQAResponseChange = (categoryId: string, response: string) => {
+		setQAResponses((prev) => ({
+			...prev,
+			[categoryId]: response,
+		}));
+		setHasUnsavedChanges(true);
+	};
+
+	const handleQAResponseSave = async (
+		categoryId: string,
+		response: string
+	) => {
+		const newQAResponses = {
+			...qaResponses,
+			[categoryId]: response,
+		};
+		setQAResponses(newQAResponses);
+		saveStartupData(data, newQAResponses);
 		setHasUnsavedChanges(true);
 	};
 
@@ -146,7 +175,7 @@ export const useStartupData = () => {
 		setIsSaving(true);
 		try {
 			if (user) {
-				await saveToDatabase(data);
+				await saveToDatabase(data, qaResponses);
 			}
 			setHasUnsavedChanges(false);
 		} catch (error) {
@@ -158,6 +187,7 @@ export const useStartupData = () => {
 
 	return {
 		data,
+		qaResponses,
 		isLoading: isLoading || authLoading,
 		isSaving,
 		hasUnsavedChanges,
@@ -167,6 +197,8 @@ export const useStartupData = () => {
 		handleUpdateRisk,
 		handleAddRisk,
 		handleRemoveRisk,
+		handleQAResponseChange,
+		handleQAResponseSave,
 		saveChanges,
 	};
 };

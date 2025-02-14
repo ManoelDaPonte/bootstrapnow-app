@@ -1,8 +1,6 @@
 // lib/openai/formatters/analyzers/startup_expenses.ts
 import { FormattedAnalysis } from "@/types/openai/analysis";
 export function format_startup_expenses(data: any): FormattedAnalysis {
-	console.log("=== DEBUG startupexpense ===");
-	console.log("Input data:", data);
 	const startup_data = data.startup_expenses.data;
 
 	// Calcul des totaux
@@ -128,16 +126,33 @@ export function format_startup_expenses(data: any): FormattedAnalysis {
 		financial: financial_analysis.join("\n"),
 	};
 
+	const formatted_qa = {
+		budget: `Question : Comment établissez-vous votre budget ?\n\nRéponse : ${
+			startup_data.qa_responses?.FP_Budget || "Non renseigné"
+		}`,
+		funding: `Question : Quelles sont vos sources de financement ?\n\nRéponse : ${
+			startup_data.qa_responses?.FP_Funding || "Non renseigné"
+		}`,
+		capital_needs: `Question : Quels sont vos besoins en capital ?\n\nRéponse : ${
+			startup_data.qa_responses?.FP_CapitelNeeds || "Non renseigné"
+		}`,
+		external_cost: `Question : Quels sont vos coûts externes ?\n\nRéponse : ${
+			startup_data.qa_responses?.FP_ExternalCost || "Non renseigné"
+		}`,
+		tax_legal: `Question : Quelles sont vos considérations fiscales et légales ?\n\nRéponse : ${
+			startup_data.qa_responses?.FP_TaxLegalConsiderations ||
+			"Non renseigné"
+		}`,
+	};
+
 	// Texte complet
 	const complete_text = Object.values(formatted_sections).join("\n\n");
 
-	console.log("Formatted sections:", formatted_sections);
-	console.log("Complete text:", complete_text);
-	console.log("=== END DEBUG startupexpense ===");
-
 	return {
 		data: startup_data,
+		qa: startup_data.qa_responses,
 		formatted_sections,
+		formatted_qa,
 		formatted_text: complete_text,
 	};
 }

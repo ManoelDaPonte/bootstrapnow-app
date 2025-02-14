@@ -35,13 +35,13 @@ export class DataMapper {
 		analysisType: string,
 		dataType: string
 	): any {
-		console.log(
-			`Mapping des champs pour ${analysisType}, type: ${dataType}`,
-			{
-				inputData: data,
-				mapping: FIELD_MAPPINGS[analysisType]?.[dataType],
-			}
-		);
+		// console.log(
+		// 	`Mapping des champs pour ${analysisType}, type: ${dataType}`,
+		// 	{
+		// 		inputData: data,
+		// 		mapping: FIELD_MAPPINGS[analysisType]?.[dataType],
+		// 	}
+		// );
 		if (!data || typeof data !== "object") {
 			return data;
 		}
@@ -79,9 +79,9 @@ export class DataMapper {
 		tableName: string,
 		analysisType: string
 	): Promise<AnalysisData | null> {
-		console.log(
-			`Début du traitement de l'analyse ${analysisType} pour l'utilisateur ${userId}`
-		);
+		// console.log(
+		// 	`Début du traitement de l'analyse ${analysisType} pour l'utilisateur ${userId}`
+		// );
 
 		try {
 			const analysis = await (
@@ -94,15 +94,15 @@ export class DataMapper {
 				},
 			});
 
-			console.log(`Résultat de la requête pour ${tableName}:`, {
-				hasAnalysis: !!analysis,
-				hasData: !!analysis?.data,
-				dataType: analysis?.data ? typeof analysis.data : "undefined",
-			});
+			// console.log(`Résultat de la requête pour ${tableName}:`, {
+			// 	hasAnalysis: !!analysis,
+			// 	hasData: !!analysis?.data,
+			// 	dataType: analysis?.data ? typeof analysis.data : "undefined",
+			// });
 
 			// Si pas d'analyse, retourner null proprement
 			if (!analysis || !analysis.data) {
-				console.log(`Pas de données trouvées pour ${analysisType}`);
+				// console.log(`Pas de données trouvées pour ${analysisType}`);
 				return null;
 			}
 

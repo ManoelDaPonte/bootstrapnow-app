@@ -46,7 +46,10 @@ export const useTemplateProgress = () => {
 		qaResponses: qaResponsesSkills,
 	} = useSkillMatrix();
 	const { profitLossData: profitLossData3 } = useProfitLossData3();
-	const { profitLossData: profitLossData12 } = useProfitLossData12();
+	const {
+		profitLossData: profitLossData12,
+		qaResponses: qaResponsesProfilLoss,
+	} = useProfitLossData12();
 	const { data: startupExpenseData } = useStartupData();
 	const { trends, marketNumbers } = useMarketTrends();
 	const { competitors } = useCompetitors();
@@ -96,8 +99,10 @@ export const useTemplateProgress = () => {
 		financial: {
 			"Projection sur 3 ans":
 				calculateProfitLossProgress3(profitLossData3),
-			"Projection sur 12 mois":
-				calculateProfitlossProgress12(profitLossData12),
+			"Projection sur 12 mois": calculateProfitlossProgress12(
+				profitLossData12,
+				qaResponsesProfilLoss
+			),
 			"Dépenses de démarrage":
 				calculateStartupProgress(startupExpenseData),
 		},

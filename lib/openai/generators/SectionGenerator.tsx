@@ -52,10 +52,10 @@ export class SectionGenerator {
 		analysesFormatted: any,
 		paths: [string, string, string][]
 	): [string, string, string][] {
-		console.log("Vérification des chemins:", {
-			totalPaths: paths.length,
-			availableAnalyses: Object.keys(analysesFormatted),
-		});
+		// console.log("Vérification des chemins:", {
+		// 	totalPaths: paths.length,
+		// 	availableAnalyses: Object.keys(analysesFormatted),
+		// });
 		const validPaths: [string, string, string][] = [];
 
 		for (const [analysisType, sectionType, fieldName] of paths) {
@@ -91,26 +91,26 @@ export class SectionGenerator {
 		auth0Id: string,
 		sectionName: string
 	): Promise<GenerationResult> {
-		console.log(`Début de génération pour la section ${sectionName}`, {
-			auth0Id,
-			timestamp: new Date().toISOString(),
-		});
+		// console.log(`Début de génération pour la section ${sectionName}`, {
+		// 	auth0Id,
+		// 	timestamp: new Date().toISOString(),
+		// });
 		try {
 			const config = this.loadSectionConfig(sectionName);
-			console.log("Configuration chargée:", {
-				title: config.title,
-				pathsCount: config.paths.length,
-			});
+			// console.log("Configuration chargée:", {
+			// 	title: config.title,
+			// 	pathsCount: config.paths.length,
+			// });
 
 			const analyses = await this.mapper.getUserAnalyses(auth0Id);
-			console.log("Analyses récupérées:", {
-				analysesTypes: Object.keys(analyses),
-			});
+			// console.log("Analyses récupérées:", {
+			// 	analysesTypes: Object.keys(analyses),
+			// });
 
 			const analysesFormatted = format_all_analyses(analyses);
-			console.log("Analyses formatées:", {
-				formattedTypes: Object.keys(analysesFormatted),
-			});
+			// console.log("Analyses formatées:", {
+			// 	formattedTypes: Object.keys(analysesFormatted),
+			// });
 
 			// 4. Vérifier et filtrer les chemins valides
 			const validPaths = this.verifyPaths(

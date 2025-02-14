@@ -14,9 +14,9 @@ export function create_section_prompt(
 		throw new Error(`Section '${sectionName}' non trouvée`);
 	}
 
-	console.log("=== DEBUG create_section_prompt ===");
-	console.log("Section name:", sectionName);
-	console.log("Available analyses:", Object.keys(analysesFormatted));
+	// console.log("=== DEBUG create_section_prompt ===");
+	// console.log("Section name:", sectionName);
+	// console.log("Available analyses:", Object.keys(analysesFormatted));
 
 	const selectedContent = [];
 
@@ -26,55 +26,55 @@ export function create_section_prompt(
 		sectionType,
 		fieldName,
 	] of sectionConfig.paths as [string, string, string][]) {
-		console.log(
-			`\nTrying to get content for: ${analysisType}.${sectionType}.${fieldName}`
-		);
+		// console.log(
+		// 	`\nTrying to get content for: ${analysisType}.${sectionType}.${fieldName}`
+		// );
 		const analysis = analysesFormatted[analysisType];
 		if (!analysis) {
-			console.log(
-				`Analysis '${analysisType}' not found in formatted analyses`
-			);
+			// console.log(
+			// 	`Analysis '${analysisType}' not found in formatted analyses`
+			// );
 			continue;
 		}
 
 		let content = "";
 		if (sectionType === "formatted_text") {
 			content = analysis.formatted_text || "";
-			console.log(`formatted_text content found:`, !!content);
+			// console.log(`formatted_text content found:`, !!content);
 		} else if (
 			sectionType === "formatted_qa" &&
 			analysis.formatted_qa &&
 			fieldName in analysis.formatted_qa
 		) {
 			content = analysis.formatted_qa[fieldName];
-			console.log(
-				`formatted_qa content found for ${fieldName}:`,
-				!!content
-			);
+			// console.log(
+			// 	`formatted_qa content found for ${fieldName}:`,
+			// 	!!content
+			// );
 		} else if (
 			sectionType === "formatted_sections" &&
 			analysis.formatted_sections &&
 			fieldName in analysis.formatted_sections
 		) {
 			content = analysis.formatted_sections[fieldName];
-			console.log(
-				`formatted_sections content found for ${fieldName}:`,
-				!!content
-			);
+			// console.log(
+			// 	`formatted_sections content found for ${fieldName}:`,
+			// 	!!content
+			// );
 		}
 		if (!content) {
-			console.log("Available sections:");
+			// console.log("Available sections:");
 			if (analysis.formatted_sections) {
-				console.log(
-					"formatted_sections keys:",
-					Object.keys(analysis.formatted_sections)
-				);
+				// console.log(
+				// 	"formatted_sections keys:",
+				// 	Object.keys(analysis.formatted_sections)
+				// );
 			}
 			if (analysis.formatted_qa) {
-				console.log(
-					"formatted_qa keys:",
-					Object.keys(analysis.formatted_qa)
-				);
+				// console.log(
+				// 	"formatted_qa keys:",
+				// 	Object.keys(analysis.formatted_qa)
+				// );
 			}
 		}
 
@@ -86,7 +86,7 @@ export function create_section_prompt(
 			);
 		}
 	}
-	console.log("\nFinal content sections count:", selectedContent.length);
+	// console.log("\nFinal content sections count:", selectedContent.length);
 	return selectedContent.join("\n\n");
 }
 

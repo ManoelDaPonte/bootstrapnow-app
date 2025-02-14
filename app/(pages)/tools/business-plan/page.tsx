@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
 import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
 import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
+import { testAllAnalyzers } from "@/lib/openai/generators/testAnalyzers";
+import { exploreAnalyses } from "@/lib/openai/generators/pathExplorer";
 
 const templates = [
 	{
@@ -166,17 +168,24 @@ export default function BusinessPlanPage() {
 
 	const handleGenerateBusinessPlan = async () => {
 		try {
+			// Pour explorer les analyses
+			await exploreAnalyses("auth0|6751e0b17016716a3ef71a0c");
+
+			// const results = await testAllAnalyzers(
+			// 	"auth0|6751e0b17016716a3ef71a0c"
+			// );
+
 			// Test d'une seule section
-			const sectionResult = await generateSection(
-				"auth0|6751e0b17016716a3ef71a0c",
-				"ES_Goal_123"
-			);
-			console.log("État de la génération:", {
-				status: progressGeneration.status,
-				currentSection: progressGeneration.currentSection,
-				completedSections: progressGeneration.completedSections,
-				errors: progressGeneration.errors,
-			});
+			// const sectionResult = await generateSection(
+			// 	"auth0|6751e0b17016716a3ef71a0c",
+			// 	"ES_Goal_123"
+			// );
+			// console.log("État de la génération:", {
+			// 	status: progressGeneration.status,
+			// 	currentSection: progressGeneration.currentSection,
+			// 	completedSections: progressGeneration.completedSections,
+			// 	errors: progressGeneration.errors,
+			// });
 
 			// Si vous voulez générer tout le business plan
 			// const fullResults = await generateFullBusinessPlan("auth0|6751e0b17016716a3ef71a0c");

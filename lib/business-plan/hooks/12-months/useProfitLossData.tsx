@@ -11,8 +11,11 @@ import {
 
 export const useProfitLossData = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const [data, setData] = useState<ProfitLossData>(loadProfitLossData().data);
-	const [qaResponses, setQAResponses] = useState<QAResponses>({});
+	const initialData = loadProfitLossData();
+	const [data, setData] = useState<ProfitLossData>(initialData.data);
+	const [qaResponses, setQAResponses] = useState<QAResponses>(
+		initialData.qaResponses
+	);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
 	const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -28,7 +31,6 @@ export const useProfitLossData = () => {
 						const serverData = await response.json();
 						if (serverData) {
 							setData(serverData.data);
-							// S'assurer que qaResponses existe dans la réponse
 							setQAResponses(serverData.qaResponses || {});
 							saveProfitLossData(
 								serverData.data,
@@ -43,7 +45,7 @@ export const useProfitLossData = () => {
 					);
 				}
 			}
-			setIsLoading(false);
+			setIsLoading(false); // On met fin au chargement dans tous les cas
 		};
 
 		if (!authLoading) {
@@ -74,16 +76,8 @@ export const useProfitLossData = () => {
 			[categoryId]: response,
 		};
 		setQAResponses(newQAResponses);
-
-		try {
-			if (user) {
-				await saveToDatabase(data, newQAResponses);
-			}
-			saveProfitLossData(data, newQAResponses);
-			setHasUnsavedChanges(false);
-		} catch (error) {
-			console.error("Failed to save QA response:", error);
-		}
+		saveProfitLossData(data, newQAResponses);
+		setHasUnsavedChanges(true);
 	};
 
 	const saveChanges = async () => {
@@ -106,7 +100,6 @@ export const useProfitLossData = () => {
 		isLoading: isLoading || authLoading,
 		isSaving,
 		hasUnsavedChanges,
-		user,
 		handleUpdateData,
 		handleQAResponseChange,
 		handleQAResponseSave,

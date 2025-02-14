@@ -53,40 +53,30 @@ export async function GET() {
 	}
 }
 function validateProfitLossData(data: any): boolean {
-	const requiredCategories = ["revenue", "expenses"];
+	if (typeof data !== "object" || data === null) return false;
 
-	// Vérifier que toutes les catégories existent et sont des tableaux
+	const requiredCategories = ["revenue", "expenses"];
+	const months = Array.from({ length: 12 }, (_, i) => `M${i + 1}`); // Utiliser M1-M12 au lieu de Jan-Dec
+
 	const hasValidCategories = requiredCategories.every((category) =>
 		Array.isArray(data[category])
 	);
 
 	if (!hasValidCategories) return false;
 
-	// Vérifier la structure de chaque entrée
 	return requiredCategories.every((category) =>
 		data[category].every((entry: any) => {
 			const hasValidId =
 				typeof entry.id === "string" || typeof entry.id === "number";
 			const hasValidCategory = typeof entry.category === "string";
-
-			// Vérifier que tous les mois ont des valeurs numériques
-			const months = [
-				"Jan",
-				"Feb",
-				"Mar",
-				"Apr",
-				"May",
-				"Jun",
-				"Jul",
-				"Aug",
-				"Sep",
-				"Oct",
-				"Nov",
-				"Dec",
-			];
-			const hasValidMonths = months.every(
-				(month) => typeof entry[month] === "number"
-			);
+			const hasValidMonths = months.every((month) => {
+				const value = entry[month];
+				return (
+					typeof value === "number" &&
+					!isNaN(value) &&
+					isFinite(value)
+				);
+			});
 
 			return hasValidId && hasValidCategory && hasValidMonths;
 		})

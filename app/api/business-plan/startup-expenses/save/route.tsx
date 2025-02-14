@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { updateStartupData } from "@/lib/business-plan/hooks/startup-expenses/storage-startup";
 import { FinancialData } from "@/types/startup-expenses";
+import { QAResponses } from "@/types/shared/qa-section";
 
 export async function POST(request: Request) {
 	try {
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const { data } = body;
+		const { data, qaResponses } = body;
 
 		// Vérification des données avant sauvegarde
 		if (!validateStartupData(data)) {
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const result = await updateStartupData(user.sub, data);
+		const result = await updateStartupData(user.sub, data, qaResponses);
 
 		return NextResponse.json({
 			success: true,
@@ -57,8 +58,16 @@ export async function POST(request: Request) {
 	}
 }
 
-function isValidRequestBody(body: any): body is { data: FinancialData } {
-	return typeof body === "object" && body !== null && "data" in body;
+function isValidRequestBody(
+	body: any
+): body is { data: FinancialData; qaResponses: QAResponses } {
+	return (
+		typeof body === "object" &&
+		body !== null &&
+		"data" in body &&
+		"qaResponses" in body &&
+		typeof body.qaResponses === "object"
+	);
 }
 
 function validateStartupData(data: any): boolean {
