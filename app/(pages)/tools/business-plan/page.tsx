@@ -8,7 +8,8 @@ import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgre
 import { Card } from "@/components/ui/card";
 import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
 import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
-import { GeneralInfo } from "@/types/general-info";
+import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
+
 const templates = [
 	{
 		id: "market",
@@ -160,6 +161,30 @@ interface ProgressType {
 }
 
 export default function BusinessPlanPage() {
+	const { progressGeneration, generateSection, generateFullBusinessPlan } =
+		useBusinessPlanGenerator();
+
+	const handleGenerateBusinessPlan = async () => {
+		try {
+			// Test d'une seule section
+			const sectionResult = await generateSection(
+				"auth0|6751e0b17016716a3ef71a0c",
+				"ES_Goal_123"
+			);
+			console.log("État de la génération:", {
+				status: progressGeneration.status,
+				currentSection: progressGeneration.currentSection,
+				completedSections: progressGeneration.completedSections,
+				errors: progressGeneration.errors,
+			});
+
+			// Si vous voulez générer tout le business plan
+			// const fullResults = await generateFullBusinessPlan("auth0|6751e0b17016716a3ef71a0c");
+		} catch (error) {
+			console.error("Erreur lors de la génération:", error);
+		}
+	};
+
 	const {
 		data: generalInfo,
 		updateField: handleGeneralInfoChange,
@@ -196,11 +221,6 @@ export default function BusinessPlanPage() {
 				return total + Object.keys(section).length;
 			}, 0)
 	);
-
-	const handleGenerateBusinessPlan = async () => {
-		// Implémentez la logique de génération ici
-		console.log("Generating business plan...");
-	};
 
 	return (
 		<div className="flex flex-col min-h-screen">

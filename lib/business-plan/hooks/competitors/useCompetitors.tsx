@@ -148,6 +148,7 @@ export const useCompetitors = () => {
 		updateCompetitor,
 		saveCompetitor,
 		addCompetitor,
+		calculateProgress,
 		removeCompetitor,
 	};
 };
