@@ -31,11 +31,21 @@ import AddDomainDialog from "@/components/business-plan/skills-matrix/AddDomainD
 import QASection from "@/components/business-plan/shared/QASection";
 import { Person, Domain } from "@/types/skill-matrix";
 import { Header } from "@/components/business-plan/shared/Header";
-import { QAResponses } from "@/types/shared/qa-section";
 import {
 	SKILL_LEVELS,
 	SKILLS_MATRIX_QA_DATA,
 } from "@/lib/business-plan/config/skills-matrix";
+import { calculateProgress } from "@/lib/business-plan/hooks/skills-matrix/storage-skills-matrix";
+
+// Style mapping pour les niveaux de compétence
+const SKILL_LEVEL_STYLES = {
+	0: "bg-secondary/20 hover:bg-secondary/30",
+	1: "bg-blue-500/10 hover:bg-blue-500/20",
+	2: "bg-emerald-500/20 hover:bg-emerald-500/30",
+	3: "bg-purple-500/20 hover:bg-purple-500/30",
+	4: "bg-orange-500/20 hover:bg-orange-500/30",
+	5: "bg-primary/20 hover:bg-primary/30",
+} as const;
 
 interface TableRow {
 	original: Person;
@@ -47,15 +57,15 @@ export default function SkillMatrixPage() {
 	const {
 		people,
 		domains,
-		qaResponses, // Nouveau
+		qaResponses,
 		isLoading,
 		addPerson,
 		addDomain,
 		updateSkill,
 		removePerson,
 		removeDomain,
-		handleQAResponseChange, // Nouveau
-		handleQAResponseSave, // Nouveau
+		handleQAResponseChange,
+		handleQAResponseSave,
 	} = useSkillMatrix();
 
 	const columns = React.useMemo(
@@ -68,11 +78,14 @@ export default function SkillMatrixPage() {
 				accessorKey: `skills.${domain.id}`,
 				header: () => (
 					<div className="flex items-center justify-between">
-						<span>{domain.name}</span>
+						<span className="font-medium text-foreground">
+							{domain.name}
+						</span>
 						<Button
 							variant="ghost"
 							size="sm"
 							onClick={() => removeDomain(domain.id)}
+							className="text-muted-foreground hover:text-destructive"
 						>
 							<Trash2 className="h-4 w-4" />
 						</Button>
@@ -82,9 +95,10 @@ export default function SkillMatrixPage() {
 					const level = row.original.skills[domain.id] || 0;
 					return (
 						<div
-							className={`rounded-lg ${
-								SKILL_LEVELS[level as keyof typeof SKILL_LEVELS]
-									.color
+							className={`rounded-lg transition-colors duration-200 ${
+								SKILL_LEVEL_STYLES[
+									level as keyof typeof SKILL_LEVEL_STYLES
+								]
 							}`}
 						>
 							<select
@@ -96,7 +110,9 @@ export default function SkillMatrixPage() {
 										Number(e.target.value)
 									)
 								}
-								className="w-full p-2 bg-transparent border-0 rounded-lg focus:ring-2 focus:ring-blue-500"
+								className="w-full p-2 bg-transparent border-0 rounded-lg ring-offset-background 
+                                         focus:ring-2 focus:ring-ring focus:ring-offset-2
+                                         text-foreground"
 								title={
 									SKILL_LEVELS[
 										level as keyof typeof SKILL_LEVELS
@@ -105,7 +121,11 @@ export default function SkillMatrixPage() {
 							>
 								{Object.entries(SKILL_LEVELS).map(
 									([value, { label }]) => (
-										<option key={value} value={value}>
+										<option
+											key={value}
+											value={value}
+											className="bg-background text-foreground"
+										>
 											{`${value} - ${label}`}
 										</option>
 									)
@@ -121,14 +141,17 @@ export default function SkillMatrixPage() {
 				cell: ({ row }: { row: TableRow }) => (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" className="h-8 w-8 p-0">
+							<Button
+								variant="ghost"
+								className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+							>
 								<MoreHorizontal className="h-4 w-4" />
 							</Button>
 						</DropdownMenuTrigger>
-						<DropdownMenuContent>
+						<DropdownMenuContent align="end">
 							<DropdownMenuItem
 								onClick={() => removePerson(row.original.id)}
-								className="text-red-600"
+								className="text-destructive focus:text-destructive"
 							>
 								<Trash2 className="mr-2 h-4 w-4" />
 								Supprimer
@@ -151,26 +174,36 @@ export default function SkillMatrixPage() {
 	});
 
 	if (isLoading) {
-		return <div>Chargement...</div>;
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
 	}
 
 	return (
-		<div className="flex flex-col h-screen">
-			<Header title="Skills Matrix" progress={100} />
+		<div className="min-h-screen bg-background flex flex-col">
+			<Header
+				title="Skills Matrix"
+				progress={calculateProgress({ people, domains }, qaResponses)}
+			/>
 
-			<div className="p-6 space-y-6">
-				<div className="flex gap-4 mb-6">
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="flex gap-4">
 					<AddPersonDialog onAdd={addPerson} />
 					<AddDomainDialog onAdd={addDomain} />
 				</div>
 
-				<div className="rounded-md border bg-white">
+				<div className="rounded-md border bg-card">
 					<Table>
 						<TableHeader>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>
 									{headerGroup.headers.map((header) => (
-										<TableHead key={header.id}>
+										<TableHead
+											key={header.id}
+											className="text-muted-foreground"
+										>
 											{header.isPlaceholder
 												? null
 												: flexRender(
@@ -201,7 +234,7 @@ export default function SkillMatrixPage() {
 								<TableRow>
 									<TableCell
 										colSpan={columns.length}
-										className="h-24 text-center text-gray-500"
+										className="h-24 text-center text-muted-foreground"
 									>
 										Aucune donnée dans la matrice des
 										compétences

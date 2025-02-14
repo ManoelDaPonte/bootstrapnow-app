@@ -103,7 +103,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
 										placeholder="Probabilité (0-1)"
 										value={newRisk.probability}
 										onChange={(e) => {
-											let value =
+											const value =
 												Number(e.target.value) || 0;
 											setErrorProbability(
 												value < 0 || value > 1
@@ -134,7 +134,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
 										placeholder="Impact (1-10)"
 										value={newRisk.impact}
 										onChange={(e) => {
-											let value =
+											const value =
 												Number(e.target.value) || 1;
 											setErrorImpact(
 												value < 1 || value > 10
@@ -239,7 +239,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
 												step="0.01"
 												value={risk.probability}
 												onChange={(e) => {
-													let value =
+													const value =
 														Number(
 															e.target.value
 														) || 0;
@@ -261,7 +261,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
 												step="0.1"
 												value={risk.impact}
 												onChange={(e) => {
-													let value =
+													const value =
 														Number(
 															e.target.value
 														) || 1;

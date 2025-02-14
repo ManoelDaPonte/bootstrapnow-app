@@ -57,11 +57,19 @@ function validatePestelData(data: any): boolean {
 	const requiredCategories = [
 		"political",
 		"economic",
-		"sociocultural",
+		"social", // Changed from "sociocultural" to "social"
 		"technological",
 		"environmental",
 		"legal",
 	];
-	const keys = Object.keys(data);
-	return requiredCategories.every((category) => keys.includes(category));
+
+	// Vérifier que l'objet data existe et n'est pas null
+	if (!data || typeof data !== "object") {
+		return false;
+	}
+
+	// Vérifier que toutes les catégories requises existent et sont des tableaux
+	return requiredCategories.every((category) =>
+		Array.isArray(data[category])
+	);
 }

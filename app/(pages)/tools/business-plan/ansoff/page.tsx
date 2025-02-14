@@ -1,11 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-	AnsoffCard,
-	ModalState,
-	AnsoffData,
-	AnsoffCategory,
-} from "@/types/ansoff";
+import { AnsoffCard, ModalState, AnsoffCategory } from "@/types/ansoff";
 import { useAnsoffData } from "@/lib/business-plan/hooks/ansoff/useAnsoffData";
 import { calculateProgress } from "@/lib/business-plan/hooks/ansoff/storage-ansoff";
 import { Header } from "@/components/business-plan/shared/Header";
@@ -14,12 +9,10 @@ import { AnsoffSection } from "@/components/business-plan/AnsoffSection";
 import QASection from "@/components/business-plan/shared/QASection";
 import {
 	ANSOFF_QA_DATA,
-	ANSOFF_DESCRIPTIONS,
 	ANSOFF_HEADERS,
 	ANSOFF_SECTION_ORDER,
 	ANSOFF_MODAL_DETAILED_DESCRIPTIONS,
 } from "@/lib/business-plan/config/ansoff";
-import { QAResponses } from "@/types/shared/qa-section";
 import { ModalProps } from "@/types/shared/card-modal";
 
 export default function AnsoffMatrix() {
@@ -30,6 +23,7 @@ export default function AnsoffMatrix() {
 		handleDeleteCard,
 		handleQAResponseChange,
 		handleQAResponseSave,
+		isLoading,
 	} = useAnsoffData();
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
@@ -99,9 +93,9 @@ export default function AnsoffMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier la stratégie"
-			: "Nouvelle stratégie",
+		modalTitle: `${
+			ANSOFF_HEADERS[modalState.category as AnsoffCategory]?.title || ""
+		} - ${modalState.card.id ? "Modifier la carte" : "Ajouter une carte"}`,
 		titlePlaceholder: "Entrez le titre de votre stratégie...",
 		descriptionPlaceholder: "Décrivez votre stratégie...",
 		categoryDescription: modalState.category
@@ -111,58 +105,66 @@ export default function AnsoffMatrix() {
 			: undefined,
 	};
 
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
+
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Matrice Ansoff"
-				progress={calculateProgress(cards)}
+				progress={calculateProgress(cards, qaResponses)}
 			/>
 
-			<div className="flex-1 max-w-7xl mx-auto w-full p-6">
-				<div className="relative flex flex-col h-full">
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="relative">
 					{/* Product Type Label (Top) */}
-					<div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-						<span className="text-sm font-medium text-gray-600">
+					<div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
+						<span className="text-sm font-medium text-muted-foreground">
 							Produit
 						</span>
-						<div className="flex gap-64 mt-2">
-							<span className="text-xs font-medium text-gray-600">
+						<div className="flex w-full justify-between px-40 mt-2">
+							<span className="text-xs font-medium text-muted-foreground">
 								Existant
 							</span>
-							<span className="text-xs font-medium text-gray-600">
+							<span className="text-xs font-medium text-muted-foreground">
 								Nouveau
 							</span>
 						</div>
 					</div>
 
 					{/* Market Type Label (Left) */}
-					<div className="absolute top-1/2 -translate-y-1/2 flex items-center">
-						<span className="text-sm font-medium text-gray-600 -rotate-90 whitespace-nowrap">
+					<div className="absolute -left-8 top-1/2 -translate-y-1/2 flex items-center">
+						<span className="text-sm font-medium text-muted-foreground -rotate-90 whitespace-nowrap">
 							Marché
 						</span>
-						<div className="flex flex-col gap-64">
-							<span className="text-xs font-medium text-gray-600 -rotate-90 whitespace-nowrap">
+						<div className="flex flex-col justify-between h-[32rem] -ml-2">
+							<span className="text-xs font-medium text-muted-foreground -rotate-90 whitespace-nowrap translate-y-20">
 								Existant
 							</span>
-							<span className="text-xs font-medium text-gray-600 -rotate-90 whitespace-nowrap">
+							<span className="text-xs font-medium text-muted-foreground -rotate-90 whitespace-nowrap -translate-y-20">
 								Nouveau
 							</span>
 						</div>
 					</div>
 
 					{/* Matrix Content */}
-					<div className="flex-1 mt-12 ml-24">
-						<div className="grid grid-cols-2 gap-6 h-[calc(100vh-12rem)]">
+					<div className="mt-8 ml-12">
+						<div className="grid grid-cols-2 gap-6">
 							{ANSOFF_SECTION_ORDER.map((category) => (
-								<AnsoffSection
-									key={category}
-									category={category}
-									title={ANSOFF_HEADERS[category].title}
-									description={ANSOFF_DESCRIPTIONS[category]}
-									cards={cards[category]}
-									onAddCard={handleAddCard}
-									onEditCard={handleEditCard}
-								/>
+								<div key={category} className="h-64">
+									<AnsoffSection
+										category={category}
+										title={ANSOFF_HEADERS[category].title}
+										cards={cards[category] || []}
+										onAddCard={handleAddCard}
+										onEditCard={handleEditCard}
+									/>
+								</div>
 							))}
 						</div>
 					</div>

@@ -1,6 +1,4 @@
-//component/business-plan/shared/QASection.tsx
-
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import {
 	Accordion,
@@ -11,13 +9,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { QAData, QAResponses } from "@/types/shared/qa-section";
-import { useState } from "react";
 
 interface QASectionProps {
 	data: QAData;
 	responses: QAResponses;
 	onResponseChange?: (categoryId: string, response: string) => void;
-	onResponseSave?: (categoryId: string, response: string) => void; // Renommé pour plus de clarté
+	onResponseSave?: (categoryId: string, response: string) => void;
 	className?: string;
 }
 
@@ -29,8 +26,6 @@ const QASection: React.FC<QASectionProps> = ({
 	className = "",
 }) => {
 	const { sectionTitle, categories } = data;
-
-	// État local pour tracker les modifications
 	const [editedResponses, setEditedResponses] = useState<QAResponses>({});
 
 	const handleResponseChange = (categoryId: string, value: string) => {
@@ -42,10 +37,8 @@ const QASection: React.FC<QASectionProps> = ({
 	};
 
 	const handleBlur = (categoryId: string, value: string) => {
-		// Vérifie si la valeur a été modifiée avant de sauvegarder
 		if (editedResponses[categoryId] !== undefined) {
 			onResponseSave?.(categoryId, value);
-			// Réinitialise l'état local après la sauvegarde
 			setEditedResponses((prev) => {
 				const newState = { ...prev };
 				delete newState[categoryId];
@@ -53,30 +46,39 @@ const QASection: React.FC<QASectionProps> = ({
 			});
 		}
 	};
+
 	return (
-		<div className={` w-full  py-8 ${className}`}>
-			<h2 className="text-2xl font-bold mb-6">{sectionTitle}</h2>
+		<div className={`w-full py-8 ${className}`}>
+			<h2 className="text-2xl font-bold mb-6 text-foreground">
+				{sectionTitle}
+			</h2>
 			<div className="grid gap-6">
 				{categories.map((category) => (
-					<Card key={category.id} className="p-6">
+					<Card
+						key={category.id}
+						className="p-6 border border-border bg-card hover:shadow-md transition-shadow duration-200"
+					>
 						<h3 className="text-xl font-semibold mb-4 text-primary">
 							{category.title}
 						</h3>
 						<div className="space-y-6">
-							<div className="bg-muted p-4 rounded-lg">
-								<p className="font-medium text-foreground">
+							<div className="bg-muted p-4 rounded-lg border border-border/50">
+								<p className="font-medium text-foreground/90">
 									{category.question}
 								</p>
 							</div>
 
 							<div className="space-y-2">
-								<Label htmlFor={`response-${category.id}`}>
+								<Label
+									htmlFor={`response-${category.id}`}
+									className="text-foreground/80"
+								>
 									Votre réponse
 								</Label>
 								<Textarea
 									id={`response-${category.id}`}
 									placeholder="Saisissez votre réponse ici..."
-									className="min-h-[150px] resize-y"
+									className="min-h-[150px] resize-y bg-background border-input focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200"
 									value={responses[category.id] || ""}
 									onChange={(e) =>
 										handleResponseChange(
@@ -94,26 +96,29 @@ const QASection: React.FC<QASectionProps> = ({
 								<Accordion
 									type="single"
 									collapsible
-									className="w-full"
+									className="w-full border-muted"
 								>
-									<AccordionItem value="examples">
-										<AccordionTrigger className="text-sm hover:no-underline">
-											<span className="hover:underline">
+									<AccordionItem
+										value="examples"
+										className="border-b border-border/50"
+									>
+										<AccordionTrigger className="text-sm hover:no-underline py-4">
+											<span className="hover:underline text-primary/90">
 												Voir des exemples de réponses
 											</span>
 										</AccordionTrigger>
-										<AccordionContent>
-											<ul className="space-y-3 text-sm text-muted-foreground pt-2">
+										<AccordionContent className="pt-2 pb-4">
+											<ul className="space-y-3 text-sm text-muted-foreground">
 												{category.examples.map(
 													(example, i) => (
 														<li
 															key={i}
-															className="flex gap-2"
+															className="flex gap-2 items-start"
 														>
-															<span className="text-primary">
+															<span className="text-primary flex-shrink-0 mt-1">
 																•
 															</span>
-															<span>
+															<span className="text-foreground/80">
 																{example}
 															</span>
 														</li>

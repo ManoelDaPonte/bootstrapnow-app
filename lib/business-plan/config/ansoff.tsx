@@ -70,9 +70,9 @@ export const ANSOFF_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"La stratégie de pénétration du marché vise à augmenter les ventes des produits existants sur les marchés existants. C'est généralement la stratégie la moins risquée car elle s'appuie sur des produits et marchés que l'entreprise connaît déjà.",
 		examples: [
-			"**Promotions commerciales:** Mise en place d'offres spéciales, réductions de prix ou programmes de fidélité pour stimuler les ventes.",
-			"**Optimisation de la distribution:** Amélioration de la disponibilité des produits et de la visibilité en magasin.",
-			"**Marketing intensif:** Augmentation des dépenses publicitaires et amélioration de la communication marketing.",
+			"Promotions commerciales:** Mise en place d'offres spéciales, réductions de prix ou programmes de fidélité pour stimuler les ventes.",
+			"Optimisation de la distribution:** Amélioration de la disponibilité des produits et de la visibilité en magasin.",
+			"Marketing intensif:** Augmentation des dépenses publicitaires et amélioration de la communication marketing.",
 		],
 	},
 	development_product: {
@@ -80,9 +80,9 @@ export const ANSOFF_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Cette stratégie consiste à introduire de nouveaux produits sur les marchés existants. Elle nécessite une bonne compréhension des besoins des clients actuels et des capacités d'innovation.",
 		examples: [
-			"**Innovation produit:** Développement de nouvelles caractéristiques ou fonctionnalités pour les produits existants.",
-			"**Élargissement de la gamme:** Introduction de produits complémentaires ou de nouvelles variantes.",
-			"**Modernisation technologique:** Intégration de nouvelles technologies dans les produits existants.",
+			"Innovation produit:** Développement de nouvelles caractéristiques ou fonctionnalités pour les produits existants.",
+			"Élargissement de la gamme:** Introduction de produits complémentaires ou de nouvelles variantes.",
+			"Modernisation technologique:** Intégration de nouvelles technologies dans les produits existants.",
 		],
 	},
 	development_market: {
@@ -90,9 +90,9 @@ export const ANSOFF_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Cette approche vise à trouver de nouveaux marchés pour les produits existants. Elle peut impliquer une expansion géographique ou la recherche de nouveaux segments de clientèle.",
 		examples: [
-			"**Expansion géographique:** Entrée sur de nouveaux marchés régionaux ou internationaux.",
-			"**Nouveaux segments:** Adaptation des produits existants pour de nouveaux groupes de clients.",
-			"**Nouveaux canaux:** Développement de nouveaux canaux de distribution ou de vente.",
+			"Expansion géographique:** Entrée sur de nouveaux marchés régionaux ou internationaux.",
+			"Nouveaux segments:** Adaptation des produits existants pour de nouveaux groupes de clients.",
+			"Nouveaux canaux:** Développement de nouveaux canaux de distribution ou de vente.",
 		],
 	},
 	diversification: {
@@ -100,9 +100,9 @@ export const ANSOFF_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"La stratégie de diversification est la plus risquée car elle implique de nouveaux produits et de nouveaux marchés. Elle peut être nécessaire pour la croissance à long terme ou la réduction des risques.",
 		examples: [
-			"**Diversification liée:** Développement de nouveaux produits liés aux activités existantes pour de nouveaux marchés.",
-			"**Diversification non liée:** Entrée dans des activités totalement nouvelles.",
-			"**Acquisition stratégique:** Rachat d'entreprises dans de nouveaux secteurs d'activité.",
+			"Diversification liée:** Développement de nouveaux produits liés aux activités existantes pour de nouveaux marchés.",
+			"Diversification non liée:** Entrée dans des activités totalement nouvelles.",
+			"Acquisition stratégique:** Rachat d'entreprises dans de nouveaux secteurs d'activité.",
 		],
 	},
 };

@@ -7,49 +7,14 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model BusinessPlanProgress {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    progress  Json // Stocke le progrès de chaque section
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 model MonthlyProjectionAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model YearlyProjectionAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model MarketTrendsAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model CompetitorsAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String   @unique
+    data        Json
+    qaResponses Json     @default("{}")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model StartupExpensesAnalysis {
@@ -142,6 +107,42 @@ model FunnelChartAnalysis {
     updatedAt   DateTime @updatedAt
 }
 
+model YearlyProjectionAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model MarketTrendsAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model CompetitorsAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model GeneralInfo {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 model GeneratedBusinessPlan {
     id        String   @id @default(cuid())
     user      User     @relation(fields: [userId], references: [id])
@@ -149,6 +150,15 @@ model GeneratedBusinessPlan {
     content   String   @db.Text // Pour stocker le texte long
     prompt    String   @db.Text // Pour stocker le prompt utilisé
     status    String   @default("draft") // draft, published, archived
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model BusinessPlanProgress {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    progress  Json // Stocke le progrès de chaque section
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
@@ -171,6 +181,7 @@ model User {
     competitorsAnalysis       CompetitorsAnalysis?
     startupExpensesAnalysis   StartupExpensesAnalysis?
     businessPlanProgress      BusinessPlanProgress?
+    generalInfo               GeneralInfo?
     generatedBusinessPlan     GeneratedBusinessPlan[]
     createdAt                 DateTime                   @default(now())
     updatedAt                 DateTime                   @updatedAt

@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgress";
-import { useState } from "react";
-import { Download } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
+import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
+import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
 
 const templates = [
 	{
@@ -15,7 +17,7 @@ const templates = [
 		color: "bg-[hsl(var(--chart-1)_/_0.1)]",
 		borderColor: "border-[hsl(var(--chart-1)_/_0.2)]",
 		hoverColor: "hover:bg-[hsl(var(--chart-1)_/_0.15)]",
-		icon: "📊",
+		icon: "📈",
 		templates: [
 			{
 				name: "Tendances du marché",
@@ -35,7 +37,7 @@ const templates = [
 		color: "bg-[hsl(var(--chart-2)_/_0.1)]",
 		borderColor: "border-[hsl(var(--chart-2)_/_0.2)]",
 		hoverColor: "hover:bg-[hsl(var(--chart-2)_/_0.15)]",
-		icon: "📊",
+		icon: "👔",
 		templates: [
 			{
 				name: "Business Model Canvas",
@@ -136,208 +138,196 @@ const templates = [
 	},
 ];
 
+interface TemplateData {
+	name: string;
+	route: string;
+	description: string;
+}
+
+interface SectionData {
+	id: string;
+	title: string;
+	color: string;
+	borderColor: string;
+	hoverColor: string;
+	icon: string;
+	templates: TemplateData[];
+}
+
+interface ProgressType {
+	[key: string]: {
+		[key: string]: number;
+	};
+}
+
 export default function BusinessPlanPage() {
-	const [isLoading, setIsLoading] = useState(false);
-	const [generatedText, setGeneratedText] = useState<string | null>(null);
+	const { progressGeneration, generateSection, generateFullBusinessPlan } =
+		useBusinessPlanGenerator();
+
+	const handleGenerateBusinessPlan = async () => {
+		try {
+			// Test d'une seule section
+			const sectionResult = await generateSection(
+				"auth0|6751e0b17016716a3ef71a0c",
+				"ES_Goal_123"
+			);
+			console.log("État de la génération:", {
+				status: progressGeneration.status,
+				currentSection: progressGeneration.currentSection,
+				completedSections: progressGeneration.completedSections,
+				errors: progressGeneration.errors,
+			});
+
+			// Si vous voulez générer tout le business plan
+			// const fullResults = await generateFullBusinessPlan("auth0|6751e0b17016716a3ef71a0c");
+		} catch (error) {
+			console.error("Erreur lors de la génération:", error);
+		}
+	};
+
+	const {
+		data: generalInfo,
+		updateField: handleGeneralInfoChange,
+		saveData: handleGeneralInfoSave,
+		completionPercentage: generalInfoProgress,
+		isSaving,
+	} = useGeneralInfo();
 
 	const router = useRouter();
+
 	type ProgressType = {
 		[key: string]: {
 			[key: string]: number;
 		};
 	};
 
-	//const progress: ProgressType = useTemplateProgress();
+	const progress: ProgressType = useTemplateProgress();
 
-	//const getTemplateProgress = (sectionId: string, templateName: string) => {
-	//	return progress[sectionId]?.[templateName] || 0;
-	//};
-
-	//const totalProgress = Math.round(
-	//	Object.entries(progress).reduce((acc, [sectionId, section]) => {
-	//		if (sectionId === "execution") {
-	//			return acc + (section["Value Proposition"] || 0);
-	//		}
-	//		if (sectionId === "financial") {
-	//			return acc; // Exclure la section financière
-	//		}
-	//		return (
-	//			acc +
-	//			Object.values(section).reduce((sum, value) => sum + value, 0)
-	//		);
-	//	}, 0) /
-	//		(Object.values(progress).reduce(
-	//			(acc, section) => acc + Object.keys(section).length,
-	//			0
-	//		) -
-	//			4) // Ajuster pour exclure Skills Matrix et les 3 pages financières
-	//);
-
-	const handleGenerateBusinessPlan = async () => {
-		setIsLoading(true);
-		try {
-			// 1. Récupérer les données
-			const dataResponse = await fetch(
-				"/api/business-plan/data/get-business-plan-data"
-			);
-			if (!dataResponse.ok)
-				throw new Error("Erreur lors de la récupération des données");
-			const businessPlanData = await dataResponse.json();
-			console.log("Données récupérées:", businessPlanData);
-
-			// 2. Générer le prompt
-			const promptResponse = await fetch(
-				"/api/business-plan/data/generate-prompt"
-			);
-			if (!promptResponse.ok)
-				throw new Error("Erreur lors de la génération du prompt");
-			const { prompt } = await promptResponse.json();
-			console.log("Prompt généré:", prompt);
-
-			// 3. Générer le texte avec OpenAI
-			const generateTextResponse = await fetch(
-				"/api/business-plan/data/generate-text",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ prompt }),
-				}
-			);
-
-			if (!generateTextResponse.ok) {
-				const errorData = await generateTextResponse.json();
-				throw new Error(
-					errorData.error || "Erreur lors de la génération du texte"
-				);
-			}
-
-			const { text } = await generateTextResponse.json();
-			setGeneratedText(text);
-		} catch (error) {
-			console.error("Erreur:", error);
-			if (error instanceof Error) {
-				alert("Une erreur est survenue: " + error.message);
-			} else {
-				alert("Une erreur inconnue est survenue");
-			}
-		} finally {
-			setIsLoading(false);
-		}
+	const getTemplateProgress = (
+		sectionId: string,
+		templateName: string
+	): number => {
+		return progress[sectionId]?.[templateName] || 0;
 	};
 
-	// Fonction pour exporter en fichier texte
-	const handleExport = () => {
-		if (!generatedText) return;
-		const blob = new Blob([generatedText], { type: "text/plain" });
-		const url = window.URL.createObjectURL(blob);
-		const a = document.createElement("a");
-		a.href = url;
-		a.download = "business-plan.txt";
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-		window.URL.revokeObjectURL(url);
-	};
+	const totalProgress = Math.round(
+		Object.entries(progress).reduce((acc, [, section]) => {
+			return (
+				acc +
+				Object.values(section).reduce((sum, value) => sum + value, 0)
+			);
+		}, 0) /
+			Object.values(progress).reduce((total, section) => {
+				return total + Object.keys(section).length;
+			}, 0)
+	);
 
 	return (
-		<div className="flex flex-col h-screen">
-			<div className="bg-white">
+		<div className="flex flex-col min-h-screen">
+			<div className="bg-background border-b">
 				<div className="max-w-full mx-auto">
 					<div className="container py-4">
-						<div className="flex items-center justify-between">
+						<div className="flex items-center justify-between mr-16">
 							<div className="space-y-1">
-								<h1 className="text-2xl font-bold">
+								<h1 className="text-2xl font-bold text-foreground">
 									Business Plan
 								</h1>
 							</div>
 							<div className="flex items-center gap-8">
-								{/* <div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg">
+								<div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg border">
 									<Progress
 										value={totalProgress}
 										className="w-32 h-2"
 									/>
-									<span className="text-sm font-medium">
+									<span className="text-sm font-medium text-foreground">
 										{totalProgress}%
 									</span>
-								</div> */}
+								</div>
 
-								{isLoading ? (
-									<div className="flex items-center gap-2">
-										<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
-										<span className="text-sm">
-											Génération en cours...
-										</span>
-									</div>
-								) : (
-									<div className="flex items-center gap-3">
-										<Button
-											onClick={handleGenerateBusinessPlan}
-											className="bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary)_/_0.9)]"
-											// disabled={
-											// 	totalProgress < 10 || isLoading
-											// }
-										>
-											Générer le Business Plan
-										</Button>
-
-										{generatedText && (
-											<Button
-												onClick={handleExport}
-												variant="outline"
-												className="flex items-center gap-2"
-											>
-												<Download size={16} />
-												Télécharger le Business Plan
-											</Button>
-										)}
-									</div>
-								)}
+								<div className="flex items-center gap-3">
+									<Button
+										onClick={handleGenerateBusinessPlan}
+										className="bg-primary text-primary-foreground hover:bg-primary/90"
+										disabled={totalProgress < 80}
+									>
+										Générer le Business Plan
+									</Button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className="container py-8">
-				<p className="text-sm text-muted-foreground mb-5">
-					Complétez chaque section pour générer votre business plan
-				</p>
+			<div className="container py-8 flex-1">
+				<div className="bg-muted/30 border rounded-lg p-6 mb-8">
+					<h2 className="text-lg font-semibold mb-3">
+						Comment procéder ?
+					</h2>
+					<ul className="space-y-2 text-muted-foreground">
+						<li className="flex items-center gap-2">
+							<span className="text-primary">1.</span>
+							Commencez par remplir les informations générales de
+							votre entreprise ci-dessous
+						</li>
+						<li className="flex items-center gap-2">
+							<span className="text-primary">2.</span>
+							Complétez chaque section du business plan (minimum
+							80% pour chaque section)
+						</li>
+						<li className="flex items-center gap-2">
+							<span className="text-primary">3.</span>
+							Plus vous ajoutez d'éléments dans chaque section,
+							plus votre business plan sera détaillé et pertinent
+						</li>
+						<li className="flex items-center gap-2">
+							<span className="text-primary">4.</span>
+							Une fois que la progression globale atteint 80%,
+							vous pourrez générer votre business plan
+						</li>
+					</ul>
+				</div>
+
+				<GeneralInfoCard
+					data={generalInfo}
+					onChange={handleGeneralInfoChange}
+					onSave={handleGeneralInfoSave}
+					isSaving={isSaving}
+				/>
+
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{templates.map((section) => (
 						<div key={section.id} className="space-y-4">
 							<div className="flex items-center gap-2">
 								<span className="text-2xl">{section.icon}</span>
-								<h2 className="text-xl font-semibold">
+								<h2 className="text-xl font-semibold text-foreground">
 									{section.title}
 								</h2>
 							</div>
 
 							<div className="grid grid-cols-1 gap-4">
 								{section.templates.map((template) => {
-									// const templateProgress =
-									// 	getTemplateProgress(
-									// 		section.id,
-									// 		template.name
-									// 	);
+									const templateProgress =
+										getTemplateProgress(
+											section.id,
+											template.name
+										);
 									return (
-										<div
+										<Card
 											key={template.name}
 											onClick={() =>
 												router.push(template.route)
 											}
 											className={`
-                        relative rounded-xl border p-6 
-                        cursor-pointer transition-all duration-300
-                        ${section.color} ${section.borderColor} ${section.hoverColor}
-                        hover:shadow-lg hover:scale-[1.02]
-                      `}
+						  cursor-pointer transition-all duration-300
+						  ${section.color} ${section.borderColor} ${section.hoverColor}
+						  hover:shadow-lg hover:scale-[1.02]
+						`}
 										>
-											<div className="space-y-4">
+											<div className="p-6 space-y-4">
 												<div className="flex justify-between items-start">
 													<div className="space-y-1">
-														<h3 className="font-semibold">
+														<h3 className="font-semibold text-foreground">
 															{template.name}
 														</h3>
 														<p className="text-sm text-muted-foreground">
@@ -346,24 +336,23 @@ export default function BusinessPlanPage() {
 															}
 														</p>
 													</div>
-													{/* {templateProgress ===
-													100 ? (
+													{templateProgress >= 80 ? (
 														<CheckCircle2 className="w-5 h-5 text-green-500" />
 													) : (
-														<AlertCircle className="w-5 h-5 text-[hsl(var(--primary))]" />
-													)} */}
+														<AlertCircle className="w-5 h-5 text-primary" />
+													)}
 												</div>
 												<div className="space-y-1">
-													{/* <Progress
+													<Progress
 														value={templateProgress}
 														className="h-1.5"
 													/>
 													<div className="text-sm text-right text-muted-foreground">
 														{templateProgress}%
-													</div> */}
+													</div>
 												</div>
 											</div>
-										</div>
+										</Card>
 									);
 								})}
 							</div>

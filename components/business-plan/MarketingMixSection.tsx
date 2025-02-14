@@ -1,19 +1,40 @@
 import React from "react";
-import { MarketingMixCard, MarketingMixData } from "@/types/marketing-mix";
-import {
-	MARKETING_MIX_COLORS,
-	MARKETING_MIX_HEADERS,
-} from "@/lib/business-plan/config/marketing-mix";
+import { MarketingMixCard } from "@/types/marketing-mix";
+import { PlusCircle } from "lucide-react";
 
-type MarketingMixCategory = keyof Omit<
-	MarketingMixData,
-	"lastAnalysis" | "lastUpdated"
->;
+type MarketingMixCategory =
+	| "product"
+	| "price"
+	| "place"
+	| "promotion"
+	| "people"
+	| "process"
+	| "physicalEvidence";
+
+// Style mapping adapté pour une meilleure cohérence avec le Canvas
+const SECTION_STYLES = {
+	product: "bg-blue-500/5 hover:bg-blue-500/10 border-blue-500/10",
+	price: "bg-emerald-500/5 hover:bg-emerald-500/10 border-emerald-500/10",
+	place: "bg-orange-500/5 hover:bg-orange-500/10 border-orange-500/10",
+	promotion: "bg-purple-500/5 hover:bg-purple-500/10 border-purple-500/10",
+	people: "bg-pink-500/5 hover:bg-pink-500/10 border-pink-500/10",
+	process: "bg-indigo-500/5 hover:bg-indigo-500/10 border-indigo-500/10",
+	physicalEvidence: "bg-rose-500/5 hover:bg-rose-500/10 border-rose-500/10",
+};
+
+const HEADER_STYLES = {
+	product: "text-blue-500/70 dark:text-blue-400",
+	price: "text-emerald-500/70 dark:text-emerald-400",
+	place: "text-orange-500/70 dark:text-orange-400",
+	promotion: "text-purple-500/70 dark:text-purple-400",
+	people: "text-pink-500/70 dark:text-pink-400",
+	process: "text-indigo-500/70 dark:text-indigo-400",
+	physicalEvidence: "text-rose-500/70 dark:text-rose-400",
+};
 
 interface MarketingMixSectionProps {
 	category: MarketingMixCategory;
 	title: string;
-	description: string;
 	cards: MarketingMixCard[];
 	onAddCard: (category: MarketingMixCategory) => void;
 	onEditCard: (
@@ -25,65 +46,53 @@ interface MarketingMixSectionProps {
 export const MarketingMixSection: React.FC<MarketingMixSectionProps> = ({
 	category,
 	title,
-	description,
 	cards = [],
 	onAddCard,
 	onEditCard,
 }) => {
 	return (
 		<div
-			className={`flex flex-col h-full p-6 border rounded-xl overflow-hidden ${MARKETING_MIX_COLORS[category]} transition-all duration-200`}
+			className={`h-96 ${SECTION_STYLES[category]} flex flex-col p-4 border rounded-xl`}
 		>
-			{/* En-tête fixe */}
-			<div className="flex-none">
-				<div className="flex justify-between items-center mb-4">
-					<h3
-						className={`text-lg font-bold ${MARKETING_MIX_HEADERS[category].color}`}
-					>
-						{title}
-					</h3>
-					<button
-						onClick={() => onAddCard(category)}
-						className="bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-white transition-colors duration-200 flex items-center gap-1 text-sm font-medium shadow-sm"
-					>
-						+ Ajouter
-					</button>
-				</div>
-				<p className="text-sm text-gray-600 mb-4 line-clamp-2">
-					{description}
-				</p>
+			{/* Header Section - fixe */}
+			<div className="flex-none flex justify-between items-center mb-4">
+				<h3
+					className={`text-lg font-semibold ${HEADER_STYLES[category]}`}
+				>
+					{title}
+				</h3>
+				<button
+					onClick={() => onAddCard(category)}
+					className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+					title="Ajouter un élément"
+				>
+					<PlusCircle size={20} />
+				</button>
 			</div>
 
-			{/* Conteneur des cartes avec défilement */}
-			<div className="flex-1 min-h-0 relative">
-				<div className="absolute inset-0 overflow-y-auto pr-2">
-					<div className="space-y-3">
-						{cards.map((card) => (
-							<div
-								key={card.id}
-								onClick={() => onEditCard(category, card)}
-								className="group p-4 border bg-white/90 backdrop-blur-sm rounded-lg hover:shadow-md transition-all duration-200 cursor-pointer"
+			{/* Cards Container - scrollable */}
+			<div className="flex-1 overflow-hidden">
+				<div className="h-full overflow-y-auto space-y-2 pr-2">
+					{cards.map((card) => (
+						<div
+							key={card.id}
+							onClick={() => onEditCard(category, card)}
+							className="group px-3 py-2 border border-border/50 bg-background/50 
+						 hover:bg-background rounded-lg transition-all duration-200 
+						 cursor-pointer hover:shadow-sm"
+						>
+							<h4
+								className="font-medium text-sm text-foreground/80 group-hover:text-foreground 
+						   transition-colors duration-200 line-clamp-1"
 							>
-								<div className="flex items-start gap-3">
-									<div className="flex-1">
-										<h4 className="font-medium text-gray-800 mb-1">
-											{card.title}
-										</h4>
-										<p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
-											{card.description}
-										</p>
-									</div>
-									<span
-										className={`${MARKETING_MIX_HEADERS[category].color} opacity-0 group-hover:opacity-100 transition-opacity text-sm`}
-									>
-										➜
-									</span>
-								</div>
-							</div>
-						))}
-					</div>
+								{card.title}
+							</h4>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
 	);
 };
+
+export default MarketingMixSection;

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,9 +20,8 @@ import {
 	CartesianGrid,
 	Tooltip,
 	ResponsiveContainer,
-	Label,
 } from "recharts";
-import { Trash2 } from "lucide-react";
+import { Trash2, TrendingUp, PanelRightOpen } from "lucide-react";
 import { Header } from "@/components/business-plan/shared/Header";
 import { TrendEntry, MarketNumber } from "@/types/market-trends";
 import { useMarketTrends } from "@/lib/business-plan/hooks/market-trends/useMarketTrends";
@@ -32,6 +31,26 @@ const FIELD_LABELS = {
 	tauxCroissance: "Taux de Croissance (%)",
 	variationDemande: "Variation de Demande (%)",
 };
+
+interface NoDataCardProps {
+	message: string;
+	buttonText: string;
+	onNavigate: () => void;
+}
+
+const NoDataCard = ({ message, buttonText, onNavigate }: NoDataCardProps) => (
+	<div className="flex flex-col items-center justify-center h-[300px] bg-muted/30 rounded-lg border border-dashed border-muted">
+		<p className="text-muted-foreground mb-4">{message}</p>
+		<Button
+			variant="outline"
+			onClick={onNavigate}
+			className="text-primary hover:text-primary/80 border-primary hover:bg-primary/10"
+		>
+			<PanelRightOpen className="mr-2 h-4 w-4" />
+			{buttonText}
+		</Button>
+	</div>
+);
 
 const Trends: React.FC = () => {
 	const {
@@ -45,11 +64,8 @@ const Trends: React.FC = () => {
 		saveTrend,
 	} = useMarketTrends();
 
-	// Calcul du progrès basé sur le remplissage des données
 	const calculateProgress = useCallback(() => {
-		const hasMarketNumbers = marketNumbers.length > 0;
-		const hasTrends = trends.length > 0;
-		const totalFields = marketNumbers.length * 4 + trends.length * 3; // 4 champs pour marketNumbers, 3 pour trends
+		const totalFields = marketNumbers.length * 4 + trends.length * 3;
 		const filledFields =
 			marketNumbers.reduce((acc, item) => {
 				return (
@@ -72,16 +88,14 @@ const Trends: React.FC = () => {
 		return Math.round((filledFields / totalFields) * 100);
 	}, [trends, marketNumbers]);
 
-	// Handler pour ajouter une nouvelle entrée
 	const handleAddTrend = () => {
 		addTrend();
 	};
 
-	// Remplacer handleRemoveTrend
 	const handleRemoveTrend = (id: string) => {
 		removeTrend(id);
 	};
-	// Handler pour mettre à jour les données
+
 	const handleUpdateTrend = (
 		id: string,
 		field: keyof TrendEntry,
@@ -90,13 +104,21 @@ const Trends: React.FC = () => {
 		updateTrend(id, field, value);
 	};
 
-	// Handler pour mettre à jour un grand chiffre
 	const handleUpdateMarketNumber = (
 		id: string,
 		field: keyof MarketNumber,
 		value: string
 	) => {
 		updateMarketNumber(id, field, value);
+	};
+
+	const switchToDetails = () => {
+		const tabsTrigger = document.querySelector(
+			'[value="details"]'
+		) as HTMLElement;
+		if (tabsTrigger) {
+			tabsTrigger.click();
+		}
 	};
 
 	if (isLoading) {
@@ -117,12 +139,13 @@ const Trends: React.FC = () => {
 				<Tabs defaultValue="overview" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-2 mb-6">
 						<TabsTrigger value="overview">
-							Vue d'ensemble du marché
+							Vue d&apos;ensemble du marché
 						</TabsTrigger>
 						<TabsTrigger value="details">
 							Détail du marché
 						</TabsTrigger>
 					</TabsList>
+
 					{/* Vue d'ensemble */}
 					<TabsContent value="overview" className="space-y-6">
 						<Card className="bg-card">
@@ -132,34 +155,46 @@ const Trends: React.FC = () => {
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-									{marketNumbers.map((item, index) => (
-										<div
-											key={index}
-											className="flex flex-col items-center p-6 rounded-lg bg-background border"
-										>
-											<div className="flex items-center justify-center rounded-full bg-primary/10 text-primary w-20 h-20 mb-4">
-												<span className="text-2xl font-bold">
-													{item.value}
-												</span>
-											</div>
-											<h3 className="text-lg font-semibold text-foreground mb-2">
-												{item.title}
-											</h3>
-											<p className="text-sm text-muted-foreground text-center mb-3">
-												{item.description}
-											</p>
-											<a
-												href={item.referenceLink}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="text-sm text-primary hover:text-primary/80 transition-colors"
+								{marketNumbers.length === 0 ? (
+									<NoDataCard
+										message="Aucune donnée de marché disponible"
+										buttonText="Ajouter des données"
+										onNavigate={switchToDetails}
+									/>
+								) : (
+									<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+										{marketNumbers.map((item, index) => (
+											<div
+												key={index}
+												className="flex flex-col items-center p-6 rounded-lg bg-background border"
 											>
-												Voir la référence
-											</a>
-										</div>
-									))}
-								</div>
+												<div className="flex items-center justify-center rounded-full bg-primary/10 text-primary w-20 h-20 mb-4">
+													<span className="text-2xl font-bold">
+														{item.value}
+													</span>
+												</div>
+												<h3 className="text-lg font-semibold text-foreground mb-2">
+													{item.title}
+												</h3>
+												<p className="text-sm text-muted-foreground text-center mb-3">
+													{item.description}
+												</p>
+												{item.referenceLink && (
+													<a
+														href={
+															item.referenceLink
+														}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="text-sm text-primary hover:text-primary/80 transition-colors"
+													>
+														Voir la référence
+													</a>
+												)}
+											</div>
+										))}
+									</div>
+								)}
 							</CardContent>
 						</Card>
 
@@ -170,58 +205,53 @@ const Trends: React.FC = () => {
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<div className="h-[400px] w-full">
-									<ResponsiveContainer>
-										<LineChart data={trends}>
-											<CartesianGrid
-												strokeDasharray="3 3"
-												className="opacity-50"
-											/>
-											<XAxis
-												dataKey="annee"
-												stroke="currentColor"
-											>
-												<Label
-													value="Année"
-													position="insideBottom"
-													offset={-5}
+								{trends.length === 0 ? (
+									<NoDataCard
+										message="Aucune tendance enregistrée"
+										buttonText="Ajouter des tendances"
+										onNavigate={switchToDetails}
+									/>
+								) : (
+									<div className="h-[400px] w-full">
+										<ResponsiveContainer>
+											<LineChart data={trends}>
+												<CartesianGrid
+													strokeDasharray="3 3"
+													className="opacity-50"
 												/>
-											</XAxis>
-											<YAxis stroke="currentColor">
-												<Label
-													value="Croissance (%)"
-													angle={-90}
-													position="insideLeft"
-													offset={-5}
+												<XAxis
+													dataKey="annee"
+													stroke="currentColor"
 												/>
-											</YAxis>
-											<Tooltip
-												contentStyle={{
-													backgroundColor:
-														"var(--background)",
-													borderColor:
-														"var(--border)",
-												}}
-												labelStyle={{
-													color: "var(--foreground)",
-												}}
-											/>
-											<Line
-												type="monotone"
-												dataKey="tauxCroissance"
-												stroke="hsl(var(--primary))"
-												activeDot={{ r: 8 }}
-												name="Taux de croissance"
-											/>
-											<Line
-												type="monotone"
-												dataKey="variationDemande"
-												stroke="hsl(var(--secondary))"
-												name="Variation de la demande"
-											/>
-										</LineChart>
-									</ResponsiveContainer>
-								</div>
+												<YAxis stroke="currentColor" />
+												<Tooltip
+													contentStyle={{
+														backgroundColor:
+															"var(--background)",
+														borderColor:
+															"var(--border)",
+													}}
+													labelStyle={{
+														color: "var(--foreground)",
+													}}
+												/>
+												<Line
+													type="monotone"
+													dataKey="tauxCroissance"
+													stroke="hsl(var(--primary))"
+													activeDot={{ r: 8 }}
+													name="Taux de croissance"
+												/>
+												<Line
+													type="monotone"
+													dataKey="variationDemande"
+													stroke="hsl(var(--chart-2))"
+													name="Variation de la demande"
+												/>
+											</LineChart>
+										</ResponsiveContainer>
+									</div>
+								)}
 							</CardContent>
 						</Card>
 					</TabsContent>
@@ -230,7 +260,17 @@ const Trends: React.FC = () => {
 					<TabsContent value="details" className="mt-6">
 						<Card className="mb-6">
 							<CardHeader>
-								<CardTitle>Tendances du marché</CardTitle>
+								<div className="flex justify-between items-center">
+									<CardTitle>Tendances du marché</CardTitle>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={handleAddTrend}
+									>
+										<TrendingUp className="mr-2 h-4 w-4" />
+										Ajouter une tendance
+									</Button>
+								</div>
 							</CardHeader>
 							<CardContent>
 								<div className="overflow-x-auto">
@@ -297,17 +337,9 @@ const Trends: React.FC = () => {
 										</TableBody>
 									</Table>
 								</div>
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={handleAddTrend}
-								>
-									Ajouter une tendance
-								</Button>
 							</CardContent>
 						</Card>
 
-						{/* Détail des grands chiffres */}
 						<Card>
 							<CardHeader>
 								<CardTitle>Grands Nombres du Marché</CardTitle>

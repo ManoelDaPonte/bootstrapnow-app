@@ -61,11 +61,23 @@ const ValuePropositionCanvas: React.FC = () => {
 			return;
 		}
 
-		handleSaveItem(
-			category as ValuePropositionCategory,
-			card.title,
-			card.description
-		);
+		// Si la carte a un ID, c'est une mise à jour
+		if (card.id) {
+			handleUpdateItem(
+				category as ValuePropositionCategory,
+				card.id,
+				card.title,
+				card.description
+			);
+		} else {
+			// Sinon, c'est une nouvelle carte
+			handleSaveItem(
+				category as ValuePropositionCategory,
+				card.title,
+				card.description
+			);
+		}
+
 		setModalState({
 			open: false,
 			category: "",
@@ -105,9 +117,13 @@ const ValuePropositionCanvas: React.FC = () => {
 					content: e.target.value,
 				},
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			VALUE_PROPOSITION_SECTIONS[
+				modalState.category as ValuePropositionCategory
+			]?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category
@@ -119,8 +135,8 @@ const ValuePropositionCanvas: React.FC = () => {
 
 	if (isLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<div className="text-gray-600">Chargement...</div>
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
 			</div>
 		);
 	}
@@ -141,65 +157,47 @@ const ValuePropositionCanvas: React.FC = () => {
 	);
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Value Proposition"
-				progress={calculateProgress(data)}
+				progress={calculateProgress(data, qaResponses)}
 			/>
 
-			<div className="flex-1 flex flex-col items-center justify-center p-8">
-				<div className="max-w-6xl w-full">
-					<div className="relative flex flex-col lg:flex-row justify-center gap-4">
-						{/* Customer Segment (Circle) */}
-						<div className="lg:w-1/2 relative">
-							<div className="aspect-square rounded-full border-4 border-blue-500 p-2 bg-blue-50">
-								<div className="h-full flex flex-col">
-									{renderSection(
-										"customerJobs",
-										"flex-1 border-b-2"
-									)}
-									<div className="flex flex-1">
-										{renderSection(
-											"pains",
-											"flex-1 border-r-2"
-										)}
-										{renderSection("gains", "flex-1")}
-									</div>
-								</div>
-							</div>
-						</div>
-
-						{/* Value Proposition (Square) */}
-						<div className="lg:w-1/2 relative">
-							<div className="aspect-square border-4 border-green-500 p-2 bg-green-50">
-								<div className="h-full flex flex-col">
-									{renderSection(
-										"products",
-										"flex-1 border-b-2"
-									)}
-									<div className="flex flex-1">
-										{renderSection(
-											"painRelievers",
-											"flex-1 border-r-2"
-										)}
-										{renderSection(
-											"gainCreators",
-											"flex-1"
-										)}
-									</div>
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<div className="flex flex-col lg:flex-row justify-center items-center gap-8">
+					{/* Customer Segment Circle */}
+					<div className="lg:w-1/2 relative aspect-square">
+						<div className="absolute inset-0 rounded-full border-2 border-blue-500/30">
+							<div className="h-full flex flex-col">
+								{renderSection("customerJobs", "flex-1")}
+								<div className="flex flex-1">
+									{renderSection("pains", "flex-1")}
+									{renderSection("gains", "flex-1")}
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<QASection
-						data={VALUE_PROPOSITION_QA_DATA}
-						responses={qaResponses}
-						onResponseChange={handleQAResponseChange}
-						onResponseSave={handleQAResponseSave}
-						className="mt-8"
-					/>
+					{/* Value Proposition Square */}
+					<div className="lg:w-1/2 relative aspect-square">
+						<div className="absolute inset-0 border-2 border-emerald-500/30">
+							<div className="h-full flex flex-col">
+								{renderSection("products", "flex-1")}
+								<div className="flex flex-1">
+									{renderSection("painRelievers", "flex-1")}
+									{renderSection("gainCreators", "flex-1")}
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+
+				<QASection
+					data={VALUE_PROPOSITION_QA_DATA}
+					responses={qaResponses}
+					onResponseChange={handleQAResponseChange}
+					onResponseSave={handleQAResponseSave}
+				/>
 			</div>
 
 			<CardModal<ValuePropositionCard> {...modalProps} />

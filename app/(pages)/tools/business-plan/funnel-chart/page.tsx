@@ -6,6 +6,7 @@ import {
 	FunnelCard,
 	EditingCard,
 	FunnelSectionId,
+	FUNNEL_SECTIONS_CONFIG,
 } from "@/types/funnel-chart";
 import { useFunnelChartData } from "@/lib/business-plan/hooks/funnel-chart/useFunnelChartData";
 import { calculateProgress } from "@/lib/business-plan/hooks/funnel-chart/storage-funnel-chart";
@@ -14,7 +15,6 @@ import { CardModal } from "@/components/business-plan/shared/CardModal";
 import FunnelChart from "@/components/business-plan/FunnelChartSection";
 import QASection from "@/components/business-plan/shared/QASection";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import Skeleton from "@/components/ui/Skeleton";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
 	FUNNEL_MODAL_DETAILED_DESCRIPTIONS,
@@ -171,9 +171,17 @@ export default function FunnelChartPage() {
 				});
 			}
 		},
-		modalTitle: editingCard?.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: editingCard
+			? `${
+					FUNNEL_SECTIONS_CONFIG.DEFAULT_SECTIONS.find(
+						(s) => s.id === editingCard.sectionId
+					)?.title || ""
+			  } - ${
+					editingCard.card.id
+						? "Modifier la carte"
+						: "Ajouter une carte"
+			  }`
+			: "",
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: editingCard
@@ -183,20 +191,17 @@ export default function FunnelChartPage() {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col h-screen">
-				<Header title="Funnel Chart" progress={0} />
-				<div className="flex-1 p-6">
-					<Skeleton className="w-full h-[600px]" />
-				</div>
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
-				title="Funnel Chart"
-				progress={calculateProgress(sections)}
+				title="Entonnoir de conversion"
+				progress={calculateProgress(sections, qaResponses)}
 			/>
 
 			{error && (

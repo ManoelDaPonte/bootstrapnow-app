@@ -2,7 +2,7 @@
 import { MarketingMixData } from "@/types/marketing-mix";
 import { QAResponses } from "@/types/shared/qa-section";
 import { prisma } from "@/lib/db/prisma";
-
+import { MARKETING_MIX_QA_DATA } from "@/lib/business-plan/config/marketing-mix";
 export const STORAGE_KEY = "marketing-mix-data";
 export const QA_STORAGE_KEY = "marketing-mix-qa-responses";
 
@@ -13,7 +13,6 @@ export const saveMarketingMixData = (
 ) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder les données principales
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -22,10 +21,10 @@ export const saveMarketingMixData = (
 		})
 	);
 
-	// Sauvegarder les réponses QA séparément
 	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
 
-	updateParentProgress(calculateProgress(data));
+	// Mettre à jour avec les deux paramètres
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
 export async function updateMarketingMixData(
@@ -122,7 +121,7 @@ export const getEmptyMarketingMixData = (): MarketingMixData => ({
 	promotion: [],
 	people: [],
 	process: [],
-	physical_evidence: [],
+	physicalEvidence: [],
 	lastUpdated: new Date().toISOString(),
 });
 
@@ -163,7 +162,11 @@ export const saveToDatabase = async (
 	}
 };
 
-export const calculateProgress = (data: MarketingMixData): number => {
+export const calculateProgress = (
+	data: MarketingMixData,
+	qaResponses: QAResponses = {}
+): number => {
+	// 1. Calculer la progression des sections du Marketing Mix
 	const categories = [
 		"product",
 		"price",
@@ -171,15 +174,38 @@ export const calculateProgress = (data: MarketingMixData): number => {
 		"promotion",
 		"people",
 		"process",
-		"physical_evidence",
+		"physicalEvidence",
 	];
-	let filledCategories = 0;
 
+	let filledCategories = 0;
 	categories.forEach((category) => {
 		if ((data[category as keyof MarketingMixData] ?? []).length > 0) {
 			filledCategories++;
 		}
 	});
 
-	return Math.round((filledCategories / categories.length) * 100);
+	// 2. Calculer la progression des réponses QA
+	// On récupère les IDs des questions actuelles
+	const questionIds = MARKETING_MIX_QA_DATA.categories.map((cat) => cat.id);
+
+	// On ne compte que les réponses correspondant aux questions existantes
+	const answeredQuestions = questionIds.filter(
+		(id) => qaResponses[id] && qaResponses[id].trim() !== ""
+	).length;
+
+	const totalQAQuestions = questionIds.length;
+
+	// 3. Calculer la progression totale
+	const categoriesWeight = 0.7;
+	const qaWeight = 0.3;
+
+	const categoriesProgress = (filledCategories / categories.length) * 100;
+	const qaProgress =
+		totalQAQuestions > 0 ? (answeredQuestions / totalQAQuestions) * 100 : 0;
+
+	const totalProgress = Math.round(
+		categoriesProgress * categoriesWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };

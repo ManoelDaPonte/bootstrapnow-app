@@ -18,6 +18,8 @@ import { useUserMetadata } from "@/context/userMetadataProvider";
 
 const navItems = [
 	{ href: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
+	{ href: "/tools/business-plan", label: "Business Plan", icon: FileText },
+
 	{
 		href: "/tools/search-hunter",
 		label: "Search-Hunter",
@@ -30,7 +32,6 @@ const navItems = [
 		icon: Wrench,
 		requiresSubscription: true,
 	},
-	{ href: "/tools/business-plan", label: "Business Plan", icon: FileText },
 	{ href: "/abonnement", label: "Abonnement", icon: CreditCard },
 	{ href: "/profile", label: "Profil", icon: User },
 	{ href: "/aide", label: "Aide", icon: HelpCircle },
@@ -44,14 +45,14 @@ export default function Sidebar() {
 	const isPaidUser = metadata?.plan && metadata.plan !== "free";
 
 	return (
-		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background fixed left-0 top-0 h-screen">
+		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background fixed left-0 top-0 h-screen z-50">
 			<div className="flex flex-col h-full overflow-y-auto p-4">
 				<div className="flex items-center space-x-2 px-2 pb-4 border-b border-border">
 					<Image
 						src="/logo/logo_bootstrapnow.png"
 						alt="logo"
-						width={35}
-						height={35}
+						width={40}
+						height={0}
 					/>
 					<span className="font-bold text-xl">BootstrapNow</span>
 				</div>

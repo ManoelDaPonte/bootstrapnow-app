@@ -7,15 +7,17 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings } from "lucide-react";
+import { LogOut, Settings, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function SaasHeader() {
 	const { user } = useUser();
+	const { setTheme, theme } = useTheme();
 
 	return (
-		// Positionnement fixe, en haut à droite, superposé au reste (z-50)
 		<header className="fixed top-4 right-4 z-50">
 			{user && (
 				<DropdownMenu>
@@ -30,10 +32,6 @@ export default function SaasHeader() {
 							/>
 						</button>
 					</DropdownMenuTrigger>
-					{/**
-					 *  Le DropdownMenuContent se place correctement grâce à Portals
-					 *  ou un positionnement en absolute, selon votre implémentation.
-					 */}
 					<DropdownMenuContent className="w-48">
 						<DropdownMenuItem asChild>
 							<Link
@@ -44,10 +42,25 @@ export default function SaasHeader() {
 								<span>Paramètres</span>
 							</Link>
 						</DropdownMenuItem>
+
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							onClick={() =>
+								setTheme(theme === "light" ? "dark" : "light")
+							}
+							className="flex items-center gap-2"
+						>
+							<Sun className="h-4 w-4 dark:hidden" />
+							<Moon className="h-4 w-4 hidden dark:block" />
+							<span>Changer le thème</span>
+						</DropdownMenuItem>
+
+						<DropdownMenuSeparator />
+
 						<DropdownMenuItem asChild>
 							<Link
 								href="/api/auth/logout"
-								className="flex items-center gap-2 text-red-500"
+								className="flex items-center gap-2 text-destructive hover:text-destructive-foreground hover:bg-destructive/10 w-full transition-colors rounded-sm"
 							>
 								<LogOut className="h-4 w-4" />
 								<span>Se déconnecter</span>

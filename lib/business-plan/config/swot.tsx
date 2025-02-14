@@ -83,10 +83,10 @@ export const SWOT_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Les forces sont des attributs ou des ressources internes qui aident une organisation à atteindre ses objectifs. Ce sont des domaines où l'organisation excelle et possède un avantage sur ses concurrents.",
 		examples: [
-			"**Réputation de marque solide :** L'entreprise bénéficie d'une réputation bien établie pour la qualité de ses produits, ce qui crée une fidélité et une confiance des clients. (ex. : Apple, Nike)",
-			"**Personnel qualifié :** L'entreprise dispose d'une main-d'œuvre hautement qualifiée et expérimentée, ce qui lui permet de produire des produits ou services de haute qualité.",
-			"**Stabilité financière :** L'entreprise a une situation financière solide, ce qui lui permet d'investir dans de nouveaux projets, des expansions et des acquisitions.",
-			"**Technologie innovante :** L'entreprise est en avance en matière d'innovation technologique, ce qui l'aide à rester compétitive et à offrir des solutions uniques à ses clients.",
+			"Réputation de marque solide :** L'entreprise bénéficie d'une réputation bien établie pour la qualité de ses produits, ce qui crée une fidélité et une confiance des clients. (ex. : Apple, Nike)",
+			"Personnel qualifié :** L'entreprise dispose d'une main-d'œuvre hautement qualifiée et expérimentée, ce qui lui permet de produire des produits ou services de haute qualité.",
+			"Stabilité financière :** L'entreprise a une situation financière solide, ce qui lui permet d'investir dans de nouveaux projets, des expansions et des acquisitions.",
+			"Technologie innovante :** L'entreprise est en avance en matière d'innovation technologique, ce qui l'aide à rester compétitive et à offrir des solutions uniques à ses clients.",
 		],
 	},
 	weaknesses: {
@@ -94,10 +94,10 @@ export const SWOT_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Les faiblesses sont des facteurs internes qui peuvent nuire à la capacité de l'organisation à atteindre ses objectifs. Ce sont des domaines où l'organisation manque de ressources ou est moins performante par rapport à ses concurrents.",
 		examples: [
-			"**Coûts élevés :** L'entreprise a des coûts opérationnels élevés, ce qui peut nuire à sa rentabilité et limiter ses investissements dans d'autres domaines.",
-			"**Dépendance à un produit unique :** L'entreprise dépend fortement d'un seul produit ou service, ce qui peut la rendre vulnérable en cas de baisse de la demande.",
-			"**Service client médiocre :** L'entreprise souffre d'une mauvaise réputation en matière de service client, ce qui peut entraîner une insatisfaction et une image de marque négative.",
-			"**Technologie obsolète :** L'entreprise utilise une technologie dépassée, ce qui entraîne des inefficacités et la rend moins compétitive sur un marché en constante évolution.",
+			"Coûts élevés :** L'entreprise a des coûts opérationnels élevés, ce qui peut nuire à sa rentabilité et limiter ses investissements dans d'autres domaines.",
+			"Dépendance à un produit unique :** L'entreprise dépend fortement d'un seul produit ou service, ce qui peut la rendre vulnérable en cas de baisse de la demande.",
+			"Service client médiocre :** L'entreprise souffre d'une mauvaise réputation en matière de service client, ce qui peut entraîner une insatisfaction et une image de marque négative.",
+			"Technologie obsolète :** L'entreprise utilise une technologie dépassée, ce qui entraîne des inefficacités et la rend moins compétitive sur un marché en constante évolution.",
 		],
 	},
 	opportunities: {
@@ -105,10 +105,10 @@ export const SWOT_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Les opportunités sont des facteurs ou des tendances externes que l'organisation peut exploiter pour obtenir un avantage ou atteindre ses objectifs. Cela inclut les tendances du marché, les avancées technologiques et les changements sociétaux.",
 		examples: [
-			"**Marchés émergents :** S'étendre sur de nouveaux marchés en développement où la demande pour les produits ou services de l'entreprise est croissante.",
-			"**Avancées technologiques :** Tirer parti des nouvelles technologies pour améliorer l'efficacité, créer de nouveaux produits ou toucher une clientèle plus large.",
-			"**Évolution des préférences des consommateurs :** Profiter des changements dans le comportement ou les préférences des consommateurs, comme l'augmentation de la demande pour des produits écologiques ou durables.",
-			"**Partenariats stratégiques :** Former des alliances avec d'autres entreprises pour accéder à de nouvelles ressources, marchés ou technologies.",
+			"Marchés émergents :** S'étendre sur de nouveaux marchés en développement où la demande pour les produits ou services de l'entreprise est croissante.",
+			"Avancées technologiques :** Tirer parti des nouvelles technologies pour améliorer l'efficacité, créer de nouveaux produits ou toucher une clientèle plus large.",
+			"Évolution des préférences des consommateurs :** Profiter des changements dans le comportement ou les préférences des consommateurs, comme l'augmentation de la demande pour des produits écologiques ou durables.",
+			"Partenariats stratégiques :** Former des alliances avec d'autres entreprises pour accéder à de nouvelles ressources, marchés ou technologies.",
 		],
 	},
 	threats: {
@@ -116,10 +116,10 @@ export const SWOT_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Les menaces sont des facteurs externes qui pourraient avoir un impact négatif sur l'organisation ou sa capacité à atteindre ses objectifs. Cela inclut la concurrence, les crises économiques et les changements réglementaires.",
 		examples: [
-			"**Concurrence accrue :** L'arrivée de nouveaux concurrents ou le renforcement de concurrents existants proposant des produits ou services similaires à des prix plus bas.",
-			"**Récession économique :** Un ralentissement économique qui réduit les dépenses des consommateurs et affecte la demande globale des produits de l'entreprise.",
-			"**Changements réglementaires :** De nouvelles lois ou réglementations qui pourraient augmenter les coûts opérationnels ou limiter les activités de l'entreprise.",
-			"**Perturbations de la chaîne d'approvisionnement :** Des interruptions dans la chaîne d'approvisionnement qui affectent la capacité de l'entreprise à produire et livrer ses produits efficacement.",
+			"Concurrence accrue :** L'arrivée de nouveaux concurrents ou le renforcement de concurrents existants proposant des produits ou services similaires à des prix plus bas.",
+			"Récession économique :** Un ralentissement économique qui réduit les dépenses des consommateurs et affecte la demande globale des produits de l'entreprise.",
+			"Changements réglementaires :** De nouvelles lois ou réglementations qui pourraient augmenter les coûts opérationnels ou limiter les activités de l'entreprise.",
+			"Perturbations de la chaîne d'approvisionnement :** Des interruptions dans la chaîne d'approvisionnement qui affectent la capacité de l'entreprise à produire et livrer ses produits efficacement.",
 		],
 	},
 };

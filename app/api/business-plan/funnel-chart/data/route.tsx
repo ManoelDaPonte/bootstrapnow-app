@@ -2,44 +2,7 @@
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { prisma } from "@/lib/db/prisma";
-
-export const INITIAL_SECTIONS = [
-	{
-		id: 1,
-		title: "Visibilité",
-		size: 100,
-		cards: [],
-		color: "from-yellow-50 to-yellow-100",
-	},
-	{
-		id: 2,
-		title: "Intérêt",
-		size: 85,
-		cards: [],
-		color: "from-yellow-100 to-orange-100",
-	},
-	{
-		id: 3,
-		title: "Considération",
-		size: 70,
-		cards: [],
-		color: "from-orange-100 to-orange-200",
-	},
-	{
-		id: 4,
-		title: "Intention",
-		size: 55,
-		cards: [],
-		color: "from-orange-200 to-red-200",
-	},
-	{
-		id: 5,
-		title: "Achat",
-		size: 40,
-		cards: [],
-		color: "from-red-200 to-red-300",
-	},
-];
+import { INITIAL_SECTIONS } from "@/lib/business-plan/hooks/funnel-chart/storage-funnel-chart";
 
 export async function GET() {
 	try {

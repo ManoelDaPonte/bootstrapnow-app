@@ -118,7 +118,7 @@ export const useSkillMatrix = () => {
 	const removeDomain = async (domainId: string) => {
 		const newDomains = domains.filter((domain) => domain.id !== domainId);
 		const newPeople = people.map((person) => {
-			const { [domainId]: ignore, ...remainingSkills } = person.skills;
+			const { [domainId]: _ignore, ...remainingSkills } = person.skills; // Ajout du préfixe '_'
 			return { ...person, skills: remainingSkills };
 		});
 

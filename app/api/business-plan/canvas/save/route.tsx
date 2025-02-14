@@ -2,8 +2,6 @@
 import { NextResponse } from "next/server";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { updateCanvasData } from "@/lib/business-plan/hooks/canvas/storage-canvas";
-import { CanvasData } from "@/types/canvas";
-import { QAResponses } from "@/types/shared/qa-section";
 
 export async function POST(request: Request) {
 	try {
@@ -18,7 +16,7 @@ export async function POST(request: Request) {
 		let body;
 		try {
 			body = await request.json();
-		} catch (parseError) {
+		} catch (_error) {
 			return NextResponse.json(
 				{ error: "Données JSON invalides" },
 				{ status: 400 }

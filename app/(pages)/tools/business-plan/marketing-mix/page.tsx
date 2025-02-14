@@ -9,7 +9,7 @@ import { MarketingMixSection } from "@/components/business-plan/MarketingMixSect
 import QASection from "@/components/business-plan/shared/QASection";
 import { ModalProps } from "@/types/shared/card-modal";
 import {
-	MARKETING_MIX_DESCRIPTIONS,
+	// MARKETING_MIX_DESCRIPTIONS,
 	MARKETING_MIX_HEADERS,
 	MARKETING_MIX_SECTION_ORDER,
 	MARKETING_MIX_MODAL_DETAILED_DESCRIPTIONS,
@@ -26,6 +26,7 @@ export default function MarketingMixMatrix() {
 		handleDeleteCard,
 		handleQAResponseChange,
 		handleQAResponseSave,
+		isLoading,
 	} = useMarketingMixData();
 	const [modalState, setModalState] = useState<ModalState>({
 		open: false,
@@ -94,9 +95,12 @@ export default function MarketingMixMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			MARKETING_MIX_HEADERS[modalState.category as MarketingMixCategory]
+				?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category
@@ -106,26 +110,32 @@ export default function MarketingMixMatrix() {
 			: undefined,
 	};
 
-	return (
-		<div className="flex flex-col h-screen bg-gray-50">
-			<Header title="Mix Marketing" progress={calculateProgress(cards)} />
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-lg">Chargement...</div>
+			</div>
+		);
+	}
 
-			{/* Contenu principal avec grille adaptative */}
-			<div className="flex-1 max-w-[1920px] mx-auto p-6 overflow-y-auto">
+	return (
+		<div className="min-h-screen bg-background flex flex-col">
+			<Header
+				title="Mix Marketing"
+				progress={calculateProgress(cards, qaResponses)}
+			/>
+
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 					{MARKETING_MIX_SECTION_ORDER.map((category) => (
-						<div key={category} className="h-[600px]">
-							<MarketingMixSection
-								category={category}
-								title={MARKETING_MIX_HEADERS[category].title}
-								description={
-									MARKETING_MIX_DESCRIPTIONS[category]
-								}
-								cards={cards[category] || []}
-								onAddCard={handleAddCard}
-								onEditCard={handleEditCard}
-							/>
-						</div>
+						<MarketingMixSection
+							key={category}
+							category={category}
+							title={MARKETING_MIX_HEADERS[category].title}
+							cards={cards[category] || []}
+							onAddCard={handleAddCard}
+							onEditCard={handleEditCard}
+						/>
 					))}
 				</div>
 

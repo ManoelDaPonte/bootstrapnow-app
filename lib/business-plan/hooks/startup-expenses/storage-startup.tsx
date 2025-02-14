@@ -1,5 +1,5 @@
 // lib/business-plan/hooks/startup-expenses/storage-startup.tsx
-import { FinancialData, FinancialEntry, Risk } from "@/types/startup-expenses";
+import { FinancialData } from "@/types/startup-expenses";
 import { prisma } from "@/lib/db/prisma";
 
 export const STORAGE_KEY = "startup-expenses-data";

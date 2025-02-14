@@ -1,9 +1,9 @@
 // lib/business-plan/canvas/storage-canvas.ts
 import { CanvasData } from "@/types/canvas";
 import { prisma } from "@/lib/db/prisma";
-import { CanvasCard } from "@/types/canvas";
 import { getUserFromSession } from "@/lib/auth0/getUserFromSession";
 import { QAResponses } from "@/types/shared/qa-section";
+import { CANVAS_QA_DATA } from "@/lib/business-plan/config/canvas";
 
 export const STORAGE_KEY = "canvas-data";
 export const QA_STORAGE_KEY = "canvas-qa-responses";
@@ -28,7 +28,7 @@ export const saveCanvasData = (data: CanvasData, qaResponses: QAResponses) => {
 	// Sauvegarder les QA responses séparément
 	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
 
-	updateParentProgress(calculateProgress(data));
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
 export async function updateCanvasData(
@@ -73,7 +73,13 @@ export async function updateCanvasData(
 }
 
 // Calculer la progression en fonction des sections remplies
-export const calculateProgress = (data: CanvasData): number => {
+// lib/business-plan/canvas/storage-canvas.ts
+
+export const calculateProgress = (
+	data: CanvasData,
+	qaResponses: QAResponses
+): number => {
+	// 1. Calculer la progression des sections du Canvas
 	const categories = [
 		"keyPartners",
 		"keyActivities",
@@ -87,6 +93,7 @@ export const calculateProgress = (data: CanvasData): number => {
 	];
 
 	let filledCategories = 0;
+	const totalCategories = categories.length;
 
 	categories.forEach((category) => {
 		if ((data[category as keyof CanvasData] ?? []).length > 0) {
@@ -94,7 +101,25 @@ export const calculateProgress = (data: CanvasData): number => {
 		}
 	});
 
-	return Math.round((filledCategories / categories.length) * 100);
+	// 2. Calculer la progression des réponses QA
+	const totalQAQuestions = CANVAS_QA_DATA.categories.length;
+	const answeredQuestions = Object.values(qaResponses).filter(
+		(response) => response && response.trim() !== ""
+	).length;
+
+	// 3. Calculer la progression totale
+	// On peut donner un poids différent aux sections du Canvas et aux questions QA
+	const canvasWeight = 0.7; // 70% du score total
+	const qaWeight = 0.3; // 30% du score total
+
+	const canvasProgress = (filledCategories / totalCategories) * 100;
+	const qaProgress = (answeredQuestions / totalQAQuestions) * 100;
+
+	const totalProgress = Math.round(
+		canvasProgress * canvasWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };
 
 interface StoredData {

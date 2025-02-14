@@ -1,14 +1,6 @@
-// components/business-plan/startup-expenses/Details.tsx
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import {
 	Table,
 	TableBody,
@@ -17,14 +9,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-	DialogClose,
-} from "@/components/ui/dialog";
 import {
 	Plus,
 	Trash2,
@@ -43,64 +27,28 @@ export const Details: React.FC<DetailsProps> = ({
 	return (
 		<Card className="bg-card">
 			<CardHeader>
-				<div className="flex justify-between items-center">
-					<CardTitle className="text-xl font-semibold text-foreground">
-						Détails financiers
-					</CardTitle>
-					<div className="flex space-x-2">
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button
-									variant="outline"
-									size="sm"
-									className="text-primary hover:text-primary/80"
-								>
-									<Plus className="mr-2 h-4 w-4" />
-									Nouvelle Catégorie
-								</Button>
-							</DialogTrigger>
-							{/* ... Contenu du Dialog ... */}
-						</Dialog>
-
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => onAdd("investors")}
-							className="bg-background hover:bg-muted"
-						>
-							<Calculator className="mr-2 h-4 w-4" />
-							Ajoutez un investisseur
-						</Button>
-
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => onAdd("loans")}
-							className="bg-background hover:bg-muted"
-						>
-							<TrendingUp className="mr-2 h-4 w-4" />
-							Ajoutez un prêt
-						</Button>
-
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => onAdd("expenses")}
-							className="bg-background hover:bg-muted"
-						>
-							<AlertTriangle className="mr-2 h-4 w-4" />
-							Ajoutez une dépense
-						</Button>
-					</div>
-				</div>
+				<CardTitle className="text-xl font-semibold text-foreground">
+					Détails financiers
+				</CardTitle>
 			</CardHeader>
 
 			<CardContent className="space-y-6">
 				{/* Section Investisseurs */}
 				<div>
-					<h3 className="text-lg font-semibold mb-4 text-foreground">
-						Investisseurs
-					</h3>
+					<div className="flex justify-between items-center mb-4">
+						<h3 className="text-lg font-semibold text-foreground">
+							Investisseurs
+						</h3>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => onAdd("investors")}
+							className="text-primary hover:text-primary/80 border-primary hover:bg-primary/10"
+						>
+							<Calculator className="mr-2 h-4 w-4" />
+							Ajoutez un investisseur
+						</Button>
+					</div>
 					<div className="overflow-auto rounded-lg border bg-background">
 						<Table>
 							<TableHeader>
@@ -108,7 +56,6 @@ export const Details: React.FC<DetailsProps> = ({
 									<TableHead>Nom</TableHead>
 									<TableHead>Quantité</TableHead>
 									<TableHead>Type</TableHead>
-									<TableHead>Catégorie</TableHead>
 									<TableHead>Actions</TableHead>
 								</TableRow>
 							</TableHeader>
@@ -159,35 +106,6 @@ export const Details: React.FC<DetailsProps> = ({
 											/>
 										</TableCell>
 										<TableCell>
-											<Select
-												value={entry.category || ""}
-												onValueChange={(val) =>
-													onUpdate(
-														"investors",
-														entry.id,
-														"category",
-														val
-													)
-												}
-											>
-												<SelectTrigger className="bg-background">
-													<SelectValue placeholder="Sélectionnez une catégorie" />
-												</SelectTrigger>
-												<SelectContent>
-													{data.categoryDefinitions.investors.map(
-														(cat) => (
-															<SelectItem
-																key={cat.id}
-																value={cat.id}
-															>
-																{cat.name}
-															</SelectItem>
-														)
-													)}
-												</SelectContent>
-											</Select>
-										</TableCell>
-										<TableCell>
 											<button
 												onClick={() =>
 													onRemove(
@@ -209,9 +127,20 @@ export const Details: React.FC<DetailsProps> = ({
 
 				{/* Section Prêts */}
 				<div>
-					<h3 className="text-lg font-semibold mb-4 text-foreground">
-						Prêts
-					</h3>
+					<div className="flex justify-between items-center mb-4">
+						<h3 className="text-lg font-semibold text-foreground">
+							Prêts
+						</h3>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => onAdd("loans")}
+							className="text-primary hover:text-primary/80 border-primary hover:bg-primary/10"
+						>
+							<TrendingUp className="mr-2 h-4 w-4" />
+							Ajoutez un prêt
+						</Button>
+					</div>
 					<div className="overflow-auto rounded-lg border bg-background">
 						<Table>
 							<TableHeader>
@@ -219,7 +148,6 @@ export const Details: React.FC<DetailsProps> = ({
 									<TableHead>Nom</TableHead>
 									<TableHead>Quantité</TableHead>
 									<TableHead>Type</TableHead>
-									<TableHead>Catégorie</TableHead>
 									<TableHead>Actions</TableHead>
 								</TableRow>
 							</TableHeader>
@@ -270,35 +198,6 @@ export const Details: React.FC<DetailsProps> = ({
 											/>
 										</TableCell>
 										<TableCell>
-											<Select
-												value={entry.category || ""}
-												onValueChange={(val) =>
-													onUpdate(
-														"loans",
-														entry.id,
-														"category",
-														val
-													)
-												}
-											>
-												<SelectTrigger className="bg-background">
-													<SelectValue placeholder="Sélectionnez une catégorie" />
-												</SelectTrigger>
-												<SelectContent>
-													{data.categoryDefinitions.loans.map(
-														(cat) => (
-															<SelectItem
-																key={cat.id}
-																value={cat.id}
-															>
-																{cat.name}
-															</SelectItem>
-														)
-													)}
-												</SelectContent>
-											</Select>
-										</TableCell>
-										<TableCell>
 											<button
 												onClick={() =>
 													onRemove("loans", entry.id)
@@ -317,9 +216,20 @@ export const Details: React.FC<DetailsProps> = ({
 
 				{/* Section Dépenses */}
 				<div>
-					<h3 className="text-lg font-semibold mb-4 text-foreground">
-						Dépenses
-					</h3>
+					<div className="flex justify-between items-center mb-4">
+						<h3 className="text-lg font-semibold text-foreground">
+							Dépenses
+						</h3>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => onAdd("expenses")}
+							className="text-primary hover:text-primary/80 border-primary hover:bg-primary/10"
+						>
+							<AlertTriangle className="mr-2 h-4 w-4" />
+							Ajoutez une dépense
+						</Button>
+					</div>
 					<div className="overflow-auto rounded-lg border bg-background">
 						<Table>
 							<TableHeader>
@@ -327,7 +237,6 @@ export const Details: React.FC<DetailsProps> = ({
 									<TableHead>Nom</TableHead>
 									<TableHead>Quantité</TableHead>
 									<TableHead>Type</TableHead>
-									<TableHead>Catégorie</TableHead>
 									<TableHead>Actions</TableHead>
 								</TableRow>
 							</TableHeader>
@@ -378,35 +287,6 @@ export const Details: React.FC<DetailsProps> = ({
 											/>
 										</TableCell>
 										<TableCell>
-											<Select
-												value={entry.category || ""}
-												onValueChange={(val) =>
-													onUpdate(
-														"expenses",
-														entry.id,
-														"category",
-														val
-													)
-												}
-											>
-												<SelectTrigger className="bg-background">
-													<SelectValue placeholder="Sélectionnez une catégorie" />
-												</SelectTrigger>
-												<SelectContent>
-													{data.categoryDefinitions.expenses.map(
-														(cat) => (
-															<SelectItem
-																key={cat.id}
-																value={cat.id}
-															>
-																{cat.name}
-															</SelectItem>
-														)
-													)}
-												</SelectContent>
-											</Select>
-										</TableCell>
-										<TableCell>
 											<button
 												onClick={() =>
 													onRemove(
@@ -429,3 +309,5 @@ export const Details: React.FC<DetailsProps> = ({
 		</Card>
 	);
 };
+
+export default Details;
