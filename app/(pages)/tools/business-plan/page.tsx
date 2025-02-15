@@ -1,3 +1,4 @@
+//app/%28pages%29/tools/business-plan/page.tsx
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -8,9 +9,10 @@ import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgre
 import { Card } from "@/components/ui/card";
 import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
 import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
-import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
-import { testAllAnalyzers } from "@/lib/openai/generators/testAnalyzers";
-import { exploreAnalyses } from "@/lib/openai/generators/pathExplorer";
+import { useDocumentGeneration } from "@/lib/business-plan/hooks/useDocumentGeneration";
+import { GenerationDialog } from "@/components/business-plan/BusinessPlanGenerationDialog";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { FormatSelectionDialog } from "@/components/business-plan/FormatSelectionDialog";
 
 const templates = [
 	{
@@ -163,37 +165,8 @@ interface ProgressType {
 }
 
 export default function BusinessPlanPage() {
-	const { progressGeneration, generateSection, generateFullBusinessPlan } =
-		useBusinessPlanGenerator();
-
-	const handleGenerateBusinessPlan = async () => {
-		try {
-			// Pour explorer les analyses
-			await exploreAnalyses("auth0|6751e0b17016716a3ef71a0c");
-
-			// const results = await testAllAnalyzers(
-			// 	"auth0|6751e0b17016716a3ef71a0c"
-			// );
-
-			// Test d'une seule section
-			// const sectionResult = await generateSection(
-			// 	"auth0|6751e0b17016716a3ef71a0c",
-			// 	"ES_Goal_123"
-			// );
-			// console.log("État de la génération:", {
-			// 	status: progressGeneration.status,
-			// 	currentSection: progressGeneration.currentSection,
-			// 	completedSections: progressGeneration.completedSections,
-			// 	errors: progressGeneration.errors,
-			// });
-
-			// Si vous voulez générer tout le business plan
-			// const fullResults = await generateFullBusinessPlan("auth0|6751e0b17016716a3ef71a0c");
-		} catch (error) {
-			console.error("Erreur lors de la génération:", error);
-		}
-	};
-
+	const { user } = useUser();
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const {
 		data: generalInfo,
 		updateField: handleGeneralInfoChange,
@@ -201,6 +174,28 @@ export default function BusinessPlanPage() {
 		completionPercentage: generalInfoProgress,
 		isSaving,
 	} = useGeneralInfo();
+
+	const {
+		generateDocument,
+		startGeneration,
+		isGenerating,
+		currentStep,
+		currentSection,
+		progress: generationProgress,
+		error,
+		status,
+		showFormatDialog,
+		setShowFormatDialog,
+	} = useDocumentGeneration();
+
+	const handleGenerateBusinessPlan = async () => {
+		startGeneration();
+	};
+	const handleFormatSelect = async (format: "pdf" | "docx") => {
+		setShowFormatDialog(false);
+		setIsDialogOpen(true);
+		await generateDocument(format);
+	};
 
 	const router = useRouter();
 
@@ -368,6 +363,21 @@ export default function BusinessPlanPage() {
 						</div>
 					))}
 				</div>
+				<FormatSelectionDialog
+					isOpen={showFormatDialog}
+					onClose={() => setShowFormatDialog(false)}
+					onFormatSelect={handleFormatSelect}
+					isLoading={isGenerating}
+				/>
+				<GenerationDialog
+					isOpen={isDialogOpen}
+					onClose={() => setIsDialogOpen(false)}
+					currentStep={currentStep}
+					currentSection={currentSection}
+					progress={generationProgress}
+					status={status}
+					error={error}
+				/>
 			</div>
 		</div>
 	);

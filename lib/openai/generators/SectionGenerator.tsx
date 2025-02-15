@@ -6,7 +6,6 @@ import { SECTION_SYSTEM_PROMPTS } from "@/lib/openai/config/prompts";
 import { DataMapper } from "./DataMapper";
 import { format_all_analyses } from "../formatters";
 import { create_section_prompt } from "../formatters/sectionFormatter";
-import { result } from "lodash";
 
 export class SectionGenerator {
 	private mapper: DataMapper;
@@ -15,6 +14,11 @@ export class SectionGenerator {
 	constructor(databaseUrl: string, openaiApiKey: string) {
 		this.mapper = new DataMapper(databaseUrl);
 		this.openai = new OpenAI({ apiKey: openaiApiKey });
+	}
+
+	// Ajout de la nouvelle méthode pour la compatibilité
+	async loadUserAnalyses(auth0Id: string) {
+		return await this.mapper.getUserAnalyses(auth0Id);
 	}
 
 	private loadSectionConfig(sectionName: string): SectionConfig {
@@ -137,17 +141,17 @@ export class SectionGenerator {
 			console.log("\n=== PROMPT UTILISATEUR ===\n", userPrompt);
 
 			// 6. Générer la réponse via OpenAI
-			// const completion = await this.openai.chat.completions.create({
-			// 	model: "gpt-4-turbo-preview",
-			// 	messages: [
-			// 		{ role: "system", content: config.systemPrompt },
-			// 		{ role: "user", content: userPrompt },
-			// 	],
-			// 	temperature: 0.7,
-			// });
+			const completion = await this.openai.chat.completions.create({
+				model: "gpt-4-turbo-preview",
+				messages: [
+					{ role: "system", content: config.systemPrompt },
+					{ role: "user", content: userPrompt },
+				],
+				temperature: 0.7,
+			});
 
-			// const generatedContent = completion.choices[0].message.content;
-			const generatedContent = "Generated content";
+			const generatedContent = completion.choices[0].message.content;
+			// const generatedContent = "Generated content";
 			console.log("\n=== CONTENU GÉNÉRÉ ===\n", generatedContent);
 			console.log("========================\n");
 

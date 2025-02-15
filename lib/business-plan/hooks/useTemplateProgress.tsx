@@ -50,7 +50,8 @@ export const useTemplateProgress = () => {
 		profitLossData: profitLossData12,
 		qaResponses: qaResponsesProfilLoss,
 	} = useProfitLossData12();
-	const { data: startupExpenseData } = useStartupData();
+	const { data: startupExpenseData, qaResponses: qaResponsesStartupExpense } =
+		useStartupData();
 	const { trends, marketNumbers } = useMarketTrends();
 	const { competitors } = useCompetitors();
 
@@ -103,8 +104,10 @@ export const useTemplateProgress = () => {
 				profitLossData12,
 				qaResponsesProfilLoss
 			),
-			"Dépenses de démarrage":
-				calculateStartupProgress(startupExpenseData),
+			"Dépenses de démarrage": calculateStartupProgress(
+				startupExpenseData,
+				qaResponsesStartupExpense
+			),
 		},
 	};
 };

@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMetadataProvider } from "@/context/userMetadataProvider";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
+import { GenerationProvider } from "@/context/BusinessPlanGenerationContext";
 
 export default function DashboardLayout({
 	children,
@@ -22,33 +23,35 @@ export default function DashboardLayout({
 			<body className="min-h-screen bg-background antialiased">
 				<UserProvider>
 					<UserMetadataProvider>
-						<ThemeProvider
-							attribute="class"
-							defaultTheme="light"
-							enableSystem={false}
-						>
-							<div className="flex h-screen">
-								{" "}
-								{/* Container principal */}
-								{/* Sidebar avec une largeur fixe */}
-								<aside className="w-64 flex-shrink-0">
-									<Sidebar />
-								</aside>
-								{/* Container du contenu principal avec sa propre zone de scroll */}
-								<div className="flex-1 flex flex-col min-w-0">
+						<GenerationProvider>
+							<ThemeProvider
+								attribute="class"
+								defaultTheme="light"
+								enableSystem={false}
+							>
+								<div className="flex h-screen">
 									{" "}
-									{/* min-w-0 est crucial ici */}
-									<Header />
-									<main className="flex-1 relative overflow-y-auto">
+									{/* Container principal */}
+									{/* Sidebar avec une largeur fixe */}
+									<aside className="w-64 flex-shrink-0">
+										<Sidebar />
+									</aside>
+									{/* Container du contenu principal avec sa propre zone de scroll */}
+									<div className="flex-1 flex flex-col min-w-0">
 										{" "}
-										{/* overflow-y-auto pour le scroll vertical */}
-										{children}
-									</main>
-									<ThemeToggle />
-									<TailwindIndicator />
+										{/* min-w-0 est crucial ici */}
+										<Header />
+										<main className="flex-1 relative overflow-y-auto">
+											{" "}
+											{/* overflow-y-auto pour le scroll vertical */}
+											{children}
+										</main>
+										<ThemeToggle />
+										<TailwindIndicator />
+									</div>
 								</div>
-							</div>
-						</ThemeProvider>
+							</ThemeProvider>
+						</GenerationProvider>
 					</UserMetadataProvider>
 				</UserProvider>
 			</body>

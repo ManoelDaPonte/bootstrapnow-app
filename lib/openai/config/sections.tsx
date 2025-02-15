@@ -1,5 +1,3 @@
-import { empty } from "@prisma/client/runtime/library";
-
 export const BUSINESS_PLAN_SECTIONS = {
 	ES_Overview: {
 		title: "Vue globale de l'entreprise",
@@ -26,7 +24,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["swot", "formatted_sections", "opportunities"],
 			["funnel_chart", "formatted_qa", "pain_points"],
-			["funnel_chart", "funnel_analysis", "0"],
+			["funnel_chart", "formatted_sections", "visibilité"],
 		],
 	},
 	ES_Goal_123: {
@@ -37,12 +35,12 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 			["ansoff", "formatted_qa", "growth_strategy"],
-			["startup_expenses", "capital_analysis"],
-			["monthly_projection", "summary"],
-			["yearly_projection", "revenue_totals", "trend_analysis"],
-			["startup_expenses", "financial_analysis"],
-			["monthly_projection", "growth_analysis"],
-			["yearly_projection", "revenue_totals", "revenue_growth"],
+			["startup_expenses", "formatted_sections", "capital"],
+			["monthly_projection", "formatted_sections", "summary"],
+			["yearly_projection", "formatted_sections", "trend_analysis"],
+			["startup_expenses", "formatted_sections", "financial"],
+			["monthly_projection", "formatted_sections", "growth_analysis"],
+			["yearly_projection", "formatted_sections", "yearly_analysis"],
 		],
 	},
 	ES_Target_market: {
@@ -59,7 +57,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		title: "Concurrence",
 		paths: [
 			["canvas", "formatted_sections", "value_proposition"],
-			["competitors", "formatted_text", empty],
+			["competitors", "formatted_text"],
 			["swot", "formatted_sections", "strengths"],
 			["swot", "formatted_sections", "weaknesses"],
 			["swot", "formatted_sections", "threats"],
@@ -71,7 +69,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 	ES_management_team: {
 		title: "Équipe de direction",
 		paths: [
-			["skills_matrix", "formatted_text", empty],
+			["skills_matrix", "formatted_text"],
 			["skills_matrix", "formatted_qa", "leadership_skills"],
 			["canvas", "formatted_sections", "key_resources"],
 			["swot", "formatted_sections", "strengths"],
@@ -81,19 +79,19 @@ export const BUSINESS_PLAN_SECTIONS = {
 	ES_financial_outlook: {
 		title: "Perspectives financières",
 		paths: [
-			["startup_expenses", "capital_analysis"],
-			["monthly_projection", "monthly_analysis"],
-			["yearly_projection", "yearly_analysis"],
-			["startup_expenses", "expenses_analysis"],
-			["monthly_projection", "growth_analysis"],
-			["yearly_projection", "trend_analysis"],
+			["startup_expenses", "formatted_sections", "capital"],
+			["monthly_projection", "formatted_sections", "monthly_analysis"],
+			["yearly_projection", "formatted_sections", "yearly_analysis"],
+			["startup_expenses", "formatted_sections", "expenses"],
+			["monthly_projection", "formatted_sections", "growth_analysis"],
+			["yearly_projection", "formatted_sections", "trend_analysis"],
 			["canvas", "formatted_sections", "revenue_streams"],
 			["canvas", "formatted_sections", "cost_structure"],
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 			["ansoff", "formatted_sections", "market_development"],
 			["ansoff", "formatted_sections", "diversification"],
-			["yearly_projection", "summary"],
+			["yearly_projection", "formatted_sections", "summary"],
 		],
 	},
 
@@ -129,9 +127,9 @@ export const BUSINESS_PLAN_SECTIONS = {
 	Company_goals_shortandmidTerm: {
 		title: "Mission de l'entreprise",
 		paths: [
-			["monthly_projection", "monthly_analysis"],
-			["monthly_projection", "expenses_analysis"],
-			["monthly_projection", "growth_analysis"],
+			["monthly_projection", "formatted_sections", "monthly_analysis"],
+			["monthly_projection", "formatted_sections", "expenses_analysis"],
+			["monthly_projection", "formatted_sections", "growth_analysis"],
 			["ansoff", "formatted_sections", "market_development"],
 			["ansoff", "formatted_sections", "diversification"],
 			["canvas", "formatted_sections", "key_activities"],
@@ -142,7 +140,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		title: "Mission de l'entreprise",
 		paths: [
 			["canvas", "formatted_sections", "customer_segments"],
-			["market_trends", "formatted_text", empty],
+			["market_trends", "formatted_text"],
 			["value_proposition", "formatted_qa", "vp_customer_profiles"],
 			["pestel", "formatted_qa", "opportunities"],
 		],
@@ -163,7 +161,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		paths: [
 			["swot", "formatted_sections", "strengths"],
 			["value_proposition", "formatted_qa", "vp_differentiation_factors"],
-			["competitors", "formatted_text", empty],
+			["competitors", "formatted_text"],
 		],
 	},
 
@@ -184,7 +182,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "customer_jobs"],
 			["value_proposition", "formatted_sections", "pains"],
 			["pestel", "formatted_qa", "opportunities"],
-			["market_trends", "trends_summary"],
+			["market_trends", "formatted_sections", "trends_summary"],
 			["swot", "formatted_sections", "opportunities"],
 			["canvas", "formatted_qa", "market_positioning"],
 			["value_proposition", "formatted_sections", "gains"],
@@ -216,8 +214,8 @@ export const BUSINESS_PLAN_SECTIONS = {
 	Market_SizeAndTrends: {
 		title: "Marché : Taille et tendances",
 		paths: [
-			["market_trends", "trends_summary"],
-			["market_trends", "market_numbers"],
+			["market_trends", "formatted_sections", "trends_summary"],
+			["market_trends", "formatted_sections", "market_numbers"],
 			["pestel", "formatted_sections", "economic"],
 			["pestel", "formatted_qa", "industry_trends"],
 			["swot", "formatted_sections", "opportunities"],
@@ -262,9 +260,9 @@ export const BUSINESS_PLAN_SECTIONS = {
 		title: "Barrière à l'entrée",
 		paths: [
 			["canvas", "formatted_sections", "cost_structure"],
-			["startup_expenses", "total_expenses"],
+			["startup_expenses", "formatted_sections", "expenses"],
 			["startup_expenses", "formatted_text"],
-			["startup_expenses", "total_capital"],
+			["startup_expenses", "formatted_sections", "capital"],
 			// {{FP_Funding}}, {{FP_CapitalNeeds}}.
 			["canvas", "formatted_sections", "key_partners"],
 		],
@@ -332,7 +330,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "threats"],
 			["value_proposition", "formatted_sections", "gains"],
 			["canvas", "formatted_qa", "market_positioning"],
-			["competitors", "formatted_text", empty],
+			["competitors", "formatted_text"],
 			["swot", "formatted_sections", "strengths"],
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "customer_relationships"],
@@ -463,7 +461,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		paths: [
 			["canvas", "formatted_sections", "customer_segments"],
 			["funnel_chart", "formatted_sections", "visibilité"],
-			["funnel_chart", "formatted_sections", "Intérêt"],
+			["funnel_chart", "formatted_sections", "intérêt"],
 			["swot", "formatted_sections", "opportunities"],
 			["ansoff", "formatted_sections", "market_development"],
 			["marketing_mix", "formatted_sections", "people"],
@@ -472,7 +470,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 	MarketingPlan_KeyCompetitors: {
 		title: "Barrière à l'entrée",
 		paths: [
-			["competitors", "formatted_text", empty],
+			["competitors", "formatted_text"],
 			["canvas", "formatted_qa", "competitor_strengths"],
 			["canvas", "formatted_qa", "competitor_weaknesses"],
 			["swot", "formatted_sections", "strengths"],
@@ -486,7 +484,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		paths: [
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "value_proposition"],
-			["funnel_chart", "formatted_sections", "Intérêt"],
+			["funnel_chart", "formatted_sections", "intérêt"],
 			["swot", "formatted_qa", "competitor_weaknesses"],
 		],
 	},
@@ -529,7 +527,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["funnel_chart", "formatted_sections", "visibilité"],
 			["marketing_mix", "formatted_sections", "promotion"],
-			["funnel_chart", "formatted_sections", "Intérêt"],
+			["funnel_chart", "formatted_sections", "intérêt"],
 			["canvas", "formatted_sections", "customer_relationships"],
 			["marketing_mix", "formatted_sections", "product"],
 			["value_proposition", "formatted_sections", "customer_jobs"],
@@ -543,12 +541,12 @@ export const BUSINESS_PLAN_SECTIONS = {
 		title: "Barrière à l'entrée",
 		paths: [
 			// {{FP_Budget}}
-			["startup_expenses", "total_expenses"],
+			["startup_expenses", "formatted_sections", "expenses"],
 			["startup_expenses", "formatted_text"],
-			["startup_expenses", "total_capital"],
+			["startup_expenses", "formatted_sections", "capital"],
 			["canvas", "formatted_sections", "channels"],
 			["marketing_mix", "formatted_sections", "promotion"],
-			["funnel_chart", "formatted_sections", "Intérêt"],
+			["funnel_chart", "formatted_sections", "intérêt"],
 			["value_proposition", "formatted_sections", "customer_jobs"],
 			["marketing_mix", "formatted_sections", "product"],
 			["swot", "formatted_sections", "opportunities"],
@@ -581,11 +579,11 @@ export const BUSINESS_PLAN_SECTIONS = {
 	MarketingPlan_PricingStrategy_competitors: {
 		title: "Barrière à l'entrée",
 		paths: [
-			["competitors", "formatted_text", empty],
+			["competitors", "formatted_text"],
 			["swot", "formatted_qa", "competitor_weaknesses"],
 			["canvas", "formatted_sections", "channels"],
 			["canvas", "formatted_sections", "customer_segments"],
-			["funnel_chart", "formatted_sections", "Intérêt"],
+			["funnel_chart", "formatted_sections", "intérêt"],
 		],
 	},
 	MarketingPlan_PricingStrategy_Clientelle: {
@@ -648,9 +646,9 @@ export const BUSINESS_PLAN_SECTIONS = {
 		title: "Barrière à l'entrée",
 		paths: [
 			["canvas", "formatted_sections", "cost_structure"],
-			["startup_expenses", "expenses_analysis", empty],
-			["monthly_projection", "expenses_analysis", empty],
-			["yearly_projection", "expenses_analysis", empty],
+			["startup_expenses", "formatted_sections", "expenses"],
+			["monthly_projection", "formatted_sections", "expenses_analysis"],
+			["yearly_projection", "formatted_sections", "expenses_analysis"],
 		],
 	},
 	OP_Production_efficiency: {
@@ -734,7 +732,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		title: "Barrière à l'entrée",
 		paths: [
 			["canvas", "formatted_sections", "key_resources"],
-			["skills_matrix", "skill_analysis", empty],
+			["skills_matrix", "formatted_sections", "analysis"],
 			["skills_matrix", "formatted_qa", "leadership_skills"],
 			["skills_matrix", "formatted_qa", "problem_solving"],
 			["skills_matrix", "formatted_qa", "entrepreneurship_skills"],
@@ -931,30 +929,30 @@ export const BUSINESS_PLAN_SECTIONS = {
 	OpeningDay_BalanceSheet: {
 		title: "Barrière à l'entrée",
 		paths: [
-			["startup_expenses", "capital_analysis"],
-			["startup_expenses", "expenses_analysis"],
-			["startup_expenses", "risks_analysis"],
-			["startup_expenses", "financial_analysis"],
+			["startup_expenses", "formatted_sections", "capital"],
+			["startup_expenses", "formatted_sections", "expenses"],
+			["startup_expenses", "formatted_sections", "risks"],
+			["startup_expenses", "formatted_sections", "financial"],
 			["startup_expenses", "formatted_text"],
 		],
 	},
 	FP_12monthsProfitAndLoss: {
 		title: "Barrière à l'entrée",
 		paths: [
-			["monthly_projection", "summary"],
-			["monthly_projection", "monthly_analysis"],
-			["monthly_projection", "expenses_analysis"],
-			["monthly_projection", "growth_analysis"],
+			["monthly_projection", "formatted_sections", "summary"],
+			["monthly_projection", "formatted_sections", "monthly_analysis"],
+			["monthly_projection", "formatted_sections", "expenses_analysis"],
+			["monthly_projection", "formatted_sections", "growth_analysis"],
 			["monthly_projection", "formatted_text"],
 		],
 	},
 	FP_3years: {
 		title: "Barrière à l'entrée",
 		paths: [
-			["yearly_projection", "summary"],
-			["yearly_projection", "yearly_analysis"],
-			["yearly_projection", "expenses_analysis"],
-			["yearly_projection", "trend_analysis"],
+			["yearly_projection", "formatted_sections", "summary"],
+			["yearly_projection", "formatted_sections", "yearly_analysis"],
+			["yearly_projection", "formatted_sections", "expenses_analysis"],
+			["yearly_projection", "formatted_sections", "trend_analysis"],
 			["yearly_projection", "formatted_text"],
 		],
 	},
