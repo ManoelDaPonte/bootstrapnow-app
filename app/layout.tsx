@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMetadataProvider } from "@/context/userMetadataProvider";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
-import { GenerationProvider } from "@/context/BusinessPlanGenerationContext";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardLayout({
 	children,
@@ -23,35 +23,34 @@ export default function DashboardLayout({
 			<body className="min-h-screen bg-background antialiased">
 				<UserProvider>
 					<UserMetadataProvider>
-						<GenerationProvider>
-							<ThemeProvider
-								attribute="class"
-								defaultTheme="light"
-								enableSystem={false}
-							>
-								<div className="flex h-screen">
+						<ThemeProvider
+							attribute="class"
+							defaultTheme="light"
+							enableSystem={false}
+						>
+							<div className="flex h-screen">
+								{" "}
+								{/* Container principal */}
+								{/* Sidebar avec une largeur fixe */}
+								<aside className="w-64 flex-shrink-0">
+									<Sidebar />
+								</aside>
+								{/* Container du contenu principal avec sa propre zone de scroll */}
+								<div className="flex-1 flex flex-col min-w-0">
 									{" "}
-									{/* Container principal */}
-									{/* Sidebar avec une largeur fixe */}
-									<aside className="w-64 flex-shrink-0">
-										<Sidebar />
-									</aside>
-									{/* Container du contenu principal avec sa propre zone de scroll */}
-									<div className="flex-1 flex flex-col min-w-0">
+									{/* min-w-0 est crucial ici */}
+									<Header />
+									<main className="flex-1 relative overflow-y-auto">
 										{" "}
-										{/* min-w-0 est crucial ici */}
-										<Header />
-										<main className="flex-1 relative overflow-y-auto">
-											{" "}
-											{/* overflow-y-auto pour le scroll vertical */}
-											{children}
-										</main>
-										<ThemeToggle />
-										<TailwindIndicator />
-									</div>
+										{/* overflow-y-auto pour le scroll vertical */}
+										{children}
+									</main>
+									<ThemeToggle />
+									<TailwindIndicator />
+									<Toaster />
 								</div>
-							</ThemeProvider>
-						</GenerationProvider>
+							</div>
+						</ThemeProvider>
 					</UserMetadataProvider>
 				</UserProvider>
 			</body>

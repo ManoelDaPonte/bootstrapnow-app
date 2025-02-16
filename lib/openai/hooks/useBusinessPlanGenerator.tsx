@@ -1,107 +1,184 @@
-// lib/business-plan/hooks/useBusinessPlanGenerator.ts
+//lib/openai/hooks/useBusinessPlanGenerator.ts
 import { useState } from "react";
-
-interface GenerationProgress {
-	currentSection: string;
-	completedSections: string[];
-	errors: Array<{ section: string; error: string }>;
-	status: "idle" | "generating" | "completed" | "error";
-}
+import {
+	BUSINESS_PLAN_SECTIONS,
+	BusinessPlanSection,
+	SectionStatus,
+	GenerationState,
+	Generation,
+} from "@/types/business-plan-document/business-plan";
 
 export function useBusinessPlanGenerator() {
-	const [progress, setProgress] = useState<GenerationProgress>({
-		currentSection: "",
-		completedSections: [],
-		errors: [],
+	const [generationState, setGenerationState] = useState<GenerationState>({
 		status: "idle",
+		sections: BUSINESS_PLAN_SECTIONS.map((section) => ({
+			section,
+			status: "pending",
+		})),
+		currentSection: undefined,
 	});
 
-	const generateSection = async (auth0Id: string, sectionName: string) => {
+	const [generations, setGenerations] = useState<Generation[]>([]);
+	const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+
+	const loadHistory = async (auth0Id: string) => {
+		setIsLoadingHistory(true);
 		try {
-			setProgress((prev) => ({
+			const response = await fetch(
+				`/api/business-plan-document/history?auth0Id=${auth0Id}`
+			);
+			if (!response.ok)
+				throw new Error("Erreur lors du chargement de l'historique");
+			const data = await response.json();
+			setGenerations(data);
+		} catch (error) {
+			console.error("Erreur lors du chargement de l'historique:", error);
+		} finally {
+			setIsLoadingHistory(false);
+		}
+	};
+
+	const generateSection = async (
+		auth0Id: string,
+		sectionName: string
+	): Promise<string> => {
+		try {
+			console.log("Début de la génération de la section:", sectionName);
+
+			// Mise à jour du statut de la section
+			setGenerationState((prev) => ({
 				...prev,
-				currentSection: sectionName,
 				status: "generating",
+				currentSection: sectionName as BusinessPlanSection,
+				sections: prev.sections.map((s) =>
+					s.section === sectionName
+						? { ...s, status: "generating" }
+						: s
+				),
 			}));
+
+			console.log(
+				"État mis à jour - début de génération:",
+				generationState
+			);
 
 			const response = await fetch("/api/openai/generate-section", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					auth0Id,
-					sectionName,
-				}),
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ auth0Id, sectionName }),
 			});
 
 			if (!response.ok) {
-				throw new Error(`Erreur HTTP: ${response.status}`);
+				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
 			const result = await response.json();
 
-			// Log les détails pour le debugging
-			console.log(`Section ${sectionName}:`, {
-				metadata: result.metadata,
-				validPaths: result.metadata.valid_paths_count,
-				totalPaths: result.metadata.total_paths_count,
-				contentLength: result.generated_content?.length || 0,
-			});
+			console.log("Résultat de la génération:", result);
 
-			setProgress((prev) => ({
+			// Mise à jour du succès
+			setGenerationState((prev) => ({
 				...prev,
-				completedSections: [...prev.completedSections, sectionName],
 				status: "completed",
+				sections: prev.sections.map((s) =>
+					s.section === sectionName
+						? {
+								...s,
+								status: "completed",
+								content: result.generated_content,
+						  }
+						: s
+				),
 			}));
 
-			return result;
+			return result.generated_content;
 		} catch (error) {
-			const errorMessage =
-				error instanceof Error ? error.message : "Erreur inconnue";
+			console.error("Erreur lors de la génération:", error);
 
-			setProgress((prev) => ({
+			// Mise à jour de l'erreur
+			setGenerationState((prev) => ({
 				...prev,
-				errors: [
-					...prev.errors,
-					{ section: sectionName, error: errorMessage },
-				],
 				status: "error",
+				sections: prev.sections.map((s) =>
+					s.section === sectionName
+						? {
+								...s,
+								status: "error",
+								error:
+									error instanceof Error
+										? error.message
+										: "Unknown error",
+						  }
+						: s
+				),
 			}));
 
-			console.error(
-				`Erreur lors de la génération de ${sectionName}:`,
-				errorMessage
-			);
 			throw error;
 		}
 	};
 
-	const generateFullBusinessPlan = async (auth0Id: string) => {
-		const sectionsToGenerate = [
-			"ES_Overview",
-			"ES_Description",
-			// Ajoutez d'autres sections selon vos besoins
-		];
+	const saveGeneratedContent = async (
+		auth0Id: string,
+		sections: Record<string, string>
+	) => {
+		try {
+			const response = await fetch("/api/openai/save-section", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ auth0Id, sections }),
+			});
 
-		const results = [];
-
-		for (const section of sectionsToGenerate) {
-			try {
-				const result = await generateSection(auth0Id, section);
-				results.push(result);
-			} catch (error) {
-				console.error(`Échec de la génération pour ${section}`);
-				// Continue avec la section suivante malgré l'erreur
+			if (!response.ok) {
+				throw new Error("Failed to save sections");
 			}
-		}
 
-		return results;
+			return await response.json();
+		} catch (error) {
+			console.error("Erreur lors de la sauvegarde:", error);
+			throw error;
+		}
+	};
+
+	const generateDocument = async (
+		auth0Id: string,
+		generationId: string
+	): Promise<string> => {
+		try {
+			console.log("Début de la génération du document");
+
+			const response = await fetch(
+				"/api/business-plan-document/generate-document",
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ auth0Id, generationId }), // Ajout du generationId
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error("Failed to generate document");
+			}
+
+			const { docxUrl } = await response.json();
+			return docxUrl;
+		} catch (error) {
+			console.error("Erreur lors de la génération du document:", error);
+			throw error;
+		}
+	};
+
+	const downloadGeneration = (docxUrl: string) => {
+		window.open(docxUrl, "_blank");
 	};
 
 	return {
-		progressGeneration: progress,
+		generationState,
+		generations,
+		isLoadingHistory,
 		generateSection,
-		generateFullBusinessPlan,
+		saveGeneratedContent,
+		generateDocument,
+		loadHistory,
+		downloadGeneration,
 	};
 }

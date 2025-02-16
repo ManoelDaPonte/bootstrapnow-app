@@ -33,6 +33,15 @@
 		--chart-3: 197 37% 24%;
 		--chart-4: 43 74% 66%;
 		--chart-5: 27 87% 67%;
+		/* Nouvelles variables pour les statuts */
+		--status-success: 142 72% 29%;
+		--status-warning: 38 92% 50%;
+		--status-error: 0 84% 60%;
+		--status-info: 201 96% 32%;
+
+		/* Variables pour l'historique */
+		--history-hover: 0 0% 96%;
+		--history-border: 0 0% 90%;
 	}
 
 	.dark {
@@ -58,11 +67,15 @@
 		--border: 0 0% 20%;
 		--input: 0 0% 20%;
 		--ring: 0 0% 83%;
-		--chart-1: 220 70% 50%;
-		--chart-2: 160 60% 45%;
-		--chart-3: 30 80% 55%;
-		--chart-4: 280 65% 60%;
-		--chart-5: 340 75% 55%;
+		/* Ajustement des variables de statut pour le mode sombre */
+		--status-success: 142 72% 35%;
+		--status-warning: 38 92% 60%;
+		--status-error: 0 84% 70%;
+		--status-info: 201 96% 42%;
+
+		/* Variables pour l'historique en mode sombre */
+		--history-hover: 0 0% 20%;
+		--history-border: 0 0% 25%;
 	}
 }
 
@@ -85,5 +98,21 @@
 
 	body {
 		@apply bg-background text-foreground;
+	}
+}
+
+@layer components {
+	.status-badge {
+		@apply inline-flex items-center rounded-full px-2 py-1 text-xs font-medium transition-colors;
+	}
+
+	.history-item {
+		@apply flex items-center justify-between p-4 rounded-lg border 
+			 transition-all duration-200 hover:bg-[hsl(var(--history-hover))]
+			 border-[hsl(var(--history-border))];
+	}
+
+	.history-date {
+		@apply text-sm text-muted-foreground flex items-center gap-2;
 	}
 }

@@ -1,6 +1,6 @@
 //app/%28pages%29/tools/business-plan/page.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
@@ -9,10 +9,11 @@ import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgre
 import { Card } from "@/components/ui/card";
 import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
 import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
-import { useDocumentGeneration } from "@/lib/business-plan/hooks/useDocumentGeneration";
-import { GenerationDialog } from "@/components/business-plan/BusinessPlanGenerationDialog";
+import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { FormatSelectionDialog } from "@/components/business-plan/FormatSelectionDialog";
+import { toast } from "@/components/ui/use-toast";
+import { Loader2, XCircle } from "lucide-react";
+import HistoryDialog from "@/components/business-plan-document/HistoryDialog";
 
 const templates = [
 	{
@@ -165,8 +166,17 @@ interface ProgressType {
 }
 
 export default function BusinessPlanPage() {
+	const {
+		generationState,
+		generations,
+		isLoadingHistory,
+		generateSection,
+		saveGeneratedContent,
+		generateDocument,
+		loadHistory,
+		downloadGeneration,
+	} = useBusinessPlanGenerator();
 	const { user } = useUser();
-	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const {
 		data: generalInfo,
 		updateField: handleGeneralInfoChange,
@@ -175,26 +185,102 @@ export default function BusinessPlanPage() {
 		isSaving,
 	} = useGeneralInfo();
 
-	const {
-		generateDocument,
-		startGeneration,
-		isGenerating,
-		currentStep,
-		currentSection,
-		progress: generationProgress,
-		error,
-		status,
-		showFormatDialog,
-		setShowFormatDialog,
-	} = useDocumentGeneration();
+	// Ajoutez cet useEffect pour charger l'historique au montage
+	useEffect(() => {
+		if (user?.sub) {
+			loadHistory(user.sub);
+		}
+	}, [user?.sub]);
 
 	const handleGenerateBusinessPlan = async () => {
-		startGeneration();
+		if (!user?.sub) {
+			toast({
+				title: "Erreur",
+				description:
+					"Vous devez être connecté pour générer un business plan",
+				variant: "destructive",
+			});
+			return;
+		}
+
+		try {
+			// 1. Générer les sections
+			const result = await generateSection(user.sub, "ES_Overview");
+
+			// 2. Sauvegarder les sections et obtenir l'ID
+			const { generationId } = await saveGeneratedContent(user.sub, {
+				ES_Overview: result,
+			});
+
+			// 3. Attendre un court instant pour s'assurer que la transaction est terminée
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+
+			// 4. Générer le document
+			const docxUrl = await generateDocument(user.sub, generationId); // Modifier pour accepter l'ID
+
+			toast({
+				title: "Succès",
+				description: "Votre business plan a été généré avec succès",
+			});
+
+			// 4. Proposer le téléchargement
+			window.open(docxUrl, "_blank");
+		} catch (error) {
+			console.error("Erreur détaillée:", error);
+			toast({
+				title: "Erreur",
+				description: "Une erreur est survenue lors de la génération",
+				variant: "destructive",
+			});
+		}
 	};
-	const handleFormatSelect = async (format: "pdf" | "docx") => {
-		setShowFormatDialog(false);
-		setIsDialogOpen(true);
-		await generateDocument(format);
+
+	const renderProgress = () => {
+		const completedSections = generationState.sections.filter(
+			(s) => s.status === "completed"
+		).length;
+
+		return (
+			<div className="space-y-4">
+				<div className="flex items-center justify-between">
+					<span>Progression de la génération</span>
+					<span>
+						{Math.round(
+							(completedSections /
+								generationState.sections.length) *
+								100
+						)}
+						%
+					</span>
+				</div>
+				<Progress
+					value={
+						(completedSections / generationState.sections.length) *
+						100
+					}
+					className="w-full"
+				/>
+				<div className="space-y-2">
+					{generationState.sections.map((section) => (
+						<div
+							key={section.section}
+							className="flex items-center gap-2"
+						>
+							{section.status === "completed" && (
+								<CheckCircle2 className="w-4 h-4 text-green-500" />
+							)}
+							{section.status === "generating" && (
+								<Loader2 className="w-4 h-4 animate-spin" />
+							)}
+							{section.status === "error" && (
+								<XCircle className="w-4 h-4 text-red-500" />
+							)}
+							<span>{section.section}</span>
+						</div>
+					))}
+				</div>
+			</div>
+		);
 	};
 
 	const router = useRouter();
@@ -249,13 +335,21 @@ export default function BusinessPlanPage() {
 								</div>
 
 								<div className="flex items-center gap-3">
-									<Button
-										onClick={handleGenerateBusinessPlan}
-										className="bg-primary text-primary-foreground hover:bg-primary/90"
-										disabled={totalProgress < 80}
-									>
-										Générer le Business Plan
-									</Button>
+									<div className="flex items-center gap-3">
+										<Button
+											onClick={handleGenerateBusinessPlan}
+											className="bg-primary text-primary-foreground hover:bg-primary/90"
+											disabled={totalProgress < 80}
+										>
+											Générer le Business Plan
+										</Button>
+
+										<HistoryDialog
+											generations={generations}
+											onDownload={downloadGeneration}
+											isLoading={isLoadingHistory}
+										/>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -363,21 +457,9 @@ export default function BusinessPlanPage() {
 						</div>
 					))}
 				</div>
-				<FormatSelectionDialog
-					isOpen={showFormatDialog}
-					onClose={() => setShowFormatDialog(false)}
-					onFormatSelect={handleFormatSelect}
-					isLoading={isGenerating}
-				/>
-				<GenerationDialog
-					isOpen={isDialogOpen}
-					onClose={() => setIsDialogOpen(false)}
-					currentStep={currentStep}
-					currentSection={currentSection}
-					progress={generationProgress}
-					status={status}
-					error={error}
-				/>
+				{generationState.status !== "idle" && (
+					<Card className="p-4 mt-8">{renderProgress()}</Card>
+				)}
 			</div>
 		</div>
 	);

@@ -1,3 +1,4 @@
+// lib/openai/config/sections.tsx
 export const BUSINESS_PLAN_SECTIONS = {
 	ES_Overview: {
 		title: "Vue globale de l'entreprise",
