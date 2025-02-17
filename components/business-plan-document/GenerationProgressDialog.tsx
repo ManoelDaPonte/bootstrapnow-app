@@ -7,31 +7,39 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-
-interface GenerationStep {
-	section: string;
-	status: "pending" | "generating" | "completed" | "error";
-	error?: string;
-}
+import type { GenerationStep } from "@/lib/openai/hooks/useBusinessPlanGenerator";
 
 interface GenerationProgressDialogProps {
 	isOpen: boolean;
-	onClose: () => void;
 	steps: GenerationStep[];
-	currentStep?: string;
 }
 
-const GenerationProgressDialog = ({
+const GenerationProgressDialog: React.FC<GenerationProgressDialogProps> = ({
 	isOpen,
-	onClose,
 	steps,
-	currentStep,
-}: GenerationProgressDialogProps) => {
+}) => {
 	const completedSteps = steps.filter((s) => s.status === "completed").length;
 	const progress = (completedSteps / steps.length) * 100;
 
+	const getStepIcon = (status: GenerationStep["status"]) => {
+		switch (status) {
+			case "pending":
+				return (
+					<div className="w-4 h-4 rounded-full border-2 border-muted-foreground/25" />
+				);
+			case "in-progress":
+				return (
+					<Loader2 className="w-4 h-4 animate-spin text-primary" />
+				);
+			case "completed":
+				return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+			case "error":
+				return <XCircle className="w-4 h-4 text-destructive" />;
+		}
+	};
+
 	return (
-		<Dialog open={isOpen} onOpenChange={onClose}>
+		<Dialog open={isOpen} modal>
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>Génération du Business Plan</DialogTitle>
@@ -39,51 +47,52 @@ const GenerationProgressDialog = ({
 
 				<div className="py-6">
 					<div className="space-y-4">
-						<div className="flex items-center justify-between text-sm text-muted-foreground">
-							<span>Progression globale</span>
-							<span>{Math.round(progress)}%</span>
+						<div className="flex items-center justify-between text-sm">
+							<span className="text-muted-foreground">
+								Progression globale
+							</span>
+							<span className="font-medium">
+								{Math.round(progress)}%
+							</span>
 						</div>
 
 						<Progress value={progress} className="h-2" />
 
-						<div className="space-y-3 mt-6">
+						<div className="mt-6 space-y-2">
 							{steps.map((step) => (
 								<div
-									key={step.section}
-									className="flex items-center gap-3 p-3 rounded-lg border bg-card"
+									key={step.id}
+									className={`flex items-center gap-3 p-3 rounded-lg border transition-colors
+                    ${
+						step.status === "in-progress"
+							? "bg-primary/5 border-primary/20"
+							: step.status === "completed"
+							? "bg-muted"
+							: "bg-card"
+					}`}
 								>
-									{step.status === "pending" && (
-										<div className="w-5 h-5 rounded-full border-2 border-muted" />
-									)}
+									{getStepIcon(step.status)}
 
-									{step.status === "generating" && (
-										<Loader2 className="w-5 h-5 text-primary animate-spin" />
-									)}
+									<div className="flex-1 flex items-center justify-between">
+										<span
+											className={`
+                      ${
+							step.status === "completed"
+								? "text-muted-foreground"
+								: step.status === "in-progress"
+								? "font-medium"
+								: ""
+						}`}
+										>
+											{step.label}
+										</span>
 
-									{step.status === "completed" && (
-										<CheckCircle2 className="w-5 h-5 text-green-500" />
-									)}
-
-									{step.status === "error" && (
-										<XCircle className="w-5 h-5 text-destructive" />
-									)}
-
-									<div className="flex-1">
-										<div className="font-medium">
-											{step.section}
-										</div>
-										{step.error && (
-											<div className="text-sm text-destructive mt-1">
-												{step.error}
-											</div>
+										{step.status === "completed" && (
+											<span className="text-sm text-muted-foreground">
+												Terminé
+											</span>
 										)}
 									</div>
-
-									{step.status === "completed" && (
-										<span className="text-sm text-muted-foreground">
-											Terminé
-										</span>
-									)}
 								</div>
 							))}
 						</div>

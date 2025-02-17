@@ -7,8 +7,18 @@ import {
 	GenerationState,
 	Generation,
 } from "@/types/business-plan-document/business-plan";
+import { toast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
+
+export interface GenerationStep {
+	id: string;
+	label: string;
+	status: "pending" | "in-progress" | "completed" | "error";
+}
 
 export function useBusinessPlanGenerator() {
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [currentSteps, setCurrentSteps] = useState<GenerationStep[]>([]);
 	const [generationState, setGenerationState] = useState<GenerationState>({
 		status: "idle",
 		sections: BUSINESS_PLAN_SECTIONS.map((section) => ({
@@ -17,26 +27,8 @@ export function useBusinessPlanGenerator() {
 		})),
 		currentSection: undefined,
 	});
-
 	const [generations, setGenerations] = useState<Generation[]>([]);
 	const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-
-	const loadHistory = async (auth0Id: string) => {
-		setIsLoadingHistory(true);
-		try {
-			const response = await fetch(
-				`/api/business-plan-document/history?auth0Id=${auth0Id}`
-			);
-			if (!response.ok)
-				throw new Error("Erreur lors du chargement de l'historique");
-			const data = await response.json();
-			setGenerations(data);
-		} catch (error) {
-			console.error("Erreur lors du chargement de l'historique:", error);
-		} finally {
-			setIsLoadingHistory(false);
-		}
-	};
 
 	const generateSection = async (
 		auth0Id: string,
@@ -166,18 +158,171 @@ export function useBusinessPlanGenerator() {
 			throw error;
 		}
 	};
+	const updateStep = (stepId: string, status: GenerationStep["status"]) => {
+		setCurrentSteps((steps) =>
+			steps.map((step) =>
+				step.id === stepId ? { ...step, status } : step
+			)
+		);
+	};
+
+	const initializeGeneration = () => {
+		const steps: GenerationStep[] = [
+			{ id: "init", label: "Initialisation", status: "pending" },
+			{
+				id: "db-fetch",
+				label: "Récupération des données",
+				status: "pending",
+			},
+			{
+				id: "sections",
+				label: "Génération des sections",
+				status: "pending",
+			},
+			{
+				id: "word",
+				label: "Génération du document Word",
+				status: "pending",
+			},
+			{ id: "final", label: "Finalisation", status: "pending" },
+		];
+
+		setCurrentSteps(steps);
+		return steps;
+	};
+
+	const generateBusinessPlan = async (
+		auth0Id: string,
+		sections: string[]
+	) => {
+		setIsGenerating(true);
+		const steps = initializeGeneration();
+
+		try {
+			// 1. Initialisation
+			updateStep("init", "in-progress");
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			updateStep("init", "completed");
+
+			// 2. Récupération des données
+			updateStep("db-fetch", "in-progress");
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			updateStep("db-fetch", "completed");
+
+			// 3. Génération des sections
+			const generatedSections: Record<string, string> = {};
+			updateStep("sections", "in-progress");
+
+			for (const section of sections) {
+				// Mettre à jour le libellé de l'étape avec la section en cours
+				setCurrentSteps((steps) =>
+					steps.map((step) =>
+						step.id === "sections"
+							? {
+									...step,
+									label: `Génération de la section ${section}`,
+							  }
+							: step
+					)
+				);
+
+				const result = await generateSection(auth0Id, section);
+				generatedSections[section] = result;
+			}
+
+			// Remettre le libellé original et marquer comme terminé
+			setCurrentSteps((steps) =>
+				steps.map((step) =>
+					step.id === "sections"
+						? {
+								...step,
+								label: "Génération des sections",
+								status: "completed",
+						  }
+						: step
+				)
+			);
+
+			// 4. Sauvegarde et génération du document
+			updateStep("word", "in-progress");
+			const { generationId } = await saveGeneratedContent(
+				auth0Id,
+				generatedSections
+			);
+			const docxUrl = await generateDocument(auth0Id, generationId);
+			updateStep("word", "completed");
+
+			// 5. Finalisation
+			updateStep("final", "in-progress");
+			await loadHistory(auth0Id);
+			updateStep("final", "completed");
+
+			toast({
+				title: "Succès",
+				description: "Votre business plan a été généré avec succès",
+				duration: 3000,
+			});
+
+			const link = document.createElement("a");
+			link.href = docxUrl;
+			link.setAttribute("download", "business-plan.docx");
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+
+			return docxUrl;
+		} catch (error) {
+			const currentStep = currentSteps.find(
+				(step) => step.status === "in-progress"
+			);
+			if (currentStep) {
+				updateStep(currentStep.id, "error");
+			}
+			throw error;
+		} finally {
+			setTimeout(() => {
+				setIsGenerating(false);
+				setCurrentSteps([]);
+			}, 2000);
+		}
+	};
+
+	const loadHistory = async (auth0Id: string) => {
+		setIsLoadingHistory(true);
+		try {
+			const response = await fetch(
+				`/api/business-plan-document/history?auth0Id=${auth0Id}`
+			);
+			if (!response.ok)
+				throw new Error("Erreur lors du chargement de l'historique");
+			const data = await response.json();
+			setGenerations(data);
+		} catch (error) {
+			console.error("Erreur lors du chargement de l'historique:", error);
+		} finally {
+			setIsLoadingHistory(false);
+		}
+	};
 
 	const downloadGeneration = (docxUrl: string) => {
-		window.open(docxUrl, "_blank");
+		const link = document.createElement("a");
+		link.href = docxUrl;
+		link.setAttribute("download", "business-plan.docx");
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	};
 
 	return {
 		generationState,
 		generations,
 		isLoadingHistory,
+		isGenerating,
+		currentSteps,
 		generateSection,
 		saveGeneratedContent,
 		generateDocument,
+		generateBusinessPlan,
 		loadHistory,
 		downloadGeneration,
 	};

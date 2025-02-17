@@ -12,8 +12,10 @@ import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
 import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { toast } from "@/components/ui/use-toast";
-import { Loader2, XCircle } from "lucide-react";
+import { Loader2, FileText } from "lucide-react";
 import HistoryDialog from "@/components/business-plan-document/HistoryDialog";
+import { BUSINESS_PLAN_SECTIONS } from "@/types/business-plan-document/business-plan";
+import GenerationProgressDialog from "@/components/business-plan-document/GenerationProgressDialog";
 
 const templates = [
 	{
@@ -143,28 +145,6 @@ const templates = [
 	},
 ];
 
-interface TemplateData {
-	name: string;
-	route: string;
-	description: string;
-}
-
-interface SectionData {
-	id: string;
-	title: string;
-	color: string;
-	borderColor: string;
-	hoverColor: string;
-	icon: string;
-	templates: TemplateData[];
-}
-
-interface ProgressType {
-	[key: string]: {
-		[key: string]: number;
-	};
-}
-
 export default function BusinessPlanPage() {
 	const {
 		generationState,
@@ -175,6 +155,9 @@ export default function BusinessPlanPage() {
 		generateDocument,
 		loadHistory,
 		downloadGeneration,
+		isGenerating,
+		currentSteps,
+		generateBusinessPlan,
 	} = useBusinessPlanGenerator();
 	const { user } = useUser();
 	const {
@@ -184,6 +167,7 @@ export default function BusinessPlanPage() {
 		completionPercentage: generalInfoProgress,
 		isSaving,
 	} = useGeneralInfo();
+	const router = useRouter();
 
 	// Ajoutez cet useEffect pour charger l'historique au montage
 	useEffect(() => {
@@ -204,27 +188,10 @@ export default function BusinessPlanPage() {
 		}
 
 		try {
-			// 1. Générer les sections
-			const result = await generateSection(user.sub, "ES_Overview");
-
-			// 2. Sauvegarder les sections et obtenir l'ID
-			const { generationId } = await saveGeneratedContent(user.sub, {
-				ES_Overview: result,
-			});
-
-			// 3. Attendre un court instant pour s'assurer que la transaction est terminée
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-
-			// 4. Générer le document
-			const docxUrl = await generateDocument(user.sub, generationId); // Modifier pour accepter l'ID
-
-			toast({
-				title: "Succès",
-				description: "Votre business plan a été généré avec succès",
-			});
-
-			// 4. Proposer le téléchargement
-			window.open(docxUrl, "_blank");
+			await generateBusinessPlan(
+				user.sub,
+				BUSINESS_PLAN_SECTIONS as unknown as string[]
+			);
 		} catch (error) {
 			console.error("Erreur détaillée:", error);
 			toast({
@@ -234,56 +201,6 @@ export default function BusinessPlanPage() {
 			});
 		}
 	};
-
-	const renderProgress = () => {
-		const completedSections = generationState.sections.filter(
-			(s) => s.status === "completed"
-		).length;
-
-		return (
-			<div className="space-y-4">
-				<div className="flex items-center justify-between">
-					<span>Progression de la génération</span>
-					<span>
-						{Math.round(
-							(completedSections /
-								generationState.sections.length) *
-								100
-						)}
-						%
-					</span>
-				</div>
-				<Progress
-					value={
-						(completedSections / generationState.sections.length) *
-						100
-					}
-					className="w-full"
-				/>
-				<div className="space-y-2">
-					{generationState.sections.map((section) => (
-						<div
-							key={section.section}
-							className="flex items-center gap-2"
-						>
-							{section.status === "completed" && (
-								<CheckCircle2 className="w-4 h-4 text-green-500" />
-							)}
-							{section.status === "generating" && (
-								<Loader2 className="w-4 h-4 animate-spin" />
-							)}
-							{section.status === "error" && (
-								<XCircle className="w-4 h-4 text-red-500" />
-							)}
-							<span>{section.section}</span>
-						</div>
-					))}
-				</div>
-			</div>
-		);
-	};
-
-	const router = useRouter();
 
 	type ProgressType = {
 		[key: string]: {
@@ -338,10 +255,23 @@ export default function BusinessPlanPage() {
 									<div className="flex items-center gap-3">
 										<Button
 											onClick={handleGenerateBusinessPlan}
-											className="bg-primary text-primary-foreground hover:bg-primary/90"
-											disabled={totalProgress < 80}
+											className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+											disabled={
+												totalProgress < 80 ||
+												isGenerating
+											}
 										>
-											Générer le Business Plan
+											{isGenerating ? (
+												<>
+													<Loader2 className="h-4 w-4 animate-spin" />
+													Génération...
+												</>
+											) : (
+												<>
+													<FileText className="h-4 w-4" />
+													Générer
+												</>
+											)}
 										</Button>
 
 										<HistoryDialog
@@ -457,9 +387,10 @@ export default function BusinessPlanPage() {
 						</div>
 					))}
 				</div>
-				{generationState.status !== "idle" && (
-					<Card className="p-4 mt-8">{renderProgress()}</Card>
-				)}
+				<GenerationProgressDialog
+					isOpen={isGenerating}
+					steps={currentSteps}
+				/>
 			</div>
 		</div>
 	);
