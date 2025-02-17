@@ -1,10 +1,15 @@
-// lib/business-plan/hooks/startup-expenses/storage-startup.tsx
 import { FinancialData } from "@/types/startup-expenses";
+import { QAResponses } from "@/types/shared/qa-section";
 import { prisma } from "@/lib/db/prisma";
+import { STARTUP_QA_DATA } from "@/lib/business-plan/config/startup-expenses";
 
 export const STORAGE_KEY = "startup-expenses-data";
+export const QA_STORAGE_KEY = "startup-expenses-qa-responses";
 
-export const saveStartupData = (data: FinancialData) => {
+export const saveStartupData = (
+	data: FinancialData,
+	qaResponses: QAResponses
+) => {
 	if (typeof window === "undefined") return;
 
 	localStorage.setItem(
@@ -15,10 +20,16 @@ export const saveStartupData = (data: FinancialData) => {
 		})
 	);
 
-	updateParentProgress(calculateProgress(data));
+	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
-export async function updateStartupData(auth0Id: string, data: FinancialData) {
+export async function updateStartupData(
+	auth0Id: string,
+	data: FinancialData,
+	qaResponses: QAResponses
+) {
 	try {
 		const user = await prisma.user.upsert({
 			where: { auth0Id },
@@ -33,11 +44,13 @@ export async function updateStartupData(auth0Id: string, data: FinancialData) {
 			where: { userId: user.id },
 			update: {
 				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 				updatedAt: new Date(),
 			},
 			create: {
 				userId: user.id,
 				data: JSON.parse(JSON.stringify(data)),
+				qaResponses: qaResponses,
 			},
 		});
 
@@ -48,53 +61,104 @@ export async function updateStartupData(auth0Id: string, data: FinancialData) {
 	}
 }
 
-export const calculateProgress = (data: FinancialData): number => {
-	const totalFields =
-		(data.capital.investors.length +
-			data.capital.loans.length +
-			data.expenses.categories.length) *
-			4 + // 4 champs par entrée financière
-		data.risks.length * 4; // 4 champs par risque
+export const calculateProgress = (
+	data: FinancialData,
+	qaResponses: QAResponses = {}
+): number => {
+	// Section weights
+	const SECTION_WEIGHTS = {
+		capital: 0.3, // 30% du total
+		expenses: 0.2, // 20% du total
+		risks: 0.2, // 20% du total
+		qa: 0.3, // 30% du total
+	};
 
-	if (totalFields === 0) return 0;
+	// Calcul pour la section Capital (investisseurs + prêts)
+	const capitalProgress = () => {
+		const hasInvestors = data.capital.investors.length > 0;
+		const hasLoans = data.capital.loans.length > 0;
 
-	// Calculer les champs remplis
-	const filledFinancialFields = [
-		...data.capital.investors,
-		...data.capital.loans,
-		...data.expenses.categories,
-	].reduce(
-		(acc, entry) =>
-			acc +
-			((entry.name ? 1 : 0) +
-				(entry.amount ? 1 : 0) +
-				(entry.type ? 1 : 0) +
-				(entry.category ? 1 : 0)),
-		0
-	);
+		if (!hasInvestors && !hasLoans) return 0;
 
-	const filledRiskFields = data.risks.reduce(
-		(acc, risk) =>
-			acc +
-			((risk.category ? 1 : 0) +
-				(risk.probability ? 1 : 0) +
-				(risk.impact ? 1 : 0) +
-				(risk.mitigation ? 1 : 0)),
-		0
-	);
+		const investorsComplete = data.capital.investors.every(
+			(inv) => inv.name && inv.amount && inv.type
+		);
+		const loansComplete = data.capital.loans.every(
+			(loan) => loan.name && loan.amount && loan.type
+		);
 
-	return Math.round(
-		((filledFinancialFields + filledRiskFields) / totalFields) * 100
-	);
+		// Si on a au moins un type de financement complet
+		if (hasInvestors && investorsComplete) return 1;
+		if (hasLoans && loansComplete) return 1;
+
+		// Sinon, progression partielle
+		return 0.5;
+	};
+
+	// Calcul pour la section Dépenses
+	const expensesProgress = () => {
+		if (data.expenses.categories.length === 0) return 0;
+
+		const complete = data.expenses.categories.every(
+			(exp) => exp.name && exp.amount && exp.type
+		);
+
+		return complete ? 1 : 0.5;
+	};
+
+	// Calcul pour la section Risques
+	const risksProgress = () => {
+		if (data.risks.length === 0) return 0;
+
+		const complete = data.risks.every(
+			(risk) =>
+				risk.category &&
+				risk.probability !== undefined &&
+				risk.impact !== undefined &&
+				risk.mitigation
+		);
+
+		return complete ? 1 : 0.5;
+	};
+
+	// Calcul pour la section QA
+	const qaProgress = () => {
+		const questionIds = STARTUP_QA_DATA.categories.map((cat) => cat.id);
+		const answeredQuestions = questionIds.filter(
+			(id) => qaResponses[id] && qaResponses[id].trim() !== ""
+		).length;
+
+		return questionIds.length > 0
+			? answeredQuestions / questionIds.length
+			: 0;
+	};
+
+	// Calcul de la progression totale pondérée
+	const totalProgress =
+		capitalProgress() * SECTION_WEIGHTS.capital +
+		expensesProgress() * SECTION_WEIGHTS.expenses +
+		risksProgress() * SECTION_WEIGHTS.risks +
+		qaProgress() * SECTION_WEIGHTS.qa;
+
+	// Conversion en pourcentage et arrondi
+	return Math.round(totalProgress * 100);
 };
 
-export const loadStartupData = (): FinancialData => {
+export const loadStartupData = () => {
 	if (typeof window === "undefined") {
-		return getEmptyStartupData();
+		return {
+			data: getEmptyStartupData(),
+			qaResponses: {},
+		};
 	}
 
 	const storedData = localStorage.getItem(STORAGE_KEY);
-	return storedData ? JSON.parse(storedData) : getEmptyStartupData();
+	const storedQA = localStorage.getItem(QA_STORAGE_KEY);
+
+	return {
+		data: storedData ? JSON.parse(storedData) : getEmptyStartupData(),
+		qaResponses: storedQA ? JSON.parse(storedQA) : {},
+	};
 };
 
 export const getEmptyStartupData = (): FinancialData => ({
@@ -128,7 +192,10 @@ const updateParentProgress = (progress: number) => {
 	window.dispatchEvent(event);
 };
 
-export const saveToDatabase = async (data: FinancialData) => {
+export const saveToDatabase = async (
+	data: FinancialData,
+	qaResponses: QAResponses
+) => {
 	try {
 		const response = await fetch(
 			"/api/business-plan/startup-expenses/save",
@@ -137,7 +204,7 @@ export const saveToDatabase = async (data: FinancialData) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ data }),
+				body: JSON.stringify({ data, qaResponses }),
 			}
 		);
 

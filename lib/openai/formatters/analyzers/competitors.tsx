@@ -1,11 +1,7 @@
 // lib/openai/formatters/analyzers/competitors.ts
 import { CompetitorsAnalysisData } from "@/types/openai/analyzers";
 export function format_competitors(data: any): CompetitorsAnalysisData {
-	const competitors = Array.isArray(data.competitors)
-		? data.competitors
-		: Array.isArray(data.data)
-		? data.data
-		: [];
+	const competitors = data?.competitors?.data || [];
 
 	if (competitors.length === 0) {
 		return {

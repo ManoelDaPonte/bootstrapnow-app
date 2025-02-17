@@ -10,12 +10,15 @@ import { Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useStartupData } from "@/lib/business-plan/hooks/startup-expenses/useStartupData";
 import { calculateProgress } from "@/lib/business-plan/hooks/startup-expenses/storage-startup";
+import QASection from "@/components/business-plan/shared/QASection";
+import { STARTUP_QA_DATA } from "@/lib/business-plan/config/startup-expenses";
 
 const StartupExpenses: React.FC = () => {
 	const [activeTab, setActiveTab] = useState("overview");
 
 	const {
 		data,
+		qaResponses,
 		isLoading,
 		isSaving,
 		hasUnsavedChanges,
@@ -25,6 +28,8 @@ const StartupExpenses: React.FC = () => {
 		handleUpdateRisk,
 		handleAddRisk,
 		handleRemoveRisk,
+		handleQAResponseChange,
+		handleQAResponseSave,
 		saveChanges,
 	} = useStartupData();
 
@@ -44,7 +49,7 @@ const StartupExpenses: React.FC = () => {
 		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Dépenses de Démarrage"
-				progress={calculateProgress(data)}
+				progress={calculateProgress(data, qaResponses)}
 				rightContent={
 					<Button
 						onClick={saveChanges}
@@ -93,6 +98,15 @@ const StartupExpenses: React.FC = () => {
 						/>
 					</TabsContent>
 				</Tabs>
+
+				<div className="mt-6">
+					<QASection
+						data={STARTUP_QA_DATA}
+						responses={qaResponses}
+						onResponseChange={handleQAResponseChange}
+						onResponseSave={handleQAResponseSave}
+					/>
+				</div>
 			</div>
 		</div>
 	);

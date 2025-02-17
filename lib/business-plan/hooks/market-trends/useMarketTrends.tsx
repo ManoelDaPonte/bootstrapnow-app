@@ -115,25 +115,22 @@ export const useMarketTrends = () => {
 		await handleSaveData({ trends, marketNumbers });
 	};
 
-	// const calculateProgress = useCallback(() => {
-	// 	const totalFields = trends.length * 3 + marketNumbers.length * 4;
-	// 	if (totalFields === 0) return 0;
+	const addMarketNumber = () => {
+		const newMarketNumber = {
+			id: Date.now().toString(),
+			title: "",
+			value: "",
+			description: "",
+			referenceLink: "",
+		};
+		setMarketNumbers((prev) => [...prev, newMarketNumber]);
+		saveTrend(); // Sauvegarder les changements
+	};
 
-	// 	const filledFields =
-	// 		trends.reduce((acc, trend) => {
-	// 			return (
-	// 				acc +
-	// 				Object.values(trend).filter((value) => value !== "").length
-	// 			);
-	// 		}, 0) +
-	// 		marketNumbers.reduce((acc, item) => {
-	// 			return (
-	// 				acc +
-	// 				Object.values(item).filter((value) => value !== "").length
-	// 			);
-	// 		}, 0);
-	// 	return Math.round((filledFields / totalFields) * 100);
-	// }, [trends, marketNumbers]);
+	const removeMarketNumber = (id: string) => {
+		setMarketNumbers((prev) => prev.filter((n) => n.id !== id));
+		saveTrend(); // Sauvegarder les changements
+	};
 
 	return {
 		trends,
@@ -145,5 +142,7 @@ export const useMarketTrends = () => {
 		removeTrend,
 		updateMarketNumber,
 		saveMarketNumber,
+		addMarketNumber,
+		removeMarketNumber,
 	};
 };

@@ -62,6 +62,8 @@ const Trends: React.FC = () => {
 		removeTrend,
 		updateMarketNumber,
 		saveTrend,
+		removeMarketNumber,
+		addMarketNumber, // Ajoutez cette ligne
 	} = useMarketTrends();
 
 	const calculateProgress = useCallback(() => {
@@ -342,7 +344,19 @@ const Trends: React.FC = () => {
 
 						<Card>
 							<CardHeader>
-								<CardTitle>Grands Nombres du Marché</CardTitle>
+								<div className="flex justify-between items-center">
+									<CardTitle>
+										Grands Nombres du Marché
+									</CardTitle>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={addMarketNumber} // Remplacez l'ancien onClick par celui-ci
+									>
+										<TrendingUp className="mr-2 h-4 w-4" />
+										Ajouter un nombre du marché
+									</Button>
+								</div>
 							</CardHeader>
 							<CardContent>
 								<div className="overflow-x-auto">
@@ -360,6 +374,7 @@ const Trends: React.FC = () => {
 												<TableHead>
 													Lien de Référence
 												</TableHead>
+												<TableHead>Actions</TableHead>
 											</TableRow>
 										</TableHeader>
 										<TableBody>
@@ -440,6 +455,29 @@ const Trends: React.FC = () => {
 																	saveTrend()
 																}
 															/>
+														</TableCell>
+														<TableCell>
+															<button
+																onClick={() => {
+																	// Ajouter la logique pour supprimer un nombre du marché
+																	const updatedNumbers =
+																		marketNumbers.filter(
+																			(
+																				n
+																			) =>
+																				n.id !==
+																				item.id
+																		);
+																	// Mettre à jour l'état et sauvegarder
+																	// Cette fonction devra être ajoutée à votre hook useMarketTrends
+																	removeMarketNumber(
+																		item.id
+																	);
+																}}
+																className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+															>
+																<Trash2 className="h-4 w-4" />
+															</button>
 														</TableCell>
 													</TableRow>
 												)

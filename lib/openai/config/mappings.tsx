@@ -90,7 +90,7 @@ export const FIELD_MAPPINGS: FieldMappings = {
 			process: "7P_Process",
 			product: "7P_Product",
 			promotion: "7P_Promotion",
-			physical_evidence: "7P_Physical_Evidence",
+			physicalEvidence: "7P_Physical_Evidence",
 		},
 		qa_responses: {
 			MarketingPlan_Sensibility: "MarketingPlan_Sensibility",

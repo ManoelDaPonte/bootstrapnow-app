@@ -1,8 +1,6 @@
 // lib/openai/formatters/analyzers/monthly_projection.ts
 import { MonthlyProjectionData } from "@/types/openai/analyzers";
 export function format_monthly_projection(data: any): MonthlyProjectionData {
-	console.log("=== DEBUG monthly_projection ===");
-	console.log("Input data:", data);
 	const projection_data = data.monthly_projection;
 	const months = Array.from({ length: 12 }, (_, i) => `M${i + 1}`);
 
@@ -139,9 +137,54 @@ export function format_monthly_projection(data: any): MonthlyProjectionData {
 			margin_percentage: margin_percentages[month],
 		};
 	});
-	console.log("Formatted sections:", formatted_sections);
-	console.log("Complete text:", complete_text);
-	console.log("=== END DEBUG monthly_projection ===");
+
+	const formatted_qa = {
+		// Inventaire
+		stock_type: `Question : Quel type de stock gérez-vous ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Inventaire_stocktype ||
+			"Non renseigné"
+		}`,
+		stock_cost: `Question : Quels sont vos coûts de stockage ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Inventaire_stockcost ||
+			"Non renseigné"
+		}`,
+		stock_churn: `Question : Quel est votre taux de rotation des stocks ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Inventaire_stockchurn ||
+			"Non renseigné"
+		}`,
+		stock_variation: `Question : Comment gérez-vous les variations de stock ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Inventaire_stockvariation ||
+			"Non renseigné"
+		}`,
+		stock_delay: `Question : Quels sont vos délais de réapprovisionnement ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Inventaire_stockdelay ||
+			"Non renseigné"
+		}`,
+
+		// Crédit
+		credit_common: `Question : Quelles sont vos pratiques courantes de crédit ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Credit_common || "Non renseigné"
+		}`,
+		credit_policy: `Question : Quelle est votre politique de crédit ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Credit_policy || "Non renseigné"
+		}`,
+		credit_conditions: `Question : Quelles sont vos conditions de crédit ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Credit_conditions ||
+			"Non renseigné"
+		}`,
+		credit_verification: `Question : Comment vérifiez-vous la solvabilité ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Credit_verification ||
+			"Non renseigné"
+		}`,
+		credit_slow_payments: `Question : Comment gérez-vous les paiements lents ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Credit_slowpayments ||
+			"Non renseigné"
+		}`,
+		credit_late_payments: `Question : Comment gérez-vous les retards de paiement ?\n\nRéponse : ${
+			projection_data.qa_responses?.OP_Credit_latepayments ||
+			"Non renseigné"
+		}`,
+	};
 
 	return {
 		data: {
@@ -152,7 +195,9 @@ export function format_monthly_projection(data: any): MonthlyProjectionData {
 			revenue_growth,
 			details,
 		},
+		qa: projection_data.qa_responses,
 		formatted_sections,
+		formatted_qa,
 		formatted_text: complete_text,
 	};
 }

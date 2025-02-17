@@ -1,8 +1,6 @@
 // lib/openai/formatters/analyzers/yearly_projection.ts
 import { YearlyProjectionData } from "@/types/openai/analyzers";
 export function format_yearly_projection(data: any): YearlyProjectionData {
-	console.log("=== DEBUG yearly_projection ===");
-	console.log("Input data:", data);
 	const projection_data = data.yearly_projection;
 	const years = ["Year 1", "Year 2", "Year 3"];
 
@@ -163,10 +161,6 @@ export function format_yearly_projection(data: any): YearlyProjectionData {
 
 	// Texte complet
 	const complete_text = Object.values(formatted_sections).join("\n\n");
-
-	console.log("Formatted sections:", formatted_sections);
-	console.log("Complete text:", complete_text);
-	console.log("=== END DEBUG yearlt_projection ===");
 
 	return {
 		data: {

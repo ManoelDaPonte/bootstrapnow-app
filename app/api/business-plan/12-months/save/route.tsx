@@ -64,77 +64,32 @@ function isValidRequestBody(
 	);
 }
 function validateProfitLossData(data: any): boolean {
-	console.log("Données à valider:", JSON.stringify(data, null, 2));
-
-	if (typeof data !== "object" || data === null) {
-		console.log("Les données ne sont pas un objet valide");
-		return false;
-	}
+	if (typeof data !== "object" || data === null) return false;
 
 	const requiredCategories = ["revenue", "expenses"];
+	const months = Array.from({ length: 12 }, (_, i) => `M${i + 1}`); // Utiliser M1-M12 au lieu de Jan-Dec
 
-	// Vérifier la structure de base
 	const hasValidCategories = requiredCategories.every((category) =>
 		Array.isArray(data[category])
 	);
 
-	if (!hasValidCategories) {
-		console.log("Les catégories requises ne sont pas des tableaux valides");
-		return false;
-	}
+	if (!hasValidCategories) return false;
 
-	// Vérifier chaque catégorie
-	return requiredCategories.every((category) => {
-		const entries = data[category];
-		return entries.every((entry: any, index: number) => {
-			console.log(
-				`Validation de l'entrée ${index} dans ${category}:`,
-				entry
-			);
-
-			// Vérifier l'ID
+	return requiredCategories.every((category) =>
+		data[category].every((entry: any) => {
 			const hasValidId =
 				typeof entry.id === "string" || typeof entry.id === "number";
-			if (!hasValidId) {
-				console.log(`ID invalide dans ${category}[${index}]`);
-				return false;
-			}
-
-			// Vérifier la catégorie
 			const hasValidCategory = typeof entry.category === "string";
-			if (!hasValidCategory) {
-				console.log(`Catégorie invalide dans ${category}[${index}]`);
-				return false;
-			}
+			const hasValidMonths = months.every((month) => {
+				const value = entry[month];
+				return (
+					typeof value === "number" &&
+					!isNaN(value) &&
+					isFinite(value)
+				);
+			});
 
-			// Vérifier les mois
-			const months = [
-				"Jan",
-				"Feb",
-				"Mar",
-				"Apr",
-				"May",
-				"Jun",
-				"Jul",
-				"Aug",
-				"Sep",
-				"Oct",
-				"Nov",
-				"Dec",
-			];
-
-			for (const month of months) {
-				const monthValue = entry[month];
-				if (typeof monthValue !== "number") {
-					console.log(
-						`Valeur invalide pour ${month} dans ${category}[${index}]:`,
-						monthValue
-					);
-					return false;
-				}
-			}
-
-			return true;
-		});
-	});
+			return hasValidId && hasValidCategory && hasValidMonths;
+		})
+	);
 }

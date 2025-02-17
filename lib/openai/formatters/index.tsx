@@ -8,8 +8,6 @@ import {
 	BaseFormattedData,
 	FormattedAnalyses,
 } from "@/types/openai/analyzers";
-import { BUSINESS_PLAN_SECTIONS } from "@/lib/openai/config/sections";
-import { SECTION_SYSTEM_PROMPTS } from "@/lib/openai/config/prompts";
 
 // Imports des formateurs
 import { format_swot } from "./analyzers/swot";

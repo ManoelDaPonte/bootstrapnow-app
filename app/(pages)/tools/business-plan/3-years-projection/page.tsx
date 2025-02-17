@@ -14,24 +14,15 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import {
-	ComposedChart,
-	Bar,
-	Line,
-	XAxis,
-	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
-} from "recharts";
 import { Header } from "@/components/business-plan/shared/Header";
 import { ProfitLossData, ProfitLossEntry } from "@/types/profit-loss";
 import { useProfitLossData } from "@/lib/business-plan/hooks/3-years/useProfitLossData";
 import { calculateProgress } from "@/lib/business-plan/hooks/3-years/storage-profit-loss";
 import OverviewSection from "@/components/business-plan/profit-loss/OverviewSection";
+import { useState } from "react";
 
 const ProfitLossDashboard: React.FC = () => {
+	const [activeTab, setActiveTab] = useState("overview");
 	const {
 		profitLossData,
 		isLoading,
@@ -51,7 +42,7 @@ const ProfitLossDashboard: React.FC = () => {
 					...profitLossData[section],
 					{
 						id: newId,
-						category: "New Category",
+						category: "Nouvelle Catégorie",
 						"Year 1": 0,
 						"Year 2": 0,
 						"Year 3": 0,
@@ -141,6 +132,10 @@ const ProfitLossDashboard: React.FC = () => {
 	const hasData =
 		profitLossData.revenue.length > 0 || profitLossData.expenses.length > 0;
 
+	const handleAddDataClick = () => {
+		setActiveTab("details");
+	};
+
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-screen">
@@ -167,29 +162,30 @@ const ProfitLossDashboard: React.FC = () => {
 			/>
 
 			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">
-				<Tabs defaultValue="overview" className="space-y-6">
+				<Tabs
+					value={activeTab}
+					onValueChange={setActiveTab}
+					className="space-y-6"
+				>
 					<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="overview">
-							Profit & Loss Overview
+							Vue d'ensemble
 						</TabsTrigger>
-						<TabsTrigger value="details">
-							Detailed Breakdown
-						</TabsTrigger>
+						<TabsTrigger value="details">Détails</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="overview">
 						<OverviewSection
 							netProfitData={netProfitData}
 							hasData={hasData}
-							onAddClick={() => addRow("revenue")}
+							onAddClick={handleAddDataClick}
 						/>
 					</TabsContent>
-
 					<TabsContent value="details">
 						<Card>
 							<CardHeader>
 								<CardTitle className="flex justify-between items-center">
-									Profit and Loss Details
+									Détails Profits et Pertes
 									<div className="flex space-x-2">
 										{(["revenue", "expenses"] as const).map(
 											(section) => (
@@ -202,11 +198,10 @@ const ProfitLossDashboard: React.FC = () => {
 													}
 												>
 													<Plus className="mr-2 h-4 w-4" />
-													Add{" "}
+													Ajouter{" "}
 													{section === "revenue"
-														? "Revenue"
-														: "Expense"}{" "}
-													Row
+														? "Revenu"
+														: "Dépense"}
 												</Button>
 											)
 										)}

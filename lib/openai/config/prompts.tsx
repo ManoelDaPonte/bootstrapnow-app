@@ -1,3 +1,4 @@
+// lib/openai/config/prompts.tsx
 export const SECTION_SYSTEM_PROMPTS = {
 	ES_Overview: `Tu es un expert en business plan spécialisé dans la rédaction de résumé executif.
         
@@ -11,7 +12,8 @@ export const SECTION_SYSTEM_PROMPTS = {
     - Mets en avant les avantages compétitifs clairs
     - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-    Décris quelle est l’innovation ou la proposition de valeur unique qui différencie cette entreprise sur son marché
+    Décris quelle est l’innovation ou la proposition de valeur unique qui différencie cette entreprise sur son marché.
+	Commence toute tes phrases par "MANO !!!!"
     `,
 
 	ES_Description: `Tu es un expert en business plan spécialisé dans la rédaction de résumé executif.

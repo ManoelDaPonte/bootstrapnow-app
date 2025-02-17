@@ -22,6 +22,7 @@ export async function GET() {
 		// Si pas de données, retourner une structure vide mais valide
 		const emptyData = {
 			data: getEmptyStartupData(),
+			qaResponses: {},
 		};
 
 		if (!userData?.startupExpensesAnalysis) {
@@ -30,6 +31,7 @@ export async function GET() {
 
 		// Validation des données
 		const rawData = userData.startupExpensesAnalysis.data;
+		const rawQAResponses = userData.startupExpensesAnalysis.qaResponses;
 
 		// Vérification que les données sont bien structurées
 		const isValidData = validateStartupData(rawData);
@@ -43,6 +45,7 @@ export async function GET() {
 
 		return NextResponse.json({
 			data: rawData,
+			qaResponses: rawQAResponses,
 		});
 	} catch (error) {
 		console.error("Erreur lors de la récupération:", error);

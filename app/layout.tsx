@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMetadataProvider } from "@/context/userMetadataProvider";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardLayout({
 	children,
@@ -46,6 +47,7 @@ export default function DashboardLayout({
 									</main>
 									<ThemeToggle />
 									<TailwindIndicator />
+									<Toaster />
 								</div>
 							</div>
 						</ThemeProvider>

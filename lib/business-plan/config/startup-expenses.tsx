@@ -1,6 +1,6 @@
 import { FinancialData } from "@/types/startup-expenses";
 
-export const QA_DATA = {
+export const STARTUP_QA_DATA = {
 	sectionTitle: "Questions pour Approfondir Votre Analyse Financière",
 	categories: [
 		{
