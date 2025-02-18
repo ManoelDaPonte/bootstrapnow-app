@@ -1,31 +1,62 @@
-// lib/openai/generators/DataMapper.ts
 import { prisma } from "@/lib/db/prisma";
 import { FIELD_MAPPINGS } from "../config/mappings";
-import {
-	AnalysisData,
-	MappingResult,
-	FieldMapping,
-} from "@/types/openai/mapping";
+import { AnalysisData, MappingResult } from "@/types/openai/mapping";
 
-// Fonction helper
-function hasQAResponses(tableName: string): boolean {
-	const modelsWithQA = [
-		"SwotAnalysis",
-		"PestelAnalysis",
-		"CanvasAnalysis" /* etc */,
-		"AnsoffAnalysis",
-		"MarketingMixAnalysis",
-		"ValuePropositionAnalysis",
-		"SkillMatrix",
-		"FunnelChartAnalysis",
-		"MonthlyProjectionAnalysis",
-		// "YearlyProjectionAnalysis",
-		// "MarketTrendsAnalysis",
-		"StartupExpensesAnalysis",
-		// "CompetitorsAnalysis",
-	];
-	return modelsWithQA.includes(tableName);
-}
+// Configuration des modèles et leurs mappings avec la bonne casse pour Prisma
+const MODEL_CONFIG = {
+	swotAnalysis: {
+		type: "swot",
+		hasQA: true,
+	},
+	pestelAnalysis: {
+		type: "pestel",
+		hasQA: true,
+	},
+	canvasAnalysis: {
+		type: "canvas",
+		hasQA: true,
+	},
+	ansoffAnalysis: {
+		type: "ansoff",
+		hasQA: true,
+	},
+	marketingMixAnalysis: {
+		type: "marketing_mix",
+		hasQA: true,
+	},
+	valuePropositionAnalysis: {
+		type: "value_proposition",
+		hasQA: true,
+	},
+	skillMatrix: {
+		type: "skills_matrix",
+		hasQA: true,
+	},
+	funnelChartAnalysis: {
+		type: "funnel_chart",
+		hasQA: true,
+	},
+	monthlyProjectionAnalysis: {
+		type: "monthly_projection",
+		hasQA: true,
+	},
+	yearlyProjectionAnalysis: {
+		type: "yearly_projection",
+		hasQA: false,
+	},
+	marketTrendsAnalysis: {
+		type: "market_trends",
+		hasQA: false,
+	},
+	startupExpensesAnalysis: {
+		type: "startup_expenses",
+		hasQA: true,
+	},
+	competitorsAnalysis: {
+		type: "competitors",
+		hasQA: false,
+	},
+} as const;
 
 export class DataMapper {
 	constructor(private databaseUrl: string) {}
@@ -35,24 +66,15 @@ export class DataMapper {
 		analysisType: string,
 		dataType: string
 	): any {
-		// console.log(
-		// 	`Mapping des champs pour ${analysisType}, type: ${dataType}`,
-		// 	{
-		// 		inputData: data,
-		// 		mapping: FIELD_MAPPINGS[analysisType]?.[dataType],
-		// 	}
-		// );
 		if (!data || typeof data !== "object") {
 			return data;
 		}
 
 		const mapping = FIELD_MAPPINGS[analysisType]?.[dataType];
 		if (!mapping) {
-			// Si pas de mapping, retourner les données telles quelles
 			return data;
 		}
 
-		// Si c'est un tableau, traiter chaque élément
 		if (Array.isArray(data)) {
 			return data.map((item) =>
 				this.mapFieldNames(item, analysisType, dataType)
@@ -60,15 +82,9 @@ export class DataMapper {
 		}
 
 		const mappedData: Record<string, any> = {};
-
 		for (const [key, value] of Object.entries(data)) {
-			// Si la clé est dans le mapping, utiliser la nouvelle clé
-			if (key in mapping) {
-				mappedData[mapping[key]] = value;
-			} else {
-				// Sinon garder la clé originale, mais sans log d'erreur
-				mappedData[key] = value;
-			}
+			const mappedKey = mapping[key] || key;
+			mappedData[mappedKey] = value;
 		}
 
 		return mappedData;
@@ -76,43 +92,33 @@ export class DataMapper {
 
 	private async processAnalysis(
 		userId: string,
-		tableName: string,
+		tableName: keyof typeof MODEL_CONFIG,
 		analysisType: string
 	): Promise<AnalysisData | null> {
-		// console.log(
-		// 	`Début du traitement de l'analyse ${analysisType} pour l'utilisateur ${userId}`
-		// );
-
+		console.log(`Processing ${tableName}...`);
 		try {
-			const analysis = await (
-				prisma[tableName as keyof typeof prisma] as any
-			).findUnique({
+			const modelConfig = MODEL_CONFIG[tableName];
+			const select = {
+				data: true,
+				...(modelConfig.hasQA ? { qaResponses: true } : {}),
+			};
+
+			const analysis = await (prisma[tableName] as any).findUnique({
 				where: { userId },
-				select: {
-					data: true,
-					...(hasQAResponses(tableName) ? { qaResponses: true } : {}),
-				},
+				select,
 			});
 
-			// console.log(`Résultat de la requête pour ${tableName}:`, {
-			// 	hasAnalysis: !!analysis,
-			// 	hasData: !!analysis?.data,
-			// 	dataType: analysis?.data ? typeof analysis.data : "undefined",
-			// });
+			console.log(`${tableName} query result:`, {
+				exists: !!analysis,
+				hasData: !!analysis?.data,
+			});
 
-			// Si pas d'analyse, retourner null proprement
 			if (!analysis || !analysis.data) {
-				// console.log(`Pas de données trouvées pour ${analysisType}`);
-				return null;
-			}
-
-			// Vérification explicite du type des données
-			if (typeof analysis.data !== "object") {
-				console.error(
-					`Données invalides pour ${analysisType}:`,
-					analysis.data
-				);
-				return null;
+				console.log(`-> No data found for ${tableName}`);
+				return {
+					data: {},
+					qa_responses: {},
+				};
 			}
 
 			let data = analysis.data;
@@ -136,63 +142,48 @@ export class DataMapper {
 				qa_responses: mappedQA,
 			};
 		} catch (error) {
-			console.error(`Erreur dans processAnalysis pour ${tableName}:`, {
-				error: error instanceof Error ? error.message : "Unknown error",
-				analysisType,
-				tableName,
-			});
-			return null; // Retourner null au lieu de throw
+			console.error(`Error in processAnalysis for ${tableName}:`, error);
+			return {
+				data: {},
+				qa_responses: {},
+			};
 		}
 	}
 
 	async getUserAnalyses(auth0Id: string): Promise<MappingResult> {
 		try {
-			// Récupération de l'ID utilisateur
 			const user = await prisma.user.findUnique({
 				where: { auth0Id },
 				select: { id: true },
 			});
 
 			if (!user) {
-				throw new Error(
-					`Utilisateur non trouvé avec auth0Id: ${auth0Id}`
-				);
+				throw new Error(`User not found with auth0Id: ${auth0Id}`);
 			}
 
-			// Configuration des analyses à récupérer
-			const analysesConfig = [
-				["SwotAnalysis", "swot"],
-				["PestelAnalysis", "pestel"],
-				["CanvasAnalysis", "canvas"],
-				["AnsoffAnalysis", "ansoff"],
-				["MarketingMixAnalysis", "marketing_mix"],
-				["ValuePropositionAnalysis", "value_proposition"],
-				["SkillMatrix", "skills_matrix"],
-				["FunnelChartAnalysis", "funnel_chart"],
-				["MonthlyProjectionAnalysis", "monthly_projection"],
-				["YearlyProjectionAnalysis", "yearly_projection"],
-				["MarketTrendsAnalysis", "market_trends"],
-				["StartupExpensesAnalysis", "startup_expenses"],
-				["CompetitorsAnalysis", "competitors"],
-			] as const;
-
 			const analyses: MappingResult = {};
+			const modelEntries = Object.entries(MODEL_CONFIG) as [
+				keyof typeof MODEL_CONFIG,
+				(typeof MODEL_CONFIG)[keyof typeof MODEL_CONFIG]
+			][];
 
-			// Traitement de chaque analyse
-			for (const [tableName, analysisType] of analysesConfig) {
+			for (const [tableName, config] of modelEntries) {
+				console.log(`Processing ${tableName} (${config.type})`);
 				const result = await this.processAnalysis(
 					user.id,
 					tableName,
-					analysisType
+					config.type
 				);
+				console.log(`Result for ${tableName}:`, !!result);
 				if (result) {
-					analyses[analysisType] = result;
+					analyses[config.type] = result;
 				}
 			}
 
+			console.log("Final analyses:", Object.keys(analyses));
 			return analyses;
 		} catch (error) {
-			console.error(error);
+			console.error("Error in getUserAnalyses:", error);
 			throw error;
 		}
 	}
