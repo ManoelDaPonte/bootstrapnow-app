@@ -9,6 +9,7 @@ import {
 } from "@/types/business-plan-document/business-plan";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { fi } from "date-fns/locale";
 
 export interface GenerationStep {
 	id: string;
@@ -19,6 +20,11 @@ export interface GenerationStep {
 export function useBusinessPlanGenerator() {
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [currentSteps, setCurrentSteps] = useState<GenerationStep[]>([]);
+	const [failedSections, setFailedSections] = useState<string[]>([]);
+	const [sectionsStatus, setSectionsStatus] = useState<
+		Record<string, boolean>
+	>({});
+
 	const [generationState, setGenerationState] = useState<GenerationState>({
 		status: "idle",
 		sections: BUSINESS_PLAN_SECTIONS.map((section) => ({
@@ -35,8 +41,6 @@ export function useBusinessPlanGenerator() {
 		sectionName: string
 	): Promise<string> => {
 		try {
-			console.log("Début de la génération de la section:", sectionName);
-
 			// Mise à jour du statut de la section
 			setGenerationState((prev) => ({
 				...prev,
@@ -191,12 +195,43 @@ export function useBusinessPlanGenerator() {
 		return steps;
 	};
 
+	// Fonction pour vérifier le statut des sections
+	const checkSectionsStatus = async (auth0Id: string, sections: string[]) => {
+		try {
+			const response = await fetch("/api/openai/check-sections", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ auth0Id, sections }),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to check sections");
+			}
+
+			const { sectionsStatus } = await response.json();
+			// Mettre à jour l'état local avec le statut des sections
+			const newStatus = sectionsStatus.reduce(
+				(acc: Record<string, boolean>, section: any) => {
+					acc[section.section] = section.shouldRegenerate;
+					return acc;
+				},
+				{}
+			);
+			setSectionsStatus(newStatus);
+			return sectionsStatus;
+		} catch (error) {
+			console.error("Error checking sections:", error);
+			throw error;
+		}
+	};
+
 	const generateBusinessPlan = async (
 		auth0Id: string,
 		sections: string[]
 	) => {
 		setIsGenerating(true);
 		const steps = initializeGeneration();
+		const generatedSections: Record<string, string> = {};
 
 		try {
 			// 1. Initialisation
@@ -206,29 +241,108 @@ export function useBusinessPlanGenerator() {
 
 			// 2. Récupération des données
 			updateStep("db-fetch", "in-progress");
-			await new Promise((resolve) => setTimeout(resolve, 1000));
+			const response = await fetch("/api/openai/check-sections", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ auth0Id, sections }),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to check sections");
+			}
+
+			const { sectionsStatus: newSectionsStatus } = await response.json();
+			console.log("Status des sections:", newSectionsStatus);
+			// Mettre à jour l'état local des statuts
+			setSectionsStatus(
+				newSectionsStatus.reduce(
+					(acc: Record<string, boolean>, section: any) => {
+						acc[section.section] =
+							section.shouldRegenerate ||
+							!section.hasExistingContent;
+						return acc;
+					},
+					{}
+				)
+			);
 			updateStep("db-fetch", "completed");
 
 			// 3. Génération des sections
-			const generatedSections: Record<string, string> = {};
 			updateStep("sections", "in-progress");
 
 			for (const section of sections) {
-				// Mettre à jour le libellé de l'étape avec la section en cours
-				setCurrentSteps((steps) =>
-					steps.map((step) =>
-						step.id === "sections"
-							? {
-									...step,
-									label: `Génération de la section ${section}`,
-							  }
-							: step
-					)
-				);
+				try {
+					setCurrentSteps((steps) =>
+						steps.map((step) =>
+							step.id === "sections"
+								? {
+										...step,
+										label: `Vérification de la section ${section}`,
+								  }
+								: step
+						)
+					);
 
-				const result = await generateSection(auth0Id, section);
-				generatedSections[section] = result;
+					const sectionStatus = newSectionsStatus.find(
+						(s: any) => s.section === section
+					);
+
+					// Vérifier si la section a besoin d'être régénérée
+					if (sectionStatus.shouldRegenerate) {
+						console.log(`Régénération nécessaire pour ${section}`);
+						const result = await generateSection(auth0Id, section);
+						generatedSections[section] = result;
+
+						// Mettre à jour le statut après une génération réussie
+						setSectionsStatus((prev) => ({
+							...prev,
+							[section]: false,
+						}));
+					} else {
+						console.log(
+							`Récupération du contenu existant pour ${section}`
+						);
+						try {
+							const response = await fetch(
+								`/api/openai/get-section-content?auth0Id=${auth0Id}&section=${section}`
+							);
+							if (!response.ok) {
+								throw new Error("Failed to get content");
+							}
+							const { content } = await response.json();
+							if (!content) {
+								throw new Error(
+									`No content found for ${section}`
+								);
+							}
+							generatedSections[section] = content;
+						} catch (error) {
+							// Si la récupération échoue, on continue sans erreur
+							console.warn(
+								`Erreur de récupération pour ${section}, on continue`
+							);
+							generatedSections[section] = ""; // ou un message par défaut
+						}
+					}
+
+					// Mettre à jour le progrès
+					setCurrentSteps((steps) =>
+						steps.map((step) =>
+							step.id === "sections"
+								? {
+										...step,
+										label: `Section ${section} traitée`,
+								  }
+								: step
+						)
+					);
+				} catch (error) {
+					// Seulement log l'erreur et continuer
+					console.error(`Erreur pour la section ${section}:`, error);
+					continue;
+				}
 			}
+			updateStep("sections", "completed");
 
 			// Remettre le libellé original et marquer comme terminé
 			setCurrentSteps((steps) =>
@@ -243,34 +357,71 @@ export function useBusinessPlanGenerator() {
 				)
 			);
 
-			// 4. Sauvegarde et génération du document
-			updateStep("word", "in-progress");
-			const { generationId } = await saveGeneratedContent(
-				auth0Id,
-				generatedSections
-			);
-			const docxUrl = await generateDocument(auth0Id, generationId);
-			updateStep("word", "completed");
+			// 4. Sauvegarder et générer le document final
 
-			// 5. Finalisation
-			updateStep("final", "in-progress");
-			await loadHistory(auth0Id);
-			updateStep("final", "completed");
-
-			toast({
-				title: "Succès",
-				description: "Votre business plan a été généré avec succès",
-				duration: 3000,
+			const allSectionsValid = sections.every((section) => {
+				const content = generatedSections[section];
+				return content && content.length > 0;
 			});
 
-			const link = document.createElement("a");
-			link.href = docxUrl;
-			link.setAttribute("download", "business-plan.docx");
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
+			if (allSectionsValid) {
+				console.log(
+					"Toutes les sections ont été générées:",
+					generatedSections
+				);
+				updateStep("word", "in-progress");
 
-			return docxUrl;
+				const saveResult = await saveGeneratedContent(
+					auth0Id,
+					generatedSections
+				);
+				console.log("Résultat de la sauvegarde:", saveResult);
+
+				const docxUrl = await generateDocument(
+					auth0Id,
+					saveResult.generationId
+				);
+				console.log("URL du document généré:", docxUrl);
+
+				updateStep("word", "completed");
+
+				// 5. Finalisation
+				updateStep("final", "in-progress");
+				await loadHistory(auth0Id);
+				updateStep("final", "completed");
+
+				toast({
+					title: "Succès",
+					description: "Votre business plan a été généré avec succès",
+					duration: 3000,
+				});
+
+				if (docxUrl) {
+					const link = document.createElement("a");
+					link.href = docxUrl;
+					link.setAttribute("download", "business-plan.docx");
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+				}
+
+				return docxUrl;
+			} else {
+				const missingSections = sections.filter((section) => {
+					const content = generatedSections[section];
+					return !content || content.length === 0;
+				});
+
+				console.error(
+					"Sections manquantes ou invalides:",
+					missingSections
+				);
+				throw new Error(
+					`Les sections suivantes n'ont pas pu être générées: ${missingSections.join(
+						", "
+					)}`
+				);
+			}
 		} catch (error) {
 			const currentStep = currentSteps.find(
 				(step) => step.status === "in-progress"
@@ -278,12 +429,20 @@ export function useBusinessPlanGenerator() {
 			if (currentStep) {
 				updateStep(currentStep.id, "error");
 			}
+
+			// Afficher un toast avec le message d'erreur spécifique
+			toast({
+				title: "Erreur",
+				description:
+					error instanceof Error
+						? error.message
+						: "Une erreur est survenue",
+				variant: "destructive",
+			});
+
 			throw error;
 		} finally {
-			setTimeout(() => {
-				setIsGenerating(false);
-				setCurrentSteps([]);
-			}, 2000);
+			setIsGenerating(false);
 		}
 	};
 
@@ -325,5 +484,7 @@ export function useBusinessPlanGenerator() {
 		generateBusinessPlan,
 		loadHistory,
 		downloadGeneration,
+		sectionsStatus,
+		checkSectionsStatus,
 	};
 }

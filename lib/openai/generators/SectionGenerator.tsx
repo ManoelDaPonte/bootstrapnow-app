@@ -56,14 +56,22 @@ export class SectionGenerator {
 		analysesFormatted: any,
 		paths: [string, string, string][]
 	): [string, string, string][] {
-		// console.log("Vérification des chemins:", {
-		// 	totalPaths: paths.length,
-		// 	availableAnalyses: Object.keys(analysesFormatted),
-		// });
+		console.log("=== DEBUG verifyPaths ===");
+		console.log("Analyses disponibles:", Object.keys(analysesFormatted));
+		console.log("Chemins à vérifier:", paths);
+
 		const validPaths: [string, string, string][] = [];
 
 		for (const [analysisType, sectionType, fieldName] of paths) {
+			console.log("\nVérification du chemin:", {
+				analysisType,
+				sectionType,
+				fieldName,
+			});
+			console.log("Analyse présente?", !!analysesFormatted[analysisType]);
+
 			if (!analysesFormatted[analysisType]) {
+				console.log("-> Analyse non trouvée");
 				continue;
 			}
 
@@ -71,23 +79,29 @@ export class SectionGenerator {
 
 			if (sectionType === "formatted_text") {
 				data = analysesFormatted[analysisType].formatted_text;
+				console.log("-> formatted_text:", !!data);
 			} else if (sectionType === "formatted_qa") {
 				data =
 					analysesFormatted[analysisType]?.formatted_qa?.[fieldName];
+				console.log("-> formatted_qa:", !!data);
 			} else if (sectionType === "formatted_sections") {
 				data =
 					analysesFormatted[analysisType]?.formatted_sections?.[
 						fieldName
 					];
+				console.log("-> formatted_sections:", !!data);
 			}
 
 			if (data === null || data === "") {
+				console.log("-> Données invalides");
 				continue;
 			}
 
+			console.log("-> Chemin valide ajouté");
 			validPaths.push([analysisType, sectionType, fieldName]);
 		}
 
+		console.log("\nChemins valides:", validPaths);
 		return validPaths;
 	}
 
@@ -95,6 +109,7 @@ export class SectionGenerator {
 		auth0Id: string,
 		sectionName: string
 	): Promise<GenerationResult> {
+		console.log("1. Début generateSection pour:", sectionName);
 		// console.log(`Début de génération pour la section ${sectionName}`, {
 		// 	auth0Id,
 		// 	timestamp: new Date().toISOString(),
