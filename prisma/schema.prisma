@@ -166,6 +166,19 @@ model DocumentGeneration {
     @@index([status])
 }
 
+model SectionMetadata {
+    id               String   @id @default(cuid())
+    userId           String
+    sectionName      String
+    dataSignatures   Json // Stocké comme JSON dans la base de données
+    generatedContent String
+    lastGenerated    DateTime
+    user             User     @relation(fields: [userId], references: [id])
+
+    @@unique([userId, sectionName])
+    @@index([userId])
+}
+
 model User {
     id                        String                     @id @default(cuid())
     auth0Id                   String                     @unique
@@ -186,6 +199,7 @@ model User {
     businessPlanProgress      BusinessPlanProgress?
     generalInfo               GeneralInfo?
     documentGeneration        DocumentGeneration[]
+    sectionMetadata           SectionMetadata[]
     createdAt                 DateTime                   @default(now())
     updatedAt                 DateTime                   @updatedAt
 }

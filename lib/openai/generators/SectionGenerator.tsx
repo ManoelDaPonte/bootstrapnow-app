@@ -95,6 +95,7 @@ export class SectionGenerator {
 		auth0Id: string,
 		sectionName: string
 	): Promise<GenerationResult> {
+		console.log("1. Début generateSection pour:", sectionName);
 		// console.log(`Début de génération pour la section ${sectionName}`, {
 		// 	auth0Id,
 		// 	timestamp: new Date().toISOString(),

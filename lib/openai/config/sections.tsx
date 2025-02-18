@@ -508,11 +508,11 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_segments"],
 		],
 	},
-	MarketingPlan_Niche_d: {
-		title: "Barrière à l'entrée",
-		// LES 3 PRECEDENTS
-		paths: [],
-	},
+	// MarketingPlan_Niche_d: {
+	// 	title: "Barrière à l'entrée",
+	// 	// LES 3 PRECEDENTS
+	// 	paths: [],
+	// },
 	MarketingPlan_HOW: {
 		title: "Barrière à l'entrée",
 		paths: [
@@ -563,11 +563,11 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "value_proposition"],
 		],
 	},
-	MarketingPlan_FirstConclusion: {
-		title: "Barrière à l'entrée",
-		// LES 3 DERNIERS
-		paths: [],
-	},
+	// MarketingPlan_FirstConclusion: {
+	// 	title: "Barrière à l'entrée",
+	// 	// LES 3 DERNIERS
+	// 	paths: [],
+	// },
 
 	MarketingPlan_PricingStrategy: {
 		title: "Barrière à l'entrée",
@@ -622,12 +622,12 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "gains"],
 		],
 	},
-	MarketingPlan_ChannelConclusion: {
-		title: "Barrière à l'entrée",
-		paths: [
-			// les 2 derniers
-		],
-	},
+	// MarketingPlan_ChannelConclusion: {
+	// 	title: "Barrière à l'entrée",
+	// 	paths: [
+	// 		// les 2 derniers
+	// 	],
+	// },
 	OP_Production: {
 		title: "Barrière à l'entrée",
 		paths: [
@@ -918,15 +918,15 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["ansoff", "formatted_sections", "diversification"],
 		],
 	},
-	StartupExpenses: {
-		title: "Barrière à l'entrée",
-		paths: [
-			// Modes de financement: {{FP_Funding}}
-			// Besoin en capitaux: {{FP_CapitelNeeds}}
-			// Budget: {{FP_Budget}}
-			// Coûts externes: {{FP_ExternalCost}}
-		],
-	},
+	// StartupExpenses: {
+	// 	title: "Barrière à l'entrée",
+	// 	paths: [
+	// 		// Modes de financement: {{FP_Funding}}
+	// 		// Besoin en capitaux: {{FP_CapitelNeeds}}
+	// 		// Budget: {{FP_Budget}}
+	// 		// Coûts externes: {{FP_ExternalCost}}
+	// 	],
+	// },
 	OpeningDay_BalanceSheet: {
 		title: "Barrière à l'entrée",
 		paths: [

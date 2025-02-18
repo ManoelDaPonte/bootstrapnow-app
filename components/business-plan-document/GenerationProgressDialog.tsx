@@ -39,7 +39,7 @@ const GenerationProgressDialog: React.FC<GenerationProgressDialogProps> = ({
 	};
 
 	return (
-		<Dialog open={isOpen} modal>
+		<Dialog open={isOpen}>
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>Génération du Business Plan</DialogTitle>
