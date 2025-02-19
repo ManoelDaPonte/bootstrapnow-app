@@ -1,3 +1,4 @@
+// lib/business-plan-document/documentGenerator.ts
 import { BlobServiceClient, BlobSASPermissions } from "@azure/storage-blob";
 import { readFileSync } from "fs";
 import path from "path";
@@ -52,6 +53,56 @@ export class DocumentGenerator {
 		return readFileSync(templatePath);
 	}
 
+	private async getGeneralInfo(auth0Id: string): Promise<GeneralInfo | null> {
+		const user = await prisma.user.findUnique({
+			where: { auth0Id },
+			include: {
+				generalInfo: true,
+			},
+		});
+
+		if (!user?.generalInfo?.data) {
+			return null;
+		}
+
+		const rawData = user.generalInfo.data as Prisma.JsonValue;
+		if (
+			typeof rawData === "object" &&
+			rawData !== null &&
+			!Array.isArray(rawData)
+		) {
+			return rawData as unknown as GeneralInfo;
+		}
+
+		return null;
+	}
+
+	private async getMarketTrendsData(
+		auth0Id: string
+	): Promise<MarketTrendsData | null> {
+		const user = await prisma.user.findUnique({
+			where: { auth0Id },
+			include: {
+				marketTrendsAnalysis: true,
+			},
+		});
+
+		if (!user?.marketTrendsAnalysis?.data) {
+			return null;
+		}
+
+		const rawData = user.marketTrendsAnalysis.data as Prisma.JsonValue;
+		if (
+			typeof rawData === "object" &&
+			rawData !== null &&
+			!Array.isArray(rawData)
+		) {
+			return rawData as unknown as MarketTrendsData;
+		}
+
+		return null;
+	}
+
 	private convertMarkdownToOpenXML(text: string): string {
 		// Remplacer les marqueurs de gras (**texte**) par des balises OpenXML
 		return text.replace(
@@ -60,10 +111,27 @@ export class DocumentGenerator {
 		);
 	}
 
-	async generateDocument(sections: Record<string, string>): Promise<Buffer> {
+	async generateDocument(
+		sections: Record<string, string>,
+		auth0Id: string
+	): Promise<Buffer> {
 		try {
 			const template = await this.loadTemplate();
 			console.log("Template chargé");
+
+			// Récupérer les données supplémentaires
+			const [generalInfo, marketTrendsData] = await Promise.all([
+				this.getGeneralInfo(auth0Id),
+				this.getMarketTrendsData(auth0Id),
+			]);
+
+			if (!generalInfo) {
+				throw new Error("Informations générales non trouvées");
+			}
+
+			if (!marketTrendsData) {
+				throw new Error("Données de tendances de marché non trouvées");
+			}
 
 			const zip = new PizZip(template);
 			console.log("ZIP créé");
@@ -71,13 +139,15 @@ export class DocumentGenerator {
 			// Obtenir les placeholders
 			const placeholders = mapPlaceholders(generalInfo, marketTrendsData);
 
-			// Appliquer les remplacements aux sections
+			// Appliquer les remplacements aux sections et convertir le Markdown
 			const processedSections: Record<string, string> = {};
 			for (const [key, content] of Object.entries(sections)) {
-				processedSections[key] = replacePlaceholders(
+				const withPlaceholders = replacePlaceholders(
 					content,
 					placeholders
 				);
+				processedSections[key] =
+					this.convertMarkdownToOpenXML(withPlaceholders);
 			}
 
 			// Fusionner les placeholders directs avec les sections traitées
@@ -112,7 +182,6 @@ export class DocumentGenerator {
 				throw error;
 			}
 
-			// Générer le document final
 			const buf = doc.getZip().generate({
 				type: "nodebuffer",
 				compression: "DEFLATE",
