@@ -13,7 +13,7 @@ export function format_swot(data: any): SwotAnalysisData {
 	};
 
 	// Normalisation des réponses QA
-	const normalized_qa = {
+	const qa_structure = {
 		competitor_strengths: {
 			question:
 				"Quelles sont les forces distinctives de vos concurrents qui pourraient constituer une menace ?",
@@ -29,6 +29,17 @@ export function format_swot(data: any): SwotAnalysisData {
 			response: swot_data.qa_responses?.SWOT_OperationalEfficiency,
 		},
 	};
+
+	// Convertir la structure QA en Record<string, string>
+	const normalized_qa: Record<string, string> = Object.entries(
+		qa_structure
+	).reduce(
+		(acc, [key, value]) => ({
+			...acc,
+			[key]: `${value.question}: ${value.response || "Non renseigné"}`,
+		}),
+		{}
+	);
 
 	// Création des sections formatées
 	const formatted_sections: Record<string, string> = {
@@ -65,7 +76,8 @@ export function format_swot(data: any): SwotAnalysisData {
 	};
 
 	// Création des QA formatés
-	const formatted_qa = Object.entries(normalized_qa).reduce(
+	const formatted_qa = Object.entries(qa_structure).reduce(
+		// Utiliser qa_structure au lieu de normalized_qa
 		(acc, [key, qa]) => ({
 			...acc,
 			[key]: `Question : ${qa.question}\n\nRéponse : ${
@@ -88,7 +100,7 @@ export function format_swot(data: any): SwotAnalysisData {
 
 	return {
 		data: normalized_data,
-		qa: normalized_qa,
+		qa: normalized_qa, // Maintenant c'est un Record<string, string>
 		formatted_sections,
 		formatted_qa,
 		formatted_text: complete_text,

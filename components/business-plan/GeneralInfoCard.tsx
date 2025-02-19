@@ -42,7 +42,7 @@ const GeneralInfoCard: React.FC<ExtendedGeneralInfoCardProps> = ({
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div className="space-y-2">
 						<Label htmlFor="company_name">
-							Nom de l'entreprise
+							Nom de l&apos;entreprise
 						</Label>
 						<Input
 							id="company_name"
@@ -57,7 +57,9 @@ const GeneralInfoCard: React.FC<ExtendedGeneralInfoCardProps> = ({
 					</div>
 
 					<div className="space-y-2">
-						<Label htmlFor="business_type">Type d'activité</Label>
+						<Label htmlFor="business_type">
+							Type d&apos;activité
+						</Label>
 						<Select
 							value={data.business_type || ""}
 							onValueChange={(value) => {

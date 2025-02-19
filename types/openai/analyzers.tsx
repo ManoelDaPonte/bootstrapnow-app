@@ -9,6 +9,21 @@ export interface BaseFormattedData {
 	data: any;
 }
 
+export interface GeneralInfoData extends BaseFormattedData {
+	data: {
+		city: string;
+		state: string;
+		authors: string;
+		zipcode: string;
+		website_url: string;
+		company_name: string;
+		business_type: string;
+		email_address: string;
+		business_phone: string;
+		street_address: string;
+	};
+}
+
 // Competitor Data
 export interface CompetitorData {
 	id: string;
@@ -221,6 +236,7 @@ export interface YearlyProjectionData extends BaseFormattedData {
 
 // Mise à jour du type union pour inclure tous les analyseurs
 export type AnalyzerResult =
+	| GeneralInfoData
 	| SwotAnalysisData
 	| MarketTrendsData
 	| CompetitorsAnalysisData

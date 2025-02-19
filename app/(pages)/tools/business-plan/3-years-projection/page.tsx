@@ -169,7 +169,7 @@ const ProfitLossDashboard: React.FC = () => {
 				>
 					<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="overview">
-							Vue d'ensemble
+							Vue d&apos;ensemble
 						</TabsTrigger>
 						<TabsTrigger value="details">Détails</TabsTrigger>
 					</TabsList>
@@ -330,7 +330,8 @@ const ProfitLossDashboard: React.FC = () => {
 													className="border p-4 rounded-lg"
 												>
 													<h4 className="font-semibold mb-2">
-														Bilan de l'année {year}
+														Bilan de l&apos;année{" "}
+														{year}
 													</h4>
 													<p>
 														<strong>

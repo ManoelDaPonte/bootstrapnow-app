@@ -3,6 +3,10 @@ export const BUSINESS_PLAN_SECTIONS = {
 	ES_Overview: {
 		title: "Vue globale de l'entreprise",
 		paths: [
+			["general_info", "formatted_sections", "company_name"],
+			["general_info", "formatted_sections", "business_type"],
+			["general_info", "formatted_sections", "contact_info"],
+			// ["general_info", "formatted_sections", "location"],
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "value_proposition"],
 			["canvas", "formatted_sections", "customer_segments"],
@@ -11,6 +15,8 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["swot", "formatted_sections", "opportunities"],
 			["ansoff", "formatted_qa", "growth_strategy"],
+			["ansoff", "formatted_qa", "product_strategy"], //to del apres
+			["marketing_mix", "formatted_sections", "people"],
 		],
 	},
 	ES_Description: {

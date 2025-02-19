@@ -23,6 +23,7 @@ import { format_startup_expenses } from "./analyzers/startup-expenses";
 import { format_monthly_projection } from "./analyzers/monthly-projection";
 import { format_yearly_projection } from "./analyzers/yearly-projection";
 import { format_competitors } from "./analyzers/competitors";
+import { format_general_info } from "./analyzers/general-info";
 
 // Types d'export
 export type AnalyzerResult =
@@ -35,6 +36,7 @@ export type AnalyzerResult =
 
 // Objet contenant tous les formateurs
 export const analyzers = {
+	general_info: format_general_info,
 	swot: format_swot,
 	pestel: format_pestel,
 	canvas: format_canvas,
@@ -61,11 +63,17 @@ export function format_all_analyses(
 	for (const [analysis_type, analysis_data] of Object.entries(analyses)) {
 		if (analysis_type in analyzers) {
 			try {
+				// Vérifier que analysis_data a la bonne structure
+				if (!analysis_data || typeof analysis_data !== "object") {
+					console.error(`Format invalide pour ${analysis_type}`);
+					continue;
+				}
+
+				// Encapsuler les données avec le type d'analyse
 				const result = analyzers[analysis_type as AnalyzerType]({
 					[analysis_type]: analysis_data,
 				});
 
-				// S'assurer que le résultat correspond à l'interface FormattedAnalysis
 				formatted_analyses[analysis_type] = {
 					formatted_sections: result.formatted_sections || {},
 					formatted_text: result.formatted_text || "",
@@ -83,8 +91,10 @@ export function format_all_analyses(
 
 	return formatted_analyses;
 }
+
 // Export individuel des formateurs
 export {
+	format_general_info,
 	format_swot,
 	format_pestel,
 	format_canvas,

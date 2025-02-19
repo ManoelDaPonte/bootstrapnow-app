@@ -1,15 +1,13 @@
 //lib/openai/hooks/useBusinessPlanGenerator.ts
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
 	BUSINESS_PLAN_SECTIONS,
 	BusinessPlanSection,
-	SectionStatus,
 	GenerationState,
 	Generation,
 } from "@/types/business-plan-document/business-plan";
 import { toast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
-import { fi } from "date-fns/locale";
+import { useUserMetadata } from "@/context/userMetadataProvider";
 
 export interface GenerationStep {
 	id: string;
@@ -18,9 +16,9 @@ export interface GenerationStep {
 }
 
 export function useBusinessPlanGenerator() {
+	const { metadata, updateTokens } = useUserMetadata();
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [currentSteps, setCurrentSteps] = useState<GenerationStep[]>([]);
-	const [failedSections, setFailedSections] = useState<string[]>([]);
 	const [sectionsStatus, setSectionsStatus] = useState<
 		Record<string, boolean>
 	>({});
@@ -229,9 +227,25 @@ export function useBusinessPlanGenerator() {
 		auth0Id: string,
 		sections: string[]
 	) => {
-		setIsGenerating(true);
-		const steps = initializeGeneration();
 		const generatedSections: Record<string, string> = {};
+		const tokens = parseInt(metadata?.tokens || "0");
+		if (tokens <= 0) {
+			toast({
+				title: "Tokens insuffisants",
+				description:
+					"Vous devez avoir au moins 1 token pour générer un business plan.",
+				variant: "destructive",
+			});
+			return;
+		}
+
+		setIsGenerating(true);
+		initializeGeneration();
+
+		const shouldProceed = window.confirm(
+			"Cette génération utilisera 1 token. Voulez-vous continuer ?"
+		);
+		if (!shouldProceed) return;
 
 		try {
 			// 1. Initialisation
@@ -316,7 +330,7 @@ export function useBusinessPlanGenerator() {
 								);
 							}
 							generatedSections[section] = content;
-						} catch (error) {
+						} catch (_error) {
 							// Si la récupération échoue, on continue sans erreur
 							console.warn(
 								`Erreur de récupération pour ${section}, on continue`
@@ -404,6 +418,19 @@ export function useBusinessPlanGenerator() {
 					link.click();
 					document.body.removeChild(link);
 				}
+				// Si la génération est réussie, utiliser le token
+				const tokenResponse = await fetch("/api/stripe/use-token", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ userId: auth0Id }),
+				});
+
+				if (tokenResponse.ok) {
+					const { tokens: newTokens } = await tokenResponse.json();
+					updateTokens(parseInt(newTokens));
+				}
 
 				return docxUrl;
 			} else {
@@ -446,7 +473,7 @@ export function useBusinessPlanGenerator() {
 		}
 	};
 
-	const loadHistory = async (auth0Id: string) => {
+	const loadHistory = useCallback(async (auth0Id: string) => {
 		setIsLoadingHistory(true);
 		try {
 			const response = await fetch(
@@ -461,7 +488,7 @@ export function useBusinessPlanGenerator() {
 		} finally {
 			setIsLoadingHistory(false);
 		}
-	};
+	}, []);
 
 	const downloadGeneration = (docxUrl: string) => {
 		const link = document.createElement("a");

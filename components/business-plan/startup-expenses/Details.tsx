@@ -9,13 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import {
-	Plus,
-	Trash2,
-	Calculator,
-	TrendingUp,
-	AlertTriangle,
-} from "lucide-react";
+import { Trash2, Calculator, TrendingUp, AlertTriangle } from "lucide-react";
 import { DetailsProps } from "@/types/startup-expenses";
 
 export const Details: React.FC<DetailsProps> = ({

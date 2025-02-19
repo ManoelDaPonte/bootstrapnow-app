@@ -1,6 +1,5 @@
-// components/ui/use-toast.ts
+//compoment/ui/use-toast.tsx
 import * as React from "react";
-
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
@@ -13,7 +12,9 @@ type ToasterToast = ToastProps & {
 	action?: ToastActionElement;
 };
 
-const actionTypes = {
+// Suppression de ActionType car non utilisé
+
+const _VALUES = {
 	ADD_TOAST: "ADD_TOAST",
 	UPDATE_TOAST: "UPDATE_TOAST",
 	DISMISS_TOAST: "DISMISS_TOAST",
@@ -27,23 +28,21 @@ function genId() {
 	return count.toString();
 }
 
-type ActionType = typeof actionTypes;
-
 type Action =
 	| {
-			type: ActionType["ADD_TOAST"];
+			type: (typeof _VALUES)["ADD_TOAST"];
 			toast: ToasterToast;
 	  }
 	| {
-			type: ActionType["UPDATE_TOAST"];
+			type: (typeof _VALUES)["UPDATE_TOAST"];
 			toast: Partial<ToasterToast>;
 	  }
 	| {
-			type: ActionType["DISMISS_TOAST"];
+			type: (typeof _VALUES)["DISMISS_TOAST"];
 			toastId?: ToasterToast["id"];
 	  }
 	| {
-			type: ActionType["REMOVE_TOAST"];
+			type: (typeof _VALUES)["REMOVE_TOAST"];
 			toastId?: ToasterToast["id"];
 	  };
 
@@ -133,7 +132,7 @@ function dispatch(action: Action) {
 	});
 }
 
-interface Toast extends Omit<ToasterToast, "id"> {}
+type Toast = Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
 	const id = genId();

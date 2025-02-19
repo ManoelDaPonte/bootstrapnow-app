@@ -5,9 +5,23 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 const STORAGE_KEY = "business-plan-general-info";
 
+// Définir un état initial pour les données
+const initialGeneralInfo: GeneralInfo = {
+	city: "",
+	state: "",
+	authors: "",
+	zipcode: "",
+	website_url: "",
+	company_name: "",
+	business_type: "product", // valeur par défaut
+	email_address: "",
+	business_phone: "",
+	street_address: "",
+};
+
 export const useGeneralInfo = () => {
 	const { user, isLoading: authLoading } = useUser();
-	const [data, setData] = useState<GeneralInfo>({});
+	const [data, setData] = useState<GeneralInfo>(initialGeneralInfo);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
 
@@ -21,10 +35,15 @@ export const useGeneralInfo = () => {
 					);
 					if (response.ok) {
 						const serverData = await response.json();
-						setData(serverData);
+						// Fusionner avec l'état initial pour s'assurer que tous les champs existent
+						const mergedData = {
+							...initialGeneralInfo,
+							...serverData,
+						};
+						setData(mergedData);
 						localStorage.setItem(
 							STORAGE_KEY,
-							JSON.stringify(serverData)
+							JSON.stringify(mergedData)
 						);
 					}
 				} catch (error) {
@@ -34,13 +53,16 @@ export const useGeneralInfo = () => {
 					);
 					const localData = localStorage.getItem(STORAGE_KEY);
 					if (localData) {
-						setData(JSON.parse(localData));
+						// Fusionner avec l'état initial pour les données locales aussi
+						const parsedData = JSON.parse(localData);
+						setData({ ...initialGeneralInfo, ...parsedData });
 					}
 				}
 			} else {
 				const localData = localStorage.getItem(STORAGE_KEY);
 				if (localData) {
-					setData(JSON.parse(localData));
+					const parsedData = JSON.parse(localData);
+					setData({ ...initialGeneralInfo, ...parsedData });
 				}
 			}
 			setIsLoading(false);
@@ -59,40 +81,38 @@ export const useGeneralInfo = () => {
 		}));
 
 		// Sauvegarder localement
-		localStorage.setItem(
-			STORAGE_KEY,
-			JSON.stringify({
-				...data,
-				[field]: value,
-			})
-		);
+		const updatedData = {
+			...data,
+			[field]: value,
+		};
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
 	};
 
 	// Fonction pour sauvegarder les données
 	const saveData = async () => {
-		if (user) {
-			setIsSaving(true);
-			try {
-				console.log("Sauvegarde des données:", data);
-				const response = await fetch(
-					"/api/business-plan/general-info/save",
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(data),
-					}
-				);
+		if (!user) return;
 
-				if (!response.ok) {
-					throw new Error("Erreur lors de la sauvegarde");
+		setIsSaving(true);
+		try {
+			const response = await fetch(
+				"/api/business-plan/general-info/save",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(data),
 				}
-			} catch (error) {
-				console.error("Erreur lors de la sauvegarde:", error);
-			} finally {
-				setIsSaving(false);
+			);
+
+			if (!response.ok) {
+				throw new Error("Erreur lors de la sauvegarde");
 			}
+		} catch (error) {
+			console.error("Erreur lors de la sauvegarde:", error);
+			throw error; // Propager l'erreur pour la gérer dans le composant
+		} finally {
+			setIsSaving(false);
 		}
 	};
 
@@ -107,7 +127,7 @@ export const useGeneralInfo = () => {
 		];
 
 		const filledFields = requiredFields.filter(
-			(field) => data[field] && data[field]!.trim() !== ""
+			(field) => data[field] && String(data[field]).trim() !== ""
 		).length;
 
 		return Math.round((filledFields / requiredFields.length) * 100);

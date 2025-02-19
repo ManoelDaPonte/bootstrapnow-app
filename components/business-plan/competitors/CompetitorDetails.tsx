@@ -37,7 +37,7 @@ const NoCompetitorsMessage: React.FC = () => (
 	<div className="text-center py-8 bg-muted/10 border-2 border-dashed border-muted rounded-lg">
 		<Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
 		<p className="text-muted-foreground">
-			Aucun concurrent n'a été ajouté.
+			Aucun concurrent n&apos;a été ajouté.
 		</p>
 	</div>
 );

@@ -2,12 +2,13 @@
 import Stripe from "stripe";
 import getManagementToken from "@/lib/auth0/getManagementToken";
 import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
+import { siteConfig } from "@/lib/config";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 	apiVersion: "2024-12-18.acacia",
 });
 
-// Helpers
+// Fonction existante createCustomer
 export async function createCustomer(user: any): Promise<string> {
 	const customer = await stripe.customers.create({
 		email: user.email,
@@ -17,22 +18,73 @@ export async function createCustomer(user: any): Promise<string> {
 	return customer.id;
 }
 
+export async function createTokenCheckoutSession(
+	priceId: string,
+	customerId: string,
+	userId: string
+): Promise<string> {
+	// Trouver le pack de tokens correspondant
+	const tokenPack = siteConfig.pricing.tokens.packs.find(
+		(pack) => pack.priceId === priceId
+	);
+
+	if (!tokenPack) {
+		throw new Error(`Invalid token price ID: ${priceId}`);
+	}
+
+	const session = await stripe.checkout.sessions.create({
+		customer: customerId,
+		mode: "payment",
+		payment_method_types: ["card"],
+		line_items: [
+			{
+				price: priceId,
+				quantity: 1,
+			},
+		],
+		success_url: `${process.env.NEXT_PUBLIC_APP_HOST}/abonnement/success`,
+		cancel_url: `${process.env.NEXT_PUBLIC_APP_HOST}/abonnement/canceled`,
+		metadata: {
+			userId: userId,
+			product_type: "token",
+			token_amount: tokenPack.tokens.toString(),
+			price_id: priceId,
+		},
+	});
+
+	return session.url || "";
+}
+
 export async function createCheckoutSession(
 	priceId: string,
 	customerId: string,
-	userId: string, // Ajout du userId pour lier la session à l'utilisateur
+	userId: string,
 	plan: string
 ): Promise<string> {
+	// Trouver la configuration du plan
+	const planConfig = siteConfig.pricing.subscriptions.find(
+		(sub) =>
+			sub.priceIds.monthly === priceId || sub.priceIds.yearly === priceId
+	);
+
 	const session = await stripe.checkout.sessions.create({
-		payment_method_types: ["card"],
-		mode: "subscription",
-		line_items: [{ price: priceId, quantity: 1 }],
 		customer: customerId,
-		success_url: `${process.env.NEXT_PUBLIC_APP_HOST}/abonnement/success?session_id={CHECKOUT_SESSION_ID}`,
+		mode: "subscription",
+		payment_method_types: ["card"],
+		line_items: [
+			{
+				price: priceId,
+				quantity: 1,
+			},
+		],
+		success_url: `${process.env.NEXT_PUBLIC_APP_HOST}/abonnement/success`,
 		cancel_url: `${process.env.NEXT_PUBLIC_APP_HOST}/abonnement/canceled`,
 		metadata: {
-			userId, // Ajout de l'ID utilisateur pour qu'il soit récupéré dans le webhook
-			plan,
+			userId: userId,
+			plan: plan,
+			product_type: "subscription",
+			monthly_tokens: planConfig?.monthlyTokens?.toString() || "0",
+			price_id: priceId,
 		},
 	});
 

@@ -260,7 +260,7 @@ export default function TwelveMonthsProjection() {
 		[profitLossData, handleUpdateData]
 	);
 
-	const { totalRevenue, totalExpenses, netProfitData } = useMemo(() => {
+	const { netProfitData } = useMemo(() => {
 		const totalRev = months.map((month) =>
 			profitLossData.revenue.reduce(
 				(acc, rev) => acc + Number(rev[month] || 0),

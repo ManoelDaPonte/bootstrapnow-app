@@ -3,7 +3,7 @@
 // Interface de base pour les données d'analyse
 export interface AnalysisData {
 	data: any;
-	qa_responses?: Record<string, string>;
+	qa_responses?: Record<string, any>;
 }
 
 // Interface pour le résultat du mapping

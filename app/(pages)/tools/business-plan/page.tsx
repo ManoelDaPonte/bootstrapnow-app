@@ -1,6 +1,6 @@
 //app/%28pages%29/tools/business-plan/page.tsx
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
@@ -12,10 +12,11 @@ import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
 import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { toast } from "@/components/ui/use-toast";
-import { Loader2, FileText } from "lucide-react";
+import { Loader2, FileText, Coins } from "lucide-react";
 import HistoryDialog from "@/components/business-plan-document/HistoryDialog";
 import { BUSINESS_PLAN_SECTIONS } from "@/types/business-plan-document/business-plan";
 import GenerationProgressDialog from "@/components/business-plan-document/GenerationProgressDialog";
+import { useUserMetadata } from "@/context/userMetadataProvider";
 
 const templates = [
 	{
@@ -147,12 +148,8 @@ const templates = [
 
 export default function BusinessPlanPage() {
 	const {
-		generationState,
 		generations,
 		isLoadingHistory,
-		generateSection,
-		saveGeneratedContent,
-		generateDocument,
 		loadHistory,
 		downloadGeneration,
 		isGenerating,
@@ -160,21 +157,30 @@ export default function BusinessPlanPage() {
 		generateBusinessPlan,
 	} = useBusinessPlanGenerator();
 	const { user } = useUser();
+	const { metadata, loading, fetchUserMetadata } = useUserMetadata();
 	const {
 		data: generalInfo,
 		updateField: handleGeneralInfoChange,
 		saveData: handleGeneralInfoSave,
-		completionPercentage: generalInfoProgress,
 		isSaving,
 	} = useGeneralInfo();
 	const router = useRouter();
+
+	// Ajout d'un useEffect pour charger les metadata
+	useEffect(() => {
+		if (user?.sub && !metadata && !loading) {
+			fetchUserMetadata(user.sub);
+		}
+	}, [user, metadata, loading, fetchUserMetadata]);
 
 	// Ajoutez cet useEffect pour charger l'historique au montage
 	useEffect(() => {
 		if (user?.sub) {
 			loadHistory(user.sub);
 		}
-	}, [user?.sub]);
+	}, [user?.sub, loadHistory]);
+
+	const tokens = parseInt(metadata?.tokens || "0");
 
 	const handleGenerateBusinessPlan = async () => {
 		if (!user?.sub) {
@@ -241,6 +247,7 @@ export default function BusinessPlanPage() {
 								</h1>
 							</div>
 							<div className="flex items-center gap-8">
+								{/* Progression */}
 								<div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg border">
 									<Progress
 										value={totalProgress}
@@ -251,13 +258,23 @@ export default function BusinessPlanPage() {
 									</span>
 								</div>
 
+								{/* Tokens */}
+								<div className="flex items-center gap-2 bg-card px-4 py-2 rounded-lg border">
+									<Coins className="h-4 w-4 text-primary" />
+									<span className="text-sm font-medium">
+										{tokens} token{tokens > 1 ? "s" : ""}{" "}
+										disponible{tokens > 1 ? "s" : ""}
+									</span>
+								</div>
+
+								{/* Boutons */}
 								<div className="flex items-center gap-3">
 									<div className="flex items-center gap-3">
 										<Button
 											onClick={handleGenerateBusinessPlan}
 											className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
 											disabled={
-												totalProgress < 70 ||
+												totalProgress < 80 ||
 												isGenerating
 											}
 										>
@@ -305,8 +322,9 @@ export default function BusinessPlanPage() {
 						</li>
 						<li className="flex items-center gap-2">
 							<span className="text-primary">3.</span>
-							Plus vous ajoutez d'éléments dans chaque section,
-							plus votre business plan sera détaillé et pertinent
+							Plus vous ajoutez d&apos;éléments dans chaque
+							section, plus votre business plan sera détaillé et
+							pertinent
 						</li>
 						<li className="flex items-center gap-2">
 							<span className="text-primary">4.</span>

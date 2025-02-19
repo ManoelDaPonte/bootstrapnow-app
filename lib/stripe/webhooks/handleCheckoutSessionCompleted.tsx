@@ -2,36 +2,68 @@
 import Stripe from "stripe";
 import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
 import getManagementToken from "@/lib/auth0/getManagementToken";
+import getUserMetadata from "@/lib/auth0/getUserMetadata";
+import { TokenService } from "@/lib/stripe/services/token-service";
 
-/**
- * Gère l'événement checkout.session.completed.
- * Met à jour plan = plan choisi, status = "actif", et stocke le customer_id dans Auth0.
- */
 export async function handleCheckoutSessionCompleted(
 	session: Stripe.Checkout.Session
 ): Promise<void> {
-	if (session.customer && session.metadata?.userId) {
-		const customerId = session.customer.toString();
-		const accessToken = await getManagementToken();
+	if (!session.customer || !session.metadata?.userId) {
+		console.warn("Missing customer or userId in metadata");
+		return;
+	}
 
-		const userId = session.metadata.userId;
-		// Le plan choisi dans la metadata Stripe : "innovateur_monthly", etc.
-		const userPlan = session.metadata.plan || "innovateur_monthly";
+	const customerId = session.customer.toString();
+	const accessToken = await getManagementToken();
+	const userId = session.metadata.userId;
 
-		// Mise à jour des métadonnées Auth0
-		await updateUserMetadata(accessToken, userId, {
-			plan: userPlan,
-			status: "actif", // nouvel abonnement actif
-			customer_id: customerId,
-			// subscription_id: pas disponible directement ici, on l’a dans customer.subscription.created ou updated
-		});
+	try {
+		// Récupérer les métadonnées actuelles
+		const currentMetadata = await getUserMetadata(accessToken, userId);
+		const currentTokens = parseInt(currentMetadata.tokens || "0");
 
-		console.log(
-			`handleCheckoutSessionCompleted => user=${userId}, plan=${userPlan}, status=actif`
-		);
-	} else {
-		console.warn(
-			"checkout.session.completed event without metadata.userId or no customer"
-		);
+		if (session.metadata.product_type === "token") {
+			// Cas d'un achat de tokens
+			const tokenAmount = parseInt(session.metadata.token_amount || "0");
+
+			await TokenService.updateUserTokens(
+				accessToken,
+				userId,
+				currentMetadata,
+				tokenAmount
+			);
+
+			console.log(`Tokens ajoutés =>`, {
+				user: userId,
+				tokens_added: tokenAmount,
+				current_metadata: currentMetadata,
+				new_total:
+					parseInt(currentMetadata.tokens || "0") + tokenAmount,
+			});
+		} else {
+			// Cas d'un abonnement
+			const userPlan = session.metadata.plan || "free";
+			const monthlyTokens = parseInt(
+				session.metadata.monthly_tokens || "0"
+			);
+
+			await updateUserMetadata(accessToken, userId, {
+				...currentMetadata,
+				plan: userPlan,
+				status: "actif",
+				customer_id: customerId,
+				tokens: (currentTokens + monthlyTokens).toString(),
+			});
+
+			console.log("Subscription completed:", {
+				userId,
+				plan: userPlan,
+				tokensAdded: monthlyTokens,
+				newTotal: currentTokens + monthlyTokens,
+			});
+		}
+	} catch (error) {
+		console.error("Error in handleCheckoutSessionCompleted:", error);
+		throw error;
 	}
 }

@@ -2,6 +2,20 @@
 import { FieldMappings } from "@/types/openai/mapping";
 
 export const FIELD_MAPPINGS: FieldMappings = {
+	general_info: {
+		data: {
+			city: "GI_City",
+			state: "GI_State",
+			authors: "GI_Authors",
+			zipcode: "GI_Zipcode",
+			website_url: "GI_WebsiteUrl",
+			company_name: "GI_CompanyName",
+			business_type: "GI_BusinessType",
+			email_address: "GI_EmailAddress",
+			business_phone: "GI_BusinessPhone",
+			street_address: "GI_StreetAddress",
+		},
+	},
 	canvas: {
 		data: {
 			channels: "BMC_Channels",
@@ -230,7 +244,7 @@ export function isValidMapping(mapping: unknown): mapping is FieldMappings {
 		return false;
 	}
 
-	for (const [key, value] of Object.entries(mapping)) {
+	for (const [_, value] of Object.entries(mapping)) {
 		if (typeof value !== "object" || value === null) {
 			return false;
 		}

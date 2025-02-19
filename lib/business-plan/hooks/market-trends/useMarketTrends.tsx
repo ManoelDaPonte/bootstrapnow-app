@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { TrendEntry, MarketNumber } from "@/types/market-trends";
 import {

@@ -17,8 +17,8 @@ const NoDataPlaceholder = ({ onAddClick }: { onAddClick: () => void }) => (
 	<div className="flex flex-col items-center justify-center h-[500px] bg-muted/10 border-2 border-dashed border-muted rounded-lg p-6">
 		<Target className="h-12 w-12 text-muted-foreground mb-4" />
 		<p className="text-muted-foreground text-center mb-4">
-			Aucun concurrent n'a été ajouté. Commencez par ajouter des données
-			pour visualiser la matrice de positionnement.
+			Aucun concurrent n&apos;a été ajouté. Commencez par ajouter des
+			données pour visualiser la matrice de positionnement.
 		</p>
 		<Button
 			variant="outline"

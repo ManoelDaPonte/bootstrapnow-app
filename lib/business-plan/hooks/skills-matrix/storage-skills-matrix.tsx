@@ -137,7 +137,7 @@ export const calculateProgress = (
 	const hasMinimumData = data.people.length > 0 && data.domains.length > 0;
 
 	// Calculer le taux de remplissage des compétences
-	let totalPossibleSkills = data.people.length * data.domains.length;
+	const totalPossibleSkills = data.people.length * data.domains.length;
 	let filledSkills = 0;
 
 	data.people.forEach((person) => {

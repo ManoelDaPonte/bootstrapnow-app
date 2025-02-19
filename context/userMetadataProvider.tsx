@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 type UserMetadataContextType = {
@@ -11,6 +11,7 @@ type UserMetadataContextType = {
 	error: string | null;
 	fetchUserMetadata: (userId: string) => Promise<void>;
 	updateLocalMetadata: (newMetadata: Record<string, any>) => void;
+	updateTokens: (newTokens: number) => void;
 };
 
 const UserMetadataContext = createContext<UserMetadataContextType | undefined>(
@@ -25,6 +26,34 @@ export function UserMetadataProvider({
 	const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		// Écouter les mises à jour des tokens
+		const handleTokensUpdate = (
+			event: CustomEvent<{ newTokens: number }>
+		) => {
+			setMetadata((prev) =>
+				prev
+					? {
+							...prev,
+							tokens: event.detail.newTokens.toString(),
+					  }
+					: null
+			);
+		};
+
+		window.addEventListener(
+			"tokensUpdated",
+			handleTokensUpdate as EventListener
+		);
+
+		return () => {
+			window.removeEventListener(
+				"tokensUpdated",
+				handleTokensUpdate as EventListener
+			);
+		};
+	}, []);
 
 	async function fetchUserMetadata(userId: string) {
 		setLoading(true);
@@ -48,6 +77,17 @@ export function UserMetadataProvider({
 		setMetadata(newMetadata);
 	}
 
+	function updateTokens(newTokens: number) {
+		setMetadata((prev) =>
+			prev
+				? {
+						...prev,
+						tokens: newTokens.toString(),
+				  }
+				: null
+		);
+	}
+
 	return (
 		<UserMetadataContext.Provider
 			value={{
@@ -56,6 +96,7 @@ export function UserMetadataProvider({
 				error,
 				fetchUserMetadata,
 				updateLocalMetadata,
+				updateTokens,
 			}}
 		>
 			{children}
@@ -63,6 +104,7 @@ export function UserMetadataProvider({
 	);
 }
 
+// Hook personnalisé avec typage amélioré
 export function useUserMetadata() {
 	const context = useContext(UserMetadataContext);
 	if (!context) {

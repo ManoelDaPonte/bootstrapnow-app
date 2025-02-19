@@ -459,17 +459,6 @@ const Trends: React.FC = () => {
 														<TableCell>
 															<button
 																onClick={() => {
-																	// Ajouter la logique pour supprimer un nombre du marché
-																	const updatedNumbers =
-																		marketNumbers.filter(
-																			(
-																				n
-																			) =>
-																				n.id !==
-																				item.id
-																		);
-																	// Mettre à jour l'état et sauvegarder
-																	// Cette fonction devra être ajoutée à votre hook useMarketTrends
 																	removeMarketNumber(
 																		item.id
 																	);

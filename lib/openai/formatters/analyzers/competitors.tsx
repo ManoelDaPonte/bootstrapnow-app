@@ -101,7 +101,7 @@ export function format_competitors(data: any): CompetitorsAnalysisData {
 				competitors.map((comp: any) => comp.strategie)
 			);
 
-			let analysis = [
+			const analysis = [
 				"Analyse Stratégique :",
 				`\nCouverture géographique : ${Array.from(zones).join(", ")}`,
 				`Segments clients visés : ${Array.from(segments).join(", ")}`,

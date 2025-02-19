@@ -1,8 +1,9 @@
 // lib/stripe/webhooks/handleCustomerSubscriptionDeleted.ts
 import Stripe from "stripe";
-import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
 import getManagementToken from "@/lib/auth0/getManagementToken";
 import { findUserByCustomerId } from "@/lib/auth0/findUserByCustomerId";
+import { TokenService } from "@/lib/stripe/services/token-service";
+import getUserMetadata from "@/lib/auth0/getUserMetadata";
 
 export async function handleCustomerSubscriptionDeleted(
 	subscription: Stripe.Subscription
@@ -14,14 +15,34 @@ export async function handleCustomerSubscriptionDeleted(
 		return;
 	}
 
-	const accessToken = await getManagementToken();
-	await updateUserMetadata(accessToken, userId, {
-		plan: "free",
-		status: "canceled",
-		subscription_id: "",
-	});
+	try {
+		const accessToken = await getManagementToken();
+		const currentMetadata = await getUserMetadata(accessToken, userId);
 
-	console.log(
-		`handleCustomerSubscriptionDeleted => user=${userId}, plan=free, status=canceled`
-	);
+		// Récupérer le nombre de tokens mensuel du plan actuel
+		const priceId = subscription.items.data[0].price.id;
+		const monthlyTokens = TokenService.getTokensFromStripePriceId(priceId);
+
+		console.log(`Processing subscription deletion:`, {
+			userId,
+			currentTokens: currentMetadata.tokens,
+			monthlyTokens,
+		});
+
+		// Mise à jour du statut et conservation des tokens restants
+		await TokenService.updateUserTokens(
+			accessToken,
+			userId,
+			currentMetadata,
+			0, // On ne modifie pas le nombre de tokens
+			{
+				plan: "free",
+				status: "canceled",
+				subscription_id: "",
+			}
+		);
+	} catch (error) {
+		console.error("Error in handleCustomerSubscriptionDeleted:", error);
+		throw error;
+	}
 }

@@ -72,7 +72,7 @@ const Competitors: React.FC = () => {
 				<Tabs defaultValue="overview" className="h-full flex flex-col">
 					<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="overview">
-							Vue d'ensemble
+							Vue d&apos;ensemble
 						</TabsTrigger>
 						<TabsTrigger value="details">
 							Détail des concurrents

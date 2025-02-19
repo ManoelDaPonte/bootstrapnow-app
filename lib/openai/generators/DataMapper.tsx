@@ -4,6 +4,10 @@ import { AnalysisData, MappingResult } from "@/types/openai/mapping";
 
 // Configuration des modèles et leurs mappings avec la bonne casse pour Prisma
 const MODEL_CONFIG = {
+	generalInfo: {
+		type: "general_info",
+		hasQA: false,
+	},
 	swotAnalysis: {
 		type: "swot",
 		hasQA: true,

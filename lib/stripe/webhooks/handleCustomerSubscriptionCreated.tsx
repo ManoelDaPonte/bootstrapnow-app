@@ -1,8 +1,9 @@
 // lib/stripe/webhooks/handleCustomerSubscriptionCreated.ts
 import Stripe from "stripe";
-import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
 import getManagementToken from "@/lib/auth0/getManagementToken";
 import { findUserByCustomerId } from "@/lib/auth0/findUserByCustomerId";
+import getUserMetadata from "@/lib/auth0/getUserMetadata";
+import { TokenService } from "@/lib/stripe/services/token-service";
 
 export async function handleCustomerSubscriptionCreated(
 	subscription: Stripe.Subscription
@@ -14,17 +15,22 @@ export async function handleCustomerSubscriptionCreated(
 		return;
 	}
 
-	const statusStripe = subscription.status; // "active", "trialing", etc.
+	const statusStripe = subscription.status;
 	const userStatus = statusStripe === "active" ? "actif" : "canceled";
-	// On peut mapper la price.id en plan, ou laisser handleCheckoutSessionCompleted s’en charger
+	const priceId = subscription.items.data[0].price.id;
 
 	const accessToken = await getManagementToken();
-	await updateUserMetadata(accessToken, userId, {
-		subscription_id: subscription.id,
-		status: userStatus,
-	});
+	const currentMetadata = await getUserMetadata(accessToken, userId);
+	const tokensToAdd = TokenService.getTokensFromStripePriceId(priceId);
 
-	console.log(
-		`handleCustomerSubscriptionCreated => user=${userId}, status=${userStatus}`
+	await TokenService.updateUserTokens(
+		accessToken,
+		userId,
+		{
+			...currentMetadata,
+			subscription_id: subscription.id,
+			status: userStatus,
+		},
+		tokensToAdd
 	);
 }

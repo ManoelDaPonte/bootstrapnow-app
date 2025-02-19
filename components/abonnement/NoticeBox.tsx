@@ -1,3 +1,4 @@
+//components/abonnement/NoticeBox.tsx
 import { AlertTriangle } from "lucide-react";
 
 export default function NoticeBox() {

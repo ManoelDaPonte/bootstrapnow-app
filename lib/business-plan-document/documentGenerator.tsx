@@ -4,6 +4,38 @@ import { readFileSync } from "fs";
 import path from "path";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
+import { prisma } from "@/lib/db/prisma";
+import { mapPlaceholders, replacePlaceholders } from "./placeholderMapper";
+import { Prisma } from "@prisma/client";
+
+interface GeneralInfo {
+	city: string;
+	state: string;
+	authors: string;
+	zipcode: string;
+	website_url: string;
+	company_name: string;
+	business_type: string;
+	email_address: string;
+	business_phone: string;
+	street_address: string;
+}
+
+interface MarketTrendsData {
+	trends: Array<{
+		id: string;
+		annee: number;
+		tauxCroissance: number;
+		variationDemande: number;
+	}>;
+	marketNumbers: Array<{
+		id: string;
+		title: string;
+		value: string;
+		description: string;
+		referenceLink: string;
+	}>;
+}
 
 export class DocumentGenerator {
 	private blobService: BlobServiceClient;
@@ -21,20 +53,103 @@ export class DocumentGenerator {
 		return readFileSync(templatePath);
 	}
 
-	async generateDocument(sections: Record<string, string>): Promise<Buffer> {
+	private async getGeneralInfo(auth0Id: string): Promise<GeneralInfo | null> {
+		const user = await prisma.user.findUnique({
+			where: { auth0Id },
+			include: {
+				generalInfo: true,
+			},
+		});
+
+		if (!user?.generalInfo?.data) {
+			return null;
+		}
+
+		// Conversion sécurisée en utilisant unknown comme intermédiaire
+		const rawData = user.generalInfo.data as Prisma.JsonValue;
+		// Vérification de type runtime
+		if (
+			typeof rawData === "object" &&
+			rawData !== null &&
+			!Array.isArray(rawData)
+		) {
+			return rawData as unknown as GeneralInfo;
+		}
+
+		return null;
+	}
+
+	private async getMarketTrendsData(
+		auth0Id: string
+	): Promise<MarketTrendsData | null> {
+		const user = await prisma.user.findUnique({
+			where: { auth0Id },
+			include: {
+				marketTrendsAnalysis: true,
+			},
+		});
+
+		if (!user?.marketTrendsAnalysis?.data) {
+			return null;
+		}
+
+		// Conversion sécurisée en utilisant unknown comme intermédiaire
+		const rawData = user.marketTrendsAnalysis.data as Prisma.JsonValue;
+		// Vérification de type runtime
+		if (
+			typeof rawData === "object" &&
+			rawData !== null &&
+			!Array.isArray(rawData)
+		) {
+			return rawData as unknown as MarketTrendsData;
+		}
+
+		return null;
+	}
+
+	async generateDocument(
+		sections: Record<string, string>,
+		auth0Id: string
+	): Promise<Buffer> {
 		try {
 			const template = await this.loadTemplate();
 			console.log("Template chargé");
 
+			// Récupérer les données supplémentaires
+			const [generalInfo, marketTrendsData] = await Promise.all([
+				this.getGeneralInfo(auth0Id),
+				this.getMarketTrendsData(auth0Id),
+			]);
+
+			if (!generalInfo) {
+				throw new Error("Informations générales non trouvées");
+			}
+
+			if (!marketTrendsData) {
+				throw new Error("Données de tendances de marché non trouvées");
+			}
+
 			const zip = new PizZip(template);
 			console.log("ZIP créé");
 
-			console.log("Sections à remplacer:", {
-				ES_Overview: sections.ES_Overview,
-				// autres sections...
-			});
+			// Obtenir les placeholders
+			const placeholders = mapPlaceholders(generalInfo, marketTrendsData);
 
-			// Ajouter des options plus robustes pour Docxtemplater
+			// Appliquer les remplacements aux sections
+			const processedSections: Record<string, string> = {};
+			for (const [key, content] of Object.entries(sections)) {
+				processedSections[key] = replacePlaceholders(
+					content,
+					placeholders
+				);
+			}
+
+			// Fusionner les placeholders directs avec les sections traitées
+			const templateData = {
+				...processedSections,
+				...placeholders,
+			};
+
 			const doc = new Docxtemplater(zip, {
 				paragraphLoop: true,
 				linebreaks: true,
@@ -47,32 +162,20 @@ export class DocumentGenerator {
 				},
 				parser: (tag: string) => ({
 					get: (scope: any) => {
-						let value = scope[tag] || "";
-						// Nettoyer la valeur si nécessaire
+						const value = scope[tag] || "";
 						return value.toString().replace(/\r?\n/g, "\n");
 					},
 				}),
 			});
 
-			console.log("Données à insérer:", sections);
-
-			// Préparation des données
-			const templateData: Record<string, string> = {};
-			for (const [key, value] of Object.entries(sections)) {
-				// S'assurer que les valeurs sont des chaînes
-				templateData[key] = value ? value.toString() : "";
-			}
-
 			try {
-				// Remplacer setData + render par renderAsync
-				await doc.renderAsync(templateData); // <-- Changement ici
+				await doc.renderAsync(templateData);
 				console.log("Rendu effectué avec succès");
 			} catch (error) {
 				console.error("Erreur lors du rendu:", error);
 				throw error;
 			}
 
-			// Générer le document final
 			const buf = doc.getZip().generate({
 				type: "nodebuffer",
 				compression: "DEFLATE",
@@ -81,11 +184,7 @@ export class DocumentGenerator {
 			return buf;
 		} catch (error) {
 			console.error("Erreur détaillée lors de la génération:", error);
-			if (
-				error instanceof Error &&
-				(error as any).properties &&
-				(error as any).properties.errors
-			) {
+			if (error instanceof Error && (error as any).properties?.errors) {
 				console.error(
 					"Erreurs spécifiques:",
 					(error as any).properties.errors
@@ -94,6 +193,7 @@ export class DocumentGenerator {
 			throw error;
 		}
 	}
+
 	async saveDocument(userId: string, buffer: Buffer): Promise<string> {
 		try {
 			const containerClient =
