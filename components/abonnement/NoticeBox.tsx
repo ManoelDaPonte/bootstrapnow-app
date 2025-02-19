@@ -1,15 +1,19 @@
-import { AlertTriangle } from "lucide-react";
+//components/abonnement/NoticeBox.tsx
+import { Sparkles } from "lucide-react";
 
 export default function NoticeBox() {
 	return (
 		<div className="border border-border bg-card p-4 rounded-md flex items-start space-x-4 shadow">
-			<AlertTriangle className="text-orange-500 h-6 w-6 mt-1" />
+			<Sparkles className="text-primary h-6 w-6 mt-1" />
 			<div>
-				<h2 className="font-semibold text-lg">Attention</h2>
+				<h2 className="font-semibold text-lg">
+					Devenez bêta testeur !
+				</h2>
 				<p className="text-sm text-muted-foreground">
-					Les produits Search-Hunter et Market-Tester ne sont pas
-					encore finalisés. Veuillez en tenir compte avant de passer
-					au paiement.
+					Smart-Hunter et Market-Tester sont en phase de
+					développement. Rejoignez-nous dans leur évolution et
+					bénéficiez d&apos;un accès privilégié pour façonner leur
+					futur.
 				</p>
 			</div>
 		</div>

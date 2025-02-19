@@ -19,6 +19,17 @@ export const saveCompetitorsData = (data: CompetitorsData) => {
 			lastUpdated: new Date().toISOString(),
 		})
 	);
+
+	// Ajouter la mise à jour de la progression
+	updateParentProgress(calculateProgress(data));
+};
+
+const updateParentProgress = (progress: number) => {
+	if (typeof window === "undefined") return;
+	const event = new CustomEvent("competitorsProgressUpdate", {
+		detail: { progress },
+	});
+	window.dispatchEvent(event);
 };
 
 export async function updateCompetitorsData(
@@ -90,4 +101,39 @@ export const saveToDatabase = async (data: CompetitorsData) => {
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 		throw error;
 	}
+};
+
+export const calculateProgress = (data: CompetitorsData): number => {
+	const fieldsToCount: Array<keyof CompetitorEntry> = [
+		"nom",
+		"solution",
+		"prix",
+		"valeurPercue",
+		"strategie",
+		"zoneGeographique",
+		"ciblageClient",
+		"forces",
+		"faiblesses",
+		"impactDirect",
+		"impactIndirect",
+	];
+	const totalFields = data.competitors.length * fieldsToCount.length;
+
+	const filledFields = data.competitors.reduce((acc, comp) => {
+		return (
+			acc +
+			fieldsToCount.reduce((fieldAcc, field) => {
+				const value = comp[field];
+				const isFieldFilled =
+					typeof value === "number"
+						? value > 0
+						: typeof value === "string"
+						? value.trim() !== ""
+						: false;
+				return fieldAcc + (isFieldFilled ? 1 : 0);
+			}, 0)
+		);
+	}, 0);
+
+	return Math.min(100, Math.round((filledFields / totalFields) * 100));
 };

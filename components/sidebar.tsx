@@ -21,8 +21,8 @@ const navItems = [
 	{ href: "/tools/business-plan", label: "Business Plan", icon: FileText },
 
 	{
-		href: "/tools/search-hunter",
-		label: "Search-Hunter",
+		href: "/tools/smart-hunter",
+		label: "Smart-Hunter",
 		icon: Lightbulb,
 		requiresSubscription: true,
 	},
@@ -45,7 +45,7 @@ export default function Sidebar() {
 	const isPaidUser = metadata?.plan && metadata.plan !== "free";
 
 	return (
-		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background fixed left-0 top-0 h-screen">
+		<aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background fixed left-0 top-0 h-screen z-50">
 			<div className="flex flex-col h-full overflow-y-auto p-4">
 				<div className="flex items-center space-x-2 px-2 pb-4 border-b border-border">
 					<Image

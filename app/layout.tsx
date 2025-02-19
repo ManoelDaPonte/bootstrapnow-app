@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMetadataProvider } from "@/context/userMetadataProvider";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardLayout({
 	children,
@@ -19,7 +20,7 @@ export default function DashboardLayout({
 				<link rel="preconnect" href="https://rsms.me/" />
 				<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 			</head>
-			<body className="min-h-screen bg-background antialiased flex">
+			<body className="min-h-screen bg-background antialiased">
 				<UserProvider>
 					<UserMetadataProvider>
 						<ThemeProvider
@@ -27,12 +28,27 @@ export default function DashboardLayout({
 							defaultTheme="light"
 							enableSystem={false}
 						>
-							<Sidebar />
-							<div className="flex-1 md:ml-64 flex flex-col min-h-screen">
-								<Header />
-								<main className="flex-1">{children}</main>
-								<ThemeToggle />
-								<TailwindIndicator />
+							<div className="flex h-screen">
+								{" "}
+								{/* Container principal */}
+								{/* Sidebar avec une largeur fixe */}
+								<aside className="w-64 flex-shrink-0">
+									<Sidebar />
+								</aside>
+								{/* Container du contenu principal avec sa propre zone de scroll */}
+								<div className="flex-1 flex flex-col min-w-0">
+									{" "}
+									{/* min-w-0 est crucial ici */}
+									<Header />
+									<main className="flex-1 relative overflow-y-auto">
+										{" "}
+										{/* overflow-y-auto pour le scroll vertical */}
+										{children}
+									</main>
+									<ThemeToggle />
+									<TailwindIndicator />
+									<Toaster />
+								</div>
 							</div>
 						</ThemeProvider>
 					</UserMetadataProvider>

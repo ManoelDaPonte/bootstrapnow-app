@@ -1,3 +1,4 @@
+//components/abonnement/pricing.tsx
 import { useState } from "react";
 import Section from "@/components/section";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,18 +15,14 @@ export default function PricingSection() {
 	const [isMonthly, setIsMonthly] = useState(true);
 
 	// Filtrer pour n'avoir que les plans payants
-	const paidPlans = siteConfig.pricing.filter(
+	const paidPlans = siteConfig.pricing.subscriptions.filter(
 		(plan) => plan.name !== "INITIATEUR"
 	);
 
 	const planMap = {
-		INNOVATEUR: {
-			monthly: "innovateur_monthly",
-			yearly: "innovateur_yearly",
-		},
-		VISIONNAIRE: {
-			monthly: "visionnaire_monthly",
-			yearly: "visionnaire_yearly",
+		BUILDER: {
+			monthly: "builder_monthly",
+			yearly: "builder_yearly",
 		},
 	};
 
@@ -59,7 +56,7 @@ export default function PricingSection() {
 	return (
 		<Section
 			title="Tarifs"
-			subtitle="Choisissez l'offre qui correspond à vos besoins"
+			subtitle="Boostez vos projets avec notre agent IA"
 			id="tarifs"
 		>
 			<div className="flex justify-center mb-10">
@@ -75,7 +72,7 @@ export default function PricingSection() {
 				<span className="ml-2 font-semibold">Annuel</span>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+			<div className="flex justify-center">
 				{paidPlans.map((plan, index) => (
 					<motion.div
 						key={index}

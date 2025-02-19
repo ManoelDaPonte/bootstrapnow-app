@@ -1,3 +1,5 @@
+// lib/config.tsx
+
 export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
@@ -22,6 +24,69 @@ export const siteConfig = {
 		email: "contact@bootstrap-now.com",
 		discord: process.env.NEXT_PUBLIC_DISCORD_LINK || "#",
 	},
+	pricing: {
+		subscriptions: [
+			{
+				name: "BUILDER",
+				href: "#",
+				price: "6.99 €",
+				period: "mois",
+				yearlyPrice: "4.99 €",
+				features: [
+					"5 tokens de génération de Business Plan par mois inclus",
+					"Export au format word (.docx) du votre Business Plan",
+					"Accès prioritaire à nos nouvelles fonctionnalités",
+					"Assistance prioritaire",
+				],
+				description:
+					"Idéal pour accéder à nos outils avancés et valider vos idées rapidement.",
+				buttonText: "S'abonner",
+				isPopular: true,
+				monthlyTokens: 5,
+				priceIds: {
+					monthly: process.env.STRIPE_PRICE_ID_BUILDER_MONTHLY,
+					yearly: process.env.STRIPE_PRICE_ID_BUILDER_YEARLY,
+				},
+			},
+		],
+		tokens: {
+			packs: [
+				{
+					id: "token_1",
+					name: "Pack Découverte",
+					tokens: 1,
+					amount: 1,
+					price: "2.99 €",
+					priceAmount: 2.99,
+					description:
+						"Idéal pour tester la génération de business plan",
+					priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_1,
+				},
+				{
+					id: "token_2",
+					name: "Pack Standard",
+					tokens: 5,
+					amount: 5,
+					price: "9.79 €",
+					priceAmount: 9.79,
+					description:
+						"Idéal pour gérer un projet de création d'entreprise",
+					priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_5,
+				},
+				{
+					id: "token_3",
+					name: "Pack Pro",
+					tokens: 15,
+					amount: 15,
+					price: "19.49 €",
+					priceAmount: 19.49,
+					description:
+						"Idéal pour tester de multiples idées de business",
+					priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_15,
+				},
+			],
+		},
+	},
 	faqs: [
 		{
 			question: "Comment modifier mon profil ?",
@@ -39,8 +104,8 @@ export const siteConfig = {
 			question: "Comment rejoindre le Discord ?",
 			answer: (
 				<span>
-					Cliquez sur “Rejoindre le Discord” dans votre tableau de
-					bord ou directement{" "}
+					Cliquez sur &quot;Rejoindre le Discord&quot; dans votre
+					tableau de bord ou directement{" "}
 					<a
 						href={process.env.NEXT_PUBLIC_DISCORD_LINK || "#"}
 						className="underline"
@@ -66,17 +131,17 @@ export const siteConfig = {
 			),
 		},
 		{
-			question: "J’ai perdu mon mot de passe, que faire ?",
+			question: "J'ai perdu mon mot de passe, que faire ?",
 			answer: (
 				<span>
-					Cliquez sur “Mot de passe oublié” sur la page de connexion.
-					Un email vous sera envoyé avec les instructions.
+					Cliquez sur &quot;Mot de passe oublié&quot; sur la page de
+					connexion. Un email vous sera envoyé avec les instructions.
 				</span>
 			),
 		},
 		{
 			question:
-				"Comment utiliser les outils (Business Plan, Search-Hunter, Market-Tester) ?",
+				"Comment utiliser les outils (Business Plan, Smart-Hunter, Market-Tester) ?",
 			answer: (
 				<span>
 					Consultez nos guides détaillés ou posez vos questions sur
@@ -110,61 +175,12 @@ export const siteConfig = {
 			href: "#",
 		},
 		{
-			title: "Valider une idée avec Search-Hunter",
+			title: "Valider une idée avec Smart-Hunter",
 			href: "#",
 		},
 		{
 			title: "Tester votre marché avec Market-Tester",
 			href: "#",
-		},
-	],
-	pricing: [
-		{
-			name: "INITIATEUR",
-			href: "#",
-			price: "0 €",
-			period: "à vie",
-			yearlyPrice: "0 €",
-			features: [
-				"Accès à la communauté",
-				"Newsletter hebdomadaire",
-				"Templates de business plans",
-			],
-			description: "Parfait pour découvrir et rejoindre la communauté.",
-			buttonText: "Rejoignez-nous gratuitement",
-			isPopular: false,
-		},
-		{
-			name: "INNOVATEUR",
-			href: "#",
-			price: "12 €", // Mensuel
-			period: "mois",
-			yearlyPrice: "10 €", // Annuel (prix au mois)
-			features: [
-				"Outil de génération d'idées SaaS",
-				"Outil pour tester un marché",
-				"Accès à des templates premium",
-			],
-			description:
-				"Idéal pour accéder à nos outils avancés et valider vos idées rapidement.",
-			buttonText: "S'abonner",
-			isPopular: true,
-		},
-		{
-			name: "VISIONNAIRE",
-			href: "#",
-			price: "50 €", // Mensuel
-			period: "mois",
-			yearlyPrice: "40 €", // Annuel (prix au mois)
-			features: [
-				"Accès illimité à tous les outils",
-				"Accès à la communauté",
-				"Communication privilégiée avec l’équipe",
-			],
-			description:
-				"Allez plus loin encore, avec plus de ressources et un accompagnement dédié.",
-			buttonText: "S'abonner",
-			isPopular: false,
 		},
 	],
 };

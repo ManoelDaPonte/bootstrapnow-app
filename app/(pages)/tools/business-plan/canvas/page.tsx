@@ -107,9 +107,11 @@ export default function CanvasPage() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			CANVAS_HEADERS[modalState.category as CanvasCategory]?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category
@@ -131,7 +133,7 @@ export default function CanvasPage() {
 		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Canvas Business Model"
-				progress={calculateProgress(cards)}
+				progress={calculateProgress(cards, qaResponses)}
 			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">

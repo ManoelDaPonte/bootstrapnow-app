@@ -5,10 +5,8 @@ import updateUserMetadata from "@/lib/auth0/updateUserMetadata";
 import getManagementToken from "@/lib/auth0/getManagementToken";
 
 const priceToPlanMap: Record<string, string> = {
-	[process.env.STRIPE_PRICE_ID_INNOVATEUR_MONTHLY!]: "innovateur_monthly",
-	[process.env.STRIPE_PRICE_ID_INNOVATEUR_YEARLY!]: "innovateur_yearly",
-	[process.env.STRIPE_PRICE_ID_VISIONNAIRE_MONTHLY!]: "visionnaire_monthly",
-	[process.env.STRIPE_PRICE_ID_VISIONNAIRE_YEARLY!]: "visionnaire_yearly",
+	[process.env.STRIPE_PRICE_ID_BUILDER_MONTHLY!]: "builder_monthly",
+	[process.env.STRIPE_PRICE_ID_BUILDER_YEARLY!]: "builder_yearly",
 };
 
 function getPlanFromSubscription(subscription: Stripe.Subscription): string {

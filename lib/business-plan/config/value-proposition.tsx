@@ -94,11 +94,11 @@ export const VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Identifiez les tâches importantes que vos clients essaient de réaliser dans leur travail ou leur vie quotidienne. Ces jobs peuvent être des tâches fonctionnelles, sociales ou émotionnelles.",
 		examples: [
-			"**Tâches fonctionnelles:** Accomplir une tâche spécifique ou résoudre un problème concret",
-			"**Besoins sociaux:** Gagner en prestige, en pouvoir ou en statut",
-			"**Besoins émotionnels:** Rechercher la sécurité ou le bien-être",
-			"**Tâches basiques:** Répondre à des besoins fondamentaux quotidiens",
-			"**Désirs personnels:** Atteindre des objectifs d'amélioration personnelle",
+			"Tâches fonctionnelles:** Accomplir une tâche spécifique ou résoudre un problème concret",
+			"Besoins sociaux:** Gagner en prestige, en pouvoir ou en statut",
+			"Besoins émotionnels:** Rechercher la sécurité ou le bien-être",
+			"Tâches basiques:** Répondre à des besoins fondamentaux quotidiens",
+			"Désirs personnels:** Atteindre des objectifs d'amélioration personnelle",
 		],
 	},
 	pains: {
@@ -106,11 +106,11 @@ export const VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Décrivez les mauvaises expériences, risques et obstacles que vos clients rencontrent avant, pendant et après l'accomplissement de leurs tâches.",
 		examples: [
-			"**Obstacles:** Difficultés qui empêchent de commencer ou ralentissent une tâche",
-			"**Risques:** Résultats négatifs potentiels qui inquiètent les clients",
-			"**Frustrations:** Points de friction dans l'expérience actuelle",
-			"**Coûts cachés:** Dépenses inattendues ou temps perdu",
-			"**Problèmes récurrents:** Difficultés qui surviennent régulièrement",
+			"Obstacles:** Difficultés qui empêchent de commencer ou ralentissent une tâche",
+			"Risques:** Résultats négatifs potentiels qui inquiètent les clients",
+			"Frustrations:** Points de friction dans l'expérience actuelle",
+			"Coûts cachés:** Dépenses inattendues ou temps perdu",
+			"Problèmes récurrents:** Difficultés qui surviennent régulièrement",
 		],
 	},
 	gains: {
@@ -118,11 +118,11 @@ export const VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Identifiez les bénéfices que vos clients espèrent obtenir, qu'ils soient nécessaires, attendus, désirés ou inattendus.",
 		examples: [
-			"**Gains fonctionnels:** Améliorations pratiques et mesurables",
-			"**Économies:** Gains de temps, d'argent ou d'efforts",
-			"**Avantages sociaux:** Amélioration de l'image ou du statut",
-			"**Émotions positives:** Satisfaction, confiance ou bien-être",
-			"**Aspirations:** Réalisation d'objectifs personnels ou professionnels",
+			"Gains fonctionnels:** Améliorations pratiques et mesurables",
+			"Économies:** Gains de temps, d'argent ou d'efforts",
+			"Avantages sociaux:** Amélioration de l'image ou du statut",
+			"Émotions positives:** Satisfaction, confiance ou bien-être",
+			"Aspirations:** Réalisation d'objectifs personnels ou professionnels",
 		],
 	},
 	products: {
@@ -130,11 +130,11 @@ export const VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Listez tous les produits et services que votre proposition de valeur met à disposition des clients. Ce sont les offres tangibles qui aident vos clients à accomplir leurs tâches.",
 		examples: [
-			"**Produits physiques:** Biens tangibles que les clients peuvent utiliser",
-			"**Services digitaux:** Solutions numériques et applications",
-			"**Services support:** Accompagnement, formation et assistance",
-			"**Fonctionnalités clés:** Caractéristiques principales de vos offres",
-			"**Packages complets:** Combinaisons de produits et services",
+			"Produits physiques:** Biens tangibles que les clients peuvent utiliser",
+			"Services digitaux:** Solutions numériques et applications",
+			"Services support:** Accompagnement, formation et assistance",
+			"Fonctionnalités clés:** Caractéristiques principales de vos offres",
+			"Packages complets:** Combinaisons de produits et services",
 		],
 	},
 	painRelievers: {
@@ -142,11 +142,11 @@ export const VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Décrivez précisément comment vos produits et services soulagent les problèmes spécifiques de vos clients. Montrez comment vous éliminez ou réduisez les émotions négatives, les situations indésirables ou les risques.",
 		examples: [
-			"**Économies réalisées:** Réduction des coûts ou du temps investi",
-			"**Réduction des risques:** Solutions pour minimiser les problèmes potentiels",
-			"**Simplifications:** Amélioration de l'expérience utilisateur",
-			"**Solutions pratiques:** Résolution directe des problèmes concrets",
-			"**Support proactif:** Anticipation et prévention des difficultés",
+			"Économies réalisées:** Réduction des coûts ou du temps investi",
+			"Réduction des risques:** Solutions pour minimiser les problèmes potentiels",
+			"Simplifications:** Amélioration de l'expérience utilisateur",
+			"Solutions pratiques:** Résolution directe des problèmes concrets",
+			"Support proactif:** Anticipation et prévention des difficultés",
 		],
 	},
 	gainCreators: {
@@ -154,11 +154,11 @@ export const VALUE_PROPOSITION_MODAL_DETAILED_DESCRIPTIONS = {
 		content:
 			"Expliquez comment vos produits et services créent des bénéfices pour vos clients. Décrivez comment vous générez des résultats positifs et des avantages que vos clients attendent, désirent ou pourraient être surpris d'obtenir.",
 		examples: [
-			"**Avantages uniques:** Bénéfices distinctifs de votre solution",
-			"**Performance optimisée:** Améliorations mesurables des résultats",
-			"**Expérience améliorée:** Satisfaction accrue des utilisateurs",
-			"**Innovation:** Nouvelles façons de répondre aux besoins",
-			"**Valeur ajoutée:** Bénéfices supplémentaires inattendus",
+			"Avantages uniques:** Bénéfices distinctifs de votre solution",
+			"Performance optimisée:** Améliorations mesurables des résultats",
+			"Expérience améliorée:** Satisfaction accrue des utilisateurs",
+			"Innovation:** Nouvelles façons de répondre aux besoins",
+			"Valeur ajoutée:** Bénéfices supplémentaires inattendus",
 		],
 	},
 };

@@ -93,7 +93,10 @@ export default function SwotMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id ? "Modifier la carte" : "Nouvelle carte",
+		modalTitle: `${
+			SWOT_HEADERS[modalState.category as SwotCategory]?.title || ""
+		} - ${modalState.card.id ? "Modifier la carte" : "Ajouter une carte"}`,
+
 		titlePlaceholder: "Entrez le titre de votre élément SWOT...",
 		descriptionPlaceholder: "Décrivez cet élément SWOT...",
 		categoryDescription: modalState.category
@@ -112,7 +115,10 @@ export default function SwotMatrix() {
 	}
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
-			<Header title="Matrice SWOT" progress={calculateProgress(cards)} />
+			<Header
+				title="Matrice SWOT"
+				progress={calculateProgress(cards, qaResponses)}
+			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
 				<div className="grid grid-cols-2 gap-6">

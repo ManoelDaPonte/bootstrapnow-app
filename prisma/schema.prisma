@@ -7,15 +7,6 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model BusinessPlanProgress {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    progress  Json // Stocke le progrès de chaque section
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 model MonthlyProjectionAnalysis {
     id          String   @id @default(cuid())
     user        User     @relation(fields: [userId], references: [id])
@@ -24,33 +15,6 @@ model MonthlyProjectionAnalysis {
     qaResponses Json     @default("{}")
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-}
-
-model YearlyProjectionAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model MarketTrendsAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model CompetitorsAnalysis {
-    id        String   @id @default(cuid())
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    data      Json
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 }
 
 model StartupExpensesAnalysis {
@@ -143,15 +107,76 @@ model FunnelChartAnalysis {
     updatedAt   DateTime @updatedAt
 }
 
-model GeneratedBusinessPlan {
+model YearlyProjectionAnalysis {
     id        String   @id @default(cuid())
     user      User     @relation(fields: [userId], references: [id])
-    userId    String
-    content   String   @db.Text // Pour stocker le texte long
-    prompt    String   @db.Text // Pour stocker le prompt utilisé
-    status    String   @default("draft") // draft, published, archived
+    userId    String   @unique
+    data      Json
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model MarketTrendsAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model CompetitorsAnalysis {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model GeneralInfo {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model BusinessPlanProgress {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    progress  Json // Stocke le progrès de chaque section
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model DocumentGeneration {
+    id        String   @id @default(cuid())
+    userId    String
+    status    String // 'pending' | 'processing' | 'completed' | 'failed'
+    sections  Json // Stocke le contenu des sections
+    docxUrl   String? // URL du document généré
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+    user      User     @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+    @@index([status])
+}
+
+model SectionMetadata {
+    id               String   @id @default(cuid())
+    userId           String
+    sectionName      String
+    dataSignatures   Json // Stocké comme JSON dans la base de données
+    generatedContent String
+    lastGenerated    DateTime
+    user             User     @relation(fields: [userId], references: [id])
+
+    @@unique([userId, sectionName])
+    @@index([userId])
 }
 
 model User {
@@ -172,7 +197,9 @@ model User {
     competitorsAnalysis       CompetitorsAnalysis?
     startupExpensesAnalysis   StartupExpensesAnalysis?
     businessPlanProgress      BusinessPlanProgress?
-    generatedBusinessPlan     GeneratedBusinessPlan[]
+    generalInfo               GeneralInfo?
+    documentGeneration        DocumentGeneration[]
+    sectionMetadata           SectionMetadata[]
     createdAt                 DateTime                   @default(now())
     updatedAt                 DateTime                   @updatedAt
 }

@@ -120,7 +120,7 @@ export default function DashboardPage() {
 							},
 							{
 								label: "SmartHunter",
-								href: "/tools/search-hunter",
+								href: "/tools/smart-hunter",
 							},
 							{
 								label: "Market Analytics",

@@ -117,9 +117,13 @@ const ValuePropositionCanvas: React.FC = () => {
 					content: e.target.value,
 				},
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			VALUE_PROPOSITION_SECTIONS[
+				modalState.category as ValuePropositionCategory
+			]?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category
@@ -156,7 +160,7 @@ const ValuePropositionCanvas: React.FC = () => {
 		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Value Proposition"
-				progress={calculateProgress(data)}
+				progress={calculateProgress(data, qaResponses)}
 			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">

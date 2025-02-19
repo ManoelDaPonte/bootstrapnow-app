@@ -7,13 +7,14 @@ import { useUserMetadata } from "@/context/userMetadataProvider";
 import Cancellation from "@/components/abonnement/cancellation";
 import AbonnementSkeleton from "@/components/abonnement/AbonnementSkeleton";
 import NoticeBox from "@/components/abonnement/NoticeBox";
+import TokenSection from "@/components/abonnement/token-section";
 
 function getPlanLabel(plan: string) {
 	switch (plan) {
-		case "innovateur_monthly":
-			return "Innovateur (Mensuel)";
-		case "innovateur_yearly":
-			return "Innovateur (Annuel)";
+		case "builder_monthly":
+			return "builder (Mensuel)";
+		case "builder_yearly":
+			return "builder (Annuel)";
 		case "visionnaire_monthly":
 			return "Visionnaire (Mensuel)";
 		case "visionnaire_yearly":
@@ -82,9 +83,13 @@ export default function AbonnementPage() {
 	// Lecture du plan & status
 	const plan = metadata?.plan || "free";
 	const status = metadata?.status || "actif";
+	const tokens = parseInt(metadata?.tokens || "0");
+	const isBuilder = plan.startsWith("builder");
 
-	const isFreeOrCanceled = plan === "free";
-	const hasPaidSubscription = plan !== "free";
+	// Un utilisateur est considéré comme ayant un abonnement actif si:
+	// 1. Son plan n'est pas "free" ET
+	// 2. Son status est "actif"
+	const hasActiveSubscription = plan !== "free" && status === "actif";
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -93,25 +98,35 @@ export default function AbonnementPage() {
 				<div className="text-center space-y-3">
 					<h1 className="text-3xl font-bold">Mon abonnement</h1>
 					<p className="text-muted-foreground text-sm">
-						Gérez ou améliorez votre abonnement ci-dessous.
+						Gérez votre abonnement et vos tokens de génération.
 					</p>
 				</div>
+
+				{/* Section Tokens */}
+				<TokenSection
+					tokens={tokens}
+					userId={user.sub!}
+					customerStripeId={metadata?.customer_id}
+					isBuilder={isBuilder}
+				/>
 
 				{/* Box État actuel */}
 				<CurrentPlanBox plan={plan} status={status} />
 
 				{/* Avertissement Produits non finalisés */}
-				<NoticeBox />
 
 				{/* Choix d'affichage */}
-				{isFreeOrCanceled ? (
-					<PricingSection />
-				) : hasPaidSubscription ? (
+				{hasActiveSubscription ? (
 					<Cancellation
 						subscriptionId={metadata?.subscription_id}
 						userId={user.sub!}
 					/>
-				) : null}
+				) : (
+					<div>
+						<NoticeBox />
+						<PricingSection />
+					</div>
+				)}
 			</div>
 		</div>
 	);

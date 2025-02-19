@@ -1,4 +1,5 @@
 // types/canvas.ts
+import { QAResponses } from "@/types/shared/qa-section";
 
 export interface CanvasCard {
 	id: number;
@@ -43,6 +44,7 @@ export type StorageKey = `canvas_${string}`;
 // Type pour le contexte si nécessaire plus tard
 export interface CanvasContextType {
 	cards: CanvasData;
+	qaResponses: QAResponses;
 	handleSaveCard: (category: CanvasCategory, card: CanvasCard) => void;
 	handleDeleteCard: (category: CanvasCategory, cardId: number) => void;
 	loading: boolean;

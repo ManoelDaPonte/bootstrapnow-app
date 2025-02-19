@@ -124,62 +124,68 @@ export const PESTEL_QA_DATA: QAData = {
 		{
 			id: "OP_Legal_licenses",
 			title: "Licences et permis",
-			question: "Précisez si vous avez déjà obtenu des licences ou permis, ou si des démarches sont en cours.",
+			question:
+				"Précisez si vous avez déjà obtenu des licences ou permis, ou si des démarches sont en cours.",
 			examples: [
-			"Nous avons déjà obtenu toutes les licences et permis nécessaires pour exercer notre activité en conformité avec la législation locale.",
-			"Nous sommes en cours de demande de plusieurs licences essentielles pour notre exploitation, et nous suivons attentivement leur avancement.",
-			"Nous avons consulté des experts juridiques afin d’identifier toutes les autorisations nécessaires et nous finalisons actuellement les démarches administratives."
-			]
+				"Nous avons déjà obtenu toutes les licences et permis nécessaires pour exercer notre activité en conformité avec la législation locale.",
+				"Nous sommes en cours de demande de plusieurs licences essentielles pour notre exploitation, et nous suivons attentivement leur avancement.",
+				"Nous avons consulté des experts juridiques afin d’identifier toutes les autorisations nécessaires et nous finalisons actuellement les démarches administratives.",
+			],
 		},
 		{
 			id: "OP_Legal_officialbrand",
 			title: "Marques, brevets et droits d’auteur",
-			question: "Avez-vous des marques déposées, des droits d'auteur ou des brevets, ou êtes-vous en train de les demander ?",
+			question:
+				"Avez-vous des marques déposées, des droits d'auteur ou des brevets, ou êtes-vous en train de les demander ?",
 			examples: [
-			"Notre marque est déposée auprès de l’INPI afin de protéger notre identité et nos produits.",
-			"Nous avons entamé les démarches pour déposer plusieurs brevets relatifs à nos innovations technologiques.",
-			"Nous disposons de droits d’auteur sur nos contenus et nous envisageons de renforcer notre protection juridique avec de nouveaux dépôts."
-			]
+				"Notre marque est déposée auprès de l’INPI afin de protéger notre identité et nos produits.",
+				"Nous avons entamé les démarches pour déposer plusieurs brevets relatifs à nos innovations technologiques.",
+				"Nous disposons de droits d’auteur sur nos contenus et nous envisageons de renforcer notre protection juridique avec de nouveaux dépôts.",
+			],
 		},
 		{
 			id: "OP_Legal_warranty",
 			title: "Assurances et garanties",
-			question: "Quelle couverture d'assurance votre entreprise nécessite-t-elle et quel en est le coût ?",
+			question:
+				"Quelle couverture d'assurance votre entreprise nécessite-t-elle et quel en est le coût ?",
 			examples: [
-			"Nous avons souscrit une assurance responsabilité civile professionnelle pour couvrir d’éventuels dommages causés à des tiers.",
-			"Notre entreprise nécessite une assurance multirisque professionnelle, dont le coût est estimé à 2 500 € par an.",
-			"Nous avons évalué nos risques et avons souscrit à une couverture spécifique pour protéger nos actifs et nos employés."
-			]
+				"Nous avons souscrit une assurance responsabilité civile professionnelle pour couvrir d’éventuels dommages causés à des tiers.",
+				"Notre entreprise nécessite une assurance multirisque professionnelle, dont le coût est estimé à 2 500 € par an.",
+				"Nous avons évalué nos risques et avons souscrit à une couverture spécifique pour protéger nos actifs et nos employés.",
+			],
 		},
 		{
 			id: "OP_Legal_environmentalregulations",
 			title: "Régulations environnementales et sanitaires",
-			question: "Quelles régulations environnementales, sanitaires ou relatives aux conditions de travail affectent votre entreprise ?",
+			question:
+				"Quelles régulations environnementales, sanitaires ou relatives aux conditions de travail affectent votre entreprise ?",
 			examples: [
-			"Notre activité est soumise à des normes strictes de recyclage et de gestion des déchets afin de minimiser notre impact environnemental.",
-			"Nous respectons les réglementations sanitaires en vigueur, notamment en ce qui concerne l’hygiène et la sécurité alimentaire.",
-			"Nous avons mis en place un programme de conformité aux normes de santé et sécurité au travail pour garantir un environnement sûr pour nos employés."
-			]
+				"Notre activité est soumise à des normes strictes de recyclage et de gestion des déchets afin de minimiser notre impact environnemental.",
+				"Nous respectons les réglementations sanitaires en vigueur, notamment en ce qui concerne l’hygiène et la sécurité alimentaire.",
+				"Nous avons mis en place un programme de conformité aux normes de santé et sécurité au travail pour garantir un environnement sûr pour nos employés.",
+			],
 		},
 		{
 			id: "OP_Legal_particularregulations",
 			title: "Régulations spécifiques au secteur",
-			question: "Quelles sont les régulations particulières affectant le secteur d'activité ?",
+			question:
+				"Quelles sont les régulations particulières affectant le secteur d'activité ?",
 			examples: [
-			"Notre secteur étant réglementé, nous devons nous conformer aux normes ISO pour garantir la qualité et la sécurité de nos produits.",
-			"Nous suivons les directives européennes sur la fabrication et la distribution de nos produits pour assurer notre conformité.",
-			"Nous avons intégré toutes les obligations légales spécifiques à notre secteur dans notre processus de gestion et de production."
-			]
+				"Notre secteur étant réglementé, nous devons nous conformer aux normes ISO pour garantir la qualité et la sécurité de nos produits.",
+				"Nous suivons les directives européennes sur la fabrication et la distribution de nos produits pour assurer notre conformité.",
+				"Nous avons intégré toutes les obligations légales spécifiques à notre secteur dans notre processus de gestion et de production.",
+			],
 		},
 		{
 			id: "OP_Legal_cautions",
 			title: "Exigences de cautionnement",
-			question: "L'entreprise doit-elle remplir des exigences de cautionnement ? Si oui, explique-les.",
+			question:
+				"L'entreprise doit-elle remplir des exigences de cautionnement ? Si oui, explique-les.",
 			examples: [
-			"Nous avons dû fournir une caution bancaire pour garantir le respect de nos engagements contractuels avec nos fournisseurs.",
-			"Notre activité exige un cautionnement obligatoire pour opérer légalement, ce qui représente un coût initial de 10 000 €.",
-			"Nous avons étudié les exigences de cautionnement et avons souscrit à une garantie financière afin d’assurer la pérennité de notre entreprise."
-			]
+				"Nous avons dû fournir une caution bancaire pour garantir le respect de nos engagements contractuels avec nos fournisseurs.",
+				"Notre activité exige un cautionnement obligatoire pour opérer légalement, ce qui représente un coût initial de 10 000 €.",
+				"Nous avons étudié les exigences de cautionnement et avons souscrit à une garantie financière afin d’assurer la pérennité de notre entreprise.",
+			],
 		},
 	],
 };
@@ -193,11 +199,11 @@ export const PESTEL_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Analysez l'impact des décisions politiques, des changements gouvernementaux et des politiques publiques sur votre activité.",
 		examples: [
-			"**Stabilité politique:** Impact des changements de gouvernement",
-			"**Politique fiscale:** Évolution des taxes et impôts",
-			"**Réglementation sectorielle:** Nouvelles normes sectorielles",
-			"**Commerce international:** Accords commerciaux et barrières",
-			"**Aides publiques:** Subventions et programmes de soutien",
+			"Stabilité politique:** Impact des changements de gouvernement",
+			"Politique fiscale:** Évolution des taxes et impôts",
+			"Réglementation sectorielle:** Nouvelles normes sectorielles",
+			"Commerce international:** Accords commerciaux et barrières",
+			"Aides publiques:** Subventions et programmes de soutien",
 		],
 	},
 	economic: {
@@ -205,11 +211,11 @@ export const PESTEL_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Évaluez les variables économiques qui influencent votre marché et votre activité.",
 		examples: [
-			"**Croissance économique:** PIB et indicateurs macro-économiques",
-			"**Taux d'intérêt:** Impact sur les investissements",
-			"**Inflation:** Effet sur les prix et les coûts",
-			"**Emploi:** Marché du travail et main d'œuvre",
-			"**Taux de change:** Impact sur import/export",
+			"Croissance économique:** PIB et indicateurs macro-économiques",
+			"Taux d'intérêt:** Impact sur les investissements",
+			"Inflation:** Effet sur les prix et les coûts",
+			"Emploi:** Marché du travail et main d'œuvre",
+			"Taux de change:** Impact sur import/export",
 		],
 	},
 	social: {
@@ -217,11 +223,11 @@ export const PESTEL_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Examinez les tendances sociales et démographiques qui peuvent influencer votre activité.",
 		examples: [
-			"**Démographie:** Évolution de la population",
-			"**Culture:** Changement des valeurs et des normes",
-			"**Mode de vie:** Tendances de consommation",
-			"**Éducation:** Niveau d'éducation et compétences",
-			"**Santé publique:** Politiques de santé et bien-être",
+			"Démographie:** Évolution de la population",
+			"Culture:** Changement des valeurs et des normes",
+			"Mode de vie:** Tendances de consommation",
+			"Éducation:** Niveau d'éducation et compétences",
+			"Santé publique:** Politiques de santé et bien-être",
 		],
 	},
 	technological: {
@@ -229,11 +235,11 @@ export const PESTEL_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Analysez les innovations et les changements technologiques qui impactent votre secteur.",
 		examples: [
-			"**R&D:** Investissements en recherche et développement",
-			"**Automatisation:** Impact des nouvelles technologies",
-			"**Internet:** Évolution des technologies de l'information",
-			"**Brevet:** Nouveaux brevets et innovations",
-			"**Technologies émergentes:** IA, blockchain, etc.",
+			"R&D:** Investissements en recherche et développement",
+			"Automatisation:** Impact des nouvelles technologies",
+			"Internet:** Évolution des technologies de l'information",
+			"Brevet:** Nouveaux brevets et innovations",
+			"Technologies émergentes:** IA, blockchain, etc.",
 		],
 	},
 	environmental: {
@@ -241,11 +247,11 @@ export const PESTEL_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Considérez les aspects environnementaux et écologiques qui peuvent affecter votre activité.",
 		examples: [
-			"**Changement climatique:** Impact sur les ressources",
-			"**Réglementation environnementale:** Normes et lois",
-			"**Développement durable:** Initiatives écologiques",
-			"**Gestion des déchets:** Politiques de recyclage",
-			"**Énergie:** Utilisation et sources d'énergie",
+			"Changement climatique:** Impact sur les ressources",
+			"Réglementation environnementale:** Normes et lois",
+			"Développement durable:** Initiatives écologiques",
+			"Gestion des déchets:** Politiques de recyclage",
+			"Énergie:** Utilisation et sources d'énergie",
 		],
 	},
 	legal: {
@@ -253,11 +259,11 @@ export const PESTEL_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Évaluez le cadre juridique et la conformité réglementaire qui influencent votre secteur.",
 		examples: [
-			"**Législation du travail:** Lois sur l'emploi et les conditions de travail",
-			"**Réglementation sectorielle:** Normes spécifiques à votre secteur",
-			"**Propriété intellectuelle:** Droits d'auteur et brevets",
-			"**Conformité:** Normes de conformité et audits",
-			"**Responsabilité:** Lois sur la responsabilité et les litiges",
+			"Législation du travail:** Lois sur l'emploi et les conditions de travail",
+			"Réglementation sectorielle:** Normes spécifiques à votre secteur",
+			"Propriété intellectuelle:** Droits d'auteur et brevets",
+			"Conformité:** Normes de conformité et audits",
+			"Responsabilité:** Lois sur la responsabilité et les litiges",
 		],
 	},
 };

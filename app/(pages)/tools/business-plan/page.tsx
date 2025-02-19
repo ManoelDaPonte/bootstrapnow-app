@@ -1,11 +1,22 @@
+//app/%28pages%29/tools/business-plan/page.tsx
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgress";
 import { Card } from "@/components/ui/card";
+import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
+import { useGeneralInfo } from "@/lib/business-plan/hooks/useGeneralInfo";
+import { useBusinessPlanGenerator } from "@/lib/openai/hooks/useBusinessPlanGenerator";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { toast } from "@/components/ui/use-toast";
+import { Loader2, FileText, Coins } from "lucide-react";
+import HistoryDialog from "@/components/business-plan-document/HistoryDialog";
+import { BUSINESS_PLAN_SECTIONS } from "@/types/business-plan-document/business-plan";
+import GenerationProgressDialog from "@/components/business-plan-document/GenerationProgressDialog";
+import { useUserMetadata } from "@/context/userMetadataProvider";
 
 const templates = [
 	{
@@ -136,7 +147,66 @@ const templates = [
 ];
 
 export default function BusinessPlanPage() {
+	const {
+		generations,
+		isLoadingHistory,
+		loadHistory,
+		downloadGeneration,
+		isGenerating,
+		currentSteps,
+		generateBusinessPlan,
+	} = useBusinessPlanGenerator();
+	const { user } = useUser();
+	const { metadata, loading, fetchUserMetadata } = useUserMetadata();
+	const {
+		data: generalInfo,
+		updateField: handleGeneralInfoChange,
+		saveData: handleGeneralInfoSave,
+		isSaving,
+	} = useGeneralInfo();
 	const router = useRouter();
+
+	// Ajout d'un useEffect pour charger les metadata
+	useEffect(() => {
+		if (user?.sub && !metadata && !loading) {
+			fetchUserMetadata(user.sub);
+		}
+	}, [user, metadata, loading, fetchUserMetadata]);
+
+	// Ajoutez cet useEffect pour charger l'historique au montage
+	useEffect(() => {
+		if (user?.sub) {
+			loadHistory(user.sub);
+		}
+	}, [user?.sub, loadHistory]);
+
+	const tokens = parseInt(metadata?.tokens || "0");
+
+	const handleGenerateBusinessPlan = async () => {
+		if (!user?.sub) {
+			toast({
+				title: "Erreur",
+				description:
+					"Vous devez être connecté pour générer un business plan",
+				variant: "destructive",
+			});
+			return;
+		}
+
+		try {
+			await generateBusinessPlan(
+				user.sub,
+				BUSINESS_PLAN_SECTIONS as unknown as string[]
+			);
+		} catch (error) {
+			console.error("Erreur détaillée:", error);
+			toast({
+				title: "Erreur",
+				description: "Une erreur est survenue lors de la génération",
+				variant: "destructive",
+			});
+		}
+	};
 
 	type ProgressType = {
 		[key: string]: {
@@ -146,15 +216,15 @@ export default function BusinessPlanPage() {
 
 	const progress: ProgressType = useTemplateProgress();
 
-	const getTemplateProgress = (sectionId: string, templateName: string) => {
-		console.log(sectionId, templateName);
-		console.log(progress[sectionId]?.[templateName]);
+	const getTemplateProgress = (
+		sectionId: string,
+		templateName: string
+	): number => {
 		return progress[sectionId]?.[templateName] || 0;
 	};
 
 	const totalProgress = Math.round(
 		Object.entries(progress).reduce((acc, [, section]) => {
-			// Retiré le '_'
 			return (
 				acc +
 				Object.values(section).reduce((sum, value) => sum + value, 0)
@@ -171,14 +241,13 @@ export default function BusinessPlanPage() {
 				<div className="max-w-full mx-auto">
 					<div className="container py-4">
 						<div className="flex items-center justify-between mr-16">
-							{" "}
-							{/* Ajout de margin-right pour éviter le header utilisateur */}
 							<div className="space-y-1">
 								<h1 className="text-2xl font-bold text-foreground">
 									Business Plan
 								</h1>
 							</div>
 							<div className="flex items-center gap-8">
+								{/* Progression */}
 								<div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg border">
 									<Progress
 										value={totalProgress}
@@ -189,14 +258,45 @@ export default function BusinessPlanPage() {
 									</span>
 								</div>
 
+								{/* Tokens */}
+								<div className="flex items-center gap-2 bg-card px-4 py-2 rounded-lg border">
+									<Coins className="h-4 w-4 text-primary" />
+									<span className="text-sm font-medium">
+										{tokens} token{tokens > 1 ? "s" : ""}{" "}
+										disponible{tokens > 1 ? "s" : ""}
+									</span>
+								</div>
+
+								{/* Boutons */}
 								<div className="flex items-center gap-3">
-									<Button
-										// onClick={handleGenerateBusinessPlan}
-										className="bg-primary text-primary-foreground hover:bg-primary/90"
-										disabled={totalProgress < 10}
-									>
-										Générer le Business Plan
-									</Button>
+									<div className="flex items-center gap-3">
+										<Button
+											onClick={handleGenerateBusinessPlan}
+											className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+											disabled={
+												totalProgress < 80 ||
+												isGenerating
+											}
+										>
+											{isGenerating ? (
+												<>
+													<Loader2 className="h-4 w-4 animate-spin" />
+													Génération...
+												</>
+											) : (
+												<>
+													<FileText className="h-4 w-4" />
+													Générer
+												</>
+											)}
+										</Button>
+
+										<HistoryDialog
+											generations={generations}
+											onDownload={downloadGeneration}
+											isLoading={isLoadingHistory}
+										/>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -205,9 +305,42 @@ export default function BusinessPlanPage() {
 			</div>
 
 			<div className="container py-8 flex-1">
-				<p className="text-sm text-muted-foreground mb-5">
-					Complétez chaque section pour générer votre business plan
-				</p>
+				<div className="bg-muted/30 border rounded-lg p-6 mb-8">
+					<h2 className="text-lg font-semibold mb-3">
+						Comment procéder ?
+					</h2>
+					<ul className="space-y-2 text-muted-foreground">
+						<li className="flex items-center gap-2">
+							<span className="text-primary">1.</span>
+							Commencez par remplir les informations générales de
+							votre entreprise ci-dessous
+						</li>
+						<li className="flex items-center gap-2">
+							<span className="text-primary">2.</span>
+							Complétez chaque section du business plan (minimum
+							80% pour chaque section)
+						</li>
+						<li className="flex items-center gap-2">
+							<span className="text-primary">3.</span>
+							Plus vous ajoutez d&apos;éléments dans chaque
+							section, plus votre business plan sera détaillé et
+							pertinent
+						</li>
+						<li className="flex items-center gap-2">
+							<span className="text-primary">4.</span>
+							Une fois que la progression globale atteint 80%,
+							vous pourrez générer votre business plan
+						</li>
+					</ul>
+				</div>
+
+				<GeneralInfoCard
+					data={generalInfo}
+					onChange={handleGeneralInfoChange}
+					onSave={handleGeneralInfoSave}
+					isSaving={isSaving}
+				/>
+
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{templates.map((section) => (
 						<div key={section.id} className="space-y-4">
@@ -232,10 +365,10 @@ export default function BusinessPlanPage() {
 												router.push(template.route)
 											}
 											className={`
-							cursor-pointer transition-all duration-300
-							${section.color} ${section.borderColor} ${section.hoverColor}
-							hover:shadow-lg hover:scale-[1.02]
-						  `}
+						  cursor-pointer transition-all duration-300
+						  ${section.color} ${section.borderColor} ${section.hoverColor}
+						  hover:shadow-lg hover:scale-[1.02]
+						`}
 										>
 											<div className="p-6 space-y-4">
 												<div className="flex justify-between items-start">
@@ -249,8 +382,7 @@ export default function BusinessPlanPage() {
 															}
 														</p>
 													</div>
-													{templateProgress ===
-													100 ? (
+													{templateProgress >= 80 ? (
 														<CheckCircle2 className="w-5 h-5 text-green-500" />
 													) : (
 														<AlertCircle className="w-5 h-5 text-primary" />
@@ -273,6 +405,10 @@ export default function BusinessPlanPage() {
 						</div>
 					))}
 				</div>
+				<GenerationProgressDialog
+					isOpen={isGenerating}
+					steps={currentSteps}
+				/>
 			</div>
 		</div>
 	);

@@ -97,101 +97,93 @@ export const CANVAS_QA_DATA: QAData = {
 				"Nous nous différencions en offrant une qualité supérieure à des prix compétitifs dans un segment de marché haut de gamme. Notre positionnement repose sur la personnalisation des produits et un service client exceptionnel, une approche que nos concurrents ne privilégient pas suffisamment.",
 				"Nous avons choisi de nous positionner comme une marque premium en nous concentrant sur un marché de niche, avec des produits de luxe exclusifs et une expérience client ultra personnalisée. En comparaison, nos concurrents ciblent des segments plus larges, ce qui nous permet de capter une clientèle plus sélective.",
 			],
-		},		
+		},
 		{
 			id: "BMC_IdentificationFournisseurs",
 			title: "Identification des fournisseurs clés",
 			question:
 				"Quels sont les critères qui vous ont poussé à choisir vos fournisseurs clés?(Prix, fiabilité, proximité, qualité, etc.)",
-			examples: [
-				"",
-			],
+			examples: [""],
 		},
 		{
 			id: "BMC_ProduitCritiquestock",
 			title: "Produits critiques dans les stocks",
 			question:
 				"Y a-t-il des produits critiques nécessitant une attention particulière en termes de stockage ou de livraison ?",
-			examples: [
-				"",
-			],
+			examples: [""],
 		},
 		{
 			id: "BMC_PolitiquedeCredit",
 			title: "Politique de crédit et de livraison des fournisseurs",
 			question:
 				"Quels sont les délais de paiement que vos fournisseurs vous accordent ? (30 jours, 60 jours, paiement à la commande, etc.). Offrent-ils des escomptes pour paiements anticipés ? Si oui, quels sont les pourcentages de réduction ? Comment sont gérés les frais de transport et les délais de livraison ? (Qui prend en charge les coûts ? Quel est le délai moyen de livraison ?). En cas de retard de paiement, quelles sont les pénalités appliquées par vos fournisseurs ?",
-			examples: [
-				"",
-			],
+			examples: [""],
 		},
 		{
 			id: "BMC_AntécédentsetFiabilité",
 			title: "Antécédents et fiabilité des fournisseurs",
 			question:
 				"Depuis combien de temps travaillez-vous avec ces fournisseurs ? Quelle est leur réputation dans l’industrie ? Ont-ils déjà eu des problèmes de fiabilité ou de qualité ? Avez-vous déjà rencontré des difficultés avec un fournisseur ? (Retards, problèmes de conformité, etc.)",
-			examples: [
-				"",
-			],
+			examples: [""],
 		},
 		{
 			id: "BMC_RuptureApprovisionnement",
 			title: "Gestion des risques liés aux ruptures d’approvisionnement",
 			question:
 				"Y a-t-il un risque de pénurie ou de rupture de stock pour certains produits ? Comment gérez-vous ces risques ? (Stock de sécurité, fournisseurs alternatifs, etc.) En cas de retard de livraison, quelles solutions avez-vous mises en place pour minimiser l’impact sur votre activité ?",
-			examples: [
-				"",
-			],
+			examples: [""],
 		},
 		{
 			id: "BMC_VariationCoutsFournitures",
 			title: "Gestion des variations de coût des fournitures",
 			question:
 				"Le coût des matières premières ou produits que vous achetez est-il sujet à des fluctuations ? Comment anticipez-vous ces variations de prix ? (Contrats à long terme, fournisseurs multiples, stock tampon, etc.) Prévoyez-vous d’indexer vos prix de vente en fonction des variations du coût d’approvisionnement ?",
-			examples: [
-				"",
-			],
+			examples: [""],
 		},
 		{
 			id: "OP_Control_POS",
 			title: "Procédures opérationnelles standard",
-			question: "Quelles sont vos procédures opérationnelles standard (POS) pour assurer la qualité ?",
+			question:
+				"Quelles sont vos procédures opérationnelles standard (POS) pour assurer la qualité ?",
 			examples: [
-			"Nous avons mis en place un manuel de procédures détaillant chaque étape de production et les contrôles qualité à respecter.",
-			"Nos équipes suivent des formations régulières pour garantir l'application des meilleures pratiques et la conformité aux normes en vigueur.",
-			"Des audits internes sont réalisés périodiquement pour identifier et corriger toute déviation des standards établis."
-			]
+				"Nous avons mis en place un manuel de procédures détaillant chaque étape de production et les contrôles qualité à respecter.",
+				"Nos équipes suivent des formations régulières pour garantir l'application des meilleures pratiques et la conformité aux normes en vigueur.",
+				"Des audits internes sont réalisés périodiquement pour identifier et corriger toute déviation des standards établis.",
+			],
 		},
 		{
 			id: "OP_Control_inspection",
 			title: "Inspections et essais",
-			question: "Comment allez-vous procéder pour l'inspection et les essais ?",
+			question:
+				"Comment allez-vous procéder pour l'inspection et les essais ?",
 			examples: [
-			"Nous effectuons des inspections systématiques à chaque étape de production afin d’identifier les défauts avant la mise sur le marché.",
-			"Nous utilisons des protocoles de tests standardisés pour évaluer la performance et la conformité de nos produits.",
-			"Des échantillons aléatoires sont soumis à des contrôles approfondis en laboratoire pour garantir leur qualité."
-			]
+				"Nous effectuons des inspections systématiques à chaque étape de production afin d’identifier les défauts avant la mise sur le marché.",
+				"Nous utilisons des protocoles de tests standardisés pour évaluer la performance et la conformité de nos produits.",
+				"Des échantillons aléatoires sont soumis à des contrôles approfondis en laboratoire pour garantir leur qualité.",
+			],
 		},
 		{
 			id: "OP_Control_retourInformation",
 			title: "Retour d’informations et amélioration continue",
-			question: "Comment allez-vous recueillir le retour d'information des clients et améliorer continuellement la qualité ?",
+			question:
+				"Comment allez-vous recueillir le retour d'information des clients et améliorer continuellement la qualité ?",
 			examples: [
-			"Nous mettons en place des enquêtes de satisfaction et recueillons les avis clients via nos canaux digitaux.",
-			"Un service client dédié analyse les réclamations et suggestions afin d'identifier les points d'amélioration.",
-			"Des réunions d’équipe régulières sont organisées pour adapter nos processus en fonction des retours clients et des tendances du marché."
-			]
+				"Nous mettons en place des enquêtes de satisfaction et recueillons les avis clients via nos canaux digitaux.",
+				"Un service client dédié analyse les réclamations et suggestions afin d'identifier les points d'amélioration.",
+				"Des réunions d’équipe régulières sont organisées pour adapter nos processus en fonction des retours clients et des tendances du marché.",
+			],
 		},
 		{
 			id: "OP_localisation_restrictions",
 			title: "Restrictions de localisation",
-			question: "Existe-t-il des restrictions de zonage ou des règlements concernant votre emplacement ?",
+			question:
+				"Existe-t-il des restrictions de zonage ou des règlements concernant votre emplacement ?",
 			examples: [
-			"Nous avons consulté les réglementations locales pour nous assurer de la conformité de notre activité avec les règles d’urbanisme.",
-			"Des échanges avec les autorités compétentes et la municipalité ont été menés pour anticiper toute restriction potentielle.",
-			"Une veille réglementaire est effectuée pour nous adapter rapidement à toute évolution des lois et règlements."
-			]
-		}
+				"Nous avons consulté les réglementations locales pour nous assurer de la conformité de notre activité avec les règles d’urbanisme.",
+				"Des échanges avec les autorités compétentes et la municipalité ont été menés pour anticiper toute restriction potentielle.",
+				"Une veille réglementaire est effectuée pour nous adapter rapidement à toute évolution des lois et règlements.",
+			],
+		},
 	],
 };
 
@@ -204,11 +196,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Cette section est dédiée à l'identification des partenaires indispensables à la réussite de votre entreprise ou projet. Ces partenaires peuvent inclure des fournisseurs de matières premières, des partenaires stratégiques pour la distribution, ou encore des entreprises avec lesquelles vous collaborez pour mutualiser les ressources. Il est crucial de comprendre leur rôle et la valeur qu'ils apportent à vos opérations. Définissez également les types de partenariats (alliance stratégique, joint-venture, relation client-fournisseur) et les raisons pour lesquelles ces relations sont nécessaires pour atteindre vos objectifs. Sans ces partenaires, certaines parties de votre modèle commercial pourraient ne pas fonctionner.",
 		examples: [
-			"**Partenariat Local:** Une startup alimentaire qui s'associe avec des fermes locales pour garantir un approvisionnement constant en produits biologiques de saison, tout en réduisant les coûts logistiques",
-			"**Partenariat Technologique:** Un fabricant de smartphones qui travaille avec une entreprise spécialisée dans les semi-conducteurs pour s'assurer un accès privilégié aux dernières technologies",
-			"**Partenariat Éducatif:** Une plateforme de e-learning collaborant avec des universités réputées pour obtenir des certifications accréditées pour ses cours",
-			"**Partenariat Marketing:** Un distributeur de vêtements de sport qui s'associe à une chaîne de salles de sport pour offrir des promotions croisées et des événements exclusifs",
-			"**Partenariat Stratégique:** Un service de covoiturage qui s'allie avec des compagnies pétrolières pour proposer des réductions sur le carburant aux conducteurs partenaires",
+			"Partenariat Local:** Une startup alimentaire qui s'associe avec des fermes locales pour garantir un approvisionnement constant en produits biologiques de saison, tout en réduisant les coûts logistiques",
+			"Partenariat Technologique:** Un fabricant de smartphones qui travaille avec une entreprise spécialisée dans les semi-conducteurs pour s'assurer un accès privilégié aux dernières technologies",
+			"Partenariat Éducatif:** Une plateforme de e-learning collaborant avec des universités réputées pour obtenir des certifications accréditées pour ses cours",
+			"Partenariat Marketing:** Un distributeur de vêtements de sport qui s'associe à une chaîne de salles de sport pour offrir des promotions croisées et des événements exclusifs",
+			"Partenariat Stratégique:** Un service de covoiturage qui s'allie avec des compagnies pétrolières pour proposer des réductions sur le carburant aux conducteurs partenaires",
 		],
 	},
 	keyActivities: {
@@ -216,11 +208,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Les activités clés englobent les tâches essentielles qui doivent être réalisées pour assurer le fonctionnement de votre modèle d'affaires. Ces activités soutiennent directement la livraison de valeur à vos clients, la maintenance des relations avec vos partenaires et le maintien de vos flux de revenus. Elles peuvent inclure la production, la résolution de problèmes techniques complexes, la gestion des ressources humaines ou encore l'amélioration continue de vos produits et services.",
 		examples: [
-			"**Sécurité Données:** Une entreprise SaaS consacrant des ressources importantes à l'amélioration de la sécurité des données pour ses clients professionnels",
-			"**Optimisation Logistique:** Une société de logistique qui optimise ses itinéraires de livraison pour réduire les coûts de carburant et améliorer les délais",
-			"**R&D:** Un fabricant de voitures électriques investissant dans la recherche et le développement pour augmenter l'autonomie de ses batteries",
-			"**Marketing Performance:** Une agence marketing qui organise des tests A/B sur ses campagnes publicitaires pour maximiser leur impact",
-			"**Formation Excellence:** Une chaîne hôtelière développant un programme de formation interne pour standardiser l'excellence de son service à travers le monde",
+			"Sécurité Données:** Une entreprise SaaS consacrant des ressources importantes à l'amélioration de la sécurité des données pour ses clients professionnels",
+			"Optimisation Logistique:** Une société de logistique qui optimise ses itinéraires de livraison pour réduire les coûts de carburant et améliorer les délais",
+			"R&D:** Un fabricant de voitures électriques investissant dans la recherche et le développement pour augmenter l'autonomie de ses batteries",
+			"Marketing Performance:** Une agence marketing qui organise des tests A/B sur ses campagnes publicitaires pour maximiser leur impact",
+			"Formation Excellence:** Une chaîne hôtelière développant un programme de formation interne pour standardiser l'excellence de son service à travers le monde",
 		],
 	},
 	valueProposition: {
@@ -228,11 +220,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Votre proposition de valeur est au cœur de votre modèle d'affaires. Elle décrit ce qui rend votre entreprise ou vos produits uniques, irrésistibles et particulièrement attrayants pour vos segments de clients. Cela peut inclure des bénéfices spécifiques, tels qu'une solution innovante à un problème majeur, une offre à un excellent rapport qualité-prix ou une expérience utilisateur exceptionnelle.",
 		examples: [
-			"**IA Financière:** Une application de gestion de finances personnelles qui utilise l'intelligence artificielle pour fournir des recommandations personnalisées, adaptées aux objectifs financiers individuels",
-			"**Cosmétiques Durables:** Une gamme de produits cosmétiques 100 % naturels, respectueux de l'environnement et conçus pour les peaux sensibles, livrés dans des emballages rechargeables",
-			"**Streaming Premium:** Un service de streaming qui permet de télécharger du contenu pour une visualisation hors ligne sans perte de qualité, idéal pour les voyageurs fréquents",
-			"**Garantie Longue Durée:** Une entreprise d'électroménager qui offre une garantie de réparation gratuite pendant 10 ans, soulignant sa durabilité et son engagement écologique",
-			"**Énergie Accessible:** Un fournisseur d'énergie renouvelable qui propose des solutions d'installation de panneaux solaires avec financement à taux zéro pour les ménages à revenus moyens",
+			"IA Financière:** Une application de gestion de finances personnelles qui utilise l'intelligence artificielle pour fournir des recommandations personnalisées, adaptées aux objectifs financiers individuels",
+			"Cosmétiques Durables:** Une gamme de produits cosmétiques 100 % naturels, respectueux de l'environnement et conçus pour les peaux sensibles, livrés dans des emballages rechargeables",
+			"Streaming Premium:** Un service de streaming qui permet de télécharger du contenu pour une visualisation hors ligne sans perte de qualité, idéal pour les voyageurs fréquents",
+			"Garantie Longue Durée:** Une entreprise d'électroménager qui offre une garantie de réparation gratuite pendant 10 ans, soulignant sa durabilité et son engagement écologique",
+			"Énergie Accessible:** Un fournisseur d'énergie renouvelable qui propose des solutions d'installation de panneaux solaires avec financement à taux zéro pour les ménages à revenus moyens",
 		],
 	},
 	customerRelationships: {
@@ -240,11 +232,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Les relations avec les clients définissent comment vous interagissez avec vos segments de clientèle, de l'acquisition initiale à la fidélisation à long terme. Une stratégie claire dans cette section permet de renforcer la satisfaction, d'augmenter la rétention et d'encourager le bouche-à-oreille.",
 		examples: [
-			"**Suivi Temps Réel:** Un service de livraison rapide qui envoie des notifications en temps réel sur l'état de la commande et suit la satisfaction après chaque livraison",
-			"**Formation Gratuite:** Une entreprise de logiciel proposant un webinaire gratuit d'introduction pour aider les nouveaux utilisateurs à se familiariser avec ses fonctionnalités",
-			"**Personnalisation:** Un détaillant de mode qui inclut une carte de remerciement manuscrite et un code de réduction personnalisé dans chaque commande en ligne",
-			"**Programme Fidélité:** Un opérateur de télécommunications qui organise un programme de fidélité offrant des points échangeables contre des abonnements gratuits ou des cadeaux",
-			"**Service Premium:** Une marque de voitures haut de gamme qui offre un accès à un concierge personnel pour planifier l'entretien du véhicule et d'autres services VIP",
+			"Suivi Temps Réel:** Un service de livraison rapide qui envoie des notifications en temps réel sur l'état de la commande et suit la satisfaction après chaque livraison",
+			"Formation Gratuite:** Une entreprise de logiciel proposant un webinaire gratuit d'introduction pour aider les nouveaux utilisateurs à se familiariser avec ses fonctionnalités",
+			"Personnalisation:** Un détaillant de mode qui inclut une carte de remerciement manuscrite et un code de réduction personnalisé dans chaque commande en ligne",
+			"Programme Fidélité:** Un opérateur de télécommunications qui organise un programme de fidélité offrant des points échangeables contre des abonnements gratuits ou des cadeaux",
+			"Service Premium:** Une marque de voitures haut de gamme qui offre un accès à un concierge personnel pour planifier l'entretien du véhicule et d'autres services VIP",
 		],
 	},
 	customerSegments: {
@@ -252,11 +244,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Les segments de clients regroupent les différents groupes de personnes ou entreprises que votre entreprise cible et sert. Chacun de ces segments a des besoins spécifiques, des attentes particulières et des comportements uniques.",
 		examples: [
-			"**Professionnels Urbains:** Les jeunes professionnels urbains recherchant des services de coworking flexibles avec des espaces de networking et des conférences inspirantes",
-			"**Familles Actives:** Les familles avec enfants intéressées par des activités de loisirs éducatives et abordables pendant les vacances scolaires",
-			"**Entreprises Tech:** Les entreprises technologiques en pleine croissance ayant besoin de services cloud évolutifs et sécurisés pour gérer leurs données",
-			"**Seniors Connectés:** Les seniors actifs qui privilégient des produits ergonomiques et simples d'utilisation, comme des téléphones avec des interfaces simplifiées",
-			"**Étudiants:** Les étudiants universitaires cherchant des abonnements abordables à des services de streaming avec des avantages supplémentaires",
+			"Professionnels Urbains:** Les jeunes professionnels urbains recherchant des services de coworking flexibles avec des espaces de networking et des conférences inspirantes",
+			"Familles Actives:** Les familles avec enfants intéressées par des activités de loisirs éducatives et abordables pendant les vacances scolaires",
+			"Entreprises Tech:** Les entreprises technologiques en pleine croissance ayant besoin de services cloud évolutifs et sécurisés pour gérer leurs données",
+			"Seniors Connectés:** Les seniors actifs qui privilégient des produits ergonomiques et simples d'utilisation, comme des téléphones avec des interfaces simplifiées",
+			"Étudiants:** Les étudiants universitaires cherchant des abonnements abordables à des services de streaming avec des avantages supplémentaires",
 		],
 	},
 	keyResources: {
@@ -264,11 +256,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Les ressources clés représentent les éléments fondamentaux nécessaires pour que votre entreprise fonctionne efficacement. Ces ressources peuvent être de nature physique, intellectuelle, humaine ou financière.",
 		examples: [
-			"**Équipement Spécialisé:** Un laboratoire doté d'équipements avancés pour une startup de biotechnologie",
-			"**Propriété Intellectuelle:** Un brevet protégeant une technologie unique pour une entreprise d'électronique",
-			"**Réseau Professionnel:** Un réseau de contacts influents pour une société de conseil en stratégie",
-			"**Expertise Technique:** Des data scientists expérimentés pour une entreprise spécialisée dans l'intelligence artificielle",
-			"**Base de Données:** Une base de données client enrichie pour des campagnes marketing ciblées et pertinentes",
+			"Équipement Spécialisé:** Un laboratoire doté d'équipements avancés pour une startup de biotechnologie",
+			"Propriété Intellectuelle:** Un brevet protégeant une technologie unique pour une entreprise d'électronique",
+			"Réseau Professionnel:** Un réseau de contacts influents pour une société de conseil en stratégie",
+			"Expertise Technique:** Des data scientists expérimentés pour une entreprise spécialisée dans l'intelligence artificielle",
+			"Base de Données:** Une base de données client enrichie pour des campagnes marketing ciblées et pertinentes",
 		],
 	},
 	channels: {
@@ -276,11 +268,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Les canaux décrivent comment votre entreprise communique et interagit avec vos clients pour fournir vos propositions de valeur.",
 		examples: [
-			"**Support Mobile:** Un service client accessible via une application mobile et répondant aux requêtes en moins de 30 minutes",
-			"**Marketing Digital:** Une stratégie de contenu sur les réseaux sociaux avec des vidéos éducatives et inspirantes, générant un fort engagement",
-			"**Points de Vente:** Des kiosques interactifs dans des centres commerciaux pour présenter les produits et offrir des démonstrations en direct",
-			"**Plateforme Web:** Une plateforme en ligne avec des recommandations de produits basées sur les préférences des utilisateurs",
-			"**Service Terrain:** Un service d'assistance à domicile pour les produits nécessitant une installation technique",
+			"Support Mobile:** Un service client accessible via une application mobile et répondant aux requêtes en moins de 30 minutes",
+			"Marketing Digital:** Une stratégie de contenu sur les réseaux sociaux avec des vidéos éducatives et inspirantes, générant un fort engagement",
+			"Points de Vente:** Des kiosques interactifs dans des centres commerciaux pour présenter les produits et offrir des démonstrations en direct",
+			"Plateforme Web:** Une plateforme en ligne avec des recommandations de produits basées sur les préférences des utilisateurs",
+			"Service Terrain:** Un service d'assistance à domicile pour les produits nécessitant une installation technique",
 		],
 	},
 	costStructure: {
@@ -288,11 +280,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"La structure des coûts détaille toutes les dépenses nécessaires pour faire fonctionner votre entreprise.",
 		examples: [
-			"**Infrastructure IT:** Le développement d'une infrastructure cloud sécurisée pour une plateforme de streaming",
-			"**Formation:** La formation continue des employés dans une entreprise axée sur l'innovation",
-			"**Certifications:** Les investissements dans des certifications de qualité pour une marque alimentaire",
-			"**Locaux:** La location de bureaux dans des zones urbaines stratégiques pour une agence de design",
-			"**Marketing:** Les coûts publicitaires pour des campagnes multicanaux ciblées",
+			"Infrastructure IT:** Le développement d'une infrastructure cloud sécurisée pour une plateforme de streaming",
+			"Formation:** La formation continue des employés dans une entreprise axée sur l'innovation",
+			"Certifications:** Les investissements dans des certifications de qualité pour une marque alimentaire",
+			"Locaux:** La location de bureaux dans des zones urbaines stratégiques pour une agence de design",
+			"Marketing:** Les coûts publicitaires pour des campagnes multicanaux ciblées",
 		],
 	},
 	revenueStreams: {
@@ -300,11 +292,11 @@ export const CANVAS_MODAL_DETAILED_DESCRIPTIONS: Record<
 		content:
 			"Les flux de revenus expliquent comment votre entreprise génère des revenus à partir de vos segments de clients.",
 		examples: [
-			"**Abonnements:** Une plateforme de musique qui propose des abonnements mensuels avec des options premium sans publicités",
-			"**Collaborations:** Une marque de vêtements générant des revenus grâce à des collaborations exclusives avec des influenceurs",
-			"**Micro-transactions:** Une entreprise de jeux vidéo qui tire profit des achats intégrés et des pass saisonniers",
-			"**Certifications:** Un service de formation en ligne proposant des certifications payantes après la réussite des cours",
-			"**Publicité:** Un site de e-commerce monétisant ses pages via des placements publicitaires pour des marques partenaires",
+			"Abonnements:** Une plateforme de musique qui propose des abonnements mensuels avec des options premium sans publicités",
+			"Collaborations:** Une marque de vêtements générant des revenus grâce à des collaborations exclusives avec des influenceurs",
+			"Micro-transactions:** Une entreprise de jeux vidéo qui tire profit des achats intégrés et des pass saisonniers",
+			"Certifications:** Un service de formation en ligne proposant des certifications payantes après la réussite des cours",
+			"Publicité:** Un site de e-commerce monétisant ses pages via des placements publicitaires pour des marques partenaires",
 		],
 	},
 } as const;

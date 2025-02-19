@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "@/components/business-plan/shared/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Overview } from "@/components/business-plan/startup-expenses/Overview";
@@ -10,10 +10,15 @@ import { Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useStartupData } from "@/lib/business-plan/hooks/startup-expenses/useStartupData";
 import { calculateProgress } from "@/lib/business-plan/hooks/startup-expenses/storage-startup";
+import QASection from "@/components/business-plan/shared/QASection";
+import { STARTUP_QA_DATA } from "@/lib/business-plan/config/startup-expenses";
 
 const StartupExpenses: React.FC = () => {
+	const [activeTab, setActiveTab] = useState("overview");
+
 	const {
 		data,
+		qaResponses,
 		isLoading,
 		isSaving,
 		hasUnsavedChanges,
@@ -23,8 +28,14 @@ const StartupExpenses: React.FC = () => {
 		handleUpdateRisk,
 		handleAddRisk,
 		handleRemoveRisk,
+		handleQAResponseChange,
+		handleQAResponseSave,
 		saveChanges,
 	} = useStartupData();
+
+	const handleTabChange = (tab: string) => {
+		setActiveTab(tab);
+	};
 
 	if (isLoading) {
 		return (
@@ -35,10 +46,10 @@ const StartupExpenses: React.FC = () => {
 	}
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Dépenses de Démarrage"
-				progress={calculateProgress(data)}
+				progress={calculateProgress(data, qaResponses)}
 				rightContent={
 					<Button
 						onClick={saveChanges}
@@ -51,8 +62,12 @@ const StartupExpenses: React.FC = () => {
 				}
 			/>
 
-			<div className="flex-1 max-w-7xl mx-auto w-full p-6 overflow-y-auto">
-				<Tabs defaultValue="overview" className="space-y-6">
+			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
+				<Tabs
+					value={activeTab}
+					onValueChange={handleTabChange}
+					className="space-y-6"
+				>
 					<TabsList className="grid w-full grid-cols-3">
 						<TabsTrigger value="overview">Vue globale</TabsTrigger>
 						<TabsTrigger value="details">Détails</TabsTrigger>
@@ -62,7 +77,7 @@ const StartupExpenses: React.FC = () => {
 					</TabsList>
 
 					<TabsContent value="overview">
-						<Overview data={data} />
+						<Overview data={data} onNavigate={handleTabChange} />
 					</TabsContent>
 
 					<TabsContent value="details">
@@ -83,6 +98,15 @@ const StartupExpenses: React.FC = () => {
 						/>
 					</TabsContent>
 				</Tabs>
+
+				<div className="mt-6">
+					<QASection
+						data={STARTUP_QA_DATA}
+						responses={qaResponses}
+						onResponseChange={handleQAResponseChange}
+						onResponseSave={handleQAResponseSave}
+					/>
+				</div>
 			</div>
 		</div>
 	);

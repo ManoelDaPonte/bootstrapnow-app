@@ -2,6 +2,7 @@
 import { ProfitLossData, MonthlyProjectionData } from "@/types/12-months";
 import { prisma } from "@/lib/db/prisma";
 import { QAResponses } from "@/types/shared/qa-section";
+import { INVENTAIRE_QA_DATA } from "@/lib/business-plan/config/12-months";
 
 export const STORAGE_KEY = "profit-loss-data";
 export const QA_STORAGE_KEY = "profit-loss-qa-responses";
@@ -12,7 +13,6 @@ export const saveProfitLossData = (
 ) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder les données principales
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -21,10 +21,10 @@ export const saveProfitLossData = (
 		})
 	);
 
-	// Sauvegarder les réponses QA séparément
 	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
 
-	updateParentProgress(calculateProgress(data));
+	// Mettre à jour avec les deux paramètres
+	updateParentProgress(calculateProgress(data, qaResponses));
 };
 
 export async function updateProfitLossData(
@@ -64,9 +64,12 @@ export async function updateProfitLossData(
 	}
 }
 
-export const calculateProgress = (data: ProfitLossData): number => {
+export const calculateProgress = (
+	data: ProfitLossData,
+	qaResponses: QAResponses = {}
+): number => {
+	// 1. Calculer la progression des entrées financières
 	const totalFields = (data.revenue.length + data.expenses.length) * 13; // 12 mois + catégorie
-	if (totalFields === 0) return 0;
 
 	const filledFields = [...data.revenue, ...data.expenses].reduce(
 		(acc, entry) => {
@@ -78,7 +81,28 @@ export const calculateProgress = (data: ProfitLossData): number => {
 		0
 	);
 
-	return Math.round((filledFields / totalFields) * 100);
+	// 2. Calculer la progression des réponses QA
+	const questionIds = INVENTAIRE_QA_DATA.categories.map((cat) => cat.id);
+	const answeredQuestions = questionIds.filter(
+		(id) => qaResponses[id] && qaResponses[id].trim() !== ""
+	).length;
+	const totalQAQuestions = questionIds.length;
+
+	// 3. Calculer la progression totale
+	const financialWeight = 0.7; // 70% pour les données financières
+	const qaWeight = 0.3; // 30% pour les questions
+
+	const financialProgress =
+		totalFields > 0 ? (filledFields / totalFields) * 100 : 0;
+
+	const qaProgress =
+		totalQAQuestions > 0 ? (answeredQuestions / totalQAQuestions) * 100 : 0;
+
+	const totalProgress = Math.round(
+		financialProgress * financialWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };
 
 export const loadProfitLossData = (): MonthlyProjectionData => {

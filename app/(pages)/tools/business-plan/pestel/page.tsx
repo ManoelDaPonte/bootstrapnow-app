@@ -92,9 +92,11 @@ export default function PestelMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier l'élément"
-			: "Nouvel élément",
+		modalTitle: `${
+			PESTEL_HEADERS[modalState.category as PestelCategory]?.title || ""
+		} - ${
+			modalState.card.id ? "Modifier l'élément" : "Ajouter un élément"
+		}`,
 		titlePlaceholder: "Entrez le titre...",
 		descriptionPlaceholder: "Entrez la description...",
 		categoryDescription: modalState.category
@@ -114,7 +116,10 @@ export default function PestelMatrix() {
 
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
-			<Header title="PESTEL" progress={calculateProgress(cards)} />
+			<Header
+				title="PESTEL"
+				progress={calculateProgress(cards, qaResponses)}
+			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,6 +1,7 @@
 import { Person, Domain } from "@/types/skill-matrix";
 import { QAResponses } from "@/types/shared/qa-section";
 import { prisma } from "@/lib/db/prisma";
+import { SKILLS_MATRIX_QA_DATA } from "@/lib/business-plan/config/skills-matrix";
 
 interface SkillMatrixData {
 	people: Person[];
@@ -16,7 +17,6 @@ export const saveSkillMatrixData = (
 ) => {
 	if (typeof window === "undefined") return;
 
-	// Sauvegarder les données de la matrice
 	localStorage.setItem(
 		STORAGE_KEY,
 		JSON.stringify({
@@ -25,8 +25,18 @@ export const saveSkillMatrixData = (
 		})
 	);
 
-	// Sauvegarder les réponses QA séparément
 	localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaResponses));
+
+	// Mettre à jour avec les deux paramètres
+	updateParentProgress(calculateProgress(data, qaResponses));
+};
+
+const updateParentProgress = (progress: number) => {
+	if (typeof window === "undefined") return;
+	const event = new CustomEvent("skillMatrixProgressUpdate", {
+		detail: { progress },
+	});
+	window.dispatchEvent(event);
 };
 
 export async function updateSkillMatrixData(
@@ -117,4 +127,49 @@ export const saveToDatabase = async (
 		console.error("Erreur lors de la sauvegarde dans la BD:", error);
 		throw error;
 	}
+};
+
+export const calculateProgress = (
+	data: SkillMatrixData,
+	qaResponses: QAResponses = {}
+): number => {
+	// 1. Calculer la progression de la matrice elle-même
+	const hasMinimumData = data.people.length > 0 && data.domains.length > 0;
+
+	// Calculer le taux de remplissage des compétences
+	const totalPossibleSkills = data.people.length * data.domains.length;
+	let filledSkills = 0;
+
+	data.people.forEach((person) => {
+		Object.values(person.skills).forEach((skill) => {
+			if (skill !== undefined && skill !== null) {
+				filledSkills++;
+			}
+		});
+	});
+
+	// 2. Calculer la progression des réponses QA
+	const questionIds = SKILLS_MATRIX_QA_DATA.categories.map((cat) => cat.id);
+	const answeredQuestions = questionIds.filter(
+		(id) => qaResponses[id] && qaResponses[id].trim() !== ""
+	).length;
+	const totalQAQuestions = questionIds.length;
+
+	// 3. Calculer la progression totale
+	const matrixWeight = 0.7; // 70% pour la matrice
+	const qaWeight = 0.3; // 30% pour les questions
+
+	const matrixProgress =
+		hasMinimumData && totalPossibleSkills > 0
+			? (filledSkills / totalPossibleSkills) * 100
+			: 0;
+
+	const qaProgress =
+		totalQAQuestions > 0 ? (answeredQuestions / totalQAQuestions) * 100 : 0;
+
+	const totalProgress = Math.round(
+		matrixProgress * matrixWeight + qaProgress * qaWeight
+	);
+
+	return Math.min(100, totalProgress);
 };

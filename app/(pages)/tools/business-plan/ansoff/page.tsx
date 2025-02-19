@@ -93,9 +93,9 @@ export default function AnsoffMatrix() {
 				...prev,
 				card: { ...prev.card, [e.target.name]: e.target.value },
 			})),
-		modalTitle: modalState.card.id
-			? "Modifier la stratégie"
-			: "Nouvelle stratégie",
+		modalTitle: `${
+			ANSOFF_HEADERS[modalState.category as AnsoffCategory]?.title || ""
+		} - ${modalState.card.id ? "Modifier la carte" : "Ajouter une carte"}`,
 		titlePlaceholder: "Entrez le titre de votre stratégie...",
 		descriptionPlaceholder: "Décrivez votre stratégie...",
 		categoryDescription: modalState.category
@@ -117,7 +117,7 @@ export default function AnsoffMatrix() {
 		<div className="min-h-screen bg-background flex flex-col">
 			<Header
 				title="Matrice Ansoff"
-				progress={calculateProgress(cards)}
+				progress={calculateProgress(cards, qaResponses)}
 			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">

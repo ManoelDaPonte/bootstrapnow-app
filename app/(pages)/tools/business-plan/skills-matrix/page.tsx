@@ -35,6 +35,7 @@ import {
 	SKILL_LEVELS,
 	SKILLS_MATRIX_QA_DATA,
 } from "@/lib/business-plan/config/skills-matrix";
+import { calculateProgress } from "@/lib/business-plan/hooks/skills-matrix/storage-skills-matrix";
 
 // Style mapping pour les niveaux de compétence
 const SKILL_LEVEL_STYLES = {
@@ -182,7 +183,10 @@ export default function SkillMatrixPage() {
 
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
-			<Header title="Skills Matrix" progress={100} />
+			<Header
+				title="Skills Matrix"
+				progress={calculateProgress({ people, domains }, qaResponses)}
+			/>
 
 			<div className="flex-1 p-6 space-y-12 max-w-[1600px] mx-auto w-full">
 				<div className="flex gap-4">
