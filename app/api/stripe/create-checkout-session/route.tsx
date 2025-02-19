@@ -11,10 +11,8 @@ import {
 } from "@/lib/stripe/helpers";
 
 const priceMap: Record<string, string | undefined> = {
-	innovateur_monthly: process.env.STRIPE_PRICE_ID_INNOVATEUR_MONTHLY,
-	innovateur_yearly: process.env.STRIPE_PRICE_ID_INNOVATEUR_YEARLY,
-	visionnaire_monthly: process.env.STRIPE_PRICE_ID_VISIONNAIRE_MONTHLY,
-	visionnaire_yearly: process.env.STRIPE_PRICE_ID_VISIONNAIRE_YEARLY,
+	builder_monthly: process.env.STRIPE_PRICE_ID_BUILDER_MONTHLY,
+	builder_yearly: process.env.STRIPE_PRICE_ID_BUILDER_YEARLY,
 	token_1: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_1,
 	token_5: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_5,
 	token_15: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_15,

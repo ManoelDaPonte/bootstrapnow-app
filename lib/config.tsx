@@ -27,25 +27,25 @@ export const siteConfig = {
 	pricing: {
 		subscriptions: [
 			{
-				name: "INNOVATEUR",
+				name: "BUILDER",
 				href: "#",
-				price: "12 €",
+				price: "6.99 €",
 				period: "mois",
-				yearlyPrice: "10 €",
+				yearlyPrice: "4.99 €",
 				features: [
-					"Acces à tous les outils",
+					"5 tokens de génération de Business Plan par mois inclus",
+					"Export au format word (.docx) du votre Business Plan",
+					"Accès prioritaire à nos nouvelles fonctionnalités",
 					"Assistance prioritaire",
-					"Accès à des templates premium",
-					"15 tokens de génération par mois inclus",
 				],
 				description:
 					"Idéal pour accéder à nos outils avancés et valider vos idées rapidement.",
 				buttonText: "S'abonner",
 				isPopular: true,
-				monthlyTokens: 15,
+				monthlyTokens: 5,
 				priceIds: {
-					monthly: process.env.STRIPE_PRICE_ID_INNOVATEUR_MONTHLY,
-					yearly: process.env.STRIPE_PRICE_ID_INNOVATEUR_YEARLY,
+					monthly: process.env.STRIPE_PRICE_ID_BUILDER_MONTHLY,
+					yearly: process.env.STRIPE_PRICE_ID_BUILDER_YEARLY,
 				},
 			},
 		],
@@ -67,8 +67,8 @@ export const siteConfig = {
 					name: "Pack Standard",
 					tokens: 5,
 					amount: 5,
-					price: "9.99 €",
-					priceAmount: 9.99,
+					price: "9.79 €",
+					priceAmount: 9.79,
 					description:
 						"Idéal pour gérer un projet de création d'entreprise",
 					priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_5,
@@ -78,8 +78,8 @@ export const siteConfig = {
 					name: "Pack Pro",
 					tokens: 15,
 					amount: 15,
-					price: "19.99 €",
-					priceAmount: 19.99,
+					price: "19.49 €",
+					priceAmount: 19.49,
 					description:
 						"Idéal pour tester de multiples idées de business",
 					priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TOKEN_15,
@@ -141,7 +141,7 @@ export const siteConfig = {
 		},
 		{
 			question:
-				"Comment utiliser les outils (Business Plan, Search-Hunter, Market-Tester) ?",
+				"Comment utiliser les outils (Business Plan, Smart-Hunter, Market-Tester) ?",
 			answer: (
 				<span>
 					Consultez nos guides détaillés ou posez vos questions sur
@@ -175,7 +175,7 @@ export const siteConfig = {
 			href: "#",
 		},
 		{
-			title: "Valider une idée avec Search-Hunter",
+			title: "Valider une idée avec Smart-Hunter",
 			href: "#",
 		},
 		{

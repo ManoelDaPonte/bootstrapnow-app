@@ -11,10 +11,10 @@ import TokenSection from "@/components/abonnement/token-section";
 
 function getPlanLabel(plan: string) {
 	switch (plan) {
-		case "innovateur_monthly":
-			return "Innovateur (Mensuel)";
-		case "innovateur_yearly":
-			return "Innovateur (Annuel)";
+		case "builder_monthly":
+			return "builder (Mensuel)";
+		case "builder_yearly":
+			return "builder (Annuel)";
 		case "visionnaire_monthly":
 			return "Visionnaire (Mensuel)";
 		case "visionnaire_yearly":
@@ -84,7 +84,7 @@ export default function AbonnementPage() {
 	const plan = metadata?.plan || "free";
 	const status = metadata?.status || "actif";
 	const tokens = parseInt(metadata?.tokens || "0");
-	const isInnovateur = plan.startsWith("innovateur");
+	const isBuilder = plan.startsWith("builder");
 
 	// Un utilisateur est considéré comme ayant un abonnement actif si:
 	// 1. Son plan n'est pas "free" ET
@@ -107,14 +107,13 @@ export default function AbonnementPage() {
 					tokens={tokens}
 					userId={user.sub!}
 					customerStripeId={metadata?.customer_id}
-					isInnovateur={isInnovateur}
+					isBuilder={isBuilder}
 				/>
 
 				{/* Box État actuel */}
 				<CurrentPlanBox plan={plan} status={status} />
 
 				{/* Avertissement Produits non finalisés */}
-				<NoticeBox />
 
 				{/* Choix d'affichage */}
 				{hasActiveSubscription ? (
@@ -123,7 +122,10 @@ export default function AbonnementPage() {
 						userId={user.sub!}
 					/>
 				) : (
-					<PricingSection />
+					<div>
+						<NoticeBox />
+						<PricingSection />
+					</div>
 				)}
 			</div>
 		</div>

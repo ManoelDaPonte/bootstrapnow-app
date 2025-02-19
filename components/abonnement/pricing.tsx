@@ -20,9 +20,9 @@ export default function PricingSection() {
 	);
 
 	const planMap = {
-		INNOVATEUR: {
-			monthly: "innovateur_monthly",
-			yearly: "innovateur_yearly",
+		BUILDER: {
+			monthly: "builder_monthly",
+			yearly: "builder_yearly",
 		},
 	};
 
@@ -56,7 +56,7 @@ export default function PricingSection() {
 	return (
 		<Section
 			title="Tarifs"
-			subtitle="Choisissez l'offre qui correspond à vos besoins"
+			subtitle="Boostez vos projets avec notre agent IA"
 			id="tarifs"
 		>
 			<div className="flex justify-center mb-10">

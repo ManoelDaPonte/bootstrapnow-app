@@ -21,8 +21,8 @@ const navItems = [
 	{ href: "/tools/business-plan", label: "Business Plan", icon: FileText },
 
 	{
-		href: "/tools/search-hunter",
-		label: "Search-Hunter",
+		href: "/tools/smart-hunter",
+		label: "Smart-Hunter",
 		icon: Lightbulb,
 		requiresSubscription: true,
 	},

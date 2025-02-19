@@ -34,7 +34,7 @@ export default function JoinDiscordBanner({
 							<div className="flex flex-wrap gap-4 text-sm text-indigo-100">
 								<div className="flex items-center gap-2">
 									<Users className="w-4 h-4" />
-									<span>500+ membres actifs</span>
+									<span>Communauté active</span>
 								</div>
 								<div className="flex items-center gap-2">
 									<MessageCircle className="w-4 h-4" />
