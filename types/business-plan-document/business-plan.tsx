@@ -43,6 +43,7 @@ export const BUSINESS_PLAN_SECTIONS = [
 	"MarketingPlan_Contrats",
 	"MarketingPlan_SAV",
 	"MarketingPlan_Formation",
+	"MarketingPlan_Policy",
 	"MarketingPlan_BuyerPersona",
 	"MarketingPlan_KeyCompetitors",
 	"MarketingPlan_Niche",
