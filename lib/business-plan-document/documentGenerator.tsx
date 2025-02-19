@@ -1,4 +1,3 @@
-// lib/business-plan-document/documentGenerator.ts
 import { BlobServiceClient, BlobSASPermissions } from "@azure/storage-blob";
 import { readFileSync } from "fs";
 import path from "path";
@@ -53,81 +52,18 @@ export class DocumentGenerator {
 		return readFileSync(templatePath);
 	}
 
-	private async getGeneralInfo(auth0Id: string): Promise<GeneralInfo | null> {
-		const user = await prisma.user.findUnique({
-			where: { auth0Id },
-			include: {
-				generalInfo: true,
-			},
-		});
-
-		if (!user?.generalInfo?.data) {
-			return null;
-		}
-
-		// Conversion sécurisée en utilisant unknown comme intermédiaire
-		const rawData = user.generalInfo.data as Prisma.JsonValue;
-		// Vérification de type runtime
-		if (
-			typeof rawData === "object" &&
-			rawData !== null &&
-			!Array.isArray(rawData)
-		) {
-			return rawData as unknown as GeneralInfo;
-		}
-
-		return null;
+	private convertMarkdownToOpenXML(text: string): string {
+		// Remplacer les marqueurs de gras (**texte**) par des balises OpenXML
+		return text.replace(
+			/\*\*(.*?)\*\*/g,
+			"<w:r><w:rPr><w:b/></w:rPr><w:t>$1</w:t></w:r>"
+		);
 	}
 
-	private async getMarketTrendsData(
-		auth0Id: string
-	): Promise<MarketTrendsData | null> {
-		const user = await prisma.user.findUnique({
-			where: { auth0Id },
-			include: {
-				marketTrendsAnalysis: true,
-			},
-		});
-
-		if (!user?.marketTrendsAnalysis?.data) {
-			return null;
-		}
-
-		// Conversion sécurisée en utilisant unknown comme intermédiaire
-		const rawData = user.marketTrendsAnalysis.data as Prisma.JsonValue;
-		// Vérification de type runtime
-		if (
-			typeof rawData === "object" &&
-			rawData !== null &&
-			!Array.isArray(rawData)
-		) {
-			return rawData as unknown as MarketTrendsData;
-		}
-
-		return null;
-	}
-
-	async generateDocument(
-		sections: Record<string, string>,
-		auth0Id: string
-	): Promise<Buffer> {
+	async generateDocument(sections: Record<string, string>): Promise<Buffer> {
 		try {
 			const template = await this.loadTemplate();
 			console.log("Template chargé");
-
-			// Récupérer les données supplémentaires
-			const [generalInfo, marketTrendsData] = await Promise.all([
-				this.getGeneralInfo(auth0Id),
-				this.getMarketTrendsData(auth0Id),
-			]);
-
-			if (!generalInfo) {
-				throw new Error("Informations générales non trouvées");
-			}
-
-			if (!marketTrendsData) {
-				throw new Error("Données de tendances de marché non trouvées");
-			}
 
 			const zip = new PizZip(template);
 			console.log("ZIP créé");
@@ -176,6 +112,7 @@ export class DocumentGenerator {
 				throw error;
 			}
 
+			// Générer le document final
 			const buf = doc.getZip().generate({
 				type: "nodebuffer",
 				compression: "DEFLATE",

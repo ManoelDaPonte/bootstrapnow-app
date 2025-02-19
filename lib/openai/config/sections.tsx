@@ -463,6 +463,14 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 		],
 	},
+	MarketingPlan_Policy:{
+		title: "Politique de remboursement",
+		paths: [
+			["canvas", "formatted_sections", "customer_relationships"],
+			["swot", "formatted_sections", "weaknesses"],
+			["marketing_mix", "formatted_sections", "product"],
+		],
+	},
 	MarketingPlan_BuyerPersona: {
 		title: "Barrière à l'entrée",
 		paths: [
