@@ -15,18 +15,51 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function SaasHeader() {
-	const { user, isLoading } = useUser();
+	const { user, error, isLoading } = useUser();
 	const { setTheme, theme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
+
+	useEffect(() => {
+		if (process.env.NODE_ENV === "production") {
+			const originalFetch = window.fetch;
+			window.fetch = function (...args) {
+				const [url] = args;
+				if (
+					typeof url === "string" &&
+					url.includes("/api/auth/logout")
+				) {
+					console.log("Logout request detected", {
+						stack: new Error().stack,
+						args,
+					});
+				}
+				return originalFetch.apply(this, args);
+			};
+		}
+	}, []);
 
 	useEffect(() => {
 		setMounted(true);
 	}, []);
 
 	if (!mounted || isLoading) {
-		return <div className="h-[40px]" />;
+		return <div className="fixed top-4 right-4 w-9 h-9" />;
 	}
+
+	const handleTriggerClick = (e: React.MouseEvent) => {
+		if (process.env.NODE_ENV === "production") {
+			console.log("Trigger clicked", {
+				type: e.type,
+				target: e.target,
+				currentTarget: e.currentTarget,
+				defaultPrevented: e.defaultPrevented,
+			});
+		}
+		e.preventDefault();
+		e.stopPropagation();
+		setIsOpen(!isOpen);
+	};
 
 	return (
 		<header className="fixed top-4 right-4 z-50">
@@ -34,11 +67,9 @@ export default function SaasHeader() {
 				<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 					<DropdownMenuTrigger asChild>
 						<button
+							type="button"
 							className="flex items-center focus:outline-none"
-							onClick={(e) => {
-								e.preventDefault();
-								setIsOpen(!isOpen);
-							}}
+							onClick={handleTriggerClick}
 						>
 							<Image
 								src={user.picture ?? "/default-avatar.png"}
@@ -46,14 +77,22 @@ export default function SaasHeader() {
 								width={36}
 								height={36}
 								className="rounded-full"
+								priority
 							/>
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className="w-48">
-						<DropdownMenuItem asChild>
+					<DropdownMenuContent
+						className="w-48"
+						align="end"
+						onCloseAutoFocus={(e) => {
+							e.preventDefault();
+						}}
+					>
+						<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
 							<Link
 								href="/profile"
-								className="flex items-center gap-2"
+								className="flex items-center gap-2 w-full"
+								onClick={(e) => e.stopPropagation()}
 							>
 								<Settings className="h-4 w-4" />
 								<span>Paramètres</span>
@@ -63,9 +102,10 @@ export default function SaasHeader() {
 						<DropdownMenuSeparator />
 
 						<DropdownMenuItem
-							onClick={() =>
-								setTheme(theme === "light" ? "dark" : "light")
-							}
+							onSelect={(e) => {
+								e.preventDefault();
+								setTheme(theme === "light" ? "dark" : "light");
+							}}
 							className="flex items-center gap-2"
 						>
 							<Sun className="h-4 w-4 dark:hidden" />
@@ -75,10 +115,14 @@ export default function SaasHeader() {
 
 						<DropdownMenuSeparator />
 
-						<DropdownMenuItem asChild>
+						<DropdownMenuItem
+							onSelect={(e) => e.preventDefault()}
+							className="text-destructive"
+						>
 							<Link
 								href="/api/auth/logout"
-								className="flex items-center gap-2 text-destructive"
+								className="flex items-center gap-2 w-full"
+								onClick={(e) => e.stopPropagation()}
 							>
 								<LogOut className="h-4 w-4" />
 								<span>Se déconnecter</span>
