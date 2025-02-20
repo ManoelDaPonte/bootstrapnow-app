@@ -11,7 +11,7 @@ import JoinDiscordBanner from "@/components/profile/join-discord-banner";
 import ProfilePageSkeleton from "@/components/profile/ProfilePageSkeleton";
 import { LogOut } from "lucide-react";
 import axios from "axios";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function ProfilePage() {
 	const { user } = useUser();
@@ -62,6 +62,15 @@ export default function ProfilePage() {
 	if (error) {
 		return <p>Erreur lors de la récupération de vos données : {error}</p>;
 	}
+
+	const handleLogoutSession = async () => {
+		try {
+			// On utilise la redirection côté client
+			window.location.href = "/api/auth/logout";
+		} catch (error) {
+			console.error("Erreur lors de la déconnexion:", error);
+		}
+	};
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
@@ -144,19 +153,15 @@ export default function ProfilePage() {
 				/>
 
 				<div className="flex justify-center">
-					<Link
-						href="/api/auth/logout"
-						className={cn(
-							buttonVariants({
-								variant: "destructive",
-								size: "lg",
-							}),
-							"flex items-center gap-2"
-						)}
+					<Button
+						variant="destructive"
+						size="lg"
+						onClick={handleLogoutSession}
+						className="flex items-center gap-2"
 					>
 						<LogOut className="h-5 w-5" />
 						Se déconnecter
-					</Link>
+					</Button>
 				</div>
 			</div>
 		</div>
