@@ -15,7 +15,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function SaasHeader() {
-	const { user, error, isLoading } = useUser();
+	const { user, isLoading } = useUser();
 	const { setTheme, theme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
