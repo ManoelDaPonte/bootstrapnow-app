@@ -162,8 +162,7 @@ export const FIELD_MAPPINGS: FieldMappings = {
 			OP_Legal_licenses: "OP_Legal_licenses",
 			OP_Legal_officialbrand: "OP_Legal_officialbrand",
 			OP_Legal_warranty: "OP_Legal_warranty",
-			OP_Legal_environmentalregulations:
-				"OP_Legal_environmentalregulations",
+			OP_Legal_environmentalregulations:"OP_Legal_environmentalregulations",
 			OP_Legal_particularregulations: "OP_Legal_particularregulations",
 			OP_Legal_cautions: "OP_Legal_cautions",
 		},
@@ -176,8 +175,7 @@ export const FIELD_MAPPINGS: FieldMappings = {
 		},
 		qa_responses: {
 			SkillMatrix_LeadershipOwnership: "SkillMatrix_LeadershipOwnership",
-			SkillMatrix_EntrepreneurshipSkills:
-				"SkillMatrix_EntrepreneurshipSkills",
+			SkillMatrix_EntrepreneurshipSkills:"SkillMatrix_EntrepreneurshipSkills",
 			SkillMatrix_Gaps: "SkillMatrix_Gaps",
 			SkillMatrix_Training: "SkillMatrix_Training",
 			SkillMatrix_ProblemSolving: "SkillMatrix_ProblemSolving",
