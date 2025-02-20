@@ -491,7 +491,7 @@ Sachant l'idée globale et les forces, faiblesses, opportunités, et menaces.
 Je veux des bullets points principaux qui désignent les menaces du projet.
 `,
 
-	SWOT_Analysis: `Tu es un expert en business plan spécialisé dans la rédaction de résumé executif.
+	SWOT_Analysis: `Tu es un expert en business plan spécialisé dans la rédaction de SWOT.
 
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
@@ -720,7 +720,7 @@ Instructions spécifiques :
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-"Décris en deux phrases comment l'entreprise se positionne et où elle se distingue sur le marché.
+"Décris comment l'entreprise se positionne et où elle se distingue sur le marché, les opportunités du marché à exploiter et leur relations avec les profils psychographiques types de nos clients.
 "
 `,
 
@@ -781,7 +781,7 @@ Instructions spécifiques :
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-"Décris en deux phrases les tactiques publicitaires et de marketing, ainsi que la manière dont elles vont soutenir notre positionnement sur le marché et la reconnaissance de la marque.
+"Résume les tactiques publicitaires et de marketing, ainsi que la manière dont elles vont soutenir notre positionnement sur le marché et la reconnaissance de la marque.
 "
 `,
 
@@ -848,7 +848,7 @@ En utilisant ces informations, définis clairement la stratégie de prix en fonc
 "
 `,
 
-	MarketingPlan_LocationYY: `Tu es un expert en business plan spécialisé en marketing.
+	MarketingPlan_Location: `Tu es un expert en business plan spécialisé en marketing.
 
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
@@ -858,41 +858,11 @@ Instructions spécifiques :
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-"Explique pourquoi l'emplacement choisi est pratique pour nos client, et décris pourquoi c'est facilement accessible pour notre public cible. Analyse si le choix de l'emplacement peut-il améliorer l'expérience client.
+"Explique pourquoi l'emplacement choisi est ou serait pratique pour nos client, et décris pourquoi c'est facilement accessible pour notre public cible. Analyse si le choix de l'emplacement peut-il améliorer l'expérience client.
 Décris si l'emplacement offre-t-il un parking suffisant. Explique pourquoi cet emplacement peut améliorer l'accessibilité de l'entreprise pour les clients et les employés, réduisant ainsi le temps de déplacement.
 Explique le type d'espace envisagé et pourquoi, en fonction de notre modèle d'affaires, ce type d'espace est le plus adapté à nos besoins opérationnels"
 Si précisé, décris les types d'entreprises à proximité, et si l'emplacement est stratégique en termes de synergies avec d'autres entreprises (ex : proximité d'autres entreprises similaires, complémentarité avec d'autres secteurs).
-"
-`,
-
-	MarketingPlan_LocationYN: `Tu es un expert en business plan spécialisé en marketing.
-
-Instructions spécifiques :
-- Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique
-- Longueur cible : 50 - 70 mots
-- Ne jamais inventer d'informations qui ne sont pas dans les données fournies
-- Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
-- Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
-
-"Explique pourquoi un emplacement similaire serait pratique pour nos client, et décris pourquoi c'est facilement accessible pour notre public cible. Analyse si le choix de l'emplacement peut-il améliorer l'expérience client.
-Décris si l'emplacement offre-t-il un parking suffisant. Explique pourquoi cet emplacement peut améliorer l'accessibilité de l'entreprise pour les clients et les employés, réduisant ainsi le temps de déplacement.
-Explique le type d'espace envisagé et pourquoi, en fonction de notre modèle d'affaires, ce type d'espace est le plus adapté à nos besoins opérationnels"
-Si précisé, décris les types d'entreprises à proximité, et si l'emplacement est stratégique en termes de synergies avec d'autres entreprises (ex : proximité d'autres entreprises similaires, complémentarité avec d'autres secteurs).
-"
-`,
-
-	MarketingPlan_LocationN: `Tu es un expert en business plan spécialisé en marketing.
-
-Instructions spécifiques :
-- Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique
-- Longueur cible : 50 - 70 mots
-- Ne jamais inventer d'informations qui ne sont pas dans les données fournies
-- Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
-- Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
-
-"L'entreprise n'envisage pas d'emplacement physique, explique pourquoi ce choix est cohérent avec le modèle de l'entreprise.
+L'entreprise n'envisage pas d'emplacement physique, explique pourquoi ce choix est cohérent avec le modèle de l'entreprise.
 "
 `,
 
@@ -1049,7 +1019,7 @@ Instructions spécifiques :
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-"Réecris une description bien détaillée et spécifies pourquoi ce type d'établissement est adapté à nos besoins.
+"Développe et analyse le type d'établissement choisi, suggéré ou évité pour notre stratégie d'opération et si ce choix est adapté à nos besoins.
 Décris si l'emplacement est-il accessible pour les clients, employés, fournisseurs et pour le transport, si nécessaire, sachant la relation client et le positionnement.
 "
 `,
@@ -1418,25 +1388,10 @@ Instructions spécifiques :
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-"Liste les membres de l'équipe de soutien professionnel et/ou de conseil, en incluant les personnes suivantes et les informations pertinentes sur chacun :
-Pour chaque membre listé ci-dessus, indique quel est leur rôle spécifique dans l'entreprise et en quoi leur expertise ou expérience contribue à augmenter nos chances de succès.
+"Liste les membres de l'équipe de soutien professionnel et/ou de conseil, en incluant quel est leur rôle spécifique dans l'entreprise et en quoi leur expertise ou expérience contribue à augmenter nos chances de succès.
 Décris comment les membres de l'équipe de soutien possèdent des compétences ou des spécialisations particulières qui augmentent les chances de succès.
 Explique comment les membres de l’équipe de soutien contribueront spécifiquement à la gestion et à la croissance de l’entreprise.
 "
-`,
-
-	StartupExpenses_Introduction: `Tu es un expert en business plan spécialisé en finances d'entreprise.
-
-Instructions spécifiques :
-- Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique
-- Longueur cible : 50 - 70 mots
-- Ne jamais inventer d'informations qui ne sont pas dans les données fournies
-- Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
-- Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
-
-""Décris brièvement l'importance des dépenses de démarrage pour l'entreprise, en intégrant les principales catégories de coûts initiaux, l'impact sur la viabilité financière de l'entreprise ainsi que la nécessité d'une gestion efficace des fonds dès le départ.
-Explique pourquoi une planification financière rigoureuse est essentielle avant le lancement."
 `,
 
 	StartupExpenses: `Tu es un expert en business plan spécialisé en finances d'entreprise.
@@ -1444,12 +1399,14 @@ Explique pourquoi une planification financière rigoureuse est essentielle avant
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
 - Structure ton résumé de manière claire et logique
-- Longueur cible : 50 - 70 mots
+- Longueur cible : 80 - 100 mots
 - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
-""Précise les investissements en équipements, technologies et locaux, les dépenses opérationnelles essentielles avant le démarrage, ainsi que le budget prévisionnel et allocation des ressources.
+""Décris brièvement l'importance des dépenses de démarrage pour l'entreprise, en intégrant les principales catégories de coûts initiaux, l'impact sur la viabilité financière de l'entreprise ainsi que la nécessité d'une gestion efficace des fonds dès le départ.
+Explique pourquoi une planification financière rigoureuse est essentielle avant le lancement.
+Précise les investissements en équipements, technologies et locaux, les dépenses opérationnelles essentielles avant le démarrage, ainsi que le budget prévisionnel et allocation des ressources.
 Explique comment ces coûts sont structurés et financés.
 "
 `,
@@ -1484,12 +1441,12 @@ Explique comment les ressources personnelles influencent le financement du proje
 "
 `,
 
-	FP_Introduction: `Tu es un expert en business plan spécialisé en finances d'entreprise.
+	FP_12monthsProfitAndLoss: `Tu es un expert en business plan spécialisé en finances d'entreprise.
 
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
 - Structure ton résumé de manière claire et logique
-- Longueur cible : 50 - 70 mots
+- Longueur cible : 100 - 120 mots
 - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 - Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
@@ -1497,20 +1454,7 @@ Instructions spécifiques :
 "Présente une introduction au plan financier de l’entreprise en intégrant :
 l’importance de la planification financière pour la viabilité du projet, les principaux indicateurs financiers à surveiller (revenus, coûts, rentabilité), la stratégie financière adoptée pour assurer la croissance et la pérennité, ainsi que les hypothèses clés qui sous-tendent les prévisions financières.
 Explique pourquoi une gestion financière solide est essentielle pour le succès du projet.
-"
-`,
-
-	FP_12monthsProfitAndLoss: `Tu es un expert en business plan spécialisé en finances d'entreprise.
-
-Instructions spécifiques :
-- Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique
-- Longueur cible : 50 - 70 mots
-- Ne jamais inventer d'informations qui ne sont pas dans les données fournies
-- Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
-- Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
-
-"Détaille le compte de résultat prévisionnel sur 12 mois en expliquant les sources de revenus et leur évolution attendue, les principales catégories de coûts (fixes, variables, opérationnels), la marge bénéficiaire et le seuil de rentabilité à atteindre, ainsi que l’impact des investissements initiaux sur la rentabilité à court terme.
+Détaille le compte de résultat prévisionnel sur 12 mois en expliquant les sources de revenus et leur évolution attendue, les principales catégories de coûts (fixes, variables, opérationnels), la marge bénéficiaire et le seuil de rentabilité à atteindre, ainsi que l’impact des investissements initiaux sur la rentabilité à court terme.
 Décris comment l’entreprise prévoit d’atteindre la rentabilité au cours de la première année.
 "
 `,

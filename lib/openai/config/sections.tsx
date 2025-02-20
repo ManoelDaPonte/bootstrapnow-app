@@ -264,7 +264,8 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["startup_expenses", "formatted_sections", "expenses"],
 			["startup_expenses", "formatted_text"],
 			["startup_expenses", "formatted_sections", "capital"],
-			// {{FP_Funding}}, {{FP_CapitalNeeds}}.
+			["startup_expenses", "formatted_qa", "funding"],
+			["startup_expenses", "formatted_qa", "capital_needs"],
 			["canvas", "formatted_sections", "key_partners"],
 		],
 	},
@@ -274,7 +275,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_resources"],
 			["canvas", "formatted_sections", "cost_structure"],
 			["swot", "formatted_sections", "strengths"],
-			// {{SWOT_EconomiesOfScale}}
+			["swot", "formatted_qa", "economies_of_scale"],
 			["swot", "formatted_qa", "operational_efficiency"],
 			["canvas", "formatted_sections", "key_partners"],
 			["value_proposition", "formatted_sections", "gains"],
@@ -297,7 +298,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "economic"],
 			["swot", "formatted_sections", "threats"],
 			["canvas", "formatted_sections", "key_resources"],
-			//  {{FP_RiskAssessment}}
+			["startup_expenses", "formatted_sections", "risks"],
 		],
 	},
 	BarriersToEntry_trends: {
@@ -338,7 +339,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	SWOT_Strengths: {
-		title: "Barrière à l'entrée",
+		title: "Analyse des forces",
 		paths: [
 			["canvas", "formatted_qa", "idee_globale"],
 			["swot", "formatted_sections", "strengths"],
@@ -348,7 +349,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	SWOT_Weaknesses: {
-		title: "Barrière à l'entrée",
+		title: "Analyse des faiblesses",
 		paths: [
 			["canvas", "formatted_qa", "idee_globale"],
 			["swot", "formatted_sections", "strengths"],
@@ -358,7 +359,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	SWOT_Opportunities: {
-		title: "Barrière à l'entrée",
+		title: "Analyse des opportunités",
 		paths: [
 			["canvas", "formatted_qa", "idee_globale"],
 			["swot", "formatted_sections", "strengths"],
@@ -368,7 +369,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	SWOT_Threats: {
-		title: "Barrière à l'entrée",
+		title: "Analyse des menaces",
 		paths: [
 			["canvas", "formatted_qa", "idee_globale"],
 			["swot", "formatted_sections", "strengths"],
@@ -378,8 +379,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	SWOT_Analysis: {
-		// FAIRE UN RESUME DES 4 PRECEDENTS
-		title: "Barrière à l'entrée",
+		title: "Analyse SWOT",
 		paths: [
 			["canvas", "formatted_qa", "idee_globale"],
 			["swot", "formatted_sections", "strengths"],
@@ -421,17 +421,16 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_Garanties: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, les garanties",
 		paths: [
 			["canvas", "formatted_sections", "customer_relationships"],
 			["value_proposition", "formatted_qa", "vp_risk_reducers"],
 			["swot", "formatted_sections", "strengths"],
 			["value_proposition", "formatted_qa", "vp_risk_reducers"],
-			// {{VP_TrustBuilding}}
 		],
 	},
 	MarketingPlan_Contrats: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, les contrats",
 		paths: [
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "customer_relationships"],
@@ -440,7 +439,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_SAV: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, le service après-vente",
 		paths: [
 			["canvas", "formatted_sections", "channels"],
 			["canvas", "formatted_sections", "customer_relationships"],
@@ -449,7 +448,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_Formation: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, les formations",
 		paths: [
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "customer_relationships"],
@@ -458,7 +457,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_Policy: {
-		title: "Politique de remboursement",
+		title: "Marketing plan, la politique de remboursement",
 		paths: [
 			["canvas", "formatted_sections", "customer_relationships"],
 			["swot", "formatted_sections", "weaknesses"],
@@ -466,7 +465,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_BuyerPersona: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, le client type",
 		paths: [
 			["canvas", "formatted_sections", "customer_segments"],
 			["funnel_chart", "formatted_sections", "visibilité"],
@@ -477,7 +476,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_KeyCompetitors: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, les compétiteurs clés",
 		paths: [
 			["competitors", "formatted_text"],
 			["canvas", "formatted_qa", "competitor_strengths"],
@@ -489,7 +488,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_Niche: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, le marché de niche",
 		paths: [
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "value_proposition"],
@@ -498,7 +497,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_Niche_b: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, le marché de niche",
 		paths: [
 			["pestel", "formatted_sections", "political"],
 			["pestel", "formatted_sections", "economic"],
@@ -509,28 +508,33 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_Niche_c: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, le marché de niche",
 		paths: [
 			["funnel_chart", "formatted_sections", "visibilité"],
 			["marketing_mix", "formatted_sections", "people"],
 			["canvas", "formatted_sections", "customer_segments"],
 		],
 	},
-	// MarketingPlan_Niche_d: {
-	// 	title: "Barrière à l'entrée",
-	// 	// LES 3 PRECEDENTS
-	// 	paths: [],
-	// },
+	MarketingPlan_Niche_d: {
+		title: "Marketing plan, le marché de niche",
+		paths: [
+			["canvas", "formatted_sections", "key_activities"],
+			["funnel_chart", "formatted_sections", "visibilité"],
+			["canvas", "formatted_sections", "value_proposition"],
+			["funnel_chart", "formatted_sections", "intérêt"],
+			["swot", "formatted_qa", "competitor_weaknesses"],
+		],
+	},
 	MarketingPlan_HOW: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, comment faire",
 		paths: [
 			["canvas", "formatted_sections", "channels"],
-			// ["funnel_chart", "formatted_sections", "Achat"], verifier les funnel chart
+			["funnel_chart", "formatted_sections", "achat"],
 			["marketing_mix", "formatted_sections", "promotion"],
 		],
 	},
 	MarketingPlan_Tactics: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, tactiques",
 		paths: [
 			["canvas", "formatted_sections", "value_proposition"],
 			["swot", "formatted_sections", "strengths"],
@@ -545,11 +549,32 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_qa", "advocacy"],
 		],
 	},
-
-	MarketingPlan_PromotionalBudget: {
-		title: "Barrière à l'entrée",
+	MarketingPlan_LogoAndBranding: {
+		title: "Marketing plan, image de marque",
 		paths: [
-			// {{FP_Budget}}
+			["marketing_mix", "formatted_sections", "product"],
+			["swot", "formatted_sections", "strengths"],
+			["canvas", "formatted_sections", "value_proposition"],
+		],
+	},
+	MarketingPlan_FirstConclusion: {
+		title: "Marketing plan, première conclusion",
+		paths: [
+			["canvas", "formatted_sections", "value_proposition"],
+			["swot", "formatted_sections", "strengths"],
+			["funnel_chart", "formatted_sections", "visibilité"],
+			["marketing_mix", "formatted_sections", "promotion"],
+			["funnel_chart", "formatted_sections", "intérêt"],
+			["canvas", "formatted_sections", "customer_relationships"],
+			["marketing_mix", "formatted_sections", "product"],
+			["canvas", "formatted_sections", "channels"],
+			["funnel_chart", "formatted_sections", "achat"],
+		],
+	},
+	MarketingPlan_PromotionalBudget: {
+		title: "Marketing plan, budget promotionnel",
+		paths: [
+			["startup_expenses", "formatted_qa", "budget"],
 			["startup_expenses", "formatted_sections", "expenses"],
 			["startup_expenses", "formatted_text"],
 			["startup_expenses", "formatted_sections", "capital"],
@@ -563,22 +588,8 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
 	},
-	MarketingPlan_LogoAndBranding: {
-		title: "Barrière à l'entrée",
-		paths: [
-			["marketing_mix", "formatted_sections", "product"],
-			["swot", "formatted_sections", "strengths"],
-			["canvas", "formatted_sections", "value_proposition"],
-		],
-	},
-	// MarketingPlan_FirstConclusion: {
-	// 	title: "Barrière à l'entrée",
-	// 	// LES 3 DERNIERS
-	// 	paths: [],
-	// },
-
 	MarketingPlan_PricingStrategy: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, stratégie de pricing",
 		paths: [
 			["marketing_mix", "formatted_qa", "marketing_plan_sensibility"],
 			["canvas", "formatted_sections", "value_proposition"],
@@ -586,7 +597,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_PricingStrategy_competitors: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, compétiteurs",
 		paths: [
 			["competitors", "formatted_text"],
 			["swot", "formatted_qa", "competitor_weaknesses"],
@@ -596,14 +607,14 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_PricingStrategy_Clientelle: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, stratégie de clientelle",
 		paths: [
 			["marketing_mix", "formatted_sections", "process"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
 	},
-	MarketingPlan_LocationYY: {
-		title: "Barrière à l'entrée",
+	MarketingPlan_Location: {
+		title: "Marketing plan, localisation",
 		paths: [
 			["canvas", "formatted_sections", "customer_segments"],
 			["funnel_chart", "formatted_sections", "visibilité"],
@@ -615,14 +626,14 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	MarketingPlan_DistributionChannel: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, cannaux de distribution",
 		paths: [
 			["canvas", "formatted_sections", "channels"],
 			["marketing_mix", "formatted_sections", "place"],
 		],
 	},
 	MarketingPlan_PartnershipsAndDistributors: {
-		title: "Barrière à l'entrée",
+		title: "Marketing plan, partenaires et distributeurs",
 		paths: [
 			["canvas", "formatted_sections", "key_partners"],
 			["ansoff", "formatted_sections", "market_development"],
@@ -630,14 +641,22 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "gains"],
 		],
 	},
-	// MarketingPlan_ChannelConclusion: {
-	// 	title: "Barrière à l'entrée",
-	// 	paths: [
-	// 		// les 2 derniers
-	// 	],
-	// },
+	MarketingPlan_ChannelConclusion: {
+		title: "Marketing plan, conclusion de distribution",
+		paths: [
+			["canvas", "formatted_sections", "channels"],
+			["canvas", "formatted_sections", "customer_segments"],
+			["marketing_mix", "formatted_sections", "promotion"],
+			["funnel_chart", "formatted_sections", "intérêt"],
+			["marketing_mix", "formatted_sections", "place"],
+			["pestel", "formatted_qa", "infrastructures"],
+			["canvas", "formatted_sections", "key_resources"],
+			["canvas", "formatted_sections", "key_partners"],
+			["ansoff", "formatted_sections", "market_development"],
+		],
+	},
 	OP_Production: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, production",
 		paths: [
 			["canvas", "formatted_sections", "key_resources"],
 			["swot", "formatted_sections", "threats"],
@@ -645,14 +664,14 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Production_ressources: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, ressources pour produire",
 		paths: [
 			["canvas", "formatted_sections", "key_resources"],
 			["marketing_mix", "formatted_sections", "process"],
 		],
 	},
 	OP_Production_cost: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, coût de production",
 		paths: [
 			["canvas", "formatted_sections", "cost_structure"],
 			["startup_expenses", "formatted_sections", "expenses"],
@@ -661,14 +680,14 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Production_efficiency: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, efficience de production",
 		paths: [
 			["swot", "formatted_sections", "opportunities"],
 			["ansoff", "formatted_sections", "product_development"],
 		],
 	},
 	OP_QualityControl: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, contrôle qualité",
 		paths: [
 			["canvas", "formatted_qa", "control_pos"],
 			["canvas", "formatted_sections", "key_activities"],
@@ -676,7 +695,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_QualityControl_b: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, contrôle qualité",
 		paths: [
 			["canvas", "formatted_qa", "control_inspection"],
 			["swot", "formatted_sections", "weaknesses"],
@@ -686,7 +705,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_QualityControl_c: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, contrôle qualité",
 		paths: [
 			["pestel", "formatted_sections", "political"],
 			["swot", "formatted_sections", "opportunities"],
@@ -695,50 +714,48 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Location: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, environnement juridique",
 		paths: [
-			// REPRENDRE MarketingPlan_Location
-			["canvas", "formatted_sections", "customer_relationships"],
+			["canvas", "formatted_sections", "customer_segments"],
+			["funnel_chart", "formatted_sections", "visibilité"],
 			["marketing_mix", "formatted_sections", "place"],
+			["pestel", "formatted_qa", "infrastructures"],
+			["canvas", "formatted_sections", "key_resources"],
+			["canvas", "formatted_sections", "cost_structure"],
+			["swot", "formatted_sections", "opportunities"],
+			["canvas", "formatted_sections", "customer_relationships"],
 		],
 	},
 	OP_Location_b: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, environnement juridique",
 		paths: [
 			["canvas", "formatted_qa", "localisation"],
 			["pestel", "formatted_sections", "legal"],
 			["swot", "formatted_sections", "opportunities"],
 		],
 	},
-	// OP_Legal_data: {
-	// 	title: "Barrière à l'entrée",
-	// 	paths: [
-	// 		// APPORTER LEGAL_DATA et {{LEGAL_DATA_enjeux}}
-	// 		["pestel", "formatted_sections", "legal"],
-	// 		["swot", "formatted_sections", "weaknesses"],
-	// 		// {{OP_Legal_licenses}}
-	// 		// {{OP_Legal_officialbrand}}
-	// 	],
-	// },
 	OP_Legal_data: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, environnement juridique",
 		paths: [
-			// {{OP_Legal_warranty}}
+			["pestel", "formatted_qa", "legal_licenses"],
+			["pestel", "formatted_qa", "legal_official_brand"],
+			["pestel", "formatted_qa", "legal_warranty"],
+			["startup_expenses", "formatted_qa", "tax_legal"],
 			["pestel", "formatted_sections", "economic"],
 			["canvas", "formatted_sections", "cost_structure"],
 		],
 	},
 	OP_Legal_data_c: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, environnement juridique",
 		paths: [
 			["canvas", "formatted_sections", "key_activities"],
-			// {{OP_Legal_environmentalregulations}}
-			// {{OP_Legal_particularregulations}}
-			// {{OP_Legal_cautions}}
+			["pestel", "formatted_qa", "legal_environmental_regulations"],
+			["pestel", "formatted_qa", "legal_particular_regulations"],
+			["pestel", "formatted_qa", "legal_cautions"],
 		],
 	},
 	OP_Personnel: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, ressources humaines",
 		paths: [
 			["canvas", "formatted_sections", "key_resources"],
 			["skills_matrix", "formatted_sections", "analysis"],
@@ -748,7 +765,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_numbers: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, chiffres",
 		paths: [
 			["canvas", "formatted_sections", "key_activities"],
 			["swot", "formatted_sections", "opportunities"],
@@ -760,7 +777,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_costStructure: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, structure de coûts",
 		paths: [
 			["canvas", "formatted_sections", "cost_structure"],
 			["swot", "formatted_sections", "opportunities"],
@@ -771,13 +788,13 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Inventaire: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, inventaire",
 		paths: [
-			// Type de stock à conserver : {{OP_Inventaire_stocktype}}
-			// Valeur moyenne des stocks : {{OP_Inventaire_stockcost}}
-			// Taux de rotation des stocks : {{OP_Inventaire_stockchurn}}
-			// Variations saisonnières des stocks : {{OP_Inventaire_stockvariation}}
-			// Délai de commande des stocks : {{OP_Inventaire_stockdelay}}
+			["monthly_projection", "formatted_qa", "stock_type"],
+			["monthly_projection", "formatted_qa", "stock_cost"],
+			["monthly_projection", "formatted_qa", "stock_churn"],
+			["monthly_projection", "formatted_qa", "stock_variation"],
+			["monthly_projection", "formatted_qa", "stock_delay"],
 			["canvas", "formatted_sections", "key_resources"],
 			["canvas", "formatted_sections", "channels"],
 			["swot", "formatted_sections", "weaknesses"],
@@ -785,7 +802,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Fournisseurs_List: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, liste des fournisseurs",
 		paths: [
 			["canvas", "formatted_qa", "fournisseurs"],
 			["canvas", "formatted_sections", "key_resources"],
@@ -793,16 +810,17 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Fournisseurs_Type: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, types de fournisseurs",
 		paths: [
 			["canvas", "formatted_sections", "key_resources"],
 			["canvas", "formatted_qa", "produit_critique"],
-			// {{OP_Inventaire_stocktype}}, {{OP_Inventaire_stockchurn}}
+			["monthly_projection", "formatted_qa", "stock_type"],
+			["monthly_projection", "formatted_qa", "stock_churn"],
 			["canvas", "formatted_sections", "channels"],
 		],
 	},
 	OP_Fournisseurs_Politics: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, politique des fournisseurs",
 		paths: [
 			["canvas", "formatted_qa", "politique_credit"],
 			["canvas", "formatted_sections", "cost_structure"],
@@ -810,7 +828,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Fournisseurs_Reliability: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, confiance des fournisseurs",
 		paths: [
 			["canvas", "formatted_qa", "antecedents"],
 			["swot", "formatted_sections", "weaknesses"],
@@ -818,79 +836,75 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 	OP_Fournisseurs_Crash: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, problèmes fournisseurs",
 		paths: [
-			// {{BMC_RuptureApprovisionnement}}
+			["canvas", "formatted_qa", "rupture_approvisionnement"],
 			["canvas", "formatted_sections", "key_resources"],
 			["canvas", "formatted_sections", "customer_relationships"],
 			["swot", "formatted_sections", "weaknesses"],
 		],
 	},
 	OP_Fournisseurs_Critical: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, fournisseurs critiques",
 		paths: [
+			["canvas", "formatted_qa", "variation_couts_fournitures"],
 			["canvas", "formatted_sections", "key_partners"],
 			["canvas", "formatted_sections", "key_resources"],
+			["pestel", "formatted_sections", "economic"],
+			["canvas", "formatted_sections", "cost_structure"],
 		],
 	},
-	// OP_Fournisseurs_Critical: {
-	// 	title: "Barrière à l'entrée",
-	// 	paths: [
-	// 		// {{BMC_VariationCoutsFournitures}}
-	// 		["pestel", "formatted_sections", "economic"],
-	// 		["canvas", "formatted_sections", "cost_structure"],
-	// 	],
-	// },
 	OP_Credit: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, crédit",
 		paths: [
 			["pestel", "formatted_sections", "social"],
 			["canvas", "formatted_sections", "customer_relationships"],
-			// {{OP_Credit_common}}
+			["monthly_projection", "formatted_qa", "credit_common"],
 		],
 	},
 	OP_Credit_Politics: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, politique de crédit",
 		paths: [
+			["monthly_projection", "formatted_qa", "credit_policy"],
 			["canvas", "formatted_qa", "politique_credit"],
 			["canvas", "formatted_sections", "cost_structure"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
 	},
 	OP_Credit_Verif: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, vérification de crédit",
 		paths: [
-			// {{OP_Credit_verification}}
+			["monthly_projection", "formatted_qa", "credit_verification"],
 			["swot", "formatted_sections", "weaknesses"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
 	},
 	OP_Credit_Conds: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, conditions de crédit",
 		paths: [
-			// {{OP_Credit_conditions}}
+			["monthly_projection", "formatted_qa", "credit_conditions"],
 			["canvas", "formatted_sections", "cost_structure"],
 			["marketing_mix", "formatted_sections", "price"],
 		],
 	},
 	OP_Credit_Cost: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, coût de crédit",
 		paths: [
 			["canvas", "formatted_sections", "cost_structure"],
 			["marketing_mix", "formatted_sections", "price"],
 		],
 	},
 	OP_Credit_Payments: {
-		title: "Barrière à l'entrée",
+		title: "Plan opérationnel, crédits de paiement",
 		paths: [
-			// {{OP_Credit_slowpayments}}
-			// {{OP_Credit_latepayments}}
+			["monthly_projection", "formatted_qa", "credit_slow_payments"],
+			["monthly_projection", "formatted_qa", "credit_late_payments"],
 			["canvas", "formatted_sections", "customer_relationships"],
 			["swot", "formatted_sections", "weaknesses"],
 		],
 	},
 	Management_Biographies: {
-		title: "Barrière à l'entrée",
+		title: "Management, biographies",
 		paths: [
 			["skills_matrix", "formatted_qa", "leadership_skills"],
 			["canvas", "formatted_sections", "key_resources"],
@@ -902,41 +916,47 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "value_proposition"],
 		],
 	},
-	// Management_Gaps: {
-	// 	title: "Barrière à l'entrée",
-	// 	paths: [
-	// 		["swot", "formatted_sections", "weaknesses"],
-	// 		["skills_matrix", "formatted_qa", "gaps"],
-	// 		["skills_matrix", "formatted_qa", "training"],
-	// 		["canvas", "formatted_sections", "key_resources"],
-	// 		["funnel_chart", "formatted_sections", "Achat"],
-	// 		// {{FP_ExternalCost}}
-	// 		["swot", "formatted_sections", "opportunities"],
-	// 		["ansoff", "formatted_sections", "market_penetration"],
-	// 	],
-	// },
 	Management_Gaps: {
-		title: "Barrière à l'entrée",
+		title: "Management, lacunes",
 		paths: [
 			["canvas", "formatted_sections", "key_resources"],
-			["canvas", "formatted_sections", "key_partners"],
 			["swot", "formatted_sections", "opportunities"],
 			["canvas", "formatted_sections", "key_activities"],
 			["skills_matrix", "formatted_qa", "gaps"],
 			["ansoff", "formatted_sections", "diversification"],
+			["startup_expenses", "formatted_qa", "external_cost"],
 		],
 	},
-	// StartupExpenses: {
-	// 	title: "Barrière à l'entrée",
-	// 	paths: [
-	// 		// Modes de financement: {{FP_Funding}}
-	// 		// Besoin en capitaux: {{FP_CapitelNeeds}}
-	// 		// Budget: {{FP_Budget}}
-	// 		// Coûts externes: {{FP_ExternalCost}}
-	// 	],
-	// },
+	Management_Advisors: {
+		title: "Management, conseillers",
+		paths: [
+			["skills_matrix", "formatted_qa", "leadership_ownership"],
+			["skills_matrix", "formatted_qa", "SkillMatrix_Training"],
+			["skills_matrix", "formatted_qa", "gaps"],
+			["ansoff", "formatted_sections", "diversification"],
+		],
+	},
+	StartupExpenses: {
+		title: "Dépenses de démarrage",
+		paths: [
+			["startup_expenses", "formatted_qa", "funding"],
+			["startup_expenses", "formatted_qa", "capital_needs"],
+			["startup_expenses", "formatted_qa", "budget"],
+			["startup_expenses", "formatted_qa", "external_cost"],
+		],
+	},
 	OpeningDay_BalanceSheet: {
-		title: "Barrière à l'entrée",
+		title: "Dépenses au premier jour",
+		paths: [
+			["startup_expenses", "formatted_sections", "capital"],
+			["startup_expenses", "formatted_sections", "expenses"],
+			["startup_expenses", "formatted_sections", "risks"],
+			["startup_expenses", "formatted_sections", "financial"],
+			["startup_expenses", "formatted_text"],
+		],
+	},
+	PersonnalFinanceStatement: {
+		title: "Bilan financiers personnels",
 		paths: [
 			["startup_expenses", "formatted_sections", "capital"],
 			["startup_expenses", "formatted_sections", "expenses"],
