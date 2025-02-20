@@ -10,7 +10,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings, Sun, Moon } from "lucide-react";
+import { Settings, Sun, Moon, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -119,14 +119,14 @@ export default function SaasHeader() {
 							onSelect={(e) => e.preventDefault()}
 							className="text-destructive"
 						>
-							{/* <Link
+							<Link
 								href="/api/auth/logout"
 								className="flex items-center gap-2 w-full"
 								onClick={(e) => e.stopPropagation()}
 							>
 								<LogOut className="h-4 w-4" />
 								<span>Se déconnecter</span>
-							</Link> */}
+							</Link>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
