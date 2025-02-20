@@ -195,6 +195,8 @@ export const FIELD_MAPPINGS: FieldMappings = {
 			projections: "projections",
 			categoryDefinitions: "categoryDefinitions",
 		},
+
+		// AJout des QA
 	},
 
 	swot: {

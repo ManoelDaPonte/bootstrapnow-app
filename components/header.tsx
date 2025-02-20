@@ -12,17 +12,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export default function SaasHeader() {
-	const { user } = useUser();
+	const { user, isLoading } = useUser();
 	const { setTheme, theme } = useTheme();
+	const [mounted, setMounted] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted || isLoading) {
+		return <div className="h-[40px]" />;
+	}
 
 	return (
 		<header className="fixed top-4 right-4 z-50">
 			{user && (
-				<DropdownMenu>
+				<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 					<DropdownMenuTrigger asChild>
-						<button className="flex items-center focus:outline-none">
+						<button
+							className="flex items-center focus:outline-none"
+							onClick={(e) => {
+								e.preventDefault();
+								setIsOpen(!isOpen);
+							}}
+						>
 							<Image
 								src={user.picture ?? "/default-avatar.png"}
 								alt={user.name ?? "Utilisateur"}
@@ -44,6 +61,7 @@ export default function SaasHeader() {
 						</DropdownMenuItem>
 
 						<DropdownMenuSeparator />
+
 						<DropdownMenuItem
 							onClick={() =>
 								setTheme(theme === "light" ? "dark" : "light")
@@ -60,7 +78,7 @@ export default function SaasHeader() {
 						<DropdownMenuItem asChild>
 							<Link
 								href="/api/auth/logout"
-								className="flex items-center gap-2 text-destructive hover:text-destructive-foreground hover:bg-destructive/10 w-full transition-colors rounded-sm"
+								className="flex items-center gap-2 text-destructive"
 							>
 								<LogOut className="h-4 w-4" />
 								<span>Se déconnecter</span>
