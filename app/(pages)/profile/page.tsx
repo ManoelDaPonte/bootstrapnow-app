@@ -9,7 +9,9 @@ import RoleSelection from "@/components/profile/role-selection";
 import NewsletterPreference from "@/components/profile/newsletter-preference";
 import JoinDiscordBanner from "@/components/profile/join-discord-banner";
 import ProfilePageSkeleton from "@/components/profile/ProfilePageSkeleton";
+import { LogOut } from "lucide-react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function ProfilePage() {
 	const { user } = useUser();
@@ -28,8 +30,6 @@ export default function ProfilePage() {
 			fetchUserMetadata(user.sub!);
 		}
 	}, [user, metadata, loading, fetchUserMetadata]);
-
-	console.log("metadata", user);
 
 	useEffect(() => {
 		if (metadata) {
@@ -65,7 +65,6 @@ export default function ProfilePage() {
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
-
 		if (!user) return;
 
 		const updatedMetadata = {
@@ -84,8 +83,6 @@ export default function ProfilePage() {
 				setMessage(
 					"Vos préférences ont été sauvegardées avec succès !"
 				);
-
-				// Mise à jour du contexte avec les nouvelles métadonnées
 				if (res.data.user && res.data.user.user_metadata) {
 					updateLocalMetadata(res.data.user.user_metadata);
 				}
@@ -127,7 +124,7 @@ export default function ProfilePage() {
 						type="submit"
 						className={cn(
 							buttonVariants({ variant: "default" }),
-							"w-full sm:w-auto text-background flex gap-2 mt-4"
+							"w-full sm:w-auto"
 						)}
 					>
 						Sauvegarder
@@ -145,6 +142,22 @@ export default function ProfilePage() {
 						process.env.NEXT_PUBLIC_DISCORD_LINK || ""
 					}
 				/>
+
+				<div className="flex justify-center">
+					<Link
+						href="/api/auth/logout"
+						className={cn(
+							buttonVariants({
+								variant: "destructive",
+								size: "lg",
+							}),
+							"flex items-center gap-2"
+						)}
+					>
+						<LogOut className="h-5 w-5" />
+						Se déconnecter
+					</Link>
+				</div>
 			</div>
 		</div>
 	);
