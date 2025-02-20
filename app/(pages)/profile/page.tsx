@@ -11,7 +11,6 @@ import JoinDiscordBanner from "@/components/profile/join-discord-banner";
 import ProfilePageSkeleton from "@/components/profile/ProfilePageSkeleton";
 import { LogOut } from "lucide-react";
 import axios from "axios";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function ProfilePage() {
