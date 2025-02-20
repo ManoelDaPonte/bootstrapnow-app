@@ -73,6 +73,24 @@ export function format_pestel(data: any): FormattedAnalysis {
 		infrastructures: `Question : Quelles infrastructures sont cruciales ?\n\nRéponse : ${
 			pestel_data.qa_responses.PESTEL_Infrastructures || "Non renseigné"
 		}`,
+		legal_licenses: `Question : Quels licenses et permis ont été obtenues ou sont en cours de démarchage ?\n\nRéponse : ${
+			pestel_data.qa_responses.OP_Legal_licenses || "Non renseigné"
+		}`,
+		legal_official_brand: `Question : Quelles marques, droits d'auteur ou brevets sont déposées ou en cours de dépôt ?\n\nRéponse : ${
+			pestel_data.qa_responses.OP_Legal_officialbrand || "Non renseigné"
+		}`,
+		legal_warranty: `Question : Quelles couverture d'assurance est nécessaire et quel en est le coût ?\n\nRéponse : ${
+			pestel_data.qa_responses.OP_Legal_warranty || "Non renseigné"
+		}`,
+		legal_environmental_regulations: `Question : Quelles régulations environmentales , sanitaires ou relatives aux conditions de travail affectent l'entreprise ?\n\nRéponse : ${
+			pestel_data.qa_responses.OP_Legal_environmentalregulations || "Non renseigné"
+		}`,
+		legal_particular_regulations: `Question : Quelles sont les régulations particulières affectant le secteur d'activité ?\n\nRéponse : ${
+			pestel_data.qa_responses.OP_Legal_particularregulations || "Non renseigné"
+		}`,
+		legal_cautions: `Question : Quelles exigences de cautionnement ?\n\nRéponse : ${
+			pestel_data.qa_responses.OP_Legal_cautions || "Non renseigné"
+		}`,
 	};
 
 	// Texte complet

@@ -28,6 +28,10 @@ export function format_swot(data: any): SwotAnalysisData {
 			question: "Comment évaluez-vous l'efficacité opérationnelle ?",
 			response: swot_data.qa_responses?.SWOT_OperationalEfficiency,
 		},
+		economies_of_scale: {
+			question: "Comment les économies d'échelle de vos concurrents influencent-elles leur avantage concurrentiel, et quels sont les moyens par lesquels vous pouvez atteindre une échelle comparable ?",
+			response: swot_data.qa_responses?.SWOT_EconomiesOfScale,
+		},
 	};
 
 	// Convertir la structure QA en Record<string, string>
