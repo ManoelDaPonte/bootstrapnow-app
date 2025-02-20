@@ -76,13 +76,13 @@ export default function SaasHeader() {
 						<DropdownMenuSeparator />
 
 						<DropdownMenuItem asChild>
-							<Link
+							{/* <Link
 								href="/api/auth/logout"
 								className="flex items-center gap-2 text-destructive"
 							>
 								<LogOut className="h-4 w-4" />
 								<span>Se déconnecter</span>
-							</Link>
+							</Link> */}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
