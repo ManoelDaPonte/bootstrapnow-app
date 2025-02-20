@@ -1,5 +1,5 @@
 // app/(dashboard)/layout.tsx
-import "./globals.css"; // si nécessaire
+import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -28,28 +28,29 @@ export default function DashboardLayout({
 							defaultTheme="light"
 							enableSystem={false}
 						>
-							<div className="flex h-screen">
-								{" "}
-								{/* Container principal */}
-								{/* Sidebar avec une largeur fixe */}
-								<aside className="w-64 flex-shrink-0">
+							<div className="relative flex h-screen">
+								{/* Sidebar */}
+								<aside className="w-64 flex-shrink-0 h-full">
 									<Sidebar />
 								</aside>
-								{/* Container du contenu principal avec sa propre zone de scroll */}
+
+								{/* Main content area */}
 								<div className="flex-1 flex flex-col min-w-0">
-									{" "}
-									{/* min-w-0 est crucial ici */}
-									<Header />
-									<main className="flex-1 relative overflow-y-auto">
-										{" "}
-										{/* overflow-y-auto pour le scroll vertical */}
+									<div className="sticky top-0 z-10 bg-background">
+										<Header />
+									</div>
+									<main className="flex-1 overflow-y-auto">
 										{children}
 									</main>
+								</div>
+
+								{/* Utilities positioned absolutely */}
+								<div className="absolute bottom-4 right-4 flex items-center gap-4">
 									<ThemeToggle />
 									<TailwindIndicator />
-									<Toaster />
 								</div>
 							</div>
+							<Toaster />
 						</ThemeProvider>
 					</UserMetadataProvider>
 				</UserProvider>
