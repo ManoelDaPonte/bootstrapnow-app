@@ -6,6 +6,8 @@ import { prisma } from "@/lib/db/prisma";
 import { DataMapper } from "@/lib/openai/generators/DataMapper";
 import { format_all_analyses } from "@/lib/openai/formatters";
 
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
 	console.log("Début de la requête de génération");
 	try {
