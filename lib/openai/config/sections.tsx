@@ -166,6 +166,18 @@ export const BUSINESS_PLAN_SECTIONS = {
 		],
 	},
 
+	Company_legal_structure: {
+		title: "Structure légale",
+		paths: [
+			["pestel", "formatted_qa", "legal_licenses"],
+			["pestel", "formatted_qa", "legal_official_brand"],
+			["pestel", "formatted_qa", "legal_warranty"],
+			["startup_expenses", "formatted_qa", "tax_legal"],
+			["pestel", "formatted_sections", "economic"],
+			["canvas", "formatted_sections", "cost_structure"],
+		],
+	},
+
 	PnS_What: {
 		title: "Produit et Services : Quoi",
 		paths: [
@@ -388,6 +400,60 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "threats"],
 		],
 	},
+	BMC_chart_key_partners:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "key_partners"],
+		],
+	},
+	BMC_chart_key_activities:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "key_activities"],
+		],
+	},
+	BMC_chart_value_proposition:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "value_proposition"],
+		],
+	},
+	BMC_chart_key_resources:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "key_resources"],
+		],
+	},
+	BMC_chart_channels:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "channels"],
+		],
+	},
+	BMC_chart_customer_relationship:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "customer_relationships"],
+		],
+	},
+	BMC_chart_customer_segments:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "customer_segments"],
+		],
+	},
+	BMC_chart_cost_structure:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "cost_structure"],
+		],
+	},
+	BMC_chart_revenus:{
+		title: "Business modèle, activités clés",
+		paths: [
+			["canvas", "formatted_sections", "revenue_streams"],
+		],
+	},
 	MarketingPlan_Caracteristiques: {
 		title: "Barrière à l'entrée",
 		paths: [
@@ -459,8 +525,8 @@ export const BUSINESS_PLAN_SECTIONS = {
 	MarketingPlan_Policy: {
 		title: "Marketing plan, la politique de remboursement",
 		paths: [
+			["canvas", "formatted_sections", "cost_structure"],
 			["canvas", "formatted_sections", "customer_relationships"],
-			["swot", "formatted_sections", "weaknesses"],
 			["marketing_mix", "formatted_sections", "product"],
 		],
 	},
