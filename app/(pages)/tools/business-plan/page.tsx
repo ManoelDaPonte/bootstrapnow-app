@@ -203,6 +203,11 @@ export default function BusinessPlanPage() {
 	const handleConfirmGeneration = async () => {
 		setIsConfirmationOpen(false);
 		try {
+			console.log("Auth0 ID being used:", user?.sub!);
+			console.log(
+				"Sections being sent:",
+				BUSINESS_PLAN_SECTIONS as unknown as string[]
+			);
 			await generateBusinessPlan(
 				user?.sub!,
 				BUSINESS_PLAN_SECTIONS as unknown as string[]
@@ -256,7 +261,6 @@ export default function BusinessPlanPage() {
 								</h1>
 							</div>
 							<div className="flex items-center gap-8">
-
 								{/* Tokens */}
 								<div className="flex items-center gap-2 bg-card px-4 py-2 rounded-lg border">
 									<Coins className="h-4 w-4 text-primary" />
@@ -272,7 +276,6 @@ export default function BusinessPlanPage() {
 										<Button
 											onClick={handleGenerateBusinessPlan}
 											className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
-
 										>
 											{isGenerating ? (
 												<>
@@ -349,7 +352,6 @@ export default function BusinessPlanPage() {
 
 							<div className="grid grid-cols-1 gap-4">
 								{section.templates.map((template) => {
-									
 									return (
 										<Card
 											key={template.name}
@@ -374,9 +376,7 @@ export default function BusinessPlanPage() {
 															}
 														</p>
 													</div>
-													
 												</div>
-												
 											</div>
 										</Card>
 									);

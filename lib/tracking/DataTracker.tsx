@@ -74,8 +74,8 @@ export class DataTracker {
 			sectionName
 		);
 
-		console.log(`Vérification de la section ${sectionName}`);
-		console.log("Signatures stockées:", storedSignatures);
+		// console.log(`Vérification de la section ${sectionName}`);
+		// console.log("Signatures stockées:", storedSignatures);
 
 		let hasChanges = false;
 		let hasValidData = false;
@@ -112,10 +112,10 @@ export class DataTracker {
 						sig.fieldName === fieldName // Ajout du fieldName pour une comparaison plus précise
 				);
 
-				console.log(`Vérification de ${analysisType}.${fieldName}:`, {
-					currentSignature,
-					storedSignature: storedSignature?.signature,
-				});
+				// console.log(`Vérification de ${analysisType}.${fieldName}:`, {
+				// 	currentSignature,
+				// 	storedSignature: storedSignature?.signature,
+				// });
 
 				if (
 					!storedSignature ||

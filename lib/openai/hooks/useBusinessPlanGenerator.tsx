@@ -239,9 +239,20 @@ export function useBusinessPlanGenerator() {
 				body: JSON.stringify({ auth0Id, sections }),
 			});
 
+			// Ajouter ces logs
+			console.log("Response status:", response.status);
+			console.log(
+				"Response headers:",
+				Object.fromEntries(response.headers)
+			);
+
 			if (!response.ok) {
-				throw new Error("Failed to check sections");
+				const errorText = await response.text();
+				console.error("Error response:", errorText);
+				throw new Error(`Failed to check sections: ${errorText}`);
 			}
+
+			return;
 
 			const { sectionsStatus: newSectionsStatus } = await response.json();
 			console.log("Status des sections:", newSectionsStatus);
