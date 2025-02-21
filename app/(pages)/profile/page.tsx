@@ -9,9 +9,7 @@ import RoleSelection from "@/components/profile/role-selection";
 import NewsletterPreference from "@/components/profile/newsletter-preference";
 import JoinDiscordBanner from "@/components/profile/join-discord-banner";
 import ProfilePageSkeleton from "@/components/profile/ProfilePageSkeleton";
-import { LogOut } from "lucide-react";
 import axios from "axios";
-import Link from "next/link";
 
 export default function ProfilePage() {
 	const { user } = useUser();
@@ -142,22 +140,6 @@ export default function ProfilePage() {
 						process.env.NEXT_PUBLIC_DISCORD_LINK || ""
 					}
 				/>
-
-				<div className="flex justify-center">
-					<Link
-						href="/api/auth/logout"
-						className={cn(
-							buttonVariants({
-								variant: "destructive",
-								size: "lg",
-							}),
-							"flex items-center gap-2"
-						)}
-					>
-						<LogOut className="h-5 w-5" />
-						Se déconnecter
-					</Link>
-				</div>
 			</div>
 		</div>
 	);
