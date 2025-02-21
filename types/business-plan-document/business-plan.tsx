@@ -23,7 +23,7 @@ export const BUSINESS_PLAN_SECTIONS = [
 	"PnS_HowMuch",
 	"BMC_chart_key_partners",
 	"BMC_chart_key_activities",
-	"BMC_chart_key_proposition",
+	"BMC_chart_value_proposition",
 	"BMC_chart_key_resources",
 	"BMC_chart_channels",
 	"BMC_chart_customer_relationship",

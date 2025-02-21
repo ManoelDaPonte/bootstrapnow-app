@@ -103,10 +103,10 @@ export class DocumentGenerator {
 		return null;
 	}
 
-    private convertMarkdownToDocxTemplater(text: string): string {
-        // Convertit **texte** en {~b texte} pour le formatage en gras
-        return text.replace(/\*\*(.+?)\*\*/g, '{~b $1}');
-    }
+	private convertMarkdownToDocxTemplater(text: string): string {
+		// Convertit **texte** en {~b texte} pour le formatage en gras
+		return text.replace(/\*\*(.+?)\*\*/g, "{~b $1}");
+	}
 
 	async generateDocument(
 		sections: Record<string, string>,
@@ -114,7 +114,7 @@ export class DocumentGenerator {
 	): Promise<Buffer> {
 		try {
 			const template = await this.loadTemplate();
-			console.log("Template chargé");
+			const zip = new PizZip(template);
 
 			// Récupérer les données supplémentaires
 			const [generalInfo, marketTrendsData] = await Promise.all([
@@ -129,9 +129,6 @@ export class DocumentGenerator {
 			if (!marketTrendsData) {
 				throw new Error("Données de tendances de marché non trouvées");
 			}
-
-			const zip = new PizZip(template);
-			console.log("ZIP créé");
 
 			// Obtenir les placeholders
 			const placeholders = mapPlaceholders(generalInfo, marketTrendsData);
@@ -163,32 +160,28 @@ export class DocumentGenerator {
 				nullGetter() {
 					return "";
 				},
-				parser: (tag: string) => ({
-					get: (scope: any) => {
-						const value = scope[tag] || "";
-						return value.toString().replace(/\r?\n/g, "\n");
-					},
-				}),
-				modules: [
-                    {
-                        name: 'formatting',
-                        rendered: function(part: any, options: any) {
-                            if (part.module === "~b") {
-                                // Applique le formatage en gras
-                                return {
-                                    value: part.value,
-                                    type: "placeholder",
-                                    module: "formatting",
-                                    runs: [{
-                                        bold: true,
-                                        text: part.value
-                                    }]
-                                };
-                            }
-                            return null;
-                        }
-                    }
-                ]
+				parser: function (tag) {
+					// Gestion spéciale pour le formatage en gras
+					if (tag.startsWith("~b ")) {
+						return {
+							get: function (scope) {
+								const value = scope[tag.substring(3)] || "";
+								return {
+									type: "string",
+									value: value.toString(),
+									bold: true,
+								};
+							},
+						};
+					}
+					// Parser standard pour les autres tags
+					return {
+						get: function (scope) {
+							const value = scope[tag] || "";
+							return value.toString().replace(/\r?\n/g, "\n");
+						},
+					};
+				},
 			});
 
 			try {
