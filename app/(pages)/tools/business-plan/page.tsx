@@ -203,11 +203,6 @@ export default function BusinessPlanPage() {
 	const handleConfirmGeneration = async () => {
 		setIsConfirmationOpen(false);
 		try {
-			console.log("Auth0 ID being used:", user?.sub!);
-			console.log(
-				"Sections being sent:",
-				BUSINESS_PLAN_SECTIONS as unknown as string[]
-			);
 			await generateBusinessPlan(
 				user?.sub!,
 				BUSINESS_PLAN_SECTIONS as unknown as string[]

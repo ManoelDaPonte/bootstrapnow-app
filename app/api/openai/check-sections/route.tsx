@@ -8,18 +8,18 @@ import { format_all_analyses } from "@/lib/openai/formatters";
 export async function POST(request: Request) {
 	try {
 		// Au début de la route
-		console.log("DATABASE_URL configured:", !!process.env.DATABASE_URL);
+		// console.log("DATABASE_URL configured:", !!process.env.DATABASE_URL);
 
 		const { auth0Id, sections } = await request.json();
-		console.log("Checking sections for auth0Id:", auth0Id);
-		console.log("Sections to check:", sections);
+		// console.log("Checking sections for auth0Id:", auth0Id);
+		// console.log("Sections to check:", sections);
 
 		// Récupérer l'ID utilisateur
 		const user = await prisma.user.findUnique({
 			where: { auth0Id },
 			select: { id: true },
 		});
-		console.log("User found:", !!user, user?.id);
+		// console.log("User found:", !!user, user?.id);
 
 		if (!user) {
 			return NextResponse.json(
@@ -28,14 +28,14 @@ export async function POST(request: Request) {
 			);
 		}
 		const dbTest = await prisma.$queryRaw`SELECT NOW()`;
-		console.log("Database connection test:", dbTest);
+		// console.log("Database connection test:", dbTest);
 
 		const dataTracker = new DataTracker();
 		const mapper = new DataMapper(process.env.DATABASE_URL || "");
 
-		console.log("Getting user analyses...");
+		// console.log("Getting user analyses...");
 		const analyses = await mapper.getUserAnalyses(auth0Id);
-		console.log("Analyses retrieved:", Object.keys(analyses));
+		// console.log("Analyses retrieved:", Object.keys(analyses));
 
 		// Récupérer et formater les analyses
 		const analysesFormatted = format_all_analyses(analyses);

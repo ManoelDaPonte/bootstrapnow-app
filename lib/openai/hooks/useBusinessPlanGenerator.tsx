@@ -252,8 +252,6 @@ export function useBusinessPlanGenerator() {
 				throw new Error(`Failed to check sections: ${errorText}`);
 			}
 
-			return;
-
 			const { sectionsStatus: newSectionsStatus } = await response.json();
 			console.log("Status des sections:", newSectionsStatus);
 			// Mettre à jour l'état local des statuts
