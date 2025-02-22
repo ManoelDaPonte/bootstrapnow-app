@@ -27,8 +27,6 @@ export async function POST(request: Request) {
 				{ status: 404 }
 			);
 		}
-		const dbTest = await prisma.$queryRaw`SELECT NOW()`;
-		// console.log("Database connection test:", dbTest);
 
 		const dataTracker = new DataTracker();
 		const mapper = new DataMapper(process.env.DATABASE_URL || "");

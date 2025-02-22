@@ -186,7 +186,6 @@ export class DocumentGenerator {
 
 			try {
 				await doc.renderAsync(templateData);
-				console.log("Rendu effectué avec succès");
 			} catch (error) {
 				console.error("Erreur lors du rendu:", error);
 				throw error;

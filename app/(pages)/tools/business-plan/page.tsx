@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
-//import { Progress } from "@/components/ui/progress";
+import { Progress } from "@/components/ui/progress";
 import { useTemplateProgress } from "@/lib/business-plan/hooks/useTemplateProgress";
 import { Card } from "@/components/ui/card";
 import GeneralInfoCard from "@/components/business-plan/GeneralInfoCard";
@@ -203,8 +203,19 @@ export default function BusinessPlanPage() {
 	const handleConfirmGeneration = async () => {
 		setIsConfirmationOpen(false);
 		try {
+			// Vérifier si user et user.sub existent
+			if (!user?.sub) {
+				toast({
+					title: "Erreur",
+					description:
+						"Vous devez être connecté pour générer un business plan",
+					variant: "destructive",
+				});
+				return;
+			}
+
 			await generateBusinessPlan(
-				user?.sub!,
+				user.sub, // Plus besoin du ! car on a vérifié au-dessus
 				BUSINESS_PLAN_SECTIONS as unknown as string[]
 			);
 		} catch (error) {
@@ -217,32 +228,32 @@ export default function BusinessPlanPage() {
 		}
 	};
 
-	// type ProgressType = {
-	// 	[key: string]: {
-	// 		[key: string]: number;
-	// 	};
-	// };
+	type ProgressType = {
+		[key: string]: {
+			[key: string]: number;
+		};
+	};
 
-	// const progress: ProgressType = useTemplateProgress();
+	const progress: ProgressType = useTemplateProgress();
 
-	// const getTemplateProgress = (
-	// 	sectionId: string,
-	// 	templateName: string
-	// ): number => {
-	// 	return progress[sectionId]?.[templateName] || 0;
-	// };
+	const getTemplateProgress = (
+		sectionId: string,
+		templateName: string
+	): number => {
+		return progress[sectionId]?.[templateName] || 0;
+	};
 
-	// const totalProgress = Math.round(
-	// 	Object.entries(progress).reduce((acc, [, section]) => {
-	// 		return (
-	// 			acc +
-	// 			Object.values(section).reduce((sum, value) => sum + value, 0)
-	// 		);
-	// 	}, 0) /
-	// 		Object.values(progress).reduce((total, section) => {
-	// 			return total + Object.keys(section).length;
-	// 		}, 0)
-	// );
+	const totalProgress = Math.round(
+		Object.entries(progress).reduce((acc, [, section]) => {
+			return (
+				acc +
+				Object.values(section).reduce((sum, value) => sum + value, 0)
+			);
+		}, 0) /
+			Object.values(progress).reduce((total, section) => {
+				return total + Object.keys(section).length;
+			}, 0)
+	);
 
 	return (
 		<div className="flex flex-col min-h-screen">
@@ -256,6 +267,17 @@ export default function BusinessPlanPage() {
 								</h1>
 							</div>
 							<div className="flex items-center gap-8">
+								{/* Progression */}
+								<div className="flex items-center gap-3 bg-card px-4 py-2 rounded-lg border">
+									<Progress
+										value={totalProgress}
+										className="w-32 h-2"
+									/>
+									<span className="text-sm font-medium text-foreground">
+										{totalProgress}%
+									</span>
+								</div>
+
 								{/* Tokens */}
 								<div className="flex items-center gap-2 bg-card px-4 py-2 rounded-lg border">
 									<Coins className="h-4 w-4 text-primary" />
@@ -271,6 +293,10 @@ export default function BusinessPlanPage() {
 										<Button
 											onClick={handleGenerateBusinessPlan}
 											className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+											disabled={
+												totalProgress < 80 ||
+												isGenerating
+											}
 										>
 											{isGenerating ? (
 												<>
@@ -347,6 +373,11 @@ export default function BusinessPlanPage() {
 
 							<div className="grid grid-cols-1 gap-4">
 								{section.templates.map((template) => {
+									const templateProgress =
+										getTemplateProgress(
+											section.id,
+											template.name
+										);
 									return (
 										<Card
 											key={template.name}
@@ -370,6 +401,20 @@ export default function BusinessPlanPage() {
 																template.description
 															}
 														</p>
+													</div>
+													{templateProgress >= 80 ? (
+														<CheckCircle2 className="w-5 h-5 text-green-500" />
+													) : (
+														<AlertCircle className="w-5 h-5 text-primary" />
+													)}
+												</div>
+												<div className="space-y-1">
+													<Progress
+														value={templateProgress}
+														className="h-1.5"
+													/>
+													<div className="text-sm text-right text-muted-foreground">
+														{templateProgress}%
 													</div>
 												</div>
 											</div>

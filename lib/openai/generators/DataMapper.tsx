@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db/prisma";
 import { FIELD_MAPPINGS } from "../config/mappings";
 import { AnalysisData, MappingResult } from "@/types/openai/mapping";
+import { logger } from "@/lib/logger";
 
 // Configuration des modèles et leurs mappings avec la bonne casse pour Prisma
 const MODEL_CONFIG = {
@@ -76,6 +77,9 @@ export class DataMapper {
 
 		const mapping = FIELD_MAPPINGS[analysisType]?.[dataType];
 		if (!mapping) {
+			logger.debug(
+				`Pas de mapping trouvé pour ${analysisType}.${dataType}`
+			);
 			return data;
 		}
 
@@ -99,7 +103,7 @@ export class DataMapper {
 		tableName: keyof typeof MODEL_CONFIG,
 		analysisType: string
 	): Promise<AnalysisData | null> {
-		console.log(`Processing ${tableName}...`);
+		logger.debug(`Traitement de l'analyse: ${tableName}`);
 		try {
 			const modelConfig = MODEL_CONFIG[tableName];
 			const select = {
@@ -112,13 +116,8 @@ export class DataMapper {
 				select,
 			});
 
-			console.log(`${tableName} query result:`, {
-				exists: !!analysis,
-				hasData: !!analysis?.data,
-			});
-
 			if (!analysis || !analysis.data) {
-				console.log(`-> No data found for ${tableName}`);
+				logger.debug(`Aucune donnée trouvée pour ${tableName}`);
 				return {
 					data: {},
 					qa_responses: {},
@@ -129,6 +128,7 @@ export class DataMapper {
 			// Cas spécial pour les competitors
 			if (analysisType === "competitors" && "competitors" in data) {
 				data = data.competitors;
+				logger.debug("Traitement spécial des données competitors");
 			}
 
 			const mappedData =
@@ -141,12 +141,13 @@ export class DataMapper {
 				  )
 				: {};
 
+			logger.debug(`Analyse ${tableName} traitée avec succès`);
 			return {
 				data: mappedData,
 				qa_responses: mappedQA,
 			};
 		} catch (error) {
-			console.error(`Error in processAnalysis for ${tableName}:`, error);
+			logger.error(`Erreur traitement ${tableName}`, error);
 			return {
 				data: {},
 				qa_responses: {},
@@ -155,6 +156,10 @@ export class DataMapper {
 	}
 
 	async getUserAnalyses(auth0Id: string): Promise<MappingResult> {
+		logger
+			.setSection("DataMapper")
+			.info(`Début récupération analyses utilisateur: ${auth0Id}`);
+
 		try {
 			const user = await prisma.user.findUnique({
 				where: { auth0Id },
@@ -162,6 +167,7 @@ export class DataMapper {
 			});
 
 			if (!user) {
+				logger.error("Utilisateur non trouvé");
 				throw new Error(`User not found with auth0Id: ${auth0Id}`);
 			}
 
@@ -171,23 +177,29 @@ export class DataMapper {
 				(typeof MODEL_CONFIG)[keyof typeof MODEL_CONFIG]
 			][];
 
+			logger.info(
+				`Traitement de ${modelEntries.length} types d'analyses`
+			);
+
 			for (const [tableName, config] of modelEntries) {
-				console.log(`Processing ${tableName} (${config.type})`);
 				const result = await this.processAnalysis(
 					user.id,
 					tableName,
 					config.type
 				);
-				console.log(`Result for ${tableName}:`, !!result);
 				if (result) {
 					analyses[config.type] = result;
 				}
 			}
 
-			console.log("Final analyses:", Object.keys(analyses));
+			const analysesCount = Object.keys(analyses).length;
+			logger.info(
+				`Analyses complétées: ${analysesCount} sections récupérées`
+			);
+
 			return analyses;
 		} catch (error) {
-			console.error("Error in getUserAnalyses:", error);
+			logger.error("Erreur récupération analyses utilisateur", error);
 			throw error;
 		}
 	}

@@ -148,8 +148,6 @@ export function useBusinessPlanGenerator() {
 		generationId: string
 	): Promise<string> => {
 		try {
-			console.log("Début de la génération du document");
-
 			const response = await fetch(
 				"/api/business-plan-document/generate-document",
 				{
@@ -239,13 +237,6 @@ export function useBusinessPlanGenerator() {
 				body: JSON.stringify({ auth0Id, sections }),
 			});
 
-			// Ajouter ces logs
-			console.log("Response status:", response.status);
-			console.log(
-				"Response headers:",
-				Object.fromEntries(response.headers)
-			);
-
 			if (!response.ok) {
 				const errorText = await response.text();
 				console.error("Error response:", errorText);
@@ -253,7 +244,6 @@ export function useBusinessPlanGenerator() {
 			}
 
 			const { sectionsStatus: newSectionsStatus } = await response.json();
-			console.log("Status des sections:", newSectionsStatus);
 			// Mettre à jour l'état local des statuts
 			setSectionsStatus(
 				newSectionsStatus.reduce(
@@ -355,11 +345,6 @@ export function useBusinessPlanGenerator() {
 			});
 
 			if (allSectionsValid) {
-				console.log(
-					"Toutes les sections ont été générées:",
-					generatedSections
-				);
-
 				try {
 					// 4. Génération du document Word
 					updateStep("word", "in-progress");
@@ -367,13 +352,11 @@ export function useBusinessPlanGenerator() {
 						auth0Id,
 						generatedSections
 					);
-					console.log("Résultat de la sauvegarde:", saveResult);
 
 					const docxUrl = await generateDocument(
 						auth0Id,
 						saveResult.generationId
 					);
-					console.log("URL du document généré:", docxUrl);
 					updateStep("word", "completed");
 
 					// 5. Finalisation
