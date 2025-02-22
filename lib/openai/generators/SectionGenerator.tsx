@@ -1,4 +1,3 @@
-// lib/openai/generators/SectionGenerator.ts
 import { OpenAI } from "openai";
 import { SectionConfig, GenerationResult } from "@/types/openai/section";
 import { BUSINESS_PLAN_SECTIONS } from "@/lib/openai/config/sections";
@@ -6,39 +5,83 @@ import { SECTION_SYSTEM_PROMPTS } from "@/lib/openai/config/prompts";
 import { DataMapper } from "./DataMapper";
 import { format_all_analyses } from "../formatters";
 import { create_section_prompt } from "../formatters/sectionFormatter";
+import { SectionContextService } from "../services/SectionContextService";
+import { SECTION_ORDER } from "../config/section-order";
+import { BusinessPlanSection } from "@/types/business-plan-document/business-plan";
+import { logger } from "@/lib/logger";
+import { FormattedAnalyses } from "@/types/openai/analyzers";
 
 export class SectionGenerator {
+	private static analysesCache: Map<
+		string,
+		{
+			data: FormattedAnalyses;
+			timestamp: Date;
+		}
+	> = new Map();
+
+	private contextService: SectionContextService;
 	private mapper: DataMapper;
 	private openai: OpenAI;
+	private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 	constructor(databaseUrl: string, openaiApiKey: string) {
+		this.contextService = new SectionContextService();
 		this.mapper = new DataMapper(databaseUrl);
 		this.openai = new OpenAI({ apiKey: openaiApiKey });
 	}
 
-	// Ajout de la nouvelle méthode pour la compatibilité
+	private async getOrUpdateCache(
+		auth0Id: string
+	): Promise<FormattedAnalyses> {
+		const cachedData = SectionGenerator.analysesCache.get(auth0Id);
+		const now = new Date();
+
+		if (
+			cachedData &&
+			now.getTime() - cachedData.timestamp.getTime() < this.CACHE_DURATION
+		) {
+			logger.info(
+				`Utilisation du cache existant (âge: ${
+					now.getTime() - cachedData.timestamp.getTime()
+				}ms)`
+			);
+			return cachedData.data;
+		}
+
+		logger.info(
+			"Cache non trouvé ou expiré - Chargement des analyses depuis la base de données"
+		);
+		const startTime = Date.now();
+		const analyses = await this.mapper.getUserAnalyses(auth0Id);
+		const formattedAnalyses = format_all_analyses(analyses);
+
+		SectionGenerator.analysesCache.set(auth0Id, {
+			data: formattedAnalyses,
+			timestamp: now,
+		});
+
+		logger.info(`Analyses mises en cache (${Date.now() - startTime}ms)`);
+		logger.debug(
+			`Types d'analyses en cache: ${
+				Object.keys(formattedAnalyses).length
+			}`
+		);
+
+		return formattedAnalyses;
+	}
+
 	async loadUserAnalyses(auth0Id: string) {
 		return await this.mapper.getUserAnalyses(auth0Id);
 	}
 
-	private loadSectionConfig(sectionName: string): SectionConfig {
-		if (
-			!BUSINESS_PLAN_SECTIONS[
-				sectionName as keyof typeof BUSINESS_PLAN_SECTIONS
-			]
-		) {
+	private loadSectionConfig(sectionName: BusinessPlanSection): SectionConfig {
+		const sectionData = BUSINESS_PLAN_SECTIONS[sectionName];
+		if (!sectionData) {
 			throw new Error(`Section '${sectionName}' non trouvée`);
 		}
 
-		const sectionData =
-			BUSINESS_PLAN_SECTIONS[
-				sectionName as keyof typeof BUSINESS_PLAN_SECTIONS
-			];
-		const systemPrompt =
-			SECTION_SYSTEM_PROMPTS[
-				sectionName as keyof typeof SECTION_SYSTEM_PROMPTS
-			];
-
+		const systemPrompt = SECTION_SYSTEM_PROMPTS[sectionName];
 		if (!systemPrompt) {
 			throw new Error(
 				`System prompt non trouvé pour la section '${sectionName}'`
@@ -56,122 +99,138 @@ export class SectionGenerator {
 		analysesFormatted: any,
 		paths: [string, string, string][]
 	): [string, string, string][] {
-		console.log("=== DEBUG verifyPaths ===");
-		console.log("Analyses disponibles:", Object.keys(analysesFormatted));
-		console.log("Chemins à vérifier:", paths);
-
-		const validPaths: [string, string, string][] = [];
-
-		for (const [analysisType, sectionType, fieldName] of paths) {
-			console.log("\nVérification du chemin:", {
-				analysisType,
-				sectionType,
-				fieldName,
-			});
-			console.log("Analyse présente?", !!analysesFormatted[analysisType]);
-
+		return paths.filter(([analysisType, sectionType, fieldName]) => {
 			if (!analysesFormatted[analysisType]) {
-				console.log("-> Analyse non trouvée");
-				continue;
+				return false;
 			}
 
-			let data: any = null;
-
-			if (sectionType === "formatted_text") {
-				data = analysesFormatted[analysisType].formatted_text;
-				console.log("-> formatted_text:", !!data);
-			} else if (sectionType === "formatted_qa") {
-				data =
-					analysesFormatted[analysisType]?.formatted_qa?.[fieldName];
-				console.log("-> formatted_qa:", !!data);
-			} else if (sectionType === "formatted_sections") {
-				data =
-					analysesFormatted[analysisType]?.formatted_sections?.[
-						fieldName
-					];
-				console.log("-> formatted_sections:", !!data);
-			}
+			const data = this.getDataFromPath(
+				analysesFormatted[analysisType],
+				sectionType,
+				fieldName
+			);
 
 			if (data === null || data === "") {
-				console.log("-> Données invalides");
-				continue;
+				return false;
 			}
 
-			console.log("-> Chemin valide ajouté");
-			validPaths.push([analysisType, sectionType, fieldName]);
-		}
-
-		console.log("\nChemins valides:", validPaths);
-		return validPaths;
+			return true;
+		});
 	}
 
+	private getDataFromPath(
+		analysis: any,
+		sectionType: string,
+		fieldName: string
+	): string | null {
+		switch (sectionType) {
+			case "formatted_text":
+				return analysis.formatted_text || null;
+			case "formatted_qa":
+				return analysis?.formatted_qa?.[fieldName] || null;
+			case "formatted_sections":
+				return analysis?.formatted_sections?.[fieldName] || null;
+			default:
+				return null;
+		}
+	}
 	async generateSection(
 		auth0Id: string,
 		sectionName: string
 	): Promise<GenerationResult> {
-		console.log("1. Début generateSection pour:", sectionName);
-		// console.log(`Début de génération pour la section ${sectionName}`, {
-		// 	auth0Id,
-		// 	timestamp: new Date().toISOString(),
-		// });
+		logger.setSection(sectionName).startGeneration(sectionName);
 		try {
-			const config = this.loadSectionConfig(sectionName);
-			// console.log("Configuration chargée:", {
-			// 	title: config.title,
-			// 	pathsCount: config.paths.length,
-			// });
+			// 1. Récupération des analyses (avec cache)
+			const analysesCache = await this.getOrUpdateCache(auth0Id);
 
-			const analyses = await this.mapper.getUserAnalyses(auth0Id);
-			// console.log("Analyses récupérées:", {
-			// 	analysesTypes: Object.keys(analyses),
-			// });
+			// 2. Chargement config et contexte
+			logger.debug("Chargement configuration et contexte");
+			const startLoadTime = Date.now();
+			const [config, previousSections] = await Promise.all([
+				this.loadSectionConfig(sectionName as BusinessPlanSection),
+				this.contextService.getPreviousSectionsContext(
+					auth0Id,
+					sectionName
+				),
+			]);
+			logger.debug(
+				`Configuration et contexte chargés (${
+					Date.now() - startLoadTime
+				}ms)`
+			);
 
-			const analysesFormatted = format_all_analyses(analyses);
-			// console.log("Analyses formatées:", {
-			// 	formattedTypes: Object.keys(analysesFormatted),
-			// });
-
-			// 4. Vérifier et filtrer les chemins valides
+			// 3. Vérification des chemins
+			const pathStartTime = Date.now();
+			// Correction de la syntaxe
 			const validPaths = this.verifyPaths(
-				analysesFormatted,
+				analysesCache, // ajout de la virgule
 				config.paths
+			);
+			logger.pathValidation(validPaths.length, config.paths.length);
+			logger.debug(
+				`Validation des chemins terminée (${
+					Date.now() - pathStartTime
+				}ms)`
 			);
 
 			if (!validPaths.length) {
+				logger.error("Aucun chemin valide trouvé");
 				throw new Error(
 					`Aucun chemin valide trouvé pour la section '${sectionName}'`
 				);
 			}
 
-			// 5. Créer le prompt utilisateur
-			const userPrompt = create_section_prompt(
-				analysesFormatted,
+			// 4. Création du prompt
+			logger.promptCreation();
+			const promptStartTime = Date.now();
+			const basePrompt = create_section_prompt(
+				analysesCache, // ajout de la virgule
 				sectionName
 			);
+			logger.debug(
+				`Prompt de base créé (${Date.now() - promptStartTime}ms)`
+			);
 
-			// Après la création du prompt utilisateur
-			console.log("=== GÉNÉRATION DE SECTION ===");
-			console.log("Section:", sectionName);
-			console.log("\n=== PROMPT SYSTÈME ===\n", config.systemPrompt);
-			console.log("\n=== PROMPT UTILISATEUR ===\n", userPrompt);
+			// 5. Ajout du contexte
+			logger.contextFetch();
+			const contextStartTime = Date.now();
+			const contextPrompt =
+				this.contextService.formatContextForPrompt(previousSections);
+			const currentSectionOrder = SECTION_ORDER.getIndex(sectionName) + 1;
+			logger.debug(
+				`Sections précédentes trouvées: ${previousSections.length}`
+			);
+			logger.debug(
+				`Contexte formaté (${Date.now() - contextStartTime}ms)`
+			);
 
-			// 6. Générer la réponse via OpenAI
+			const fullPrompt = `${basePrompt}
+	Important: Cette section est la ${currentSectionOrder}ème section du business plan sur ${SECTION_ORDER.sections.length}. 
+	Assure-toi que le contenu s'intègre naturellement avec les sections précédentes tout en évitant les répétitions.
+	${contextPrompt}`;
+
+			// 6. Génération OpenAI
+			logger.generating();
+			const aiStartTime = Date.now();
 			const completion = await this.openai.chat.completions.create({
 				model: "gpt-4-turbo-preview",
 				messages: [
 					{ role: "system", content: config.systemPrompt },
-					{ role: "user", content: userPrompt },
+					...previousSections.map((section) => ({
+						role: "assistant" as const,
+						content: section.content,
+					})),
+					{ role: "user", content: fullPrompt },
 				],
 				temperature: 0.7,
 			});
+			logger.info(
+				`Génération OpenAI terminée (${Date.now() - aiStartTime}ms)`
+			);
 
 			const generatedContent = completion.choices[0].message.content;
-			// const generatedContent = "Generated content";
-			console.log("\n=== CONTENU GÉNÉRÉ ===\n", generatedContent);
-			console.log("========================\n");
 
-			// 7. Préparer le résultat
-			const result: GenerationResult = {
+			return {
 				metadata: {
 					section_name: sectionName,
 					section_title: config.title,
@@ -182,19 +241,25 @@ export class SectionGenerator {
 				},
 				prompts: {
 					system: config.systemPrompt,
-					user: userPrompt,
+					user: fullPrompt,
 				},
 				generated_content: generatedContent || "",
 			};
-
-			return result;
 		} catch (error) {
-			console.error("Erreur dans generateSection:", {
-				sectionName,
-				auth0Id,
-				error,
-			});
+			logger.error("Erreur de génération", error);
+			SectionGenerator.analysesCache.delete(auth0Id); // Utiliser la méthode delete sur la Map
 			throw error;
+		}
+	}
+
+	// Méthode pour gérer manuellement le cache
+	public resetCache(auth0Id?: string) {
+		if (auth0Id) {
+			logger.info(`Reset du cache pour l'utilisateur: ${auth0Id}`);
+			SectionGenerator.analysesCache.delete(auth0Id);
+		} else {
+			logger.info("Reset complet du cache");
+			SectionGenerator.analysesCache.clear();
 		}
 	}
 }

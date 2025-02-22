@@ -1,6 +1,6 @@
 //app/%28pages%29/tools/business-plan/page.tsx
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
@@ -17,6 +17,7 @@ import HistoryDialog from "@/components/business-plan-document/HistoryDialog";
 import { BUSINESS_PLAN_SECTIONS } from "@/types/business-plan-document/business-plan";
 import GenerationProgressDialog from "@/components/business-plan-document/GenerationProgressDialog";
 import { useUserMetadata } from "@/context/userMetadataProvider";
+import TokenConfirmationDialog from "@/components/business-plan-document/TokenConfirmationDialog";
 
 const templates = [
 	{
@@ -154,6 +155,7 @@ export default function BusinessPlanPage() {
 		downloadGeneration,
 		isGenerating,
 		currentSteps,
+		detailedProgress,
 		generateBusinessPlan,
 	} = useBusinessPlanGenerator();
 	const { user } = useUser();
@@ -165,6 +167,7 @@ export default function BusinessPlanPage() {
 		isSaving,
 	} = useGeneralInfo();
 	const router = useRouter();
+	const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
 	// Ajout d'un useEffect pour charger les metadata
 	useEffect(() => {
@@ -193,9 +196,26 @@ export default function BusinessPlanPage() {
 			return;
 		}
 
+		// Au lieu de générer directement, on ouvre d'abord le dialogue
+		setIsConfirmationOpen(true);
+	};
+
+	const handleConfirmGeneration = async () => {
+		setIsConfirmationOpen(false);
 		try {
+			// Vérifier si user et user.sub existent
+			if (!user?.sub) {
+				toast({
+					title: "Erreur",
+					description:
+						"Vous devez être connecté pour générer un business plan",
+					variant: "destructive",
+				});
+				return;
+			}
+
 			await generateBusinessPlan(
-				user.sub,
+				user.sub, // Plus besoin du ! car on a vérifié au-dessus
 				BUSINESS_PLAN_SECTIONS as unknown as string[]
 			);
 		} catch (error) {
@@ -407,9 +427,23 @@ export default function BusinessPlanPage() {
 				</div>
 				<GenerationProgressDialog
 					isOpen={isGenerating}
-					steps={currentSteps}
+					steps={currentSteps.map((step) => ({
+						...step,
+						weight: step.id === "sections" ? 80 : 5, // 80% pour les sections, 5% pour les autres étapes
+					}))}
+					currentSection={
+						detailedProgress.currentSection ?? undefined
+					}
+					totalSections={detailedProgress.totalSections}
+					completedSections={detailedProgress.completedSections}
 				/>
 			</div>
+			<TokenConfirmationDialog
+				isOpen={isConfirmationOpen}
+				onConfirm={handleConfirmGeneration}
+				onCancel={() => setIsConfirmationOpen(false)}
+				availableTokens={tokens}
+			/>
 		</div>
 	);
 }

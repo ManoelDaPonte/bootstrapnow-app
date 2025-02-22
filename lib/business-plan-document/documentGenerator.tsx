@@ -103,12 +103,9 @@ export class DocumentGenerator {
 		return null;
 	}
 
-	private convertMarkdownToOpenXML(text: string): string {
-		// Remplacer les marqueurs de gras (**texte**) par des balises OpenXML
-		return text.replace(
-			/\*\*(.*?)\*\*/g,
-			"<w:r><w:rPr><w:b/></w:rPr><w:t>$1</w:t></w:r>"
-		);
+	private convertMarkdownToDocxTemplater(text: string): string {
+		// Convertit **texte** en {~b texte} pour le formatage en gras
+		return text.replace(/\*\*(.+?)\*\*/g, "{~b $1}");
 	}
 
 	async generateDocument(
@@ -117,7 +114,7 @@ export class DocumentGenerator {
 	): Promise<Buffer> {
 		try {
 			const template = await this.loadTemplate();
-			console.log("Template chargé");
+			const zip = new PizZip(template);
 
 			// Récupérer les données supplémentaires
 			const [generalInfo, marketTrendsData] = await Promise.all([
@@ -133,9 +130,6 @@ export class DocumentGenerator {
 				throw new Error("Données de tendances de marché non trouvées");
 			}
 
-			const zip = new PizZip(template);
-			console.log("ZIP créé");
-
 			// Obtenir les placeholders
 			const placeholders = mapPlaceholders(generalInfo, marketTrendsData);
 
@@ -147,7 +141,7 @@ export class DocumentGenerator {
 					placeholders
 				);
 				processedSections[key] =
-					this.convertMarkdownToOpenXML(withPlaceholders);
+					this.convertMarkdownToDocxTemplater(withPlaceholders);
 			}
 
 			// Fusionner les placeholders directs avec les sections traitées
@@ -166,17 +160,32 @@ export class DocumentGenerator {
 				nullGetter() {
 					return "";
 				},
-				parser: (tag: string) => ({
-					get: (scope: any) => {
-						const value = scope[tag] || "";
-						return value.toString().replace(/\r?\n/g, "\n");
-					},
-				}),
+				parser: function (tag) {
+					// Gestion spéciale pour le formatage en gras
+					if (tag.startsWith("~b ")) {
+						return {
+							get: function (scope) {
+								const value = scope[tag.substring(3)] || "";
+								return {
+									type: "string",
+									value: value.toString(),
+									bold: true,
+								};
+							},
+						};
+					}
+					// Parser standard pour les autres tags
+					return {
+						get: function (scope) {
+							const value = scope[tag] || "";
+							return value.toString().replace(/\r?\n/g, "\n");
+						},
+					};
+				},
 			});
 
 			try {
 				await doc.renderAsync(templateData);
-				console.log("Rendu effectué avec succès");
 			} catch (error) {
 				console.error("Erreur lors du rendu:", error);
 				throw error;

@@ -10,7 +10,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings, Sun, Moon } from "lucide-react";
+import { Settings, Sun, Moon, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -68,6 +68,18 @@ export default function SaasHeader() {
 							<Sun className="h-4 w-4 dark:hidden" />
 							<Moon className="h-4 w-4 hidden dark:block" />
 							<span>Changer le thème</span>
+						</DropdownMenuItem>
+
+						<DropdownMenuSeparator />
+
+						<DropdownMenuItem asChild>
+							<Link
+								href="/api/auth/logout"
+								className="flex items-center gap-2 text-red-500 dark:text-red-400"
+							>
+								<LogOut className="h-4 w-4" />
+								<span>Se déconnecter</span>
+							</Link>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

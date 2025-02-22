@@ -173,6 +173,8 @@ model SectionMetadata {
     dataSignatures   Json // Stocké comme JSON dans la base de données
     generatedContent String
     lastGenerated    DateTime
+    sectionOrder     Int?
+    version          Int      @default(1) // Ajouter ce champ
     user             User     @relation(fields: [userId], references: [id])
 
     @@unique([userId, sectionName])

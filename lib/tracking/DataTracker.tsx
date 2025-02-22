@@ -8,14 +8,19 @@ import {
 	StoredDataSignature,
 	StoredDataSignatures,
 } from "@/types/section-tracking";
+import { logger } from "@/lib/logger";
 
 export class DataTracker {
-	private generateSignature(data: any): string {
-		const sortedData = this.sortObjectDeep(data);
-		const dataString = JSON.stringify(sortedData);
-		return crypto.createHash("sha256").update(dataString).digest("hex");
-	}
+	private readonly CURRENT_VERSION = 11;
 
+	private generateSignature(data: any): string {
+		logger.setSection("DataTracker").debug("Génération signature");
+		const sortedData = this.sortObjectDeep(data);
+		return crypto
+			.createHash("sha256")
+			.update(JSON.stringify(sortedData))
+			.digest("hex");
+	}
 	private sortObjectDeep(obj: any): any {
 		if (obj === null || typeof obj !== "object") {
 			return obj;
@@ -37,25 +42,23 @@ export class DataTracker {
 		userId: string,
 		sectionName: string
 	): Promise<DataSignature[]> {
+		logger.debug(`Récupération signatures stockées: ${sectionName}`);
+
 		const metadata = await prisma.sectionMetadata.findUnique({
-			where: {
-				userId_sectionName: {
-					userId,
-					sectionName,
-				},
-			},
+			where: { userId_sectionName: { userId, sectionName } },
 		});
 
-		// Cast safely from JSON to our type
-		const storedSignatures =
-			metadata?.dataSignatures as unknown as StoredDataSignatures;
-		if (!storedSignatures) return [];
+		if (!metadata?.dataSignatures) {
+			logger.debug("Aucune signature trouvée");
+			return [];
+		}
 
-		// Convert stored format to DataSignature format
-		return storedSignatures.map((sig) => ({
-			...sig,
-			timestamp: sig.timestamp, // Already a string now
-		}));
+		return (metadata.dataSignatures as unknown as StoredDataSignatures).map(
+			(sig) => ({
+				...sig,
+				timestamp: sig.timestamp,
+			})
+		);
 	}
 
 	public async shouldRegenerateSection(
@@ -63,20 +66,37 @@ export class DataTracker {
 		sectionName: string,
 		currentData: FormattedAnalyses
 	): Promise<boolean> {
+		logger.info(`Vérification régénération: ${sectionName}`);
+
+		// Récupérer les métadonnées complètes au lieu de juste les signatures
+		const metadata = await prisma.sectionMetadata.findUnique({
+			where: { userId_sectionName: { userId, sectionName } },
+		});
+
+		// Vérifier la version en premier
+		if (!metadata?.version || metadata.version < this.CURRENT_VERSION) {
+			logger.info(
+				`Régénération requise: version ${
+					metadata?.version || "non définie"
+				} < ${this.CURRENT_VERSION}`
+			);
+			return true;
+		}
+
 		const sectionConfig =
 			BUSINESS_PLAN_SECTIONS[
 				sectionName as keyof typeof BUSINESS_PLAN_SECTIONS
 			];
-		if (!sectionConfig) return true;
+		if (!sectionConfig) {
+			logger.info(
+				"Configuration section non trouvée -> Régénération requise"
+			);
+			return true;
+		}
 
-		const storedSignatures = await this.getStoredSignatures(
-			userId,
-			sectionName
-		);
-
-		console.log(`Vérification de la section ${sectionName}`);
-		console.log("Signatures stockées:", storedSignatures);
-
+		const storedSignatures = metadata
+			? (metadata.dataSignatures as unknown as StoredDataSignatures)
+			: [];
 		let hasChanges = false;
 		let hasValidData = false;
 
@@ -88,20 +108,11 @@ export class DataTracker {
 			const analysis = currentData[analysisType];
 			if (!analysis) continue;
 
-			let dataToCheck = null;
-			if (sectionType === "formatted_text") {
-				dataToCheck = analysis.formatted_text;
-			} else if (
-				sectionType === "formatted_qa" &&
-				analysis.formatted_qa
-			) {
-				dataToCheck = analysis.formatted_qa[fieldName];
-			} else if (
-				sectionType === "formatted_sections" &&
-				analysis.formatted_sections
-			) {
-				dataToCheck = analysis.formatted_sections[fieldName];
-			}
+			const dataToCheck = this.getDataToCheck(
+				analysis,
+				sectionType,
+				fieldName
+			);
 
 			if (dataToCheck) {
 				hasValidData = true;
@@ -109,29 +120,29 @@ export class DataTracker {
 				const storedSignature = storedSignatures.find(
 					(sig) =>
 						sig.analysisType === analysisType &&
-						sig.fieldName === fieldName // Ajout du fieldName pour une comparaison plus précise
+						sig.fieldName === fieldName
 				);
-
-				console.log(`Vérification de ${analysisType}.${fieldName}:`, {
-					currentSignature,
-					storedSignature: storedSignature?.signature,
-				});
 
 				if (
 					!storedSignature ||
 					storedSignature.signature !== currentSignature
 				) {
-					console.log(
-						`Changement détecté dans ${analysisType}.${fieldName}`
+					logger.debug(
+						`Changement détecté: ${analysisType}.${fieldName}`
 					);
 					hasChanges = true;
-					break; // On peut arrêter dès qu'un changement est détecté
+					break;
 				}
 			}
 		}
 
-		// Si aucune donnée valide n'a été trouvée ou s'il y a eu des changements
-		return !hasValidData || hasChanges;
+		const shouldRegenerate = !hasValidData || hasChanges;
+		logger.info(
+			`Régénération ${
+				shouldRegenerate ? "requise" : "non requise"
+			} pour ${sectionName}`
+		);
+		return shouldRegenerate;
 	}
 
 	// Mise à jour de updateSectionMetadata pour inclure fieldName
@@ -141,11 +152,16 @@ export class DataTracker {
 		currentData: FormattedAnalyses,
 		generatedContent: string
 	): Promise<void> {
+		logger.info(`Mise à jour métadonnées: ${sectionName}`);
+
 		const sectionConfig =
 			BUSINESS_PLAN_SECTIONS[
 				sectionName as keyof typeof BUSINESS_PLAN_SECTIONS
 			];
-		if (!sectionConfig) return;
+		if (!sectionConfig) {
+			logger.error("Configuration section non trouvée");
+			return;
+		}
 
 		const dataSignatures: Array<
 			StoredDataSignature & { fieldName: string }
@@ -159,42 +175,31 @@ export class DataTracker {
 			const analysis = currentData[analysisType];
 			if (!analysis) continue;
 
-			let dataToCheck = null;
-			if (sectionType === "formatted_text") {
-				dataToCheck = analysis.formatted_text;
-			} else if (
-				sectionType === "formatted_qa" &&
-				analysis.formatted_qa
-			) {
-				dataToCheck = analysis.formatted_qa[fieldName];
-			} else if (
-				sectionType === "formatted_sections" &&
-				analysis.formatted_sections
-			) {
-				dataToCheck = analysis.formatted_sections[fieldName];
-			}
+			const dataToCheck = this.getDataToCheck(
+				analysis,
+				sectionType,
+				fieldName
+			);
 
 			if (dataToCheck) {
 				dataSignatures.push({
 					analysisType,
-					fieldName, // Ajout du fieldName
+					fieldName,
 					signature: this.generateSignature(dataToCheck),
 					timestamp: new Date().toISOString(),
 				});
 			}
 		}
 
+		logger.debug(`Mise à jour avec ${dataSignatures.length} signatures`);
+
 		await prisma.sectionMetadata.upsert({
-			where: {
-				userId_sectionName: {
-					userId,
-					sectionName,
-				},
-			},
+			where: { userId_sectionName: { userId, sectionName } },
 			update: {
 				dataSignatures: dataSignatures as any,
 				generatedContent,
 				lastGenerated: new Date(),
+				version: this.CURRENT_VERSION, // Ajout de la version dans l'update
 			},
 			create: {
 				userId,
@@ -202,7 +207,28 @@ export class DataTracker {
 				dataSignatures: dataSignatures as any,
 				generatedContent,
 				lastGenerated: new Date(),
+				version: this.CURRENT_VERSION, // Ajout de la version dans le create
 			},
 		});
+
+		logger.info("Métadonnées mises à jour avec succès");
+	}
+
+	private getDataToCheck(
+		analysis: any,
+		sectionType: string,
+		fieldName: string
+	): any {
+		if (sectionType === "formatted_text") {
+			return analysis.formatted_text;
+		} else if (sectionType === "formatted_qa" && analysis.formatted_qa) {
+			return analysis.formatted_qa[fieldName];
+		} else if (
+			sectionType === "formatted_sections" &&
+			analysis.formatted_sections
+		) {
+			return analysis.formatted_sections[fieldName];
+		}
+		return null;
 	}
 }

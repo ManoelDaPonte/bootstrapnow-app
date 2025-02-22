@@ -162,7 +162,8 @@ export const FIELD_MAPPINGS: FieldMappings = {
 			OP_Legal_licenses: "OP_Legal_licenses",
 			OP_Legal_officialbrand: "OP_Legal_officialbrand",
 			OP_Legal_warranty: "OP_Legal_warranty",
-			OP_Legal_environmentalregulations:"OP_Legal_environmentalregulations",
+			OP_Legal_environmentalregulations:
+				"OP_Legal_environmentalregulations",
 			OP_Legal_particularregulations: "OP_Legal_particularregulations",
 			OP_Legal_cautions: "OP_Legal_cautions",
 		},
@@ -175,7 +176,8 @@ export const FIELD_MAPPINGS: FieldMappings = {
 		},
 		qa_responses: {
 			SkillMatrix_LeadershipOwnership: "SkillMatrix_LeadershipOwnership",
-			SkillMatrix_EntrepreneurshipSkills:"SkillMatrix_EntrepreneurshipSkills",
+			SkillMatrix_EntrepreneurshipSkills:
+				"SkillMatrix_EntrepreneurshipSkills",
 			SkillMatrix_Gaps: "SkillMatrix_Gaps",
 			SkillMatrix_Training: "SkillMatrix_Training",
 			SkillMatrix_ProblemSolving: "SkillMatrix_ProblemSolving",
@@ -194,7 +196,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
 			categoryDefinitions: "categoryDefinitions",
 		},
 
-		// AJout des QA
+		qa_responses: {
+			FP_Budget: "FP_Budget",
+			FP_Funding: "FP_Funding",
+			FP_CapitelNeeds: "FP_CapitelNeeds",
+			FP_ExternalCosts: "FP_ExternalCosts",
+			FP_TaxLegalConsiderations: "FP_TaxLegalConsiderations",
+		},
 	},
 
 	swot: {
