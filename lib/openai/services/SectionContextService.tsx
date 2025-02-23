@@ -105,13 +105,13 @@ export class SectionContextService {
 		logger.debug(`Formatage du contexte pour ${contexts.length} sections`);
 
 		return (
-			"\n\nContexte des sections précédentes:\n" +
+			"\n\nContenu déjà rédigé pour le business plan :\n" +
 			contexts
 				.map((context) => {
 					logger.debug(
 						`Ajout du contexte pour la section ${context.sectionName}`
 					);
-					return `Section ${context.sectionName} (${context.order}/${SECTION_ORDER.sections.length}):\n${context.content}`;
+					return `${context.content}`;
 				})
 				.join("\n\n")
 		);
