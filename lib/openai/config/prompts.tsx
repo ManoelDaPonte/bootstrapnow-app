@@ -4,7 +4,7 @@ export const SECTION_SYSTEM_PROMPTS = {
         
     Instructions spécifiques :
     - Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique, en un seul paragraphe, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
     - Longueur cible : 2 phrases
     - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
     - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -19,7 +19,7 @@ export const SECTION_SYSTEM_PROMPTS = {
 
     Instructions spécifiques :
     - Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique, avec sauts de ligne manuels à la fin de chaque paragraphe, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
     - Longueur cible : 50 - 70 mots
     - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
     - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -31,7 +31,7 @@ export const SECTION_SYSTEM_PROMPTS = {
 
     Instructions spécifiques :
     - Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique, avec sauts de ligne manuels à la fin de chaque paragraphe, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
     - Longueur cible : 15 - 20 mots
     - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
     - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -43,7 +43,7 @@ export const SECTION_SYSTEM_PROMPTS = {
 
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique, avec sauts de ligne manuels à la fin de chaque paragraphe, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
 - Longueur cible : 10 - 15 mots
 - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -55,7 +55,7 @@ Décris quel est le profil démographique et psychographique du client idéal, a
 
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
 - Longueur cible : 50 - 70 mots
 - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -67,7 +67,7 @@ Explique quelle est la proposition de vente unique qui permettra de se démarque
 
 Instructions spécifiques :
 - Adopte un ton professionnel et convaincant
-- Structure ton résumé de manière claire et logique, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
 - Longueur cible : 40 - 60 mots
 - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
 - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -80,7 +80,7 @@ Décris quels sont les atouts et expertises de l'équipe qui renforceront le suc
 
     Instructions spécifiques :
     - Adopte un ton professionnel et convaincant
-    - Structure ton résumé de manière claire et logique, avec sauts de ligne manuels à la fin de chaque paragraphe
+    - Structure ton résumé de manière claire et logique, en un seul paragraphe
     - Longueur cible : 50 - 70 mots
     - Ne jamais inventer d'informations qui ne sont pas dans les données fournies
     - Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
@@ -328,15 +328,15 @@ La comparaison avec les modèles économiques des concurrents, en mettant en ava
 
 	Instructions spécifiques :
 	- Adopte un ton professionnel et convaincant
-	- Structure ton analyse en bullet points de manière claire et logique
-	- Longueur cible de chaque bullet point: 15 - 25 mots
+- Structure ton résumé de manière claire et logique, en un seul paragraphe
+- Longueur cible : 50 - 70 mots
 	- Ne jamais inventer d'informations qui ne sont pas dans les données fournies
 	- Si des informations importantes sont manquantes, restructure le résumé autour des points forts disponibles
 	- Supprimer les expressions issues des articles de ta base de connaissance comme : « au cœur de », « dans un monde », « dans le monde », « dans l’univers », « à l'ère de », « à l'heure de », « dans le », « dans les », « crucial », « fondamental », « captivant », « nous devons », « en conclusion », « ça », « cela », « cœur battant »…
 
 	Analyse la taille et les tendances de l'industrie en intégrant :
 	Premièrement les tendances du marché, les grands nombres du marché et les données de marché.
-	Deuxièmenet les facteurs de croissance ou de déclin du secteur, l'évolution des préférences consommateurse et l'impact des nouvelles technologies et innovations.
+	Deuxièmement les facteurs de croissance ou de déclin du secteur, l'évolution des préférences des consommateurs et l'impact des nouvelles technologies et innovations.
 
 	`,
 
