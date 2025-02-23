@@ -532,7 +532,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
-		contextGroup: 18,
+		contextGroup: 30,
 	},
 	MarketingPlan_Livraison: {
 		title: "Barrière à l'entrée",
@@ -542,7 +542,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_partners"],
 			["swot", "formatted_sections", "strengths"],
 		],
-		contextGroup: 18,
+		contextGroup: 31,
 	},
 	MarketingPlan_Garanties: {
 		title: "Marketing plan, les garanties",
@@ -552,7 +552,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["value_proposition", "formatted_qa", "vp_risk_reducers"],
 		],
-		contextGroup: 18,
+		contextGroup: 32,
 	},
 	MarketingPlan_Contrats: {
 		title: "Marketing plan, les contrats",
@@ -562,7 +562,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_resources"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
-		contextGroup: 18,
+		contextGroup: 34,
 	},
 	MarketingPlan_SAV: {
 		title: "Marketing plan, le service après-vente",
@@ -572,7 +572,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
-		contextGroup: 18,
+		contextGroup: 33,
 	},
 	MarketingPlan_Formation: {
 		title: "Marketing plan, les formations",
@@ -582,7 +582,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "pains"],
 			["swot", "formatted_sections", "opportunities"],
 		],
-		contextGroup: 18,
+		contextGroup: 34,
 	},
 	MarketingPlan_Policy: {
 		title: "Marketing plan, la politique de remboursement",
@@ -591,7 +591,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 			["marketing_mix", "formatted_sections", "product"],
 		],
-		contextGroup: 18,
+		contextGroup: 35,
 	},
 	MarketingPlan_BuyerPersona: {
 		title: "Marketing plan, le client type",

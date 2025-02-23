@@ -205,13 +205,18 @@ export class SectionGenerator {
 				`Contexte formaté (${Date.now() - contextStartTime}ms)`
 			);
 			const fullPrompt = `${basePrompt}
-			Important: Tu rédiges la section "${config.title}" qui est la ${currentSectionOrder}ème partie du business plan sur ${SECTION_ORDER.sections.length} au total.
+
+			${
+				contextPrompt
+					? `
 			
 			Voici un résumé des informations déjà présentées dans le document :
 			${contextPrompt}
 			
-			Merci de rédiger cette nouvelle section en assurant une continuité naturelle avec le contenu existant, sans répéter les informations déjà mentionnées.`;
-
+			Merci de rédiger cette nouvelle section en assurant une continuité naturelle avec le contenu existant, sans répéter les informations déjà mentionnées.`
+					: ""
+			}`;
+			console.log(fullPrompt);
 			// 6. Génération OpenAI
 			logger.generating();
 			const aiStartTime = Date.now();

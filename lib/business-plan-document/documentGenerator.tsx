@@ -7,6 +7,7 @@ import Docxtemplater from "docxtemplater";
 import { prisma } from "@/lib/db/prisma";
 import { mapPlaceholders, replacePlaceholders } from "./placeholderMapper";
 import { Prisma } from "@prisma/client";
+import { configureDocxTemplater } from "./markdownProcessor";
 
 interface GeneralInfo {
 	city: string;
@@ -103,11 +104,6 @@ export class DocumentGenerator {
 		return null;
 	}
 
-	private convertMarkdownToDocxTemplater(text: string): string {
-		// Convertit **texte** en {{~b texte}} pour le formatage en gras
-		return text.replace(/\*\*(.+?)\*\*/g, "{{~b $1}}");
-	}
-
 	async generateDocument(
 		sections: Record<string, string>,
 		auth0Id: string
@@ -133,63 +129,15 @@ export class DocumentGenerator {
 			// Obtenir les placeholders
 			const placeholders = mapPlaceholders(generalInfo, marketTrendsData);
 
-			// Appliquer les remplacements aux sections et convertir le Markdown
-			const processedSections: Record<string, string> = {};
-			for (const [key, content] of Object.entries(sections)) {
-				const withPlaceholders = replacePlaceholders(
-					content,
-					placeholders
-				);
-				processedSections[key] =
-					this.convertMarkdownToDocxTemplater(withPlaceholders);
-			}
-
-			// Fusionner les placeholders directs avec les sections traitées
+			// Fusionner les sections avec les placeholders
 			const templateData = {
-				...processedSections,
+				...sections,
 				...placeholders,
 			};
 
-			const doc = new Docxtemplater(zip, {
-				paragraphLoop: true,
-				linebreaks: true,
-				delimiters: {
-					start: "{{",
-					end: "}}",
-				},
-				nullGetter() {
-					return "";
-				},
-				parser: function (tag) {
-					// Gestion spéciale pour le formatage en gras
-					if (tag.startsWith("~b ")) {
-						return {
-							get: function (_scope) {
-								const value = tag.substring(3) || "";
-								return {
-									type: "string",
-									value: value,
-									bold: true,
-								};
-							},
-						};
-					}
-					// Parser standard pour les autres tags
-					return {
-						get: function (scope) {
-							const value = scope[tag] || "";
-							return value.toString().replace(/\r?\n/g, "\n");
-						},
-					};
-				},
-			});
-
-			try {
-				await doc.renderAsync(templateData);
-			} catch (error) {
-				console.error("Erreur lors du rendu:", error);
-				throw error;
-			}
+			// Les données seront automatiquement nettoyées par le parser
+			const doc = new Docxtemplater(zip, configureDocxTemplater(zip));
+			await doc.renderAsync(templateData);
 
 			const buf = doc.getZip().generate({
 				type: "nodebuffer",
@@ -198,13 +146,7 @@ export class DocumentGenerator {
 
 			return buf;
 		} catch (error) {
-			console.error("Erreur détaillée lors de la génération:", error);
-			if (error instanceof Error && (error as any).properties?.errors) {
-				console.error(
-					"Erreurs spécifiques:",
-					(error as any).properties.errors
-				);
-			}
+			console.error("Erreur lors de la génération:", error);
 			throw error;
 		}
 	}
@@ -232,7 +174,7 @@ export class DocumentGenerator {
 
 			return sasUrl;
 		} catch (error) {
-			console.error("Erreur lors de la sauvegarde du document:", error);
+			console.error("Erreur lors de la génération:", error);
 			throw error;
 		}
 	}
