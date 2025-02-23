@@ -194,39 +194,33 @@ export const BUSINESS_PLAN_SECTIONS = {
 	},
 	PESTEL_chart_P: {
 		title: "Pestel, politique",
-		paths: [
-			["pestel", "formatted_sections", "political"],
-		],
+		paths: [["pestel", "formatted_sections", "political"]],
+		contextGroup: 22,
 	},
 	PESTEL_chart_E1: {
 		title: "Pestel, politique",
-		paths: [
-			["pestel", "formatted_sections", "economic"],
-		],
+		paths: [["pestel", "formatted_sections", "economic"]],
+		contextGroup: 23,
 	},
 	PESTEL_chart_S: {
 		title: "Pestel, social",
-		paths: [
-			["pestel", "formatted_sections", "social"],
-		],
+		paths: [["pestel", "formatted_sections", "social"]],
+		contextGroup: 24,
 	},
 	PESTEL_chart_T: {
 		title: "Pestel, technologique",
-		paths: [
-			["pestel", "formatted_sections", "technological"],
-		],
+		paths: [["pestel", "formatted_sections", "technological"]],
+		contextGroup: 25,
 	},
 	PESTEL_chart_E2: {
 		title: "Pestel, environnemental",
-		paths: [
-			["pestel", "formatted_sections", "environmental"],
-		],
+		paths: [["pestel", "formatted_sections", "environmental"]],
+		contextGroup: 26,
 	},
 	PESTEL_chart_L: {
 		title: "Pestel, legal",
-		paths: [
-			["pestel", "formatted_sections", "legal"],
-		],
+		paths: [["pestel", "formatted_sections", "legal"]],
+		contextGroup: 27,
 	},
 	PnS_What: {
 		title: "Produit et Services : Quoi",
