@@ -164,7 +164,7 @@ export class DocumentGenerator {
 					// Gestion spéciale pour le formatage en gras
 					if (tag.startsWith("~b ")) {
 						return {
-							get: function (scope) {
+							get: function (_scope) {
 								const value = tag.substring(3) || "";
 								return {
 									type: "string",
