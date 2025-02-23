@@ -11,7 +11,7 @@ import {
 import { logger } from "@/lib/logger";
 
 export class DataTracker {
-	private readonly CURRENT_VERSION = 11;
+	private readonly CURRENT_VERSION = 12;
 
 	private generateSignature(data: any): string {
 		logger.setSection("DataTracker").debug("Génération signature");
