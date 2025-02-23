@@ -104,8 +104,8 @@ export class DocumentGenerator {
 	}
 
 	private convertMarkdownToDocxTemplater(text: string): string {
-		// Convertit **texte** en {~b texte} pour le formatage en gras
-		return text.replace(/\*\*(.+?)\*\*/g, "{~b $1}");
+		// Convertit **texte** en {{~b texte}} pour le formatage en gras
+		return text.replace(/\*\*(.+?)\*\*/g, "{{~b $1}}");
 	}
 
 	async generateDocument(
@@ -165,10 +165,10 @@ export class DocumentGenerator {
 					if (tag.startsWith("~b ")) {
 						return {
 							get: function (scope) {
-								const value = scope[tag.substring(3)] || "";
+								const value = tag.substring(3) || "";
 								return {
 									type: "string",
-									value: value.toString(),
+									value: value,
 									bold: true,
 								};
 							},
