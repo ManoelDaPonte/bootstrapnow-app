@@ -4,7 +4,7 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogDescription,
+	// DialogDescription,
 	DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -24,32 +24,43 @@ const TokenConfirmationDialog = ({
 	availableTokens,
 }: TokenConfirmationDialogProps) => {
 	return (
-		<Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
+		<Dialog open={isOpen} onOpenChange={onCancel}>
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
-						<Coins className="h-5 w-5" />
+						<Coins className="w-5 h-5" />
 						Confirmation de génération
 					</DialogTitle>
-					<DialogDescription className="space-y-2 pt-2">
-						<p>
-							Cette génération de business plan utilisera 1 token.
-						</p>
-						<p className="font-medium text-foreground">
-							Tokens disponibles : {availableTokens}{" "}
-							{availableTokens > 1 ? "tokens" : "token"}
-						</p>
-					</DialogDescription>
 				</DialogHeader>
-				<DialogFooter className="flex-row justify-center gap-2 sm:justify-center">
+
+				<div className="space-y-4 pt-4">
+					<div className="text-sm text-muted-foreground">
+						La génération d&apos;un business plan consomme 1 token.
+						Vous avez actuellement {availableTokens} token
+						{availableTokens > 1 ? "s" : ""} disponible
+						{availableTokens > 1 ? "s" : ""}.
+					</div>
+
+					<div className="text-sm">
+						Êtes-vous sûr de vouloir générer votre business plan
+						maintenant ?
+					</div>
+				</div>
+
+				<DialogFooter className="flex items-center justify-end gap-2 pt-4">
 					<Button variant="outline" onClick={onCancel}>
 						Annuler
 					</Button>
-					<Button onClick={onConfirm}>Confirmer la génération</Button>
+					<Button
+						onClick={onConfirm}
+						disabled={availableTokens < 1}
+						className="bg-primary text-primary-foreground hover:bg-primary/90"
+					>
+						Confirmer
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
 };
-
 export default TokenConfirmationDialog;

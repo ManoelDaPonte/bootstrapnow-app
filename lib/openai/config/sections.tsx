@@ -12,6 +12,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["ansoff", "formatted_qa", "growth_strategy"],
 		],
+		contextGroup: 0,
 	},
 	ES_Description: {
 		title: "Description du produit/service",
@@ -27,6 +28,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_qa", "pain_points"],
 			["funnel_chart", "formatted_sections", "visibilité"],
 		],
+		contextGroup: 0,
 	},
 	ES_Goal_123: {
 		title: "Objectifs à court, moyen et long terme",
@@ -43,6 +45,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["monthly_projection", "formatted_sections", "growth_analysis"],
 			["yearly_projection", "formatted_sections", "yearly_analysis"],
 		],
+		contextGroup: 0,
 	},
 	ES_Target_market: {
 		title: "Marché cible",
@@ -53,6 +56,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_qa", "vp_customer_profiles"],
 			["pestel", "formatted_sections", "social"],
 		],
+		contextGroup: 0,
 	},
 	ES_competition: {
 		title: "Concurrence",
@@ -66,6 +70,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_sections", "achat"],
 			["value_proposition", "formatted_qa", "vp_differentiation_factors"],
 		],
+		contextGroup: 0,
 	},
 	ES_management_team: {
 		title: "Équipe de direction",
@@ -76,6 +81,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["marketing_mix", "formatted_sections", "people"],
 		],
+		contextGroup: 0,
 	},
 	ES_financial_outlook: {
 		title: "Perspectives financières",
@@ -94,6 +100,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["ansoff", "formatted_sections", "diversification"],
 			["yearly_projection", "formatted_sections", "summary"],
 		],
+		contextGroup: 0,
 	},
 
 	Company_mission_statement: {
@@ -105,6 +112,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "pains"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_philosophy_and_vision: {
@@ -114,6 +122,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "social"],
 			["swot", "formatted_sections", "strengths"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_goals_longTerm: {
@@ -123,6 +132,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_qa", "industry_trends"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_goals_shortandmidTerm: {
@@ -135,6 +145,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["ansoff", "formatted_sections", "diversification"],
 			["canvas", "formatted_sections", "key_activities"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_target_market: {
@@ -145,6 +156,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_qa", "vp_customer_profiles"],
 			["pestel", "formatted_qa", "opportunities"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_industry: {
@@ -155,6 +167,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_industry_b: {
@@ -164,6 +177,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_qa", "vp_differentiation_factors"],
 			["competitors", "formatted_text"],
 		],
+		contextGroup: 1,
 	},
 
 	Company_legal_structure: {
@@ -176,8 +190,38 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "economic"],
 			["canvas", "formatted_sections", "cost_structure"],
 		],
+		contextGroup: 1,
 	},
-
+	PESTEL_chart_P: {
+		title: "Pestel, politique",
+		paths: [["pestel", "formatted_sections", "political"]],
+		contextGroup: 22,
+	},
+	PESTEL_chart_E1: {
+		title: "Pestel, politique",
+		paths: [["pestel", "formatted_sections", "economic"]],
+		contextGroup: 23,
+	},
+	PESTEL_chart_S: {
+		title: "Pestel, social",
+		paths: [["pestel", "formatted_sections", "social"]],
+		contextGroup: 24,
+	},
+	PESTEL_chart_T: {
+		title: "Pestel, technologique",
+		paths: [["pestel", "formatted_sections", "technological"]],
+		contextGroup: 25,
+	},
+	PESTEL_chart_E2: {
+		title: "Pestel, environnemental",
+		paths: [["pestel", "formatted_sections", "environmental"]],
+		contextGroup: 26,
+	},
+	PESTEL_chart_L: {
+		title: "Pestel, legal",
+		paths: [["pestel", "formatted_sections", "legal"]],
+		contextGroup: 27,
+	},
 	PnS_What: {
 		title: "Produit et Services : Quoi",
 		paths: [
@@ -188,6 +232,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "economic"],
 			["pestel", "formatted_sections", "technological"],
 		],
+		contextGroup: 2,
 	},
 	PnS_Why: {
 		title: "Produit et Services : Pourquoi",
@@ -200,6 +245,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_qa", "market_positioning"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
+		contextGroup: 2,
 	},
 	PnS_Competitive: {
 		title: "Produit et Services : Competitif",
@@ -210,6 +256,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 2,
 	},
 	PnS_HowMuch: {
 		title: "Produit et Services : Combien",
@@ -223,6 +270,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "threats"],
 			["pestel", "formatted_sections", "technological"],
 		],
+		contextGroup: 2,
 	},
 	Market_SizeAndTrends: {
 		title: "Marché : Taille et tendances",
@@ -237,6 +285,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "customer_jobs"],
 			["pestel", "formatted_sections", "technological"],
 		],
+		contextGroup: 3,
 	},
 	Market_evolution: {
 		title: "Évolution du marché",
@@ -247,6 +296,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_qa", "social_trends"],
 			["ansoff", "formatted_sections", "market_development"],
 		],
+		contextGroup: 3,
 	},
 	Market_competency: {
 		title: "Compétiteurs du marché",
@@ -257,6 +307,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "gains"],
 			["pestel", "formatted_qa", "competitive"],
 		],
+		contextGroup: 3,
 	},
 	Market_MaxShare: {
 		title: "Parts de marché atteignable",
@@ -268,6 +319,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "gains"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_obstaclesStartup: {
 		title: "Barrière à l'entrée",
@@ -280,6 +332,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["startup_expenses", "formatted_qa", "capital_needs"],
 			["canvas", "formatted_sections", "key_partners"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_obstaclesProduction: {
 		title: "Barrière à l'entrée",
@@ -292,6 +345,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_partners"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_risks: {
 		title: "Barrière à l'entrée",
@@ -303,6 +357,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["ansoff", "formatted_sections", "product_development"],
 			["ansoff", "formatted_sections", "technological_forecasting"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_economicalInfluence: {
 		title: "Barrière à l'entrée",
@@ -312,6 +367,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_resources"],
 			["startup_expenses", "formatted_sections", "risks"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_trends: {
 		title: "Barrière à l'entrée",
@@ -325,6 +381,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_segments"],
 			["canvas", "formatted_sections", "value_proposition"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_opportunities: {
 		title: "Barrière à l'entrée",
@@ -337,6 +394,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_partners"],
 			["canvas", "formatted_sections", "channels"],
 		],
+		contextGroup: 3,
 	},
 	BarriersToEntry_competencyRisks: {
 		title: "Barrière à l'entrée",
@@ -349,6 +407,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_activities"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 3,
 	},
 	SWOT_Strengths: {
 		title: "Analyse des forces",
@@ -359,6 +418,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 4,
 	},
 	SWOT_Weaknesses: {
 		title: "Analyse des faiblesses",
@@ -369,6 +429,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 5,
 	},
 	SWOT_Opportunities: {
 		title: "Analyse des opportunités",
@@ -379,6 +440,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 6,
 	},
 	SWOT_Threats: {
 		title: "Analyse des menaces",
@@ -389,6 +451,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 7,
 	},
 	SWOT_Analysis: {
 		title: "Analyse SWOT",
@@ -399,60 +462,52 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["swot", "formatted_sections", "threats"],
 		],
+		contextGroup: 8,
 	},
-	BMC_chart_key_partners:{
+	BMC_chart_key_partners: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "key_partners"],
-		],
+		paths: [["canvas", "formatted_sections", "key_partners"]],
+		contextGroup: 9,
 	},
-	BMC_chart_key_activities:{
+	BMC_chart_key_activities: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "key_activities"],
-		],
+		paths: [["canvas", "formatted_sections", "key_activities"]],
+		contextGroup: 10,
 	},
-	BMC_chart_value_proposition:{
+	BMC_chart_value_proposition: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "value_proposition"],
-		],
+		paths: [["canvas", "formatted_sections", "value_proposition"]],
+		contextGroup: 11,
 	},
-	BMC_chart_key_resources:{
+	BMC_chart_key_resources: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "key_resources"],
-		],
+		paths: [["canvas", "formatted_sections", "key_resources"]],
+		contextGroup: 12,
 	},
-	BMC_chart_channels:{
+	BMC_chart_channels: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "channels"],
-		],
+		paths: [["canvas", "formatted_sections", "channels"]],
+		contextGroup: 13,
 	},
-	BMC_chart_customer_relationship:{
+	BMC_chart_customer_relationship: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "customer_relationships"],
-		],
+		paths: [["canvas", "formatted_sections", "customer_relationships"]],
+		contextGroup: 14,
 	},
-	BMC_chart_customer_segments:{
+	BMC_chart_customer_segments: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "customer_segments"],
-		],
+		paths: [["canvas", "formatted_sections", "customer_segments"]],
+		contextGroup: 15,
 	},
-	BMC_chart_cost_structure:{
+	BMC_chart_cost_structure: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "cost_structure"],
-		],
+		paths: [["canvas", "formatted_sections", "cost_structure"]],
+		contextGroup: 16,
 	},
-	BMC_chart_revenus:{
+	BMC_chart_revenus: {
 		title: "Business modèle, activités clés",
-		paths: [
-			["canvas", "formatted_sections", "revenue_streams"],
-		],
+		paths: [["canvas", "formatted_sections", "revenue_streams"]],
+		contextGroup: 17,
 	},
 	MarketingPlan_Caracteristiques: {
 		title: "Barrière à l'entrée",
@@ -464,6 +519,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_activities"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Avantages: {
 		title: "Barrière à l'entrée",
@@ -476,6 +532,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Livraison: {
 		title: "Barrière à l'entrée",
@@ -485,6 +542,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_partners"],
 			["swot", "formatted_sections", "strengths"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Garanties: {
 		title: "Marketing plan, les garanties",
@@ -494,6 +552,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["value_proposition", "formatted_qa", "vp_risk_reducers"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Contrats: {
 		title: "Marketing plan, les contrats",
@@ -503,6 +562,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_resources"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_SAV: {
 		title: "Marketing plan, le service après-vente",
@@ -512,6 +572,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Formation: {
 		title: "Marketing plan, les formations",
@@ -521,6 +582,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["value_proposition", "formatted_sections", "pains"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Policy: {
 		title: "Marketing plan, la politique de remboursement",
@@ -529,6 +591,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 			["marketing_mix", "formatted_sections", "product"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_BuyerPersona: {
 		title: "Marketing plan, le client type",
@@ -540,6 +603,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["ansoff", "formatted_sections", "market_development"],
 			["marketing_mix", "formatted_sections", "people"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_KeyCompetitors: {
 		title: "Marketing plan, les compétiteurs clés",
@@ -552,6 +616,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "value_proposition"],
 			["canvas", "formatted_sections", "customer_segments"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Niche: {
 		title: "Marketing plan, le marché de niche",
@@ -561,6 +626,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_sections", "intérêt"],
 			["swot", "formatted_qa", "competitor_weaknesses"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Niche_b: {
 		title: "Marketing plan, le marché de niche",
@@ -572,6 +638,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "environmental"],
 			["pestel", "formatted_sections", "legal"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Niche_c: {
 		title: "Marketing plan, le marché de niche",
@@ -580,6 +647,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["marketing_mix", "formatted_sections", "people"],
 			["canvas", "formatted_sections", "customer_segments"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Niche_d: {
 		title: "Marketing plan, le marché de niche",
@@ -590,6 +658,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_sections", "intérêt"],
 			["swot", "formatted_qa", "competitor_weaknesses"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_HOW: {
 		title: "Marketing plan, comment faire",
@@ -598,6 +667,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_sections", "achat"],
 			["marketing_mix", "formatted_sections", "promotion"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Tactics: {
 		title: "Marketing plan, tactiques",
@@ -614,6 +684,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "social"],
 			["funnel_chart", "formatted_qa", "advocacy"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_LogoAndBranding: {
 		title: "Marketing plan, image de marque",
@@ -622,6 +693,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "strengths"],
 			["canvas", "formatted_sections", "value_proposition"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_FirstConclusion: {
 		title: "Marketing plan, première conclusion",
@@ -636,6 +708,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "channels"],
 			["funnel_chart", "formatted_sections", "achat"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_PromotionalBudget: {
 		title: "Marketing plan, budget promotionnel",
@@ -653,6 +726,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["funnel_chart", "formatted_qa", "advocacy"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_PricingStrategy: {
 		title: "Marketing plan, stratégie de pricing",
@@ -661,6 +735,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "value_proposition"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_PricingStrategy_competitors: {
 		title: "Marketing plan, compétiteurs",
@@ -671,6 +746,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_segments"],
 			["funnel_chart", "formatted_sections", "intérêt"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_PricingStrategy_Clientelle: {
 		title: "Marketing plan, stratégie de clientelle",
@@ -678,6 +754,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["marketing_mix", "formatted_sections", "process"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_Location: {
 		title: "Marketing plan, localisation",
@@ -690,6 +767,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_DistributionChannel: {
 		title: "Marketing plan, cannaux de distribution",
@@ -697,6 +775,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "channels"],
 			["marketing_mix", "formatted_sections", "place"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_PartnershipsAndDistributors: {
 		title: "Marketing plan, partenaires et distributeurs",
@@ -706,6 +785,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["value_proposition", "formatted_sections", "gains"],
 		],
+		contextGroup: 18,
 	},
 	MarketingPlan_ChannelConclusion: {
 		title: "Marketing plan, conclusion de distribution",
@@ -720,6 +800,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_partners"],
 			["ansoff", "formatted_sections", "market_development"],
 		],
+		contextGroup: 18,
 	},
 	OP_Production: {
 		title: "Plan opérationnel, production",
@@ -728,6 +809,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "threats"],
 			["pestel", "formatted_sections", "technological"],
 		],
+		contextGroup: 19,
 	},
 	OP_Production_ressources: {
 		title: "Plan opérationnel, ressources pour produire",
@@ -735,6 +817,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_resources"],
 			["marketing_mix", "formatted_sections", "process"],
 		],
+		contextGroup: 19,
 	},
 	OP_Production_cost: {
 		title: "Plan opérationnel, coût de production",
@@ -744,6 +827,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["monthly_projection", "formatted_sections", "expenses_analysis"],
 			["yearly_projection", "formatted_sections", "expenses_analysis"],
 		],
+		contextGroup: 19,
 	},
 	OP_Production_efficiency: {
 		title: "Plan opérationnel, efficience de production",
@@ -751,6 +835,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["ansoff", "formatted_sections", "product_development"],
 		],
+		contextGroup: 19,
 	},
 	OP_QualityControl: {
 		title: "Plan opérationnel, contrôle qualité",
@@ -759,6 +844,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_activities"],
 			["marketing_mix", "formatted_sections", "process"],
 		],
+		contextGroup: 19,
 	},
 	OP_QualityControl_b: {
 		title: "Plan opérationnel, contrôle qualité",
@@ -769,6 +855,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 			["funnel_chart", "formatted_qa", "loyalty"],
 		],
+		contextGroup: 19,
 	},
 	OP_QualityControl_c: {
 		title: "Plan opérationnel, contrôle qualité",
@@ -778,6 +865,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 			["marketing_mix", "formatted_sections", "physical_evidence"],
 		],
+		contextGroup: 19,
 	},
 	OP_Location: {
 		title: "Plan opérationnel, environnement juridique",
@@ -791,6 +879,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "opportunities"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 19,
 	},
 	OP_Location_b: {
 		title: "Plan opérationnel, environnement juridique",
@@ -799,6 +888,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "legal"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 19,
 	},
 	OP_Legal_data: {
 		title: "Plan opérationnel, environnement juridique",
@@ -810,6 +900,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "economic"],
 			["canvas", "formatted_sections", "cost_structure"],
 		],
+		contextGroup: 19,
 	},
 	OP_Legal_data_c: {
 		title: "Plan opérationnel, environnement juridique",
@@ -819,6 +910,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_qa", "legal_particular_regulations"],
 			["pestel", "formatted_qa", "legal_cautions"],
 		],
+		contextGroup: 19,
 	},
 	OP_Personnel: {
 		title: "Plan opérationnel, ressources humaines",
@@ -829,6 +921,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["skills_matrix", "formatted_qa", "problem_solving"],
 			["skills_matrix", "formatted_qa", "entrepreneurship_skills"],
 		],
+		contextGroup: 19,
 	},
 	OP_numbers: {
 		title: "Plan opérationnel, chiffres",
@@ -841,6 +934,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_partners"],
 			["marketing_mix", "formatted_sections", "people"],
 		],
+		contextGroup: 19,
 	},
 	OP_costStructure: {
 		title: "Plan opérationnel, structure de coûts",
@@ -852,6 +946,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_activities"],
 			["marketing_mix", "formatted_sections", "process"],
 		],
+		contextGroup: 19,
 	},
 	OP_Inventaire: {
 		title: "Plan opérationnel, inventaire",
@@ -866,6 +961,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "weaknesses"],
 			["canvas", "formatted_sections", "cost_structure"],
 		],
+		contextGroup: 19,
 	},
 	OP_Fournisseurs_List: {
 		title: "Plan opérationnel, liste des fournisseurs",
@@ -874,6 +970,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "key_resources"],
 			["canvas", "formatted_sections", "key_partners"],
 		],
+		contextGroup: 19,
 	},
 	OP_Fournisseurs_Type: {
 		title: "Plan opérationnel, types de fournisseurs",
@@ -884,6 +981,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["monthly_projection", "formatted_qa", "stock_churn"],
 			["canvas", "formatted_sections", "channels"],
 		],
+		contextGroup: 19,
 	},
 	OP_Fournisseurs_Politics: {
 		title: "Plan opérationnel, politique des fournisseurs",
@@ -892,6 +990,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 			["marketing_mix", "formatted_sections", "place"],
 		],
+		contextGroup: 19,
 	},
 	OP_Fournisseurs_Reliability: {
 		title: "Plan opérationnel, confiance des fournisseurs",
@@ -900,6 +999,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "weaknesses"],
 			["swot", "formatted_sections", "opportunities"],
 		],
+		contextGroup: 19,
 	},
 	OP_Fournisseurs_Crash: {
 		title: "Plan opérationnel, problèmes fournisseurs",
@@ -909,6 +1009,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 			["swot", "formatted_sections", "weaknesses"],
 		],
+		contextGroup: 19,
 	},
 	OP_Fournisseurs_Critical: {
 		title: "Plan opérationnel, fournisseurs critiques",
@@ -919,6 +1020,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["pestel", "formatted_sections", "economic"],
 			["canvas", "formatted_sections", "cost_structure"],
 		],
+		contextGroup: 19,
 	},
 	OP_Credit: {
 		title: "Plan opérationnel, crédit",
@@ -927,6 +1029,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 			["monthly_projection", "formatted_qa", "credit_common"],
 		],
+		contextGroup: 19,
 	},
 	OP_Credit_Politics: {
 		title: "Plan opérationnel, politique de crédit",
@@ -936,6 +1039,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 19,
 	},
 	OP_Credit_Verif: {
 		title: "Plan opérationnel, vérification de crédit",
@@ -944,6 +1048,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["swot", "formatted_sections", "weaknesses"],
 			["canvas", "formatted_sections", "customer_relationships"],
 		],
+		contextGroup: 19,
 	},
 	OP_Credit_Conds: {
 		title: "Plan opérationnel, conditions de crédit",
@@ -952,6 +1057,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 			["marketing_mix", "formatted_sections", "price"],
 		],
+		contextGroup: 19,
 	},
 	OP_Credit_Cost: {
 		title: "Plan opérationnel, coût de crédit",
@@ -959,6 +1065,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 			["marketing_mix", "formatted_sections", "price"],
 		],
+		contextGroup: 19,
 	},
 	OP_Credit_Payments: {
 		title: "Plan opérationnel, crédits de paiement",
@@ -968,6 +1075,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "customer_relationships"],
 			["swot", "formatted_sections", "weaknesses"],
 		],
+		contextGroup: 19,
 	},
 	Management_Biographies: {
 		title: "Management, biographies",
@@ -981,6 +1089,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["skills_matrix", "formatted_qa", "creativity"],
 			["canvas", "formatted_sections", "value_proposition"],
 		],
+		contextGroup: 20,
 	},
 	Management_Gaps: {
 		title: "Management, lacunes",
@@ -992,6 +1101,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["ansoff", "formatted_sections", "diversification"],
 			["startup_expenses", "formatted_qa", "external_cost"],
 		],
+		contextGroup: 20,
 	},
 	Management_Advisors: {
 		title: "Management, conseillers",
@@ -1001,6 +1111,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["skills_matrix", "formatted_qa", "gaps"],
 			["ansoff", "formatted_sections", "diversification"],
 		],
+		contextGroup: 20,
 	},
 	StartupExpenses: {
 		title: "Dépenses de démarrage",
@@ -1010,6 +1121,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["startup_expenses", "formatted_qa", "budget"],
 			["startup_expenses", "formatted_qa", "external_cost"],
 		],
+		contextGroup: 21,
 	},
 	OpeningDay_BalanceSheet: {
 		title: "Dépenses au premier jour",
@@ -1020,6 +1132,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["startup_expenses", "formatted_sections", "financial"],
 			["startup_expenses", "formatted_text"],
 		],
+		contextGroup: 21,
 	},
 	PersonnalFinanceStatement: {
 		title: "Bilan financiers personnels",
@@ -1030,6 +1143,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["startup_expenses", "formatted_sections", "financial"],
 			["startup_expenses", "formatted_text"],
 		],
+		contextGroup: 21,
 	},
 	FP_12monthsProfitAndLoss: {
 		title: "Barrière à l'entrée",
@@ -1040,6 +1154,7 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["monthly_projection", "formatted_sections", "growth_analysis"],
 			["monthly_projection", "formatted_text"],
 		],
+		contextGroup: 22,
 	},
 	FP_3years: {
 		title: "Barrière à l'entrée",
@@ -1050,5 +1165,6 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["yearly_projection", "formatted_sections", "trend_analysis"],
 			["yearly_projection", "formatted_text"],
 		],
+		contextGroup: 22,
 	},
 };

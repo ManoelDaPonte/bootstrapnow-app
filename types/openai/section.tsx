@@ -3,6 +3,7 @@ export interface SectionConfig {
 	title: string;
 	paths: [string, string, string][];
 	systemPrompt: string;
+	contextGroup: number; // Nouveau paramètre
 }
 
 export interface GenerationResult {
