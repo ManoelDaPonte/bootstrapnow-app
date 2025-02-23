@@ -92,6 +92,7 @@ export class SectionGenerator {
 			title: sectionData.title,
 			paths: sectionData.paths as [string, string, string][],
 			systemPrompt,
+			contextGroup: sectionData.contextGroup,
 		};
 	}
 

@@ -5,7 +5,7 @@ export const BUSINESS_PLAN_SECTIONS = [
 	"ES_Overview",
 	"ES_Description",
 	"ES_Goal_123",
-	// "ES_Target_market",
+	"ES_Target_market",
 	// "ES_competition",
 	// "ES_management_team",
 	// "ES_financial_outlook",

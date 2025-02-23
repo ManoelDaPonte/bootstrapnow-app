@@ -6,6 +6,7 @@ import {
 	BusinessPlanSection,
 	Status,
 } from "@/types/business-plan-document/business-plan";
+import { BUSINESS_PLAN_SECTIONS } from "@/lib/openai/config/sections";
 import { logger } from "@/lib/logger";
 
 export interface SectionContext {
@@ -33,17 +34,39 @@ export class SectionContextService {
 			return [];
 		}
 
+		// Récupérer le groupe de contexte de la section courante
+		const config =
+			BUSINESS_PLAN_SECTIONS[
+				currentSection as keyof typeof BUSINESS_PLAN_SECTIONS
+			];
+		const currentGroup =
+			"contextGroup" in config ? config.contextGroup : null;
+
+		// Obtenir toutes les sections précédentes
 		const previousSections =
 			SECTION_ORDER.getPreviousSections(currentSection);
+
+		// Filtrer les sections du même groupe
+		const relevantSections = previousSections.filter((section) => {
+			const sectionConfig =
+				BUSINESS_PLAN_SECTIONS[
+					section as keyof typeof BUSINESS_PLAN_SECTIONS
+				];
+			return (
+				"contextGroup" in sectionConfig &&
+				sectionConfig.contextGroup === currentGroup
+			);
+		});
+
 		logger.debug(
-			`Sections précédentes à chercher: ${previousSections.join(", ")}`
+			`Sections précédentes à chercher: ${relevantSections.join(", ")}`
 		);
 
 		const sectionMetadata = await prisma.sectionMetadata.findMany({
 			where: {
-				userId: user.id, // Utiliser l'ID interne
+				userId: user.id,
 				sectionName: {
-					in: previousSections,
+					in: relevantSections,
 				},
 			},
 			select: {
