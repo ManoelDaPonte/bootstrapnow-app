@@ -99,6 +99,9 @@ const GenerationProgressDialog: React.FC<GenerationProgressDialogProps> = ({
 			<DialogContent className="sm:max-w-md" showCloseButton={false}>
 				<DialogHeader>
 					<DialogTitle>Génération du Business Plan</DialogTitle>
+					<p className="text-sm text-muted-foreground">
+						Cela peut prendre quelques minutes
+					</p>
 				</DialogHeader>
 
 				<div className="py-6">

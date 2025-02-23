@@ -177,7 +177,42 @@ export const BUSINESS_PLAN_SECTIONS = {
 			["canvas", "formatted_sections", "cost_structure"],
 		],
 	},
-
+	PESTEL_chart_P: {
+		title: "Pestel, politique",
+		paths: [
+			["pestel", "formatted_sections", "political"],
+		],
+	},
+	PESTEL_chart_E1: {
+		title: "Pestel, politique",
+		paths: [
+			["pestel", "formatted_sections", "economic"],
+		],
+	},
+	PESTEL_chart_S: {
+		title: "Pestel, social",
+		paths: [
+			["pestel", "formatted_sections", "social"],
+		],
+	},
+	PESTEL_chart_T: {
+		title: "Pestel, technologique",
+		paths: [
+			["pestel", "formatted_sections", "technological"],
+		],
+	},
+	PESTEL_chart_E2: {
+		title: "Pestel, environnemental",
+		paths: [
+			["pestel", "formatted_sections", "environmental"],
+		],
+	},
+	PESTEL_chart_L: {
+		title: "Pestel, legal",
+		paths: [
+			["pestel", "formatted_sections", "legal"],
+		],
+	},
 	PnS_What: {
 		title: "Produit et Services : Quoi",
 		paths: [
