@@ -6,7 +6,7 @@ import { DataMapper } from "./DataMapper";
 import { format_all_analyses } from "../formatters";
 import { create_section_prompt } from "../formatters/sectionFormatter";
 import { SectionContextService } from "../services/SectionContextService";
-import { SECTION_ORDER } from "../config/section-order";
+// import { SECTION_ORDER } from "../config/section-order";
 import { BusinessPlanSection } from "@/types/business-plan-document/business-plan";
 import { logger } from "@/lib/logger";
 import { FormattedAnalyses } from "@/types/openai/analyzers";
@@ -197,7 +197,7 @@ export class SectionGenerator {
 			const contextStartTime = Date.now();
 			const contextPrompt =
 				this.contextService.formatContextForPrompt(previousSections);
-			const currentSectionOrder = SECTION_ORDER.getIndex(sectionName) + 1;
+			// const currentSectionOrder = SECTION_ORDER.getIndex(sectionName) + 1;
 			logger.debug(
 				`Sections précédentes trouvées: ${previousSections.length}`
 			);

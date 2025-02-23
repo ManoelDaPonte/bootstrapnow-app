@@ -7,7 +7,11 @@ import Docxtemplater from "docxtemplater";
 import { prisma } from "@/lib/db/prisma";
 import { mapPlaceholders, replacePlaceholders } from "./placeholderMapper";
 import { Prisma } from "@prisma/client";
-import { configureDocxTemplater } from "./markdownProcessor";
+import {
+	processMarkdownText,
+	convertSegmentsToDocxTemplates,
+	configureDocxTemplater,
+} from "./markdownProcessor";
 
 interface GeneralInfo {
 	city: string;
@@ -129,14 +133,32 @@ export class DocumentGenerator {
 			// Obtenir les placeholders
 			const placeholders = mapPlaceholders(generalInfo, marketTrendsData);
 
-			// Fusionner les sections avec les placeholders
+			// Appliquer les remplacements aux sections et convertir le Markdown
+			const processedSections: Record<string, string> = {};
+			for (const [key, content] of Object.entries(sections)) {
+				const withPlaceholders = replacePlaceholders(
+					content,
+					placeholders
+				);
+
+				// Traiter les segments formatés
+				const processedSegments = processMarkdownText(withPlaceholders);
+
+				// Convertir les segments en format Docxtemplater
+				processedSections[key] =
+					convertSegmentsToDocxTemplates(processedSegments);
+			}
+
+			// Fusionner les placeholders directs avec les sections traitées
 			const templateData = {
-				...sections,
+				...processedSections,
 				...placeholders,
 			};
 
-			// Les données seront automatiquement nettoyées par le parser
+			// Configurer et créer le document
 			const doc = new Docxtemplater(zip, configureDocxTemplater(zip));
+
+			// Traiter le document
 			await doc.renderAsync(templateData);
 
 			const buf = doc.getZip().generate({
@@ -146,7 +168,13 @@ export class DocumentGenerator {
 
 			return buf;
 		} catch (error) {
-			console.error("Erreur lors de la génération:", error);
+			console.error("Erreur détaillée lors de la génération:", error);
+			if (error instanceof Error && (error as any).properties?.errors) {
+				console.error(
+					"Erreurs spécifiques:",
+					(error as any).properties.errors
+				);
+			}
 			throw error;
 		}
 	}
