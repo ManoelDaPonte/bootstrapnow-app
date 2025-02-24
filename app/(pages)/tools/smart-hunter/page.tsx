@@ -22,7 +22,7 @@ export default function MarketTesterPage() {
 		return (
 			<CardCenter
 				title="Accès Restreint"
-				description="Cette fonctionnalité est réservée aux utilisateurs disposant d’un abonnement actif. Passez à un plan payant pour débloquer l’accès !"
+				description="Cette fonctionnalité est en cours de développement !"
 				buttonText="Obtenir un abonnement"
 				buttonHref="/abonnement"
 				icon={Lock}
