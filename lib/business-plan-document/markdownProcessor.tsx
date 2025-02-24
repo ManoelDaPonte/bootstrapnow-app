@@ -51,7 +51,7 @@ export function processMarkdownText(text: string): TextSegment[] {
 	// Diviser en paragraphes (séparés par des doubles retours à la ligne)
 	const paragraphs = cleanedText.split(/\n\n+/);
 
-	for (let paragraph of paragraphs) {
+	for (const paragraph of paragraphs) {
 		if (!paragraph.trim()) {
 			continue;
 		}
@@ -155,7 +155,7 @@ export function convertSegmentsToDocxTemplates(
 /**
  * Configure les modules et options Docxtemplater
  */
-export function configureDocxTemplater(zip: any) {
+export function configureDocxTemplater(_zip: any) {
 	return {
 		paragraphLoop: true,
 		linebreaks: false, // Désactiver la gestion automatique des retours à la ligne
