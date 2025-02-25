@@ -6,7 +6,7 @@ import { DataMapper } from "./DataMapper";
 import { format_all_analyses } from "../formatters";
 import { create_section_prompt } from "../formatters/sectionFormatter";
 import { SectionContextService } from "../services/SectionContextService";
-import { SECTION_ORDER } from "../config/section-order";
+// import { SECTION_ORDER } from "../config/section-order";
 import { BusinessPlanSection } from "@/types/business-plan-document/business-plan";
 import { logger } from "@/lib/logger";
 import { FormattedAnalyses } from "@/types/openai/analyzers";
@@ -92,6 +92,7 @@ export class SectionGenerator {
 			title: sectionData.title,
 			paths: sectionData.paths as [string, string, string][],
 			systemPrompt,
+			contextGroup: sectionData.contextGroup,
 		};
 	}
 
@@ -196,24 +197,31 @@ export class SectionGenerator {
 			const contextStartTime = Date.now();
 			const contextPrompt =
 				this.contextService.formatContextForPrompt(previousSections);
-			const currentSectionOrder = SECTION_ORDER.getIndex(sectionName) + 1;
+			// const currentSectionOrder = SECTION_ORDER.getIndex(sectionName) + 1;
 			logger.debug(
 				`Sections précédentes trouvées: ${previousSections.length}`
 			);
 			logger.debug(
 				`Contexte formaté (${Date.now() - contextStartTime}ms)`
 			);
-
 			const fullPrompt = `${basePrompt}
-	Important: Cette section est la ${currentSectionOrder}ème section du business plan sur ${SECTION_ORDER.sections.length}. 
-	Assure-toi que le contenu s'intègre naturellement avec les sections précédentes tout en évitant les répétitions.
-	${contextPrompt}`;
 
+			${
+				contextPrompt
+					? `
+			
+			Voici un résumé des informations déjà présentées dans le document :
+			${contextPrompt}
+			
+			Merci de rédiger cette nouvelle section en assurant une continuité naturelle avec le contenu existant, sans répéter les informations déjà mentionnées.`
+					: ""
+			}`;
+			console.log(fullPrompt);
 			// 6. Génération OpenAI
 			logger.generating();
 			const aiStartTime = Date.now();
 			const completion = await this.openai.chat.completions.create({
-				model: "gpt-4-turbo-preview",
+				model: "gpt-4o-mini",
 				messages: [
 					{ role: "system", content: config.systemPrompt },
 					...previousSections.map((section) => ({
