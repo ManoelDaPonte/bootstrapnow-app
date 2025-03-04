@@ -58,7 +58,7 @@ export const CANVAS_QA_DATA: QAData = {
 			id: "PRODUITouSERVICE",
 			title: "Ce que vous offrez concrètement",
 			question:
-				"Quel est le nom de votre {{PRODUITouSERVICE}} et comment ce nom reflète-t-il sa mission ou son objectif ?",
+				"Quel est le nom de votre produit ou service et comment ce nom reflète-t-il sa mission ou son objectif ?",
 			examples: [
 				"Le produit s'appelle EcoSmart. Ce nom reflète notre mission de proposer des solutions écologiques et intelligentes pour la maison, combinant technologie avancée et respect de l’environnement.",
 				"Notre produit s'appelle FlexiFit. Ce nom est conçu pour transmettre l’idée de flexibilité et d’adaptabilité, en offrant des vêtements sportifs qui s'ajustent à tous les types de corps et besoins.",
