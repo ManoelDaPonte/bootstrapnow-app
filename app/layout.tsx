@@ -3,6 +3,8 @@ import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ThemeProvider } from "@/components/theme-provider";
 import { UserMetadataProvider } from "@/context/userMetadataProvider";
+import { TermsProvider } from "@/context/termsContext";
+import TermsGuard from "@/components/terms/TermsGuard";
 import { Toaster } from "@/components/ui/toaster";
 
 export default function RootLayout({
@@ -24,8 +26,12 @@ export default function RootLayout({
 							defaultTheme="light"
 							enableSystem={false}
 						>
-							{children}
-							<Toaster />
+							<TermsProvider>
+								<TermsGuard>
+									{children}
+									<Toaster />
+								</TermsGuard>
+							</TermsProvider>
 						</ThemeProvider>
 					</UserMetadataProvider>
 				</UserProvider>
